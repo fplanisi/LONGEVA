@@ -1,0 +1,33 @@
+{
+  "version": 2,
+  "name": "longeva-longevity",
+  "builds": [
+    {
+      "src": "api/*.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "public/**",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/public/$1"
+    }
+  ],
+  "env": {
+    "AI_PROVIDER": "groq",
+    "ALLOWED_ORIGIN": "*"
+  },
+  "functions": {
+    "api/*.js": {
+      "maxDuration": 30
+    }
+  }
+}

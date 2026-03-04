@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LONGEVA — Moléculas de Longevidad</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#050a0e;--surface:#0b1520;--border:#1a3048;--accent:#00c8a0;--accent2:#0098ff;--accent3:#7b61ff;--text:#e8f4f0;--muted:#6b8fa8;--dim:#3a5a72;--gold:#f0c060;--red:#f43f5e}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--text);font-family:'Instrument Sans',sans-serif;min-height:100vh;overflow-x:hidden}
+  body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,200,160,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,200,160,.025) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0}
+  .orb{position:fixed;border-radius:50%;filter:blur(130px);pointer-events:none;z-index:0}
+  .orb1{width:700px;height:700px;background:rgba(0,200,160,.055);top:-250px;right:-200px}
+  .orb2{width:500px;height:500px;background:rgba(0,152,255,.04);bottom:-150px;left:-150px}
+
+  /* HEADER */
+  header{position:relative;z-index:10;padding:24px 48px 0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+  .logo-name{font-family:'DM Serif Display',serif;font-size:24px;letter-spacing:.08em;color:var(--accent);text-shadow:0 0 40px rgba(0,200,160,.4)}
+  .logo-tag{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:.15em;margin-left:8px}
+  .header-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .badge{display:flex;align-items:center;gap:7px;padding:5px 12px;border-radius:100px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em}
+  .badge-live{background:rgba(0,200,160,.07);border:1px solid rgba(0,200,160,.18);color:var(--accent)}
+  .badge-provider{background:rgba(0,152,255,.07);border:1px solid rgba(0,152,255,.18);color:var(--accent2)}
+  .badge-provider.groq{color:#ff6b35;background:rgba(255,107,53,.07);border-color:rgba(255,107,53,.18)}
+  .dot{width:5px;height:5px;border-radius:50%;animation:pulse 2s infinite}
+  .dot-green{background:var(--accent)}
+  .dot-blue{background:var(--accent2)}
+  @keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(0,200,160,.4)}50%{opacity:.6;box-shadow:0 0 0 3px rgba(0,200,160,0)}}
+
+  /* HERO */
+  .hero{position:relative;z-index:10;text-align:center;padding:44px 48px 32px}
+  .hero-eye{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--dim);text-transform:uppercase;margin-bottom:14px}
+  h1{font-family:'DM Serif Display',serif;font-size:clamp(30px,4vw,56px);line-height:1.1;margin-bottom:10px}
+  h1 em{font-style:italic;color:var(--accent);text-shadow:0 0 60px rgba(0,200,160,.3)}
+  .hero-sub{font-size:14px;color:var(--muted);max-width:580px;margin:0 auto 28px;line-height:1.65;font-weight:300}
+
+  /* SEARCH */
+  .search-box{max-width:760px;margin:0 auto}
+  .search-wrap{display:flex;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:.3s}
+  .search-wrap:focus-within{border-color:rgba(0,200,160,.4);box-shadow:0 0 0 3px rgba(0,200,160,.07)}
+  .si{padding:0 13px 0 17px;color:var(--dim);flex-shrink:0}
+  .search-input{flex:1;background:transparent;border:none;outline:none;padding:15px 0;font-family:'Instrument Sans',sans-serif;font-size:14px;color:var(--text)}
+  .search-input::placeholder{color:var(--dim)}
+  .sbtn{margin:7px;padding:10px 18px;background:var(--accent);color:#050a0e;border:none;border-radius:9px;font-family:'Instrument Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:.2s;flex-shrink:0;white-space:nowrap}
+  .sbtn:hover{background:#00e0b4;transform:translateY(-1px)}
+  .sbtn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+  /* SEARCH MODES */
+  .search-modes{display:flex;justify-content:center;gap:8px;margin-top:10px}
+  .mode-btn{padding:5px 14px;border-radius:100px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:'DM Mono',monospace;font-size:10px;cursor:pointer;transition:.2s;display:flex;align-items:center;gap:5px}
+  .mode-btn:hover,.mode-btn.active{border-color:var(--accent);color:var(--accent);background:rgba(0,200,160,.06)}
+  .mode-btn.mode-latest{border-color:rgba(0,152,255,.3);color:var(--accent2)}
+  .mode-btn.mode-latest:hover,.mode-btn.mode-latest.active{background:rgba(0,152,255,.07);border-color:var(--accent2)}
+
+  /* FILTERS */
+  .filters{display:flex;justify-content:center;gap:5px;flex-wrap:wrap;margin-top:12px}
+  .fp{padding:4px 12px;border-radius:100px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:'DM Mono',monospace;font-size:9px;cursor:pointer;transition:.2s}
+  .fp:hover,.fp.active{border-color:var(--accent);color:var(--accent);background:rgba(0,200,160,.06)}
+
+  /* STATS */
+  .stats{position:relative;z-index:10;display:flex;justify-content:center;gap:36px;padding:18px 48px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin:0 0 32px;flex-wrap:wrap}
+  .stat-n{font-family:'DM Serif Display',serif;font-size:22px;color:var(--accent);display:block;line-height:1;margin-bottom:3px}
+  .stat-l{font-family:'DM Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:.12em;text-transform:uppercase}
+
+  /* MAIN */
+  .main{position:relative;z-index:10;max-width:1500px;margin:0 auto;padding:0 40px 80px}
+
+  /* DISCOVER BANNER */
+  #discover-panel{display:none;background:linear-gradient(135deg,rgba(0,152,255,.06),rgba(123,97,255,.06));border:1px solid rgba(0,152,255,.2);border-radius:18px;padding:28px;margin-bottom:32px;position:relative}
+  #discover-panel::before{content:'🔬 DESCUBRIMIENTOS RECIENTES 2025-2026';font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.15em;color:var(--accent2);display:block;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(0,152,255,.15)}
+  #discover-content{font-size:13px;line-height:1.75;color:#b0cce0;font-weight:300}
+  #discover-content h3{font-family:'DM Serif Display',serif;font-size:15px;color:var(--text);margin:14px 0 6px}
+  #discover-content strong{color:var(--accent2);font-weight:500}
+  .disc-close{position:absolute;top:16px;right:16px;background:transparent;border:1px solid var(--border);color:var(--dim);border-radius:7px;padding:4px 10px;cursor:pointer;font-family:'DM Mono',monospace;font-size:9px;transition:.2s}
+  .disc-close:hover{border-color:var(--accent2);color:var(--accent2)}
+
+  /* AI PANEL */
+  #ai-panel{display:none;background:var(--surface);border:1px solid rgba(0,200,160,.2);border-radius:18px;padding:28px;margin-bottom:32px;position:relative}
+  #ai-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:.5}
+  .ai-head{display:flex;align-items:flex-start;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--border);gap:12px}
+  .ai-mol-name{font-family:'DM Serif Display',serif;font-size:22px;color:var(--text);flex:1}
+  .ai-head-right{display:flex;gap:6px;align-items:flex-start;flex-shrink:0;margin-top:2px}
+  .cbtn{background:transparent;border:1px solid var(--border);color:var(--dim);border-radius:7px;padding:4px 10px;cursor:pointer;font-family:'DM Mono',monospace;font-size:9px;transition:.2s}
+  .cbtn:hover{border-color:var(--accent);color:var(--accent)}
+  .latest-btn{border-color:rgba(0,152,255,.3);color:var(--accent2)}
+  .latest-btn:hover{background:rgba(0,152,255,.07);border-color:var(--accent2)}
+  .ai-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px}
+  .at{padding:2px 9px;border-radius:100px;font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.07em;text-transform:uppercase}
+  .tn{background:rgba(0,200,160,.1);border:1px solid rgba(0,200,160,.25);color:var(--accent)}
+  .ts{background:rgba(0,152,255,.1);border:1px solid rgba(0,152,255,.25);color:var(--accent2)}
+  .tp{background:rgba(123,97,255,.1);border:1px solid rgba(123,97,255,.25);color:var(--accent3)}
+  .te{background:rgba(240,192,96,.1);border:1px solid rgba(240,192,96,.25);color:var(--gold)}
+  .ai-body{font-size:13px;line-height:1.78;color:#b0cce0;font-weight:300}
+  .ai-body h3{font-family:'DM Serif Display',serif;font-size:15px;color:var(--text);margin:16px 0 6px;font-weight:400}
+  .ai-body h3:first-child{margin-top:0}
+  .ai-body p{margin-bottom:8px}
+  .ai-body ul{margin:4px 0 8px 16px}
+  .ai-body li{margin-bottom:4px;color:#8ab0c5}
+  .ai-body strong{color:var(--accent);font-weight:500}
+  .ai-provider-note{margin-top:14px;padding-top:12px;border-top:1px solid var(--border);font-family:'DM Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:.05em}
+
+  /* LOADING */
+  .loading{display:flex;align-items:center;gap:10px;color:var(--muted);font-family:'DM Mono',monospace;font-size:11px}
+  .spin{width:15px;height:15px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
+  .spin-blue{border-top-color:var(--accent2)}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* DISCOVER BTN */
+  .discover-wrap{display:flex;justify-content:center;margin-bottom:28px}
+  .discover-btn{display:flex;align-items:center;gap:8px;padding:10px 22px;background:rgba(0,152,255,.07);border:1px solid rgba(0,152,255,.2);border-radius:100px;color:var(--accent2);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.08em;cursor:pointer;transition:.25s}
+  .discover-btn:hover{background:rgba(0,152,255,.12);border-color:rgba(0,152,255,.4);transform:translateY(-1px)}
+  .discover-btn span{font-size:15px}
+
+  /* GRID */
+  .cat-sec{margin-bottom:32px}
+  .cat-lbl{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+  .cat-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+  .cat-txt{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);white-space:nowrap}
+  .cat-line{flex:1;height:1px;background:var(--border)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:10px}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:17px;cursor:pointer;transition:.2s;position:relative;overflow:hidden}
+  .card:hover{border-color:rgba(0,200,160,.28);transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.26)}
+  .card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px}
+  .mol-n{font-family:'DM Serif Display',serif;font-size:15px;color:var(--text);line-height:1.2}
+  .tb{flex-shrink:0;padding:2px 7px;border-radius:100px;font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.07em;text-transform:uppercase;margin-left:8px;margin-top:2px}
+  .card-desc{font-size:11px;color:var(--muted);line-height:1.5;margin-bottom:9px;font-weight:300}
+  .chips{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:9px}
+  .chip{padding:1px 7px;background:rgba(123,97,255,.07);border:1px solid rgba(123,97,255,.12);border-radius:100px;font-family:'DM Mono',monospace;font-size:7px;color:var(--accent3)}
+  .card-meta{display:flex;align-items:center;justify-content:space-between;padding-top:9px;border-top:1px solid var(--border)}
+  .ev{font-family:'DM Mono',monospace;font-size:8px;color:var(--dim)}
+  .ev span{color:var(--gold)}
+  .explore{font-family:'DM Mono',monospace;font-size:8px;color:var(--accent);opacity:0;transition:.2s}
+  .card:hover .explore{opacity:1}
+
+  /* ERROR / EMPTY */
+  .nores{text-align:center;padding:50px 20px;color:var(--muted);font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.08em}
+  .err{background:rgba(244,63,94,.06);border:1px solid rgba(244,63,94,.2);border-radius:10px;padding:12px 16px;color:#ff8080;font-family:'DM Mono',monospace;font-size:11px}
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+
+  @keyframes fu{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  .card{animation:fu .3s ease both}
+
+  @media(max-width:768px){
+    header{padding:18px 20px 0}
+    .hero{padding:28px 20px 20px}
+    .main{padding:0 16px 60px}
+    .stats{gap:16px;padding:14px 20px}
+    .grid{grid-template-columns:1fr}
+    #ai-panel,#discover-panel{padding:18px}
+    .search-modes{flex-wrap:wrap}
+  }
+</style>
+</head>
+<body>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+
+<header>
+  <div>
+    <span class="logo-name">LONGEVA</span>
+    <span class="logo-tag">v3.1 · Híbrido IA + Base curada</span>
+  </div>
+  <div class="header-right">
+    <div class="badge badge-live"><div class="dot dot-green"></div>Base científica activa</div>
+    <div class="badge badge-provider" id="provider-badge"><div class="dot dot-blue"></div><span id="provider-name">Conectando...</span></div>
+  </div>
+</header>
+
+<section class="hero">
+  <p class="hero-eye">Geroscience · Natural + Sintética · IA con búsqueda web</p>
+  <h1>Cada molécula que puede<br><em>alargar tu vida</em></h1>
+  <p class="hero-sub">Base curada de 120+ compuestos con evidencia científica validada, potenciada con IA para análisis profundos y descubrimiento de novedades 2025-2026 en tiempo real.</p>
+
+  <div class="search-box">
+    <div class="search-wrap">
+      <div class="si"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div>
+      <input class="search-input" id="si" type="text" placeholder="Buscar molécula o preguntar sobre cualquier compuesto..." autocomplete="off">
+      <button class="sbtn" id="sbtn" onclick="searchIA()">Analizar →</button>
+    </div>
+
+    <div class="search-modes">
+      <button class="mode-btn active" id="mode-base" onclick="setMode('base',this)" title="Análisis con base curada">
+        📚 Base curada
+      </button>
+      <button class="mode-btn mode-latest" id="mode-latest" onclick="setMode('latest',this)" title="Busca papers recientes con web search (Anthropic)">
+        🔍 Novedades 2025-2026
+      </button>
+    </div>
+
+    <div class="filters">
+      <button class="fp active" onclick="fil('all',this)">Todas</button>
+      <button class="fp" onclick="fil('natural',this)">🌿 Naturales</button>
+      <button class="fp" onclick="fil('synthetic',this)">⚗️ Sintéticas</button>
+      <button class="fp" onclick="fil('hongos',this)">🍄 Hongos</button>
+      <button class="fp" onclick="fil('adaptogen',this)">Adaptógenos</button>
+      <button class="fp" onclick="fil('senolytic',this)">Senolíticas</button>
+      <button class="fp" onclick="fil('mTOR',this)">mTOR/AMPK</button>
+      <button class="fp" onclick="fil('NAD',this)">NAD⁺/Sirtuinas</button>
+      <button class="fp" onclick="fil('mitocondria',this)">Mitocondria</button>
+      <button class="fp" onclick="fil('inflamacion',this)">Anti-inflam.</button>
+      <button class="fp" onclick="fil('epigenetica',this)">Epigenética</button>
+    </div>
+  </div>
+</section>
+
+<div class="stats">
+  <div><span class="stat-n" id="cnt">—</span><span class="stat-l">Moléculas</span></div>
+  <div><span class="stat-n" id="cat-cnt">—</span><span class="stat-l">Categorías</span></div>
+  <div><span class="stat-n" id="db-version">—</span><span class="stat-l">Versión DB</span></div>
+  <div><span class="stat-n" id="db-date">—</span><span class="stat-l">Actualizada</span></div>
+</div>
+
+<main class="main">
+  <!-- Botón descubrimiento -->
+  <div class="discover-wrap">
+    <button class="discover-btn" onclick="discoverNew()">
+      <span>🔬</span> Descubrir nuevas moléculas 2025-2026 con IA
+    </button>
+  </div>
+
+  <!-- Panel descubrimiento -->
+  <div id="discover-panel">
+    <button class="disc-close" onclick="document.getElementById('discover-panel').style.display='none'">✕ Cerrar</button>
+    <div id="discover-content"></div>
+  </div>
+
+  <!-- Panel análisis IA -->
+  <div id="ai-panel">
+    <div id="ai-area"></div>
+  </div>
+
+  <!-- Grid de moléculas -->
+  <div id="mols"><div class="nores">Cargando base de datos...</div></div>
+</main>
+
+<script>
+// ─────────────────────────────────────────────
+// CONFIG — Cambia API_BASE según el entorno
+// ─────────────────────────────────────────────
+const CONFIG = {
+  // En desarrollo local: 'http://localhost:3000'
+  // En Vercel: '' (misma URL)
+  API_BASE: '',
+  // URL de la base de datos de moléculas
+  // En Vercel: '/data/molecules.json'
+  // En GitHub Pages: URL raw de GitHub
+  DB_URL: '/data/molecules.json',
+};
+
+let DB = null;
+let curFilter = 'all';
+let srQuery = '';
+let aiMode = 'base'; // 'base' | 'latest'
+
+// ─────────────────────────────────────────────
+// INIT — Carga la base de datos al arrancar
+// ─────────────────────────────────────────────
+async function init() {
+  try {
+    const res = await fetch(CONFIG.DB_URL);
+    if (!res.ok) throw new Error('No se pudo cargar la base de datos');
+    DB = await res.json();
+
+    // Actualizar stats
+    document.getElementById('cnt').textContent = DB.total || DB.molecules.length;
+    document.getElementById('cat-cnt').textContent = DB.categories?.length || '—';
+    document.getElementById('db-version').textContent = DB.version || '—';
+    document.getElementById('db-date').textContent = DB.last_updated?.slice(0,7) || '—';
+
+    render();
+    checkProvider();
+  } catch (e) {
+    document.getElementById('mols').innerHTML = `<div class="err">⚠ Error cargando base de datos: ${e.message}</div>`;
+  }
+}
+
+// ─────────────────────────────────────────────
+// PROVIDER CHECK
+// ─────────────────────────────────────────────
+async function checkProvider() {
+  try {
+    const res = await fetch(`${CONFIG.API_BASE}/api/analyze`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ molecule: '__ping__' }),
+    });
+    const data = await res.json();
+    const prov = data.provider || 'unknown';
+    const badge = document.getElementById('provider-badge');
+    const name = document.getElementById('provider-name');
+    if (prov === 'groq') {
+      badge.classList.add('groq');
+      name.textContent = 'Groq (testing)';
+    } else if (prov === 'anthropic') {
+      name.textContent = 'Claude (producción)';
+    } else {
+      name.textContent = prov;
+    }
+  } catch {
+    document.getElementById('provider-name').textContent = 'API no detectada';
+  }
+}
+
+// ─────────────────────────────────────────────
+// FILTER + RENDER
+// ─────────────────────────────────────────────
+function fil(f, btn) {
+  curFilter = f;
+  document.querySelectorAll('.fp').forEach(x => x.classList.remove('active'));
+  btn.classList.add('active');
+  render();
+}
+
+function setMode(m, btn) {
+  aiMode = m;
+  document.querySelectorAll('.mode-btn').forEach(x => x.classList.remove('active'));
+  btn.classList.add('active');
+  const hint = m === 'latest' ? '🔍 Busca papers recientes 2025-2026 (requiere modo Anthropic en servidor)' : '📚 Análisis con base curada local';
+  document.getElementById('si').placeholder = m === 'latest'
+    ? 'Buscar novedades: Taurina 2024, nuevas senolíticas, NAD+ estudios recientes...'
+    : 'Buscar molécula o preguntar sobre cualquier compuesto...';
+}
+
+function getFiltered() {
+  if (!DB) return [];
+  let mols = [...DB.molecules];
+  if (srQuery) {
+    const q = srQuery.toLowerCase();
+    mols = mols.filter(m =>
+      m.name?.toLowerCase().includes(q) ||
+      m.full_name?.toLowerCase().includes(q) ||
+      m.category?.toLowerCase().includes(q) ||
+      m.description?.toLowerCase().includes(q) ||
+      m.pathways?.some(p => p.toLowerCase().includes(q))
+    );
+  }
+  if (curFilter === 'all') return mols;
+  if (curFilter === 'natural') return mols.filter(m => m.type === 'natural');
+  if (curFilter === 'synthetic') return mols.filter(m => m.type === 'synthetic');
+  if (curFilter === 'hongos') return mols.filter(m => m.tags?.includes('hongos'));
+  if (curFilter === 'mTOR') return mols.filter(m => m.tags?.includes('mTOR') || m.pathways?.some(p => p.includes('mTOR')));
+  if (curFilter === 'sirtuins') return mols.filter(m => m.tags?.includes('sirtuins') || m.tags?.includes('NAD') || m.pathways?.some(p => p.includes('SIRT')));
+  if (curFilter === 'senolytic') return mols.filter(m => m.tags?.includes('senolytic'));
+  if (curFilter === 'NAD') return mols.filter(m => m.tags?.includes('NAD'));
+  if (curFilter === 'adaptogen') return mols.filter(m => m.tags?.includes('adaptogen'));
+  if (curFilter === 'mitocondria') return mols.filter(m => m.tags?.includes('mitocondria'));
+  if (curFilter === 'inflamacion') return mols.filter(m => m.tags?.includes('inflamacion'));
+  if (curFilter === 'epigenetica') return mols.filter(m => m.tags?.includes('epigenetica'));
+  return mols;
+}
+
+const CC = {
+  'Hongos Medicinales':'#00c8a0','NAD⁺ / Sirtuinas':'#a78bfa',
+  'Polifenoles':'#34d399','Adaptógenos':'#f59e0b',
+  'Vitaminas de Longevidad':'#60a5fa','Mitocondria / Bioenergética':'#f97316',
+  'Senolíticos / mTOR':'#f43f5e','Epigenética / Reprogramación':'#e879f9',
+  'Aminoácidos / Péptidos':'#84cc16','Plantas Medicinales':'#22c55e',
+  'Microbioma':'#2dd4bf','Hormonas / Neuroendocrino':'#fbbf24',
+  'Emergentes 2025-2026':'#e11d48'
+};
+
+function render() {
+  const fl = getFiltered();
+  document.getElementById('cnt').textContent = fl.length;
+  if (!fl.length) {
+    document.getElementById('mols').innerHTML = '<div class="nores">Sin resultados. Usa el botón "Analizar →" para consultar con IA cualquier compuesto.</div>';
+    return;
+  }
+  const cats = {};
+  fl.forEach(m => { if (!cats[m.category]) cats[m.category] = []; cats[m.category].push(m); });
+  let h = '';
+  Object.entries(cats).forEach(([cat, ms]) => {
+    const col = CC[cat] || '#888';
+    h += `<div class="cat-sec"><div class="cat-lbl"><div class="cat-dot" style="background:${col}"></div><span class="cat-txt">${cat}</span><div class="cat-line"></div><span class="cat-txt">${ms.length} mol.</span></div><div class="grid">`;
+    ms.forEach((m, i) => {
+      const tc = m.type === 'natural' ? 'tn' : 'ts';
+      const tl = m.type === 'natural' ? '🌿' : '⚗️';
+      h += `<div class="card" style="animation-delay:${i * .035}s" onclick="askMol(${JSON.stringify(m.name)},${JSON.stringify(m.full_name)},${JSON.stringify(m.pathways||[])},${JSON.stringify(m.category)},${m.study_count||0})">
+        <div class="card-top"><div class="mol-n">${m.name}</div><div class="tb ${tc}">${tl} ${m.type==='natural'?'Natural':'Sintética'}</div></div>
+        <div class="card-desc">${m.description||''}</div>
+        <div class="chips">${(m.pathways||[]).map(p=>`<span class="chip">${p}</span>`).join('')}</div>
+        <div class="card-meta"><div class="ev">Evidencia <span>${m.evidence_rating||'N/A'}</span> · ${m.study_count||0}+ est.</div><div class="explore">Ver análisis →</div></div>
+      </div>`;
+    });
+    h += `</div></div>`;
+  });
+  document.getElementById('mols').innerHTML = h;
+}
+
+// ─────────────────────────────────────────────
+// IA — Analizar molécula
+// ─────────────────────────────────────────────
+async function askMol(name, fullName, pathways, category, studyCount) {
+  document.getElementById('si').value = name;
+  srQuery = '';
+  render();
+  await searchIA(name, fullName, pathways, category, studyCount);
+  document.getElementById('ai-panel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+async function searchIA(forceName, forceFull, forcePaths, forceCat, forceStudies) {
+  const q = forceName || document.getElementById('si').value.trim();
+  if (!q || q === '__ping__') return;
+
+  if (!forceName) {
+    srQuery = q;
+    render();
+  }
+
+  const panel = document.getElementById('ai-panel');
+  const area = document.getElementById('ai-area');
+  panel.style.display = 'block';
+
+  const isLatest = aiMode === 'latest';
+  area.innerHTML = `<div class="loading"><div class="spin ${isLatest?'spin-blue':''}"></div>${isLatest ? `Buscando novedades 2025-2026 sobre <strong style="color:var(--accent2)">${q}</strong>...` : `Analizando <strong style="color:var(--accent)">${q}</strong>...`}</div>`;
+
+  if (!forceName) panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  // Buscar en la DB local
+  const lm = DB?.molecules?.find(m =>
+    m.name?.toLowerCase() === q.toLowerCase() ||
+    m.full_name?.toLowerCase().includes(q.toLowerCase()) ||
+    q.toLowerCase().includes(m.name?.toLowerCase() || '')
+  );
+
+  const mol = lm || {
+    name: q, full_name: forceFull || q,
+    pathways: forcePaths || [], category: forceCat || '',
+    evidence_rating: 'N/A', study_count: forceStudies || 0, type: 'unknown'
+  };
+
+  try {
+    const res = await fetch(`${CONFIG.API_BASE}/api/analyze`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        molecule: mol.name,
+        full_name: mol.full_name,
+        pathways: mol.pathways,
+        category: mol.category,
+        study_count: mol.study_count,
+        mode: isLatest ? 'latest' : 'base',
+      }),
+    });
+
+    if (!res.ok) throw new Error(`Error ${res.status}`);
+    const data = await res.json();
+
+    area.innerHTML = `
+      <div class="ai-head">
+        <div class="ai-mol-name">${mol.full_name || q}</div>
+        <div class="ai-head-right">
+          ${!isLatest ? `<button class="cbtn latest-btn" onclick="setModeAndSearch('${mol.name.replace(/'/g,"\\'")}')">🔍 Ver novedades</button>` : ''}
+          <button class="cbtn" onclick="document.getElementById('ai-panel').style.display='none'">✕</button>
+        </div>
+      </div>
+      <div class="ai-tags">
+        ${mol.type==='natural'?'<span class="at tn">🌿 Natural</span>':''}
+        ${mol.type==='synthetic'?'<span class="at ts">⚗️ Sintética</span>':''}
+        ${mol.category?`<span class="at tp">${mol.category}</span>`:''}
+        ${(mol.pathways||[]).slice(0,4).map(p=>`<span class="at tp">${p}</span>`).join('')}
+        ${mol.evidence_rating&&mol.evidence_rating!=='N/A'?`<span class="at te">Evidencia ${mol.evidence_rating}</span>`:''}
+        ${isLatest?'<span class="at" style="background:rgba(0,152,255,.1);border:1px solid rgba(0,152,255,.25);color:var(--accent2)">🔍 Búsqueda web</span>':''}
+      </div>
+      <div class="ai-body">${fmt(data.text || '')}</div>
+      <div class="ai-provider-note">Análisis generado con ${data.provider === 'anthropic' ? 'Claude (Anthropic)' : data.provider === 'groq' ? 'Llama 3.3 70B (Groq - modo testing)' : data.provider}</div>`;
+
+  } catch (e) {
+    area.innerHTML = `<div class="err">⚠ Error al conectar con el backend. ¿Está ejecutándose el servidor? (${e.message})</div>`;
+  }
+}
+
+function setModeAndSearch(name) {
+  aiMode = 'latest';
+  document.querySelectorAll('.mode-btn').forEach(x => x.classList.remove('active'));
+  document.getElementById('mode-latest').classList.add('active');
+  askMol(name);
+}
+
+// ─────────────────────────────────────────────
+// DISCOVER — Nuevas moléculas 2025-2026
+// ─────────────────────────────────────────────
+async function discoverNew() {
+  const panel = document.getElementById('discover-panel');
+  const content = document.getElementById('discover-content');
+  panel.style.display = 'block';
+  content.innerHTML = `<div class="loading"><div class="spin spin-blue"></div>Buscando últimos descubrimientos en PubMed, Nature Aging, bioRxiv...</div>`;
+  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  try {
+    const res = await fetch(`${CONFIG.API_BASE}/api/discover`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query: 'nuevas moléculas longevidad antiaging 2025 2026' }),
+    });
+    const data = await res.json();
+    if (data.limited) {
+      content.innerHTML = `<p style="color:var(--muted)">⚠ ${data.text}</p>`;
+    } else {
+      content.innerHTML = fmt(data.text || '');
+    }
+  } catch (e) {
+    content.innerHTML = `<div class="err">⚠ Error: ${e.message}</div>`;
+  }
+}
+
+// ─────────────────────────────────────────────
+// FORMAT MARKDOWN → HTML
+// ─────────────────────────────────────────────
+function fmt(t) {
+  return t
+    .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+    .replace(/^## (.+)$/gm, '<h3>$1</h3>')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/^- (.+)$/gm, '<li>$1</li>')
+    .replace(/(<li>[^<]*<\/li>\n?)+/g, m => `<ul>${m}</ul>`)
+    .replace(/\n{2,}/g, '</p><p>')
+    .replace(/(→|⟶|=>)/g, '<span style="color:var(--accent)">$1</span>')
+    .split('\n').filter(l => l.trim()).join('\n');
+}
+
+// ─────────────────────────────────────────────
+// EVENTS
+// ─────────────────────────────────────────────
+document.getElementById('si').addEventListener('keydown', e => {
+  if (e.key === 'Enter') { srQuery = ''; searchIA(); }
+});
+document.getElementById('si').addEventListener('input', e => {
+  srQuery = e.target.value.trim();
+  if (DB) render();
+});
+
+// START
+init();
+</script>
+</body>
+</html>

@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LONGEVA — Tu Stack Personalizado</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #08090c;
+  --surface: #0e1117;
+  --surface2: #141820;
+  --border: #1e2535;
+  --border2: #2a3548;
+  --accent: #c8f060;
+  --accent-dim: rgba(200,240,96,.12);
+  --accent2: #60c8f0;
+  --accent3: #f060c8;
+  --text: #eef2f8;
+  --muted: #6a7a96;
+  --dim: #3a4560;
+  --gold: #f0c060;
+  --red: #f06060;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Syne', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── NOISE TEXTURE ── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1000;
+  opacity: .6;
+}
+
+/* ── GRID ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(200,240,96,.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(200,240,96,.018) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── ORBS ── */
+.orb { position: fixed; border-radius: 50%; filter: blur(140px); pointer-events: none; z-index: 0; }
+.o1 { width: 600px; height: 600px; background: rgba(200,240,96,.045); top: -200px; left: -100px; }
+.o2 { width: 500px; height: 500px; background: rgba(96,200,240,.035); bottom: -150px; right: -150px; }
+.o3 { width: 300px; height: 300px; background: rgba(240,96,200,.025); top: 50%; left: 50%; transform: translate(-50%,-50%); }
+
+/* ── HEADER ── */
+header {
+  position: relative; z-index: 10;
+  padding: 28px 48px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+}
+.logo { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 300; letter-spacing: .15em; color: var(--accent); text-shadow: 0 0 30px rgba(200,240,96,.3); }
+.logo span { font-style: italic; }
+.hbadge { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: .1em; border: 1px solid var(--border2); padding: 5px 12px; border-radius: 100px; }
+
+/* ── MAIN WRAPPER ── */
+.wrapper { position: relative; z-index: 10; max-width: 860px; margin: 0 auto; padding: 0 24px 100px; }
+
+/* ── HERO ── */
+.hero { padding: 72px 0 56px; text-align: center; }
+.hero-kicker { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .2em; color: var(--muted); text-transform: uppercase; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 12px; }
+.hero-kicker::before, .hero-kicker::after { content: ''; width: 40px; height: 1px; background: var(--border2); }
+.hero-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(44px, 6vw, 80px); font-weight: 300; line-height: 1.05; margin-bottom: 20px; }
+.hero-title em { font-style: italic; color: var(--accent); display: block; }
+.hero-sub { font-size: 15px; color: var(--muted); max-width: 480px; margin: 0 auto 40px; line-height: 1.7; font-weight: 400; }
+.hero-proof { display: flex; justify-content: center; gap: 32px; flex-wrap: wrap; }
+.proof-item { text-align: center; }
+.proof-n { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 300; color: var(--accent); line-height: 1; }
+.proof-l { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--dim); letter-spacing: .1em; text-transform: uppercase; margin-top: 3px; }
+
+/* ── EMAIL GATE ── */
+#email-gate {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 48px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 40px;
+}
+#email-gate::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: .4;
+}
+.gate-title { font-family: 'Cormorant Garamond', serif; font-size: 30px; font-weight: 300; margin-bottom: 10px; }
+.gate-sub { font-size: 13px; color: var(--muted); margin-bottom: 32px; line-height: 1.6; max-width: 380px; margin-left: auto; margin-right: auto; }
+.email-row { display: flex; gap: 8px; max-width: 420px; margin: 0 auto 16px; }
+.email-input {
+  flex: 1; background: var(--surface2); border: 1px solid var(--border2);
+  border-radius: 10px; padding: 13px 16px;
+  font-family: 'Syne', sans-serif; font-size: 14px; color: var(--text);
+  outline: none; transition: .25s;
+}
+.email-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(200,240,96,.08); }
+.email-input::placeholder { color: var(--dim); }
+.gate-btn {
+  padding: 13px 24px; background: var(--accent); color: #08090c;
+  border: none; border-radius: 10px; font-family: 'Syne', sans-serif;
+  font-size: 13px; font-weight: 700; cursor: pointer; transition: .2s;
+  white-space: nowrap; letter-spacing: .02em;
+}
+.gate-btn:hover { background: #d8ff6a; transform: translateY(-1px); }
+.gate-note { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--dim); letter-spacing: .05em; }
+.gate-msg { margin-top: 10px; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); min-height: 14px; }
+.gate-msg.error { color: var(--red); }
+.gate-msg.ok { color: var(--accent); }
+
+
+/* ── WIZARD ── */
+#wizard { display: none; }
+
+/* PROGRESS */
+.progress-wrap { margin-bottom: 48px; }
+.progress-steps { display: flex; align-items: center; gap: 0; margin-bottom: 12px; }
+.step-dot { width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid var(--border2); background: transparent; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); transition: .3s; flex-shrink: 0; }
+.step-dot.active { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+.step-dot.done { border-color: var(--accent); background: var(--accent); color: #08090c; font-weight: 700; }
+.step-line { flex: 1; height: 1px; background: var(--border); }
+.step-line.done { background: var(--accent); opacity: .4; }
+.progress-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: .08em; }
+
+/* STEP CARD */
+.step-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 44px 48px;
+  position: relative; overflow: hidden;
+  animation: slideIn .35s ease;
+}
+.step-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: .3;
+}
+@keyframes slideIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+
+.step-num { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--accent); letter-spacing: .15em; text-transform: uppercase; margin-bottom: 10px; }
+.step-q { font-family: 'Cormorant Garamond', serif; font-size: 30px; font-weight: 300; margin-bottom: 8px; line-height: 1.2; }
+.step-hint { font-size: 13px; color: var(--muted); margin-bottom: 32px; font-weight: 400; }
+
+/* OPTIONS GRID */
+.opts-grid { display: grid; gap: 10px; }
+.opts-grid.cols-2 { grid-template-columns: 1fr 1fr; }
+.opts-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+.opt {
+  background: var(--surface2); border: 1.5px solid var(--border);
+  border-radius: 12px; padding: 16px 18px; cursor: pointer;
+  transition: .2s; display: flex; align-items: flex-start; gap: 12px;
+}
+.opt:hover { border-color: var(--border2); background: #181e2a; }
+.opt.selected { border-color: var(--accent); background: var(--accent-dim); }
+.opt-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+.opt-text { flex: 1; }
+.opt-label { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+.opt-desc { font-size: 11px; color: var(--muted); line-height: 1.4; font-weight: 400; }
+.opt-check { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--border2); flex-shrink: 0; margin-top: 2px; transition: .2s; display: flex; align-items: center; justify-content: center; }
+.opt.selected .opt-check { background: var(--accent); border-color: var(--accent); }
+.opt.selected .opt-check::after { content: '✓'; font-size: 10px; color: #08090c; font-weight: 700; }
+
+/* RANGE SLIDER */
+.range-wrap { margin-top: 8px; }
+.range-labels { display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); margin-bottom: 10px; }
+input[type=range] {
+  width: 100%; -webkit-appearance: none; appearance: none;
+  height: 4px; border-radius: 2px; background: var(--border2); outline: none;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 22px; height: 22px;
+  border-radius: 50%; background: var(--accent); cursor: pointer;
+  box-shadow: 0 0 12px rgba(200,240,96,.4);
+}
+.range-val { text-align: center; font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 300; color: var(--accent); margin-top: 16px; }
+.range-val span { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); margin-left: 4px; }
+
+/* CONDITIONS */
+.conditions-list { display: flex; flex-wrap: wrap; gap: 8px; }
+.cond-tag {
+  padding: 7px 14px; border-radius: 100px;
+  border: 1.5px solid var(--border); background: var(--surface2);
+  font-size: 12px; color: var(--muted); cursor: pointer; transition: .2s;
+}
+.cond-tag:hover { border-color: var(--border2); color: var(--text); }
+.cond-tag.selected { border-color: var(--red); background: rgba(240,96,96,.08); color: var(--red); }
+.cond-note { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--dim); margin-top: 16px; }
+.protocol-wrap { margin-top: 20px; }
+.protocol-title {
+  font-size: 12px; color: var(--muted); font-family: 'JetBrains Mono', monospace;
+  letter-spacing: .08em; margin-bottom: 10px;
+}
+.protocol-input {
+  width: 100%;
+  min-height: 96px;
+  resize: vertical;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-family: 'Syne', sans-serif;
+  color: var(--text);
+  outline: none;
+  transition: .2s;
+}
+.protocol-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(200,240,96,.08); }
+
+/* NAV BUTTONS */
+.step-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 36px; }
+.btn-back { background: transparent; border: 1px solid var(--border2); color: var(--muted); border-radius: 10px; padding: 11px 22px; font-family: 'Syne', sans-serif; font-size: 13px; cursor: pointer; transition: .2s; }
+.btn-back:hover { border-color: var(--muted); color: var(--text); }
+.btn-next { background: var(--accent); color: #08090c; border: none; border-radius: 10px; padding: 13px 32px; font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; transition: .2s; }
+.btn-next:hover { background: #d8ff6a; transform: translateY(-1px); }
+.btn-next:disabled { opacity: .4; cursor: not-allowed; transform: none; }
+
+/* ── RESULTS ── */
+#results { display: none; animation: slideIn .4s ease; }
+
+.results-hero { text-align: center; padding: 48px 0 40px; }
+.results-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(36px, 5vw, 64px); font-weight: 300; line-height: 1.1; margin-bottom: 12px; }
+.results-title em { font-style: italic; color: var(--accent); }
+.results-sub { font-size: 13px; color: var(--muted); }
+
+/* PROFILE SUMMARY */
+.profile-bar {
+  display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;
+  margin-bottom: 40px;
+}
+.profile-chip {
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 100px; padding: 6px 14px;
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted);
+  letter-spacing: .05em;
+}
+
+/* LOADING STATE */
+#loading-state {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 20px; padding: 60px 40px; text-align: center;
+}
+.loading-icon { font-size: 48px; margin-bottom: 20px; animation: breathe 2s ease-in-out infinite; }
+@keyframes breathe { 0%,100%{transform:scale(1);opacity:.8} 50%{transform:scale(1.1);opacity:1} }
+.loading-title { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 300; margin-bottom: 8px; }
+.loading-sub { font-size: 12px; color: var(--muted); font-family: 'JetBrains Mono', monospace; letter-spacing: .05em; }
+.loading-steps { margin-top: 24px; display: flex; flex-direction: column; gap: 8px; max-width: 300px; margin-left: auto; margin-right: auto; }
+.lstep { display: flex; align-items: center; gap: 10px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--dim); transition: color .3s; }
+.lstep.active { color: var(--accent); }
+.lstep.done { color: var(--muted); }
+.lstep-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--dim); flex-shrink: 0; transition: background .3s; }
+.lstep.active .lstep-dot { background: var(--accent); box-shadow: 0 0 8px rgba(200,240,96,.6); animation: pulse 1s infinite; }
+.lstep.done .lstep-dot { background: var(--muted); }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+/* STACK OUTPUT */
+#stack-output { display: none; }
+
+/* TIME BLOCKS */
+.time-blocks { display: grid; gap: 16px; margin-bottom: 32px; }
+
+.time-block {
+  border-radius: 16px; overflow: hidden;
+  border: 1px solid var(--border);
+}
+.time-header {
+  padding: 16px 22px; display: flex; align-items: center; gap: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.time-icon { font-size: 20px; }
+.time-title { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 400; }
+.time-subtitle { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--muted); letter-spacing: .1em; margin-left: auto; }
+
+.time-morning { background: linear-gradient(135deg, rgba(240,192,96,.04), transparent); }
+.time-morning .time-header { background: rgba(240,192,96,.05); }
+.time-morning .time-title { color: var(--gold); }
+
+.time-afternoon { background: linear-gradient(135deg, rgba(200,240,96,.04), transparent); }
+.time-afternoon .time-header { background: rgba(200,240,96,.04); }
+.time-afternoon .time-title { color: var(--accent); }
+
+.time-night { background: linear-gradient(135deg, rgba(96,200,240,.04), transparent); }
+.time-night .time-header { background: rgba(96,200,240,.04); }
+.time-night .time-title { color: var(--accent2); }
+
+.mol-items { padding: 8px 0; }
+.mol-item {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 14px 22px; border-bottom: 1px solid rgba(30,37,53,.6);
+  transition: background .2s;
+}
+.mol-item:last-child { border-bottom: none; }
+.mol-item:hover { background: rgba(255,255,255,.015); }
+.mol-rank {
+  width: 22px; height: 22px; border-radius: 6px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 500;
+  margin-top: 2px;
+}
+.rank-core { background: rgba(200,240,96,.12); color: var(--accent); border: 1px solid rgba(200,240,96,.2); }
+.rank-support { background: rgba(96,200,240,.1); color: var(--accent2); border: 1px solid rgba(96,200,240,.18); }
+.rank-optional { background: rgba(255,255,255,.04); color: var(--muted); border: 1px solid var(--border); }
+
+.mol-info { flex: 1; min-width: 0; }
+.mol-name-row { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; margin-bottom: 3px; }
+.mol-name { font-size: 14px; font-weight: 600; color: var(--text); }
+.mol-full { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--dim); }
+.mol-why { font-size: 12px; color: var(--muted); line-height: 1.45; font-weight: 400; margin-bottom: 6px; }
+.mol-tags-row { display: flex; gap: 5px; flex-wrap: wrap; }
+.mol-tag { padding: 2px 7px; border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 8px; letter-spacing: .04em; }
+.tag-dose { background: rgba(200,240,96,.08); color: var(--accent); }
+.tag-synergy { background: rgba(240,192,96,.08); color: var(--gold); }
+.tag-caution { background: rgba(240,96,96,.08); color: var(--red); }
+.tag-evidence { background: rgba(255,255,255,.05); color: var(--muted); }
+
+.mol-price { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); flex-shrink: 0; text-align: right; }
+.mol-price-n { font-size: 15px; color: var(--text); font-weight: 500; display: block; }
+
+/* BUDGET SUMMARY */
+.budget-card {
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 16px; padding: 24px 28px; margin-bottom: 24px;
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+}
+.budget-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 4px; }
+.budget-val { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 300; }
+.budget-val.ok { color: var(--accent); }
+.budget-val.warn { color: var(--gold); }
+.budget-bar-wrap { flex: 1; min-width: 120px; }
+.budget-bar { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; margin-top: 8px; }
+.budget-fill { height: 100%; border-radius: 3px; transition: width 1s ease; background: linear-gradient(90deg, var(--accent), var(--accent2)); }
+.monthly-card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px 24px;
+  margin-bottom: 20px;
+}
+.monthly-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.monthly-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+}
+.monthly-col {
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+.monthly-col h4 { font-size: 12px; margin-bottom: 5px; font-weight: 600; }
+.monthly-col p { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+/* WARNINGS */
+.warnings-card {
+  background: rgba(240,96,96,.04); border: 1px solid rgba(240,96,96,.15);
+  border-radius: 14px; padding: 20px 24px; margin-bottom: 24px;
+}
+.warnings-title { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--red); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 12px; }
+.warning-item { display: flex; gap: 8px; font-size: 12px; color: #c88080; line-height: 1.5; margin-bottom: 6px; }
+.warning-item:last-child { margin-bottom: 0; }
+
+/* AI RATIONALE */
+.rationale-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; padding: 28px; margin-bottom: 24px;
+}
+.rationale-title { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--accent); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 16px; }
+.rationale-body { font-size: 13px; color: #9aaabb; line-height: 1.75; font-weight: 400; }
+.rationale-body strong { color: var(--accent); font-weight: 600; }
+.rationale-body h3 { font-family: 'Cormorant Garamond', serif; font-size: 17px; color: var(--text); margin: 14px 0 6px; font-weight: 400; }
+.rationale-body ul { margin: 4px 0 10px 16px; }
+.rationale-body li { margin-bottom: 4px; }
+
+/* ACTIONS */
+.actions-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 32px; }
+.action-btn { padding: 13px 26px; border-radius: 10px; font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; transition: .2s; }
+.action-primary { background: var(--accent); color: #08090c; border: none; }
+.action-primary:hover { background: #d8ff6a; transform: translateY(-1px); }
+.action-secondary { background: transparent; border: 1px solid var(--border2); color: var(--muted); }
+.action-secondary:hover { border-color: var(--muted); color: var(--text); }
+
+/* DISCLAIMER */
+.disclaimer {
+  background: rgba(255,255,255,.02); border: 1px solid var(--border);
+  border-radius: 12px; padding: 16px 20px; margin-top: 24px;
+  font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--dim);
+  line-height: 1.6; letter-spacing: .03em;
+}
+
+/* ERROR */
+.err-box { background: rgba(240,96,96,.06); border: 1px solid rgba(240,96,96,.2); border-radius: 12px; padding: 20px; color: #ff9090; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+
+@media(max-width: 640px) {
+  header { padding: 18px 20px; }
+  .wrapper { padding: 0 16px 80px; }
+  .step-card { padding: 28px 22px; }
+  .opts-grid.cols-2, .opts-grid.cols-3 { grid-template-columns: 1fr; }
+  .email-row { flex-direction: column; }
+  #email-gate { padding: 32px 22px; }
+  .mol-item { flex-wrap: wrap; }
+  .monthly-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="orb o1"></div>
+<div class="orb o2"></div>
+<div class="orb o3"></div>
+
+<header>
+  <div class="logo">LONG<span>EVA</span></div>
+  <div class="hbadge">Stack Builder · 2026</div>
+</header>
+
+<div class="wrapper">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-kicker">Personalización científica</div>
+    <h1 class="hero-title">
+      Tu protocolo exacto
+      <em>de longevidad</em>
+    </h1>
+    <p class="hero-sub">120+ moléculas validadas. IA que analiza tu perfil y diseña el stack óptimo para ti — con dosis, horarios y sinergias.</p>
+    <div class="hero-proof">
+      <div class="proof-item"><div class="proof-n">120+</div><div class="proof-l">Moléculas</div></div>
+      <div class="proof-item"><div class="proof-n">5</div><div class="proof-l">Variables</div></div>
+      <div class="proof-item"><div class="proof-n">IA</div><div class="proof-l">Análisis</div></div>
+      <div class="proof-item"><div class="proof-n">2min</div><div class="proof-l">Proceso</div></div>
+    </div>
+  </div>
+
+  <!-- EMAIL GATE -->
+  <div id="email-gate">
+    <div class="gate-title">Desbloquea tu Stack Builder</div>
+    <p class="gate-sub">Ingresa tu email y continúa al pago seguro con Stripe para generar tu protocolo mensual personalizado.</p>
+    <div class="email-row">
+      <input class="email-input" id="user-email" type="email" placeholder="tu@email.com">
+      <button class="gate-btn" id="gate-btn" onclick="startCheckout()">Continuar al pago →</button>
+    </div>
+    <div class="gate-note">Paywall activo desde día 1 · Cobro gestionado por Stripe</div>
+    <div class="gate-msg" id="gate-msg"></div>
+  </div>
+
+  <!-- WIZARD -->
+  <div id="wizard">
+    <!-- Progress -->
+    <div class="progress-wrap">
+      <div class="progress-steps">
+        <div class="step-dot active" id="sd1">1</div>
+        <div class="step-line" id="sl1"></div>
+        <div class="step-dot" id="sd2">2</div>
+        <div class="step-line" id="sl2"></div>
+        <div class="step-dot" id="sd3">3</div>
+        <div class="step-line" id="sl3"></div>
+        <div class="step-dot" id="sd4">4</div>
+      </div>
+      <div class="progress-label" id="prog-label">Paso 1 de 4 — Perfil básico</div>
+    </div>
+
+    <!-- Step 1: Age + Sex -->
+    <div class="step-card" id="step1">
+      <div class="step-num">01 / 04</div>
+      <h2 class="step-q">¿Cuál es tu perfil biológico?</h2>
+      <p class="step-hint">La edad y el sexo determinan qué moléculas son prioritarias para ti.</p>
+
+      <div style="margin-bottom:28px">
+        <div style="font-size:12px;color:var(--muted);font-family:'JetBrains Mono',monospace;letter-spacing:.08em;margin-bottom:12px">EDAD</div>
+        <div class="range-wrap">
+          <div class="range-labels"><span>20</span><span>40</span><span>60</span><span>80+</span></div>
+          <input type="range" id="age-range" min="20" max="85" value="40" oninput="updateAge(this.value)">
+          <div class="range-val" id="age-display">40 <span>años</span></div>
+        </div>
+      </div>
+
+      <div style="font-size:12px;color:var(--muted);font-family:'JetBrains Mono',monospace;letter-spacing:.08em;margin-bottom:12px">SEXO BIOLÓGICO</div>
+      <div class="opts-grid cols-2">
+        <div class="opt" id="sex-m" onclick="selectSex('male')">
+          <div class="opt-icon">♂</div>
+          <div class="opt-text"><div class="opt-label">Masculino</div><div class="opt-desc">Optimiza testosterona, próstata, cardiovascular</div></div>
+          <div class="opt-check"></div>
+        </div>
+        <div class="opt" id="sex-f" onclick="selectSex('female')">
+          <div class="opt-icon">♀</div>
+          <div class="opt-text"><div class="opt-label">Femenino</div><div class="opt-desc">Optimiza estrógeno, eje hormonal, osteoporosis</div></div>
+          <div class="opt-check"></div>
+        </div>
+      </div>
+
+      <div class="step-nav">
+        <div></div>
+        <button class="btn-next" id="next1" onclick="goStep(2)" disabled>Siguiente →</button>
+      </div>
+    </div>
+
+    <!-- Step 2: Goals -->
+    <div class="step-card" id="step2" style="display:none">
+      <div class="step-num">02 / 04</div>
+      <h2 class="step-q">¿Cuáles son tus objetivos?</h2>
+      <p class="step-hint">Puedes seleccionar varios. El stack se priorizará según su importancia.</p>
+      <div class="opts-grid cols-2" id="goals-grid">
+        <div class="opt" onclick="toggleGoal('longevity',this)">
+          <div class="opt-icon">⏳</div>
+          <div class="opt-text"><div class="opt-label">Longevidad general</div><div class="opt-desc">Extender años de vida saludable</div></div>
+          <div class="opt-check"></div>
+        </div>
+        <div class="opt" onclick="toggleGoal('cognitive',this)">
+          <div class="opt-icon">🧠</div>
+          <div class="opt-text"><div class="opt-label">Función cognitiva</div><div class="opt-desc">Memoria, enfoque, neuroprotección</div></div>
+          <div class="opt-check"></div>
+        </div>
+        <div class="opt" onclick="toggleGoal('cardiovascular',this)">
+          <div class="opt-icon">❤️</div>
+          <div class="opt-text"><div class="opt-label">Salud cardiovascular</div><div class="opt-desc">Corazón, vasos, presión arterial</div></div>
+          <div class="opt-check"></div>
+        </div>
+        <div class="opt" onclick="toggleGoal('muscle',this)">
+          <div class="opt-icon">💪</div>
+          <div class="opt-text"><div class="opt-label">Masa muscular</div><div class="opt-desc">Fuerza, prevención sarcopenia</div></div>
+          <div class="opt-check"></div>
+        </div>
+        <div class="opt" onclick="toggleGoal('energy',this)">
+          <div class="opt-icon">⚡</div>
+          <div class="opt-text"><div class="opt-label">Energía mitocondrial</div><div class="opt-desc">Vitalidad, fatiga, ATP</div></div>
+          <div class="opt-check"></div>
+        </div>
+        <div class="opt" onclick="toggleGoal('inflammation',this)">
+          <div class="opt-icon">🛡️</div>
+          <div class="opt-text"><div class="opt-label">Anti-inflamación</div><div class="opt-desc">Reducir inflamación crónica sistémica</div></div>
+          <div class="opt-check"></div>
+        </div>
+      </div>
+      <div class="step-nav">
+        <button class="btn-back" onclick="goStep(1)">← Atrás</button>
+        <button class="btn-next" id="next2" onclick="goStep(3)" disabled>Siguiente →</button>
+      </div>
+    </div>
+
+    <!-- Step 3: Budget -->
+    <div class="step-card" id="step3" style="display:none">
+      <div class="step-num">03 / 04</div>
+      <h2 class="step-q">¿Cuál es tu presupuesto mensual?</h2>
+      <p class="step-hint">Te recomendamos el stack más eficiente dentro de tu rango. Sin desperdicio.</p>
+      <div class="opts-grid">
+        <div class="opt" onclick="selectBudget(50,this)">
+          <div class="opt-icon">🌱</div>
+          <div class="opt-text"><div class="opt-label">Hasta $50/mes — Básico</div><div class="opt-desc">Stack esencial: las 4-5 moléculas con mayor impacto por dólar</div></div>
+          <div class="opt-check"></div>
+        </div>
+        <div class="opt" onclick="selectBudget(150,this)">
+          <div class="opt-icon">🔬</div>
+          <div class="opt-text"><div class="opt-label">$50–$150/mes — Intermedio</div><div class="opt-desc">Stack completo con NAD+, senolíticos y adaptógenos clave</div></div>
+          <div class="opt-check"></div>
+        </div>
+        <div class="opt" onclick="selectBudget(350,this)">
+          <div class="opt-icon">🚀</div>
+          <div class="opt-text"><div class="opt-label">$150–$350/mes — Avanzado</div><div class="opt-desc">Protocolo completo incluyendo NMN, Urolitina A y hongos premium</div></div>
+          <div class="opt-check"></div>
+        </div>
+        <div class="opt" onclick="selectBudget(999,this)">
+          <div class="opt-icon">💎</div>
+          <div class="opt-text"><div class="opt-label">$350+/mes — Sin límite</div><div class="opt-desc">El stack óptimo completo sin restricciones de coste</div></div>
+          <div class="opt-check"></div>
+        </div>
+      </div>
+      <div class="step-nav">
+        <button class="btn-back" onclick="goStep(2)">← Atrás</button>
+        <button class="btn-next" id="next3" onclick="goStep(4)" disabled>Siguiente →</button>
+      </div>
+    </div>
+
+    <!-- Step 4: Conditions + Meds -->
+    <div class="step-card" id="step4" style="display:none">
+      <div class="step-num">04 / 04</div>
+      <h2 class="step-q">¿Hay algo que debamos considerar?</h2>
+      <p class="step-hint">Selecciona si aplica. Nos ayuda a evitar interacciones y contraindicaciones.</p>
+      <div class="conditions-list" id="cond-list">
+        <div class="cond-tag" onclick="toggleCond('diabetes',this)">Diabetes / pre-diabetes</div>
+        <div class="cond-tag" onclick="toggleCond('hypertension',this)">Hipertensión</div>
+        <div class="cond-tag" onclick="toggleCond('anticoagulants',this)">Anticoagulantes (warfarina, etc.)</div>
+        <div class="cond-tag" onclick="toggleCond('cancer',this)">Antecedentes oncológicos</div>
+        <div class="cond-tag" onclick="toggleCond('autoimmune',this)">Enfermedad autoinmune</div>
+        <div class="cond-tag" onclick="toggleCond('statins',this)">Estatinas (colesterol)</div>
+        <div class="cond-tag" onclick="toggleCond('thyroid',this)">Tiroides (hipotiroidismo)</div>
+        <div class="cond-tag" onclick="toggleCond('kidney',this)">Enfermedad renal</div>
+        <div class="cond-tag" onclick="toggleCond('liver',this)">Enfermedad hepática</div>
+        <div class="cond-tag" onclick="toggleCond('pregnant',this)">Embarazo / lactancia</div>
+        <div class="cond-tag" onclick="toggleCond('none',this)" id="cond-none">Ninguna de las anteriores ✓</div>
+      </div>
+      <div class="protocol-wrap">
+        <div class="protocol-title">PROTOCOLO ACTUAL DE SUPLEMENTOS (OPCIONAL)</div>
+        <textarea class="protocol-input" id="protocol-input" placeholder="Ej: Creatina 5g/día, Omega-3 2g/día, Magnesio glicinato 300mg noche..." oninput="updateProtocol(this.value)"></textarea>
+      </div>
+      <div class="cond-note">⚠ Esta información no reemplaza la consulta médica. Siempre valida con tu médico.</div>
+      <div class="step-nav">
+        <button class="btn-back" onclick="goStep(3)">← Atrás</button>
+        <button class="btn-next" onclick="generateStack()">Generar mi stack →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="results">
+    <div class="results-hero">
+      <h2 class="results-title">Tu stack<br><em>personalizado</em></h2>
+      <p class="results-sub" id="results-sub">Generado con IA · Basado en evidencia científica 2026</p>
+    </div>
+
+    <div class="profile-bar" id="profile-bar"></div>
+
+    <!-- Loading -->
+    <div id="loading-state">
+      <div class="loading-icon">🧬</div>
+      <div class="loading-title">Analizando tu perfil...</div>
+      <div class="loading-sub">Cruzando 120+ moléculas con tus datos</div>
+      <div class="loading-steps">
+        <div class="lstep active" id="ls1"><div class="lstep-dot"></div>Evaluando perfil biológico</div>
+        <div class="lstep" id="ls2"><div class="lstep-dot"></div>Priorizando por objetivos</div>
+        <div class="lstep" id="ls3"><div class="lstep-dot"></div>Calculando dosis y horarios</div>
+        <div class="lstep" id="ls4"><div class="lstep-dot"></div>Verificando interacciones</div>
+        <div class="lstep" id="ls5"><div class="lstep-dot"></div>Optimizando para presupuesto</div>
+      </div>
+    </div>
+
+    <!-- Stack Output -->
+    <div id="stack-output"></div>
+  </div>
+
+</div>
+
+<script>
+// ── STATE ──
+const state = {
+  email: '', age: 40, sex: null,
+  goals: [], budget: null, conditions: [],
+  currentProtocol: '',
+  paidSessionId: ''
+};
+
+// ── EMAIL + PAYWALL ──
+async function startCheckout() {
+  const email = document.getElementById('user-email').value.trim();
+  if (!email || !email.includes('@')) {
+    document.getElementById('user-email').style.borderColor = 'var(--red)';
+    setGateMsg('Ingresa un email válido.', 'error');
+    return;
+  }
+  setGateMsg('Creando sesión de pago...', 'ok');
+  const btn = document.getElementById('gate-btn');
+  btn.disabled = true;
+
+  try {
+    const res = await fetch('/api/create-checkout-session', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    });
+    const data = await res.json();
+    if (!res.ok || !data.url) throw new Error(data.error || 'No se pudo crear el checkout');
+    localStorage.setItem('longeva_email', email);
+    window.location.href = data.url;
+  } catch (err) {
+    setGateMsg(`Error: ${err.message}`, 'error');
+    btn.disabled = false;
+  }
+}
+document.getElementById('user-email').addEventListener('keydown', e => { if(e.key==='Enter') startCheckout(); });
+
+function setGateMsg(text, type = '') {
+  const el = document.getElementById('gate-msg');
+  el.textContent = text || '';
+  el.className = `gate-msg ${type}`.trim();
+}
+
+async function initAccess() {
+  const params = new URLSearchParams(window.location.search);
+  const sessionId = params.get('session_id') || localStorage.getItem('longeva_paid_session') || '';
+  const paidFlag = params.get('paid');
+  const canceled = params.get('canceled');
+  const savedEmail = localStorage.getItem('longeva_email') || '';
+
+  if (savedEmail) {
+    document.getElementById('user-email').value = savedEmail;
+    state.email = savedEmail;
+  }
+  if (canceled) {
+    setGateMsg('Pago cancelado. Puedes intentarlo de nuevo cuando quieras.', 'error');
+    return;
+  }
+  if (!sessionId || paidFlag !== '1' && !localStorage.getItem('longeva_paid_session')) {
+    return;
+  }
+
+  setGateMsg('Verificando pago...', 'ok');
+  try {
+    const res = await fetch(`/api/checkout-status?session_id=${encodeURIComponent(sessionId)}`);
+    const data = await res.json();
+    if (!res.ok || !data.paid) throw new Error(data.error || 'Pago no confirmado');
+    state.paidSessionId = sessionId;
+    state.email = data.email || state.email;
+    localStorage.setItem('longeva_paid_session', sessionId);
+    if (state.email) localStorage.setItem('longeva_email', state.email);
+    unlockWizard();
+  } catch (err) {
+    setGateMsg(`No pudimos validar tu pago: ${err.message}`, 'error');
+  }
+}
+
+function unlockWizard() {
+  document.getElementById('email-gate').style.display = 'none';
+  document.getElementById('wizard').style.display = 'block';
+}
+
+// ── STEP NAV ──
+let currentStep = 1;
+const stepLabels = ['Perfil básico','Objetivos','Presupuesto','Condiciones y protocolo'];
+
+function goStep(n) {
+  document.getElementById(`step${currentStep}`).style.display = 'none';
+  // Update progress
+  document.getElementById(`sd${currentStep}`).classList.remove('active');
+  document.getElementById(`sd${currentStep}`).classList.add('done');
+  document.getElementById(`sd${currentStep}`).textContent = '✓';
+  if (n <= 4) {
+    document.getElementById(`sl${currentStep}`)?.classList.add('done');
+  }
+  currentStep = n;
+  document.getElementById(`step${n}`).style.display = 'block';
+  document.getElementById(`sd${n}`).classList.add('active');
+  document.getElementById('prog-label').textContent = `Paso ${n} de 4 — ${stepLabels[n-1]}`;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── STEP 1 ──
+function updateAge(v) {
+  state.age = parseInt(v);
+  document.getElementById('age-display').innerHTML = `${v} <span>años</span>`;
+  checkStep1();
+}
+
+function selectSex(s) {
+  state.sex = s;
+  document.getElementById('sex-m').classList.toggle('selected', s === 'male');
+  document.getElementById('sex-f').classList.toggle('selected', s === 'female');
+  checkStep1();
+}
+
+function checkStep1() {
+  document.getElementById('next1').disabled = !state.sex;
+}
+
+// ── STEP 2 ──
+function toggleGoal(g, el) {
+  if (state.goals.includes(g)) {
+    state.goals = state.goals.filter(x => x !== g);
+    el.classList.remove('selected');
+  } else {
+    state.goals.push(g);
+    el.classList.add('selected');
+  }
+  document.getElementById('next2').disabled = state.goals.length === 0;
+}
+
+// ── STEP 3 ──
+function selectBudget(b, el) {
+  state.budget = b;
+  document.querySelectorAll('#step3 .opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('next3').disabled = false;
+}
+
+// ── STEP 4 ──
+function toggleCond(c, el) {
+  if (c === 'none') {
+    state.conditions = [];
+    document.querySelectorAll('.cond-tag').forEach(t => t.classList.remove('selected'));
+    el.classList.add('selected');
+    return;
+  }
+  document.getElementById('cond-none').classList.remove('selected');
+  if (state.conditions.includes(c)) {
+    state.conditions = state.conditions.filter(x => x !== c);
+    el.classList.remove('selected');
+  } else {
+    state.conditions.push(c);
+    el.classList.add('selected');
+  }
+}
+
+function updateProtocol(value) {
+  state.currentProtocol = value.trim();
+}
+
+// ── GENERATE ──
+async function generateStack() {
+  if (!state.paidSessionId) {
+    alert('Necesitas un pago validado para generar el stack.');
+    return;
+  }
+  document.getElementById('wizard').style.display = 'none';
+  document.getElementById('results').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Build profile chips
+  const budgetLabel = state.budget >= 999 ? 'Sin límite' : state.budget >= 350 ? '$150–350/mes' : state.budget >= 150 ? '$50–150/mes' : 'Hasta $50/mes';
+  const goalLabels = { longevity:'Longevidad', cognitive:'Cognitivo', cardiovascular:'Cardiovascular', muscle:'Músculo', energy:'Energía', inflammation:'Anti-inflamación' };
+  const chips = [
+    `${state.age} años`,
+    state.sex === 'male' ? '♂ Masculino' : '♀ Femenino',
+    ...state.goals.map(g => goalLabels[g]),
+    budgetLabel,
+    ...(state.conditions.length ? state.conditions.slice(0,2) : ['Sin condiciones']),
+    state.currentProtocol ? 'Con protocolo actual' : 'Sin protocolo previo'
+  ];
+  document.getElementById('profile-bar').innerHTML = chips.map(c => `<div class="profile-chip">${c}</div>`).join('');
+
+  // Animate loading steps
+  const lsSteps = ['ls1','ls2','ls3','ls4','ls5'];
+  let si = 0;
+  const lsInterval = setInterval(() => {
+    if (si > 0) { document.getElementById(lsSteps[si-1]).classList.replace('active','done'); }
+    if (si < lsSteps.length) {
+      document.getElementById(lsSteps[si]).classList.add('active');
+      si++;
+    } else { clearInterval(lsInterval); }
+  }, 600);
+
+  const condMap = { diabetes:'Diabetes/pre-diabetes', hypertension:'Hipertensión', anticoagulants:'Anticoagulantes', cancer:'Antecedentes oncológicos', autoimmune:'Enfermedad autoinmune', statins:'Estatinas', thyroid:'Hipotiroidismo', kidney:'Enfermedad renal', liver:'Enfermedad hepática', pregnant:'Embarazo/lactancia' };
+  const condStr = state.conditions.length ? state.conditions.map(c => condMap[c] || c).join(', ') : 'Ninguna';
+
+  try {
+    const res = await fetch('/api/stack-builder', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        session_id: state.paidSessionId,
+        profile: {
+          age: state.age,
+          sex: state.sex,
+          goals: state.goals,
+          budget: state.budget,
+          budget_label: budgetLabel,
+          conditions: state.conditions,
+          conditions_label: condStr,
+          current_protocol: state.currentProtocol,
+        },
+      })
+    });
+
+    clearInterval(lsInterval);
+    lsSteps.forEach(id => { document.getElementById(id).classList.remove('active'); document.getElementById(id).classList.add('done'); });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || `API error ${res.status}`);
+    renderStack(data.stack, budgetLabel);
+
+  } catch (err) {
+    clearInterval(lsInterval);
+    document.getElementById('loading-state').innerHTML = `<div class="err-box">⚠ Error generando el stack: ${err.message}<br><br>Verifica variables de entorno y endpoint /api/stack-builder.</div>`;
+  }
+}
+
+function renderStack(stack, budgetLabel) {
+  document.getElementById('loading-state').style.display = 'none';
+  const out = document.getElementById('stack-output');
+  out.style.display = 'block';
+
+  const pct = Math.min(100, Math.round((stack.estimated_cost / state.budget) * 100));
+  const costClass = pct > 90 ? 'warn' : 'ok';
+
+  const sections = [
+    { key: 'morning', icon: '🌅', label: 'Mañana', sub: 'En ayunas o con desayuno', cls: 'time-morning' },
+    { key: 'afternoon', icon: '☀️', label: 'Tarde', sub: 'Con la comida principal', cls: 'time-afternoon' },
+    { key: 'night', icon: '🌙', label: 'Noche', sub: 'Antes de dormir', cls: 'time-night' },
+  ];
+
+  let html = '';
+
+  // Budget bar
+  html += `<div class="budget-card">
+    <div>
+      <div class="budget-label">Costo estimado / mes</div>
+      <div class="budget-val ${costClass}">$${stack.estimated_cost}</div>
+    </div>
+    <div class="budget-bar-wrap">
+      <div class="budget-label">Uso del presupuesto</div>
+      <div class="budget-bar"><div class="budget-fill" style="width:${pct}%"></div></div>
+    </div>
+    <div>
+      <div class="budget-label">Presupuesto</div>
+      <div style="font-size:14px;color:var(--muted);font-weight:500">${budgetLabel}</div>
+    </div>
+  </div>`;
+
+  html += `<div class="monthly-card">
+    <div class="monthly-title">Plan mensual visual · 30 días</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:12px">${stack.monthly_plan_note || 'Sostén este patrón cada día durante 4 semanas y reevalúa tolerancia al día 30.'}</div>
+    <div class="monthly-grid">
+      <div class="monthly-col"><h4>🌅 Mañana</h4><p>${(stack.morning || []).length} moléculas · al despertar o desayuno</p></div>
+      <div class="monthly-col"><h4>☀️ Tarde</h4><p>${(stack.afternoon || []).length} moléculas · con comida principal</p></div>
+      <div class="monthly-col"><h4>🌙 Noche</h4><p>${(stack.night || []).length} moléculas · antes de dormir</p></div>
+    </div>
+  </div>`;
+
+  // Time blocks
+  html += '<div class="time-blocks">';
+  sections.forEach(sec => {
+    const mols = stack[sec.key] || [];
+    if (!mols.length) return;
+    html += `<div class="time-block ${sec.cls}">
+      <div class="time-header">
+        <div class="time-icon">${sec.icon}</div>
+        <div class="time-title">${sec.label}</div>
+        <div class="time-subtitle">${sec.sub} · ${mols.length} suplemento${mols.length>1?'s':''}</div>
+      </div>
+      <div class="mol-items">`;
+    mols.forEach(m => {
+      const rankCls = m.priority === 'core' ? 'rank-core' : m.priority === 'support' ? 'rank-support' : 'rank-optional';
+      const rankLbl = m.priority === 'core' ? 'CORE' : m.priority === 'support' ? 'SUPP' : 'OPC';
+      html += `<div class="mol-item">
+        <div class="mol-rank ${rankCls}">${rankLbl}</div>
+        <div class="mol-info">
+          <div class="mol-name-row">
+            <span class="mol-name">${m.name}</span>
+            <span class="mol-full">${m.full}</span>
+          </div>
+          <div class="mol-why">${m.why}</div>
+          <div class="mol-tags-row">
+            <span class="mol-tag tag-dose">⚖ ${m.dose}</span>
+            ${m.synergy ? `<span class="mol-tag tag-synergy">⚡ ${m.synergy}</span>` : ''}
+            <span class="mol-tag tag-evidence">${m.evidence}</span>
+          </div>
+        </div>
+        <div class="mol-price">
+          <span class="mol-price-n">~$${m.estimated_price}</span>
+          /mes
+        </div>
+      </div>`;
+    });
+    html += `</div></div>`;
+  });
+  html += '</div>';
+
+  // Warnings
+  if (stack.warnings?.length) {
+    html += `<div class="warnings-card"><div class="warnings-title">⚠ Consideraciones para tu perfil</div>`;
+    stack.warnings.forEach(w => { html += `<div class="warning-item"><span>→</span><span>${w}</span></div>`; });
+    html += `</div>`;
+  }
+
+  // Rationale
+  if (stack.rationale) {
+    html += `<div class="rationale-card">
+      <div class="rationale-title">🔬 Por qué este stack para tu perfil</div>
+      <div class="rationale-body">${stack.summary ? `<p><strong>${stack.summary}</strong></p>` : ''}${fmtText(stack.rationale)}</div>
+    </div>`;
+  }
+
+  // Actions
+  html += `<div class="actions-row">
+    <button class="action-btn action-primary" onclick="window.print()">📋 Guardar PDF</button>
+    <button class="action-btn action-secondary" onclick="location.reload()">↺ Nuevo stack</button>
+  </div>`;
+
+  // Disclaimer
+  html += `<div class="disclaimer">⚕ AVISO MÉDICO: Este stack es informativo y está basado en evidencia científica disponible. No reemplaza el consejo médico profesional. Consulta con tu médico antes de comenzar cualquier protocolo de suplementación, especialmente si tienes condiciones de salud o tomas medicamentos. LONGEVA no se hace responsable del uso de esta información.</div>`;
+
+  out.innerHTML = html;
+}
+
+function fmtText(t) {
+  return t.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\n\n/g,'</p><p>').replace(/\n/g,' ');
+}
+
+initAccess();
+</script>
+</body>
+</html>
