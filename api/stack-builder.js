@@ -140,6 +140,7 @@ function buildPrompt(profile) {
   const goals = (profile?.goals || []).map((g) => goalLabels[g] || g).join(', ') || 'No definido';
   const conditions = profile?.conditions_label || 'Ninguna';
   const currentProtocol = profile?.current_protocol || 'No usa suplementos actualmente';
+  const country = profile?.country || 'GLOBAL';
   const sourcePreferenceMap = {
     natural_only: 'Solo naturales (hongos, polifenoles, compuestos naturales)',
     mixed: 'Mixto (naturales + sintéticos)',
@@ -154,6 +155,7 @@ function buildPrompt(profile) {
 - Objetivos principales: ${goals}
 - Presupuesto mensual: ${budgetLabel}
 - Preferencia de origen de moléculas: ${sourcePreference}
+- País/mercado objetivo para disponibilidad: ${country}
 - Condiciones de salud / medicamentos: ${conditions}
 - Protocolo actual de suplementos: ${currentProtocol}
 
@@ -184,6 +186,7 @@ Reglas:
 - Incluye solo moléculas que quepan en el presupuesto indicado (${budgetLabel})
 - No repitas moléculas entre mañana/tarde/noche salvo que sea explícitamente dividido en dosis
 - Si hay condiciones o medicamentos, excluye interacciones de riesgo y explica warnings
+- Prioriza compuestos/alimentos relativamente accesibles para el país/mercado indicado (${country}) y evita opciones exóticas sin alternativa
 - Si el protocolo actual ya incluye algo útil, intégralo y evita duplicados
 - Si la preferencia es "Solo naturales", NO incluyas moléculas sintéticas ni fármacos
 - Si la preferencia es "Mixto", prioriza naturales y usa sintéticos solo si aportan ventaja fuerte
