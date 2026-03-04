@@ -14,7 +14,7 @@ export default async function handler(req, res) {
 
   try {
     if (!paywallDisabled) {
-      const paid = await verifyPaidSession(sessionId);
+      const paid = await verifyPaidSession(sessionId, 'biohacker_protocol');
       if (!paid.ok) return res.status(403).json({ error: 'Pago no verificado' });
     }
 
@@ -31,7 +31,7 @@ export default async function handler(req, res) {
   }
 }
 
-async function verifyPaidSession(sessionId) {
+async function verifyPaidSession(sessionId, expectedModule = '') {
   const stripeKey = cleanEnv(process.env.STRIPE_SECRET_KEY);
   if (!stripeKey) return { ok: false };
   const stripeRes = await fetch(`https://api.stripe.com/v1/checkout/sessions/${encodeURIComponent(sessionId)}`, {
@@ -41,6 +41,9 @@ async function verifyPaidSession(sessionId) {
   const payload = await stripeRes.json();
   if (!stripeRes.ok) return { ok: false };
   const isPaid = payload.payment_status === 'paid' || payload.status === 'complete';
+  const sessionModule = String(payload?.metadata?.module || '').trim();
+  if (expectedModule && sessionModule && sessionModule !== expectedModule) return { ok: false };
+  if (expectedModule && !sessionModule) return { ok: false };
   return { ok: isPaid };
 }
 

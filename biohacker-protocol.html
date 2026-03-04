@@ -183,6 +183,7 @@ const state = { sessionId: '', objective: 'muscle', experience: 'intermediate' }
 const USER_LANG = getPreferredLang();
 const IS_EN = USER_LANG === 'en';
 const tr = (es, en) => (IS_EN ? en : es);
+const BIO_SESSION_KEY = 'longeva_paid_session_biohacker';
 document.documentElement.lang = USER_LANG;
 
 const payBtn = document.getElementById('pay-btn');
@@ -226,7 +227,7 @@ async function startCheckout() {
     const res = await fetch('/api/create-checkout-session', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, return_to: '/biohacker-protocol.html' }),
+      body: JSON.stringify({ email, return_to: '/biohacker-protocol.html', module: 'biohacker_protocol' }),
     });
     const data = await res.json();
     if (!res.ok || !data.url) throw new Error(data.error || tr('No se pudo iniciar checkout', 'Could not start checkout'));
@@ -252,21 +253,21 @@ async function init() {
   } catch (_e) {}
 
   const params = new URLSearchParams(window.location.search);
-  const sessionId = params.get('session_id') || localStorage.getItem('longeva_paid_session') || '';
+  const sessionId = params.get('session_id') || localStorage.getItem(BIO_SESSION_KEY) || '';
   const paid = params.get('paid');
   const savedEmail = localStorage.getItem('longeva_email') || '';
   if (savedEmail) document.getElementById('email').value = savedEmail;
 
   if (!sessionId) return;
-  if (paid !== '1' && !localStorage.getItem('longeva_paid_session')) return;
+  if (paid !== '1' && !localStorage.getItem(BIO_SESSION_KEY)) return;
 
   payMsg.textContent = tr('Verificando pago...', 'Verifying payment...');
   try {
-    const res = await fetch(`/api/checkout-status?session_id=${encodeURIComponent(sessionId)}`);
+    const res = await fetch(`/api/checkout-status?session_id=${encodeURIComponent(sessionId)}&module=biohacker_protocol`);
     const data = await res.json();
     if (!res.ok || !data.paid) throw new Error(data.error || tr('Pago no confirmado', 'Payment not confirmed'));
     state.sessionId = sessionId;
-    localStorage.setItem('longeva_paid_session', sessionId);
+    localStorage.setItem(BIO_SESSION_KEY, sessionId);
     document.getElementById('paywall').style.display = 'none';
     document.getElementById('form').style.display = 'block';
   } catch (err) {

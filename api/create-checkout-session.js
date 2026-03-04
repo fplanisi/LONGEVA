@@ -9,6 +9,7 @@ export default async function handler(req, res) {
 
   const email = String(req.body?.email || '').trim();
   const returnToRaw = String(req.body?.return_to || '').trim();
+  const module = normalizeModule(req.body?.module);
   if (!email || !email.includes('@')) {
     return res.status(400).json({ error: 'Email válido requerido' });
   }
@@ -23,7 +24,7 @@ export default async function handler(req, res) {
   }
 
   const stripeKey = process.env.STRIPE_SECRET_KEY;
-  const stripePriceId = process.env.STRIPE_PRICE_ID;
+  const stripePriceId = resolvePriceId(module);
   const rawPaymentLink = String(process.env.STRIPE_PAYMENT_LINK || '').trim();
 
   // Prioridad: Checkout Session dinámica con Price ID. Esto evita problemas de enlaces mal formados.
@@ -67,6 +68,7 @@ export default async function handler(req, res) {
     params.set('success_url', `${origin}${successPath}`);
     params.set('cancel_url', `${origin}${cancelPath}`);
     params.set('metadata[email]', email);
+    params.set('metadata[module]', module);
 
     const stripeRes = await fetch('https://api.stripe.com/v1/checkout/sessions', {
       method: 'POST',
@@ -91,4 +93,21 @@ export default async function handler(req, res) {
 
 function isSafeReturnPath(path) {
   return /^\/[a-zA-Z0-9\-_/\.]*$/.test(path) && !path.includes('..');
+}
+
+function normalizeModule(raw) {
+  const value = String(raw || '').trim().toLowerCase();
+  if (value === 'biohacker_protocol') return 'biohacker_protocol';
+  if (value === 'nutrition_plan') return 'nutrition_plan';
+  return 'stack_builder';
+}
+
+function resolvePriceId(module) {
+  if (module === 'biohacker_protocol') return clean(process.env.STRIPE_PRICE_ID_BIOHACKER) || clean(process.env.STRIPE_PRICE_ID);
+  if (module === 'nutrition_plan') return clean(process.env.STRIPE_PRICE_ID_NUTRITION) || clean(process.env.STRIPE_PRICE_ID);
+  return clean(process.env.STRIPE_PRICE_ID_STACK) || clean(process.env.STRIPE_PRICE_ID);
+}
+
+function clean(v) {
+  return String(v || '').trim();
 }

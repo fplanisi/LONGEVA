@@ -18,6 +18,7 @@ export default async function handler(req, res) {
   }
 
   const sessionId = String(req.query?.session_id || '').trim();
+  const expectedModule = normalizeModule(req.query?.module);
   if (!sessionId) return res.status(400).json({ error: 'session_id requerido' });
 
   const stripeKey = process.env.STRIPE_SECRET_KEY;
@@ -35,14 +36,27 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: msg, paid: false });
     }
 
-    const paid = payload.payment_status === 'paid' || payload.status === 'complete';
+    const paidRaw = payload.payment_status === 'paid' || payload.status === 'complete';
+    const sessionModule = normalizeModule(payload.metadata?.module);
+    const moduleMatches = !expectedModule || expectedModule === sessionModule;
+    const paid = paidRaw && moduleMatches;
     return res.status(200).json({
       paid,
       email: payload.customer_details?.email || payload.customer_email || payload.metadata?.email || '',
+      module: sessionModule || '',
       payment_status: payload.payment_status,
       status: payload.status,
+      ...(moduleMatches ? {} : { error: 'La sesión de pago no corresponde a este módulo' }),
     });
   } catch (error) {
     return res.status(500).json({ error: error.message || 'Error verificando pago', paid: false });
   }
+}
+
+function normalizeModule(raw) {
+  const value = String(raw || '').trim().toLowerCase();
+  if (value === 'biohacker_protocol') return 'biohacker_protocol';
+  if (value === 'nutrition_plan') return 'nutrition_plan';
+  if (value === 'stack_builder') return 'stack_builder';
+  return '';
 }

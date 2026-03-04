@@ -814,6 +814,24 @@ input[type=range]::-webkit-slider-thumb {
           <div class="opt-check"></div>
         </div>
       </div>
+      <div style="font-size:12px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.08em;margin:20px 0 10px">ESTILO ALIMENTARIO (SOLO SI ELIGES SOLO ALIMENTOS)</div>
+      <div class="opts-grid cols-3" id="food-style-grid">
+        <div class="opt selected" onclick="selectFoodStyle('omnivore',this)">
+          <div class="opt-icon">🍽️</div>
+          <div class="opt-text"><div class="opt-label">Omnívoro</div><div class="opt-desc">Incluye fuentes animales y vegetales</div></div>
+          <div class="opt-check"></div>
+        </div>
+        <div class="opt" onclick="selectFoodStyle('vegetarian',this)">
+          <div class="opt-icon">🥛</div>
+          <div class="opt-text"><div class="opt-label">Vegetariano</div><div class="opt-desc">Sin carne ni pescado</div></div>
+          <div class="opt-check"></div>
+        </div>
+        <div class="opt" onclick="selectFoodStyle('vegan',this)">
+          <div class="opt-icon">🌱</div>
+          <div class="opt-text"><div class="opt-label">Vegano</div><div class="opt-desc">Solo plantas, sin productos animales</div></div>
+          <div class="opt-check"></div>
+        </div>
+      </div>
       <div style="font-size:12px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.08em;margin:20px 0 10px">PAÍS / DISPONIBILIDAD</div>
       <div class="opts-grid cols-2" id="country-grid">
         <div class="opt selected" onclick="selectCountry('AR',this)">
@@ -920,6 +938,7 @@ const state = {
   email: '', age: 40, sex: null,
   goals: [], budget: null, conditions: [],
   sourcePreference: 'mixed',
+  foodStyle: 'omnivore',
   country: 'AR',
   currentProtocol: '',
   paidSessionId: '',
@@ -932,6 +951,8 @@ const tr = (es, en) => (IS_EN ? en : es);
 document.documentElement.lang = USER_LANG;
 const WIZARD_STATE_KEY = 'longeva_wizard_state_v1';
 const STACK_HISTORY_KEY = 'longeva_stack_history_v1';
+const STACK_SESSION_KEY = 'longeva_paid_session_stack_builder';
+const STACK_RESUME_KEY = 'longeva_stack_resume_after_pay';
 let safetyConfirmed = false;
 
 // ── EMAIL + PAYWALL ──
@@ -951,7 +972,7 @@ async function startCheckout() {
     const res = await fetch('/api/create-checkout-session', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, return_to: '/stack-builder.html' }),
+      body: JSON.stringify({ email, return_to: '/stack-builder.html', module: 'stack_builder' }),
     });
     const data = await res.json();
     if (!res.ok || !data.url) throw new Error(data.error || tr('No se pudo crear el checkout', 'Could not create checkout'));
@@ -997,6 +1018,7 @@ function persistWizardState() {
     goals: state.goals,
     budget: state.budget,
     sourcePreference: state.sourcePreference,
+    foodStyle: state.foodStyle,
     country: state.country,
     conditions: state.conditions,
     currentProtocol: state.currentProtocol,
@@ -1017,6 +1039,7 @@ function loadWizardState() {
     state.goals = Array.isArray(saved.goals) ? saved.goals : [];
     state.budget = Number(saved.budget || 0) || null;
     state.sourcePreference = saved.sourcePreference || 'mixed';
+    state.foodStyle = saved.foodStyle || 'omnivore';
     state.country = saved.country || 'AR';
     state.conditions = Array.isArray(saved.conditions) ? saved.conditions : [];
     state.currentProtocol = saved.currentProtocol || '';
@@ -1046,6 +1069,9 @@ function applyWizardStateToUI() {
   document.querySelectorAll('#source-pref-grid .opt').forEach(o => o.classList.remove('selected'));
   const sourceBtn = Array.from(document.querySelectorAll('#source-pref-grid .opt')).find((el) => el.getAttribute('onclick')?.includes(`'${state.sourcePreference}'`));
   if (sourceBtn) sourceBtn.classList.add('selected');
+  document.querySelectorAll('#food-style-grid .opt').forEach(o => o.classList.remove('selected'));
+  const foodBtn = Array.from(document.querySelectorAll('#food-style-grid .opt')).find((el) => el.getAttribute('onclick')?.includes(`'${state.foodStyle}'`));
+  if (foodBtn) foodBtn.classList.add('selected');
 
   document.querySelectorAll('#country-grid .opt').forEach(o => o.classList.remove('selected'));
   const countryBtn = Array.from(document.querySelectorAll('#country-grid .opt')).find((el) => el.getAttribute('onclick')?.includes(`'${state.country}'`));
@@ -1098,7 +1124,7 @@ async function initAccess() {
   } catch (_e) {}
 
   const params = new URLSearchParams(window.location.search);
-  const sessionId = params.get('session_id') || localStorage.getItem('longeva_paid_session') || '';
+  const sessionId = params.get('session_id') || localStorage.getItem(STACK_SESSION_KEY) || '';
   const paidFlag = params.get('paid');
   const canceled = params.get('canceled');
   const savedEmail = localStorage.getItem('longeva_email') || '';
@@ -1111,20 +1137,25 @@ async function initAccess() {
     setGateMsg(tr('Pago cancelado. Puedes intentarlo de nuevo cuando quieras.', 'Payment canceled. You can try again anytime.'), 'error');
     return;
   }
-  if (!sessionId || paidFlag !== '1' && !localStorage.getItem('longeva_paid_session')) {
+  if (!sessionId || (paidFlag !== '1' && !localStorage.getItem(STACK_SESSION_KEY))) {
     return;
   }
 
   setGateMsg(tr('Verificando pago...', 'Verifying payment...'), 'ok');
   try {
-    const res = await fetch(`/api/checkout-status?session_id=${encodeURIComponent(sessionId)}`);
+    const res = await fetch(`/api/checkout-status?session_id=${encodeURIComponent(sessionId)}&module=stack_builder`);
     const data = await res.json();
     if (!res.ok || !data.paid) throw new Error(data.error || tr('Pago no confirmado', 'Payment not confirmed'));
     state.paidSessionId = sessionId;
     state.email = data.email || state.email;
-    localStorage.setItem('longeva_paid_session', sessionId);
+    localStorage.setItem(STACK_SESSION_KEY, sessionId);
     if (state.email) localStorage.setItem('longeva_email', state.email);
     unlockWizard();
+    if (localStorage.getItem(STACK_RESUME_KEY) === '1') {
+      localStorage.removeItem(STACK_RESUME_KEY);
+      safetyConfirmed = true;
+      setTimeout(() => generateStack(), 80);
+    }
   } catch (err) {
     setGateMsg(`${tr('No pudimos validar tu pago', 'Could not validate your payment')}: ${err.message}`, 'error');
   }
@@ -1234,6 +1265,13 @@ function selectSourcePreference(mode, el) {
   persistWizardState();
 }
 
+function selectFoodStyle(style, el) {
+  state.foodStyle = style;
+  document.querySelectorAll('#food-style-grid .opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  persistWizardState();
+}
+
 function selectCountry(code, el) {
   state.country = code;
   document.querySelectorAll('#country-grid .opt').forEach(o => o.classList.remove('selected'));
@@ -1291,6 +1329,7 @@ function buildProfilePayload(budgetLabel) {
     budget: state.budget,
     budget_label: budgetLabel,
     source_preference: state.sourcePreference,
+    food_style: state.foodStyle,
     country: state.country,
     lang: USER_LANG,
     conditions: state.conditions,
@@ -1305,6 +1344,7 @@ async function generateStack() {
     const gate = document.getElementById('email-gate');
     document.getElementById('wizard').style.display = 'none';
     gate.style.display = 'block';
+    localStorage.setItem(STACK_RESUME_KEY, '1');
     setGateMsg(
       tr('Solo falta el pago para generar tu stack. Tus datos ya quedaron cargados.', 'Payment is required before generation. Your profile data is already saved.'),
       'ok'
@@ -1348,6 +1388,11 @@ async function generateStack() {
     budgetLabel,
     `${tr('Región', 'Region')}: ${state.country}`,
     state.sourcePreference === 'natural_only' ? tr('Solo natural', 'Natural only') : state.sourcePreference === 'synthetic_ok' ? tr('Incluye sintéticos', 'Synthetic allowed') : state.sourcePreference === 'food_only' ? tr('Solo alimentos', 'Food only') : tr('Mixto', 'Mixed'),
+    ...(state.sourcePreference === 'food_only' ? [
+      state.foodStyle === 'vegetarian' ? tr('Vegetariano', 'Vegetarian')
+        : state.foodStyle === 'vegan' ? tr('Vegano', 'Vegan')
+          : tr('Omnívoro', 'Omnivore')
+    ] : []),
     ...(state.conditions.length ? state.conditions.slice(0,2).map(c => condChipMap[c] || c) : [tr('Sin condiciones', 'No conditions')]),
     state.currentProtocol ? tr('Con protocolo actual', 'With current protocol') : tr('Sin protocolo previo', 'No prior protocol')
   ];
@@ -1878,6 +1923,16 @@ function applyStaticI18n() {
   set('#results-sub', 'Generated with AI · Evidence-based 2026');
   set('.loading-title', 'Analyzing your profile...');
   set('.loading-sub', 'Cross-checking 120+ molecules with your data');
+  const ls1 = document.getElementById('ls1');
+  const ls2 = document.getElementById('ls2');
+  const ls3 = document.getElementById('ls3');
+  const ls4 = document.getElementById('ls4');
+  const ls5 = document.getElementById('ls5');
+  if (ls1) ls1.innerHTML = '<div class="lstep-dot"></div>Evaluating biological profile';
+  if (ls2) ls2.innerHTML = '<div class="lstep-dot"></div>Prioritizing by goals';
+  if (ls3) ls3.innerHTML = '<div class="lstep-dot"></div>Calculating doses and timing';
+  if (ls4) ls4.innerHTML = '<div class="lstep-dot"></div>Checking interactions';
+  if (ls5) ls5.innerHTML = '<div class="lstep-dot"></div>Optimizing for budget';
   set('#safety-title', 'Safety check');
   const safetyP = document.querySelector('#safety-modal p');
   if (safetyP) safetyP.textContent = 'Before generating, confirm that you reviewed potential contraindications for your profile:';
@@ -1899,6 +1954,20 @@ function applyStaticI18n() {
   };
   Object.entries(sourceLabels).forEach(([k, vals]) => {
     const el = Array.from(document.querySelectorAll('#source-pref-grid .opt')).find((o) => o.getAttribute('onclick')?.includes(`'${k}'`));
+    if (!el) return;
+    const l = el.querySelector('.opt-label');
+    const d = el.querySelector('.opt-desc');
+    if (l) l.textContent = vals[0];
+    if (d) d.textContent = vals[1];
+  });
+
+  const foodStyleLabels = {
+    omnivore: ['Omnivore', 'Includes animal and plant sources'],
+    vegetarian: ['Vegetarian', 'No meat or fish'],
+    vegan: ['Vegan', 'Plant-only, no animal products'],
+  };
+  Object.entries(foodStyleLabels).forEach(([k, vals]) => {
+    const el = Array.from(document.querySelectorAll('#food-style-grid .opt')).find((o) => o.getAttribute('onclick')?.includes(`'${k}'`));
     if (!el) return;
     const l = el.querySelector('.opt-label');
     const d = el.querySelector('.opt-desc');

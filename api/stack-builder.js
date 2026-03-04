@@ -14,7 +14,7 @@ export default async function handler(req, res) {
 
   try {
     if (!paywallDisabled) {
-      const paid = await verifyPaidSession(sessionId);
+      const paid = await verifyPaidSession(sessionId, 'stack_builder');
       if (!paid.ok) return res.status(403).json({ error: 'Pago no verificado' });
     }
 
@@ -31,7 +31,7 @@ export default async function handler(req, res) {
   }
 }
 
-async function verifyPaidSession(sessionId) {
+async function verifyPaidSession(sessionId, expectedModule = '') {
   const stripeKey = cleanEnv(process.env.STRIPE_SECRET_KEY);
   if (!stripeKey) return { ok: false };
   const stripeRes = await fetch(`https://api.stripe.com/v1/checkout/sessions/${encodeURIComponent(sessionId)}`, {
@@ -41,6 +41,9 @@ async function verifyPaidSession(sessionId) {
   const payload = await stripeRes.json();
   if (!stripeRes.ok) return { ok: false };
   const isPaid = payload.payment_status === 'paid' || payload.status === 'complete';
+  const sessionModule = String(payload?.metadata?.module || '').trim();
+  if (expectedModule && sessionModule && sessionModule !== expectedModule) return { ok: false };
+  if (expectedModule && !sessionModule) return { ok: false };
   return { ok: isPaid };
 }
 
@@ -152,6 +155,8 @@ function buildPromptEs(profile) {
   const conditions = profile?.conditions_label || 'Ninguna';
   const currentProtocol = profile?.current_protocol || 'No usa suplementos actualmente';
   const country = profile?.country || 'GLOBAL';
+  const foodStyleMap = { omnivore: 'Omnívoro', vegetarian: 'Vegetariano', vegan: 'Vegano' };
+  const foodStyle = foodStyleMap[profile?.food_style] || foodStyleMap.omnivore;
   const sourcePreferenceMap = {
     natural_only: 'Solo naturales (hongos, polifenoles, compuestos naturales)',
     mixed: 'Mixto (naturales + sintéticos)',
@@ -167,6 +172,7 @@ function buildPromptEs(profile) {
 - Objetivos principales: ${goals}
 - Presupuesto mensual: ${budgetLabel}
 - Preferencia de origen de moléculas: ${sourcePreference}
+- Estilo alimentario (si aplica): ${foodStyle}
 - País/mercado objetivo para disponibilidad: ${country}
 - Condiciones de salud / medicamentos: ${conditions}
 - Protocolo actual de suplementos: ${currentProtocol}
@@ -203,6 +209,7 @@ Reglas:
 - Si la preferencia es "Solo naturales", NO incluyas moléculas sintéticas ni fármacos
 - Si la preferencia es "Mixto", prioriza naturales y usa sintéticos solo si aportan ventaja fuerte
 - Si la preferencia es "Solo alimentos", NO incluyas suplementos. Usa alimentos concretos por franja horaria y en "dose" pon porciones (ej: "150 g", "1 taza", "2 huevos")
+- Si la preferencia es "Solo alimentos", respeta estrictamente el estilo alimentario indicado (${foodStyle}): no incluir alimentos fuera de ese estilo
 - Si la preferencia es "Solo alimentos", el campo "full" debe describir el alimento/fuente nutricional y "estimated_price" debe ser costo mensual estimado de ese alimento
 - Si la preferencia es "Solo alimentos", DEBES completar "weekly_food_plan" con 7 días distintos y al menos 4 comidas por día (desayuno, almuerzo, merienda, cena). En este modo, "diet_extras" puede quedar vacío
 - Si la preferencia es "Mixto" o "Incluye sintéticos" o "Solo naturales", NO hagas menú semanal detallado. En esos modos "weekly_food_plan" debe ser {} y debes completar "diet_extras" con 5-10 alimentos para sumar como extra (sin desplazar el foco en suplementos)
@@ -224,6 +231,8 @@ function buildPromptEn(profile) {
   const conditions = profile?.conditions_label || 'None';
   const currentProtocol = profile?.current_protocol || 'No current supplement protocol';
   const country = profile?.country || 'GLOBAL';
+  const foodStyleMap = { omnivore: 'Omnivore', vegetarian: 'Vegetarian', vegan: 'Vegan' };
+  const foodStyle = foodStyleMap[profile?.food_style] || foodStyleMap.omnivore;
   const sourcePreferenceMap = {
     natural_only: 'Natural-only (mushrooms, polyphenols, natural compounds)',
     mixed: 'Mixed (natural + synthetic)',
@@ -239,6 +248,7 @@ function buildPromptEn(profile) {
 - Main goals: ${goals}
 - Monthly budget: ${budgetLabel}
 - Molecule origin preference: ${sourcePreference}
+- Dietary style (if applicable): ${foodStyle}
 - Country/market for availability: ${country}
 - Health conditions / medications: ${conditions}
 - Current supplement protocol: ${currentProtocol}
@@ -275,6 +285,7 @@ Rules:
 - If preference is "Natural-only", do NOT include synthetic compounds or drugs
 - If preference is "Mixed", prioritize natural compounds and include synthetics only for strong advantage
 - If preference is "Food-only", do NOT include supplements. Use concrete foods by day-part and in "dose" provide portions (e.g. "150 g", "1 cup", "2 eggs")
+- If preference is "Food-only", strictly respect selected dietary style (${foodStyle}) and do not include foods outside that style
 - If preference is "Food-only", field "full" should describe food/nutrient source and "estimated_price" should be estimated monthly food cost
 - If preference is "Food-only", you MUST fill "weekly_food_plan" with 7 distinct days and at least 4 meals per day (breakfast, lunch, snack, dinner). In this mode, "diet_extras" may be empty
 - If preference is "Mixed", "Synthetic allowed", or "Natural-only", do NOT create a full weekly menu. In those modes "weekly_food_plan" must be {} and "diet_extras" must include 5-10 foods as add-ons
