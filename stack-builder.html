@@ -1066,7 +1066,7 @@ function applyWizardStateToUI() {
   checkStep1();
   checkStep3();
 
-  document.querySelectorAll('.step-card').forEach((el, idx) => { el.style.display = idx === 0 ? 'block' : 'none'; });
+  document.querySelectorAll('.step-card').forEach((el) => { el.style.display = 'none'; });
   for (let s = 1; s <= 4; s++) {
     document.getElementById(`sd${s}`).classList.remove('active', 'done');
     document.getElementById(`sd${s}`).textContent = String(s);
