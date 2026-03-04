@@ -31,18 +31,17 @@ body.paid-mode {
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
-body{background:radial-gradient(circle at 15% -5%,#183652 0%,#05070c 50%);color:var(--text);font-family:'Instrument Sans',sans-serif;min-height:100vh;overflow-x:hidden}
+body{background:#05070c;color:var(--text);font-family:'Instrument Sans',sans-serif;min-height:100vh;overflow-x:hidden}
 
 /* ── SURFACE GRID ── */
-body::after{content:'';position:fixed;inset:0;background:linear-gradient(to bottom,rgba(255,255,255,.03),rgba(255,255,255,0) 20%,rgba(106,255,217,.035) 60%,rgba(255,255,255,0));pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;inset:0;background:none;pointer-events:none;z-index:0}
 
 /* ── GRID ── */
 body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(106,255,217,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(106,255,217,.04) 1px,transparent 1px);background-size:56px 56px;pointer-events:none;z-index:0;opacity:.7}
 
 /* ── ORBS ── */
 .orb{position:fixed;border-radius:50%;filter:blur(120px);pointer-events:none;z-index:0}
-.o1{width:680px;height:680px;background:rgba(106,255,217,.13);top:-260px;right:-240px}
-.o2{width:540px;height:540px;background:rgba(82,184,255,.11);bottom:-200px;left:-200px}
+.o1,.o2{display:none}
 
 /* ── HEADER ── */
 header {
