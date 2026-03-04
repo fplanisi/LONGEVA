@@ -24,10 +24,5 @@
   "env": {
     "AI_PROVIDER": "groq",
     "ALLOWED_ORIGIN": "*"
-  },
-  "functions": {
-    "api/*.js": {
-      "maxDuration": 30
-    }
   }
 }
