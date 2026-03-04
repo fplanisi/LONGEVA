@@ -16,10 +16,13 @@
   .orb2{width:540px;height:540px;background:rgba(82,184,255,.08);bottom:-200px;left:-200px}
 
   /* HEADER */
-  header{position:sticky;top:0;z-index:20;padding:14px 36px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;border-bottom:1px solid var(--border);background:rgba(5,7,12,.86);backdrop-filter:blur(10px)}
+  header{position:sticky;top:0;z-index:20;padding:14px 36px;display:flex;flex-direction:column;gap:8px;border-bottom:1px solid var(--border);background:rgba(5,7,12,.86);backdrop-filter:blur(10px)}
+  .header-top{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .brand-wrap{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
   .logo-name{font-family:'DM Serif Display',serif;font-size:26px;letter-spacing:.1em;color:var(--accent);text-shadow:0 0 30px rgba(106,255,217,.45)}
-  .logo-tag{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:.16em;margin-left:9px}
-  .header-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+  .logo-tag{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:.16em}
+  .status-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+  .topnav-row{width:100%}
   .topnav{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
   .topnav a{padding:7px 13px;border-radius:999px;border:1px solid var(--border);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--muted);text-decoration:none;transition:.2s;background:rgba(255,255,255,.01)}
   .topnav a:hover{color:var(--text);border-color:var(--accent2);box-shadow:0 0 0 1px rgba(82,184,255,.18) inset}
@@ -166,7 +169,8 @@
   }
   @media(max-width:768px){
     header{position:relative;padding:14px 12px}
-    .header-right{width:100%}
+    .header-top{align-items:flex-start;flex-direction:column;gap:8px}
+    .status-row{width:100%;justify-content:flex-start}
     .topnav{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:6px}
     .topnav a{white-space:normal;text-align:center;padding:10px 8px;font-size:10px;line-height:1.2}
     .badge{display:none}
@@ -204,19 +208,23 @@
 <div class="orb orb2"></div>
 
 <header>
-  <div>
+  <div class="header-top">
+  <div class="brand-wrap">
     <span class="logo-name">LONGEVA</span>
     <span class="logo-tag">v3.1 · Híbrido IA + Base curada</span>
   </div>
-  <div class="header-right">
+  <div class="status-row">
+    <div class="badge badge-live"><div class="dot dot-green"></div>Base científica activa</div>
+    <div class="badge badge-provider" id="provider-badge"><div class="dot dot-blue"></div><span id="provider-name">Conectando...</span></div>
+  </div>
+  </div>
+  <div class="topnav-row">
     <nav class="topnav">
       <a href="/index.html" class="active">Biblioteca</a>
       <a href="/stack-builder.html">Stack Builder</a>
       <a href="/biohacker-protocol.html">Biohacker</a>
       <a href="/food-longevity.html">Nutrición</a>
     </nav>
-    <div class="badge badge-live"><div class="dot dot-green"></div>Base científica activa</div>
-    <div class="badge badge-provider" id="provider-badge"><div class="dot dot-blue"></div><span id="provider-name">Conectando...</span></div>
   </div>
 </header>
 

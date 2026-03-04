@@ -17,8 +17,14 @@ body{
   color:var(--text); min-height:100vh;
 }
 .wrap{max-width:1080px;margin:0 auto;padding:24px 16px 70px}
-.top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:22px}
-.brand{font-size:14px;letter-spacing:.14em;color:var(--accent);font-family:'DM Serif Display',serif}
+.site-header{position:relative;z-index:10;padding:14px 0 10px;display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.header-top{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand-wrap{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
+.logo-name{font-family:'DM Serif Display',serif;font-size:26px;letter-spacing:.1em;color:var(--accent);text-shadow:0 0 30px rgba(106,255,217,.35)}
+.logo-tag{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:.16em}
+.status-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.status-chip{display:flex;align-items:center;gap:6px;padding:6px 11px;border-radius:100px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;background:rgba(106,255,217,.1);border:1px solid rgba(106,255,217,.3);color:var(--accent)}
+.topnav-row{width:100%}
 .topnav{display:flex;gap:7px;flex-wrap:wrap}
 .topnav a{font-size:10px;text-decoration:none;color:var(--muted);padding:7px 13px;border-radius:999px;border:1px solid var(--border);background:rgba(255,255,255,.01);font-family:'DM Mono',monospace;letter-spacing:.1em}
 .topnav a:hover{color:var(--text);border-color:var(--accent2);box-shadow:0 0 0 1px rgba(82,184,255,.18) inset}
@@ -48,8 +54,8 @@ body{
 @media(max-width:860px){
   .grid,.opts{grid-template-columns:1fr}
   .wrap{padding:14px 12px 60px}
-  .top{margin-bottom:14px}
-  .brand{font-size:12px}
+  .header-top{align-items:flex-start;flex-direction:column;gap:8px}
+  .status-row{width:100%;justify-content:flex-start}
   .topnav{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:6px}
   .topnav a{white-space:normal;text-align:center;padding:10px 8px;font-size:10px;line-height:1.2}
   .hero{padding:18px}
@@ -69,15 +75,25 @@ body{
 </head>
 <body>
 <div class="wrap">
-  <div class="top">
-    <div class="brand">LONGEVA · FOOD-FIRST</div>
+  <header class="site-header">
+    <div class="header-top">
+      <div class="brand-wrap">
+        <span class="logo-name">LONGEVA</span>
+        <span class="logo-tag">v3.1 · Híbrido IA + Base curada</span>
+      </div>
+      <div class="status-row">
+        <div class="status-chip">Nutrición · Food-first (gratis)</div>
+      </div>
+    </div>
+    <div class="topnav-row">
     <nav class="topnav">
       <a href="/index.html">Biblioteca</a>
       <a href="/stack-builder.html">Stack Builder</a>
       <a href="/biohacker-protocol.html">Biohacker</a>
       <a href="/food-longevity.html" class="active">Nutrición</a>
     </nav>
-  </div>
+    </div>
+  </header>
 
   <section class="hero">
     <h1>Nutrición para longevidad<br>sin suplementos</h1>

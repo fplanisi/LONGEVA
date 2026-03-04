@@ -73,15 +73,18 @@ body::before {
 header {
   position: relative; z-index: 10;
   padding: 28px 48px;
-  display: flex; align-items: center; justify-content: space-between;
+  display: flex; flex-direction: column;
   border-bottom: 1px solid var(--border);
-  gap: 12px;
-  flex-wrap: wrap;
+  gap: 8px;
 }
+.header-top { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.brand-wrap { display: flex; align-items: baseline; gap: 9px; flex-wrap: wrap; }
 .logo { font-family: 'DM Serif Display', serif; font-size: 22px; font-weight: 400; letter-spacing: .12em; color: var(--accent); text-shadow: 0 0 30px rgba(106,255,217,.35); }
 .logo span { font-style: italic; }
+.logo-tag { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--muted); letter-spacing: .16em; }
 .hbadge { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: .1em; border: 1px solid var(--border2); padding: 5px 12px; border-radius: 100px; }
-.header-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
+.status-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+.topnav-row { width: 100%; }
 .topnav { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
 .topnav a {
   text-decoration: none; color: var(--muted); font-family: 'DM Mono', monospace;
@@ -506,7 +509,8 @@ input[type=range]::-webkit-slider-thumb {
 
 @media(max-width: 640px) {
   header { padding: 14px 12px; }
-  .header-right { width: 100%; }
+  .header-top { align-items: flex-start; flex-direction: column; gap: 8px; }
+  .status-row { width: 100%; justify-content: flex-start; }
   .topnav { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
   .topnav a { white-space: normal; text-align: center; padding: 10px 8px; font-size: 10px; line-height: 1.2; }
   .hbadge { display: none; }
@@ -554,15 +558,22 @@ input[type=range]::-webkit-slider-thumb {
 <div class="orb o3"></div>
 
 <header>
-  <div class="logo">LONG<span>EVA</span></div>
-  <div class="header-right">
+  <div class="header-top">
+    <div class="brand-wrap">
+      <div class="logo">LONG<span>EVA</span></div>
+      <span class="logo-tag">v3.1 · Híbrido IA + Base curada</span>
+    </div>
+    <div class="status-row">
+      <div class="hbadge">Stack Builder · 2026</div>
+    </div>
+  </div>
+  <div class="topnav-row">
     <nav class="topnav">
       <a href="/index.html">Biblioteca</a>
       <a href="/stack-builder.html" class="active">Stack Builder</a>
       <a href="/biohacker-protocol.html">Biohacker</a>
       <a href="/food-longevity.html">Nutrición</a>
     </nav>
-    <div class="hbadge">Stack Builder · 2026</div>
   </div>
 </header>
 
