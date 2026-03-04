@@ -70,7 +70,6 @@ body::after{content:'';position:fixed;inset:0;background:linear-gradient(to bott
 .opt.active{border-color:var(--accent2);background:rgba(82,184,255,.12)}
 .btn{border:none;border-radius:10px;padding:11px 16px;font-weight:650;cursor:pointer}
 .btn-main{background:var(--accent2);color:#031629}
-.result{display:none}
 .plan{margin-top:10px;border:1px solid var(--border);border-radius:12px;overflow:hidden}
 .plan-head{background:var(--surface2);padding:10px 12px;border-bottom:1px solid var(--border);font-weight:600}
 .plan-body{padding:12px}
@@ -86,6 +85,13 @@ body::after{content:'';position:fixed;inset:0;background:linear-gradient(to bott
 .to-top{position:fixed;right:16px;bottom:16px;width:42px;height:42px;border-radius:999px;border:1px solid var(--border);background:rgba(5,7,12,.9);color:var(--accent);font-size:18px;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;pointer-events:none;transform:translateY(8px);transition:opacity .2s ease,transform .2s ease,border-color .2s ease;z-index:45}
 .to-top:hover{border-color:var(--accent2);color:#fff}
 .to-top.show{opacity:1;pointer-events:auto;transform:translateY(0)}
+.result-modal{position:fixed;inset:0;z-index:80;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(4,8,14,.78);backdrop-filter:blur(6px)}
+.result-modal.open{display:flex}
+.result-modal-card{width:min(920px,100%);max-height:min(88vh,880px);overflow:auto;background:linear-gradient(155deg,var(--surface2),var(--surface));border:1px solid rgba(82,184,255,.3);border-radius:16px;padding:18px;box-shadow:0 24px 54px rgba(0,0,0,.45)}
+.result-modal-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.result-modal-title{font-family:'DM Serif Display',serif;font-size:28px;line-height:1;color:var(--text)}
+.result-close{appearance:none;border:1px solid var(--border);background:rgba(255,255,255,.02);color:var(--muted);width:34px;height:34px;border-radius:9px;font-size:20px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.result-close:hover{border-color:var(--accent2);color:#fff}
 @media(max-width:900px){
   .grid,.opts{grid-template-columns:1fr}
   body{padding-top:56px}
@@ -116,6 +122,9 @@ body::after{content:'';position:fixed;inset:0;background:linear-gradient(to bott
   .food{padding:11px}
   .food h4{font-size:15px}
   .food p,.note{font-size:12px;line-height:1.5}
+  .result-modal{padding:10px}
+  .result-modal-card{max-height:90vh;padding:14px}
+  .result-modal-title{font-size:23px}
 }
 </style>
 </head>
@@ -186,8 +195,16 @@ body::after{content:'';position:fixed;inset:0;background:linear-gradient(to bott
       <p class="note">Este módulo prioriza fuentes naturales de: polifenoles, omega-3, fibra prebiótica, compuestos azufrados, carotenoides, colina y proteínas de alta calidad.</p>
     </section>
 
-    <section id="result" class="card result"></section>
   </div>
+  </div>
+</div>
+<div id="result-modal" class="result-modal" aria-hidden="true">
+  <div class="result-modal-card" role="dialog" aria-modal="true" aria-labelledby="result-modal-title">
+    <div class="result-modal-head">
+      <h2 id="result-modal-title" class="result-modal-title">Tu plan final</h2>
+      <button id="result-close" class="result-close" type="button" aria-label="Cerrar">×</button>
+    </div>
+    <div id="result-modal-content"></div>
   </div>
 </div>
 <footer class="legal-footer">
@@ -369,7 +386,8 @@ document.getElementById('style-grid').addEventListener('click', (e) => {
 
 document.getElementById('gen-btn').addEventListener('click', () => {
   const p = IS_EN ? plansEn[state.goal] : plans[state.goal];
-  const out = document.getElementById('result');
+  const out = document.getElementById('result-modal-content');
+  const modal = document.getElementById('result-modal');
 
   let html = `<div class="label">${tr('Plan recomendado', 'Recommended plan')}</div>`;
   html += `<h3 style="font-size:22px;margin-bottom:6px;">${p.title}</h3>`;
@@ -389,7 +407,9 @@ document.getElementById('gen-btn').addEventListener('click', () => {
 
   html += `<p class="note">${tr('Sugerencia práctica: arma 2-3 comidas base repetibles por semana para adherencia. Si querés personalización completa con dosis/ciclos, usá Plan Personalizado.', 'Practical tip: build 2-3 repeatable base meals per week to improve adherence. For full personalization with doses/cycles, use Personalized Plan.')}</p>`;
   out.innerHTML = html;
-  out.style.display = 'block';
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
 });
 
 function applyStaticI18n() {
@@ -409,6 +429,9 @@ function applyStaticI18n() {
   const chips = document.querySelectorAll('.badge-live');
   if (chips[0]) chips[0].textContent = 'Nutrition · Food-first (free)';
   if (chips[1]) chips[1].textContent = 'Physician-designed clinical framework';
+  set('#result-modal-title', 'Your final plan');
+  const closeBtn = document.getElementById('result-close');
+  if (closeBtn) closeBtn.setAttribute('aria-label', 'Close');
   set('#gen-btn', 'Generate food plan');
   set('.hero-eye', 'Natural protocol · No supplements');
   const heroTitle = document.querySelector('.hero h1');
@@ -494,9 +517,28 @@ function initToTop() {
   toggle();
 }
 
+function initResultModal() {
+  const modal = document.getElementById('result-modal');
+  const closeBtn = document.getElementById('result-close');
+  if (!modal || !closeBtn) return;
+  const close = () => {
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  };
+  closeBtn.addEventListener('click', close);
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) close();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.classList.contains('open')) close();
+  });
+}
+
 applyStaticI18n();
 initMobileMenu();
 initToTop();
+initResultModal();
 </script>
 </body>
 </html>
