@@ -8,6 +8,15 @@ export default async function handler(req, res) {
   if (!email || !email.includes('@')) {
     return res.status(400).json({ error: 'Email válido requerido' });
   }
+  const safeReturnTo = isSafeReturnPath(returnToRaw) ? returnToRaw : '/stack-builder.html';
+
+  if (isPaywallDisabled()) {
+    return res.status(200).json({
+      url: `${safeReturnTo}?paid=1&session_id=dev_bypass`,
+      id: 'dev_bypass',
+      mode: 'bypass',
+    });
+  }
 
   const stripeKey = process.env.STRIPE_SECRET_KEY;
   const stripePriceId = process.env.STRIPE_PRICE_ID;
@@ -43,7 +52,6 @@ export default async function handler(req, res) {
       });
     }
 
-    const safeReturnTo = isSafeReturnPath(returnToRaw) ? returnToRaw : '/stack-builder.html';
     const successPath = `${safeReturnTo}?paid=1&session_id={CHECKOUT_SESSION_ID}`;
     const cancelPath = `${safeReturnTo}?canceled=1`;
 
@@ -85,4 +93,9 @@ function setCors(res) {
 
 function isSafeReturnPath(path) {
   return /^\/[a-zA-Z0-9\-_/\.]*$/.test(path) && !path.includes('..');
+}
+
+function isPaywallDisabled() {
+  const flag = String(process.env.PAYWALL_DISABLED || '').toLowerCase();
+  return flag === '1' || flag === 'true' || flag === 'yes' || flag === 'on';
 }

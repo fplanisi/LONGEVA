@@ -1,6 +1,6 @@
 // api/analyze.js — Vercel Serverless Function
-// Soporta: Groq (testing/gratis) y Anthropic (producción con web search)
-// Cambiar en .env: AI_PROVIDER=groq | anthropic
+// Soporta: OpenAI, Groq (testing/gratis) y Anthropic (producción con web search)
+// Cambiar en .env: AI_PROVIDER=openai | groq | anthropic
 
 export default async function handler(req, res) {
   // CORS para desarrollo local y producción
@@ -15,12 +15,17 @@ export default async function handler(req, res) {
 
   if (!molecule) return res.status(400).json({ error: 'molecule field required' });
 
-  const provider = process.env.AI_PROVIDER || 'groq'; // 'groq' | 'anthropic'
+  const provider = process.env.AI_PROVIDER || 'openai'; // 'openai' | 'groq' | 'anthropic'
+  if (molecule === '__ping__') {
+    return res.status(200).json({ text: 'ok', provider, ping: true });
+  }
 
   try {
     let result;
     if (provider === 'anthropic') {
       result = await callAnthropic(molecule, full_name, pathways, category, study_count, mode);
+    } else if (provider === 'openai') {
+      result = await callOpenAI(molecule, full_name, pathways, category, study_count, mode);
     } else {
       result = await callGroq(molecule, full_name, pathways, category, study_count, mode);
     }
@@ -29,6 +34,34 @@ export default async function handler(req, res) {
     console.error(`[${provider}] Error:`, error.message);
     return res.status(500).json({ error: error.message, provider });
   }
+}
+
+// ─────────────────────────────────────────────
+// OPENAI — Recomendado para producción general
+// ─────────────────────────────────────────────
+async function callOpenAI(molecule, fullName, pathways, category, studyCount, mode) {
+  const isSearch = mode === 'latest';
+  const model = process.env.OPENAI_MODEL_LIBRARY || process.env.OPENAI_MODEL_ANALYZE || process.env.OPENAI_MODEL || 'gpt-4.1-mini';
+  const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+    },
+    body: JSON.stringify({
+      model,
+      max_tokens: 1800,
+      temperature: 0.3,
+      messages: [
+        { role: 'system', content: getSystemPrompt(false) },
+        { role: 'user', content: buildUserPrompt(molecule, fullName, pathways, category, studyCount, isSearch) },
+      ],
+    }),
+  });
+
+  const data = await response.json();
+  if (!response.ok) throw new Error(`OpenAI ${response.status}: ${data?.error?.message || 'request failed'}`);
+  return data.choices?.[0]?.message?.content || '';
 }
 
 // ─────────────────────────────────────────────

@@ -218,6 +218,17 @@ async function startCheckout() {
 }
 
 async function init() {
+  try {
+    const bypassRes = await fetch('/api/checkout-status');
+    const bypassData = await bypassRes.json();
+    if (bypassRes.ok && bypassData?.bypass && bypassData?.paid) {
+      state.sessionId = 'dev_bypass';
+      document.getElementById('paywall').style.display = 'none';
+      document.getElementById('form').style.display = 'block';
+      return;
+    }
+  } catch (_e) {}
+
   const params = new URLSearchParams(window.location.search);
   const sessionId = params.get('session_id') || localStorage.getItem('longeva_paid_session') || '';
   const paid = params.get('paid');

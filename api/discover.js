@@ -11,12 +11,12 @@ export default async function handler(req, res) {
 
   const { query } = req.body; // ej: "nuevas moléculas longevidad 2025"
 
-  const provider = process.env.AI_PROVIDER || 'groq';
+  const provider = process.env.AI_PROVIDER || 'openai';
 
   // discover solo funciona con Anthropic web search
   if (provider !== 'anthropic') {
     return res.status(200).json({
-      text: 'La función de descubrimiento de nuevas moléculas requiere el modo producción (Anthropic con web search). Actualmente en modo testing (Groq).',
+      text: 'La función de descubrimiento de nuevas moléculas requiere Anthropic con web search en tiempo real. En OpenAI/Groq la biblioteca y análisis funcionan, pero este módulo queda limitado.',
       provider,
       limited: true,
     });

@@ -3,19 +3,27 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
+  const paywallDisabled = isPaywallDisabled();
   const { profile, session_id: sessionId } = req.body || {};
-  if (!profile || !sessionId) {
-    return res.status(400).json({ error: 'profile y session_id son requeridos' });
+  if (!profile) {
+    return res.status(400).json({ error: 'profile es requerido' });
+  }
+  if (!paywallDisabled && !sessionId) {
+    return res.status(400).json({ error: 'session_id es requerido' });
   }
 
   try {
-    const paid = await verifyPaidSession(sessionId);
-    if (!paid.ok) return res.status(403).json({ error: 'Pago no verificado' });
+    if (!paywallDisabled) {
+      const paid = await verifyPaidSession(sessionId);
+      if (!paid.ok) return res.status(403).json({ error: 'Pago no verificado' });
+    }
 
-    const provider = process.env.AI_PROVIDER || 'groq';
+    const provider = process.env.AI_PROVIDER || 'openai';
     let text;
     if (provider === 'anthropic') {
       text = await callAnthropic(profile);
+    } else if (provider === 'openai') {
+      text = await callOpenAI(profile);
     } else {
       text = await callGroq(profile);
     }
@@ -83,6 +91,30 @@ async function callGroq(profile) {
 
   const data = await response.json();
   if (!response.ok) throw new Error(`Groq ${response.status}: ${data?.error?.message || 'request failed'}`);
+  return data.choices?.[0]?.message?.content || '';
+}
+
+async function callOpenAI(profile) {
+  const model = process.env.OPENAI_MODEL_BIOHACKER || process.env.OPENAI_MODEL || 'gpt-4.1';
+  const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+    },
+    body: JSON.stringify({
+      model,
+      max_tokens: 2600,
+      temperature: 0.2,
+      messages: [
+        { role: 'system', content: getSystemPrompt() },
+        { role: 'user', content: buildPrompt(profile) },
+      ],
+    }),
+  });
+
+  const data = await response.json();
+  if (!response.ok) throw new Error(`OpenAI ${response.status}: ${data?.error?.message || 'request failed'}`);
   return data.choices?.[0]?.message?.content || '';
 }
 
@@ -177,4 +209,9 @@ function setCors(res) {
   res.setHeader('Access-Control-Allow-Origin', process.env.ALLOWED_ORIGIN || '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+}
+
+function isPaywallDisabled() {
+  const flag = String(process.env.PAYWALL_DISABLED || '').toLowerCase();
+  return flag === '1' || flag === 'true' || flag === 'yes' || flag === 'on';
 }

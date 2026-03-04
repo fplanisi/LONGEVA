@@ -3,6 +3,16 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
 
+  if (isPaywallDisabled()) {
+    return res.status(200).json({
+      paid: true,
+      bypass: true,
+      email: '',
+      payment_status: 'bypassed',
+      status: 'complete',
+    });
+  }
+
   const sessionId = String(req.query?.session_id || '').trim();
   if (!sessionId) return res.status(400).json({ error: 'session_id requerido' });
 
@@ -37,4 +47,9 @@ function setCors(res) {
   res.setHeader('Access-Control-Allow-Origin', process.env.ALLOWED_ORIGIN || '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+}
+
+function isPaywallDisabled() {
+  const flag = String(process.env.PAYWALL_DISABLED || '').toLowerCase();
+  return flag === '1' || flag === 'true' || flag === 'yes' || flag === 'on';
 }

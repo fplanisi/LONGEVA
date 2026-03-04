@@ -868,6 +868,16 @@ function setGateMsg(text, type = '') {
 }
 
 async function initAccess() {
+  try {
+    const bypassRes = await fetch('/api/checkout-status');
+    const bypassData = await bypassRes.json();
+    if (bypassRes.ok && bypassData?.bypass && bypassData?.paid) {
+      state.paidSessionId = 'dev_bypass';
+      unlockWizard();
+      return;
+    }
+  } catch (_e) {}
+
   const params = new URLSearchParams(window.location.search);
   const sessionId = params.get('session_id') || localStorage.getItem('longeva_paid_session') || '';
   const paidFlag = params.get('paid');
@@ -924,7 +934,12 @@ function goStep(n) {
   document.getElementById(`step${n}`).style.display = 'block';
   document.getElementById(`sd${n}`).classList.add('active');
   document.getElementById('prog-label').textContent = `Paso ${n} de 4 — ${stepLabels[n-1]}`;
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  const stepEl = document.getElementById(`step${n}`);
+  if (window.matchMedia('(max-width: 640px)').matches) {
+    stepEl?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } else {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 }
 
 // ── STEP 1 ──
@@ -1006,7 +1021,12 @@ async function generateStack() {
   }
   document.getElementById('wizard').style.display = 'none';
   document.getElementById('results').style.display = 'block';
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  const resultsEl = document.getElementById('results');
+  if (window.matchMedia('(max-width: 640px)').matches) {
+    resultsEl?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } else {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 
   // Build profile chips
   const budgetLabel = state.budget >= 999 ? 'Sin límite' : state.budget >= 350 ? '$150–350/mes' : state.budget >= 150 ? '$50–150/mes' : 'Hasta $50/mes';
