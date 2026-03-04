@@ -46,28 +46,32 @@
   .hero-eye{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--dim);text-transform:uppercase;margin-bottom:14px}
   h1{font-family:'DM Serif Display',serif;font-size:clamp(34px,5vw,66px);line-height:1.06;margin-bottom:12px;letter-spacing:.01em}
   h1 em{font-style:italic;color:var(--accent3);text-shadow:0 0 45px rgba(209,255,90,.2)}
-  .hero-sub{font-size:15px;color:var(--muted);max-width:860px;margin:0 auto 18px;line-height:1.65;font-weight:300}
-  .hero-cta{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
-  .btn{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:12px;border:1px solid var(--border);text-decoration:none;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.08em;color:var(--text);background:rgba(255,255,255,.02);transition:.2s}
-  .btn:hover{transform:translateY(-1px);border-color:var(--accent2)}
-  .btn-primary{background:linear-gradient(135deg,rgba(106,255,217,.24),rgba(82,184,255,.14));border-color:rgba(106,255,217,.5);color:var(--accent)}
+  .hero-sub{font-size:15px;color:var(--muted);max-width:920px;margin:0 auto 16px;line-height:1.65;font-weight:300}
+  .trust-line{margin:0 auto 18px;max-width:860px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;color:#a9b8ce;border:1px solid var(--border);border-radius:999px;padding:7px 12px;display:inline-flex;gap:8px;align-items:center;background:rgba(255,255,255,.02)}
+  .flow-strip{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:0 auto 14px;max-width:760px}
+  .flow-step{border:1px solid var(--border);background:rgba(255,255,255,.015);border-radius:10px;padding:8px 10px;font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.05em}
+  .flow-step b{color:var(--accent2);font-weight:500}
 
   .main{position:relative;z-index:10;max-width:1320px;margin:0 auto;padding:0 40px 64px}
-  .intro-grid{display:grid;grid-template-columns:repeat(2,minmax(280px,1fr));gap:12px;margin:14px 0 16px}
-  .intro-card{border:1px solid var(--border);border-radius:14px;background:linear-gradient(160deg,var(--surface2),var(--surface));padding:16px}
-  .intro-card h3{font-family:'DM Serif Display',serif;font-size:24px;line-height:1.2;margin-bottom:6px}
-  .intro-card p{color:var(--muted);font-size:14px;line-height:1.55}
-
-  .modules{display:grid;grid-template-columns:repeat(3,minmax(200px,1fr));gap:12px}
-  .module{border:1px solid var(--border);border-radius:14px;background:linear-gradient(160deg,var(--surface2),var(--surface));padding:16px;text-decoration:none;color:var(--text);transition:.2s}
-  .module:hover{transform:translateY(-2px)}
-  .module b{display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;color:var(--dim);margin-bottom:8px;text-transform:uppercase}
-  .module h4{font-family:'DM Serif Display',serif;font-size:28px;line-height:1.1;margin-bottom:8px}
-  .module p{font-size:13px;color:var(--muted);line-height:1.5}
-  .module-library{border-color:rgba(106,255,217,.38)}
-  .module-plan{border-color:rgba(82,184,255,.36)}
-  .module-bio{border-color:rgba(159,123,255,.5);background:linear-gradient(130deg,rgba(159,123,255,.16),rgba(255,95,127,.12));box-shadow:0 0 20px rgba(159,123,255,.15)}
-  .module-nutri{border-color:rgba(52,211,153,.38)}
+  .quick-modules{display:grid;grid-template-columns:repeat(2,minmax(260px,1fr));gap:12px;max-width:980px;margin:8px auto 0}
+  .qmod{border:1px solid var(--border);background:rgba(255,255,255,.015);border-radius:12px;padding:13px 14px;text-decoration:none;color:var(--text);text-align:left;transition:.2s}
+  .qmod:hover{border-color:var(--accent2);transform:translateY(-1px)}
+  .qmod b{display:block;font-size:13px;margin-bottom:4px}
+  .qmod span{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;line-height:1.35}
+  .qmod-library{border-color:rgba(209,255,90,.55);background:linear-gradient(140deg,rgba(209,255,90,.14),rgba(106,255,217,.09));box-shadow:0 0 0 1px rgba(209,255,90,.22) inset,0 0 14px rgba(209,255,90,.12)}
+  .qmod-library b{color:var(--accent3)}
+  .qmod-library:hover{border-color:rgba(209,255,90,.9);box-shadow:0 0 0 1px rgba(209,255,90,.3) inset,0 0 22px rgba(209,255,90,.24)}
+  .qmod-primary{border-color:rgba(106,255,217,.55);background:linear-gradient(140deg,rgba(106,255,217,.14),rgba(82,184,255,.1));box-shadow:0 0 0 1px rgba(106,255,217,.22) inset,0 0 14px rgba(106,255,217,.14)}
+  .qmod-primary b{color:var(--accent)}
+  .qmod-primary:hover{border-color:rgba(106,255,217,.9);box-shadow:0 0 0 1px rgba(106,255,217,.3) inset,0 0 22px rgba(106,255,217,.24)}
+  .qmod-nutri{border-color:rgba(82,184,255,.42);background:linear-gradient(140deg,rgba(82,184,255,.12),rgba(106,255,217,.06));box-shadow:0 0 0 1px rgba(82,184,255,.18) inset}
+  .qmod-nutri b{color:#9ed0ff}
+  .qmod-nutri:hover{border-color:rgba(82,184,255,.86);box-shadow:0 0 0 1px rgba(82,184,255,.28) inset,0 0 18px rgba(82,184,255,.18)}
+  .qmod-bio{border-color:rgba(159,123,255,.55);background:linear-gradient(130deg,rgba(159,123,255,.16),rgba(255,95,127,.12));box-shadow:0 0 22px rgba(159,123,255,.2)}
+  .qmod-bio b{color:#f4d8ff}
+  .qmod-bio::after{content:'ADVANCED';display:inline-block;margin-top:6px;padding:2px 7px;border-radius:999px;border:1px solid rgba(255,180,220,.55);font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.08em;color:#ffd4ea;background:rgba(255,120,190,.1)}
+  .qmod-bio{animation:bioPulse 2.4s ease-in-out infinite}
+  @keyframes bioPulse{0%,100%{box-shadow:0 0 16px rgba(159,123,255,.18)}50%{box-shadow:0 0 30px rgba(255,95,127,.32)}}
 
   .legal-footer{position:relative;z-index:10;max-width:1320px;margin:12px auto 22px;padding:0 16px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-family:'DM Mono',monospace;font-size:10px;color:var(--dim)}
   .legal-footer a{color:var(--muted);text-decoration:none}
@@ -90,9 +94,10 @@
     .hero::before{inset:0}
     h1{font-size:clamp(30px,9vw,42px)}
     .hero-sub{font-size:13px}
+    .flow-strip{gap:6px}
+    .flow-step{padding:8px 9px;font-size:9px}
     .main{padding:0 16px 48px}
-    .intro-grid{grid-template-columns:1fr}
-    .modules{grid-template-columns:1fr}
+    .quick-modules{grid-template-columns:1fr}
   }
 </style>
 </head>
@@ -130,47 +135,34 @@
 </header>
 
 <section class="hero">
-  <p class="hero-eye" id="hero-eye">Biblioteca científica + protocolos personalizados</p>
-  <h1 id="hero-title">Tu plataforma para <em>longevidad práctica</em></h1>
-  <p class="hero-sub" id="hero-sub">LONGEVAPP combina una biblioteca extensa de moléculas con planes personalizados de suplementos, alimentos y protocolos biohacker para tomar decisiones rápidas, seguras y accionables.</p>
-  <div class="hero-cta">
-    <a class="btn btn-primary" id="cta-library" href="/library.html">Entrar a Biblioteca →</a>
-    <a class="btn" id="cta-plan" href="/stack-builder.html">Crear Plan Personalizado</a>
+  <p class="hero-eye" id="hero-eye">Evidencia científica + personalización clínica</p>
+  <h1 id="hero-title">Tus suplementos para<br><em>longevidad real</em></h1>
+  <p class="hero-sub" id="hero-sub">LONGEVAPP integra biblioteca de moléculas, protocolos personalizados y estrategias de nutrición para convertir evidencia compleja en decisiones prácticas según objetivo, presupuesto y perfil biológico.</p>
+  <p class="trust-line" id="trust-line">Enfoque clínico: plataforma diseñada por médico, priorizando seguridad, interacciones y adherencia.</p>
+  <div class="flow-strip">
+    <div class="flow-step" id="flow-1"><b>1.</b> Diagnóstico en 2 minutos</div>
+    <div class="flow-step" id="flow-2"><b>2.</b> Plan mensual accionable</div>
+    <div class="flow-step" id="flow-3"><b>3.</b> Seguimiento y reemplazos</div>
   </div>
 </section>
 
 <main class="main">
-  <section class="intro-grid">
-    <article class="intro-card">
-      <h3 id="intro-a-title">1) Biblioteca de longevidad</h3>
-      <p id="intro-a-copy">Explora moléculas naturales y sintéticas con su mecanismo de acción, evidencia y análisis con IA. En móvil, la biblioteca está organizada por carpetas desplegables por categoría.</p>
-    </article>
-    <article class="intro-card">
-      <h3 id="intro-b-title">2) Protocolos personalizados</h3>
-      <p id="intro-b-copy">Genera estrategias según edad, sexo, objetivos, presupuesto, disponibilidad y restricciones: plan mixto, nutrición pura o biohacker experimental.</p>
-    </article>
-  </section>
-
-  <section class="modules">
-    <a class="module module-library" href="/library.html">
-      <b id="m1-kicker">Explorar</b>
-      <h4 id="m1-title">Biblioteca</h4>
-      <p id="m1-copy">Busca moléculas por categoría y abre análisis detallado en segundos.</p>
+  <section class="quick-modules">
+    <a class="qmod qmod-library" href="/library.html">
+      <b id="m1-title">Biblioteca</b>
+      <span id="m1-copy">Explora moléculas por categoría, evidencia y mecanismo de acción.</span>
     </a>
-    <a class="module module-plan" href="/stack-builder.html">
-      <b id="m2-kicker">Personalización</b>
-      <h4 id="m2-title">Plan mensual</h4>
-      <p id="m2-copy">Stack de suplementos/alimentos con timing, dosis y reemplazos.</p>
+    <a class="qmod qmod-primary" href="/stack-builder.html">
+      <b id="m2-title">Plan Personalizado</b>
+      <span id="m2-copy">Stack mensual con dosis, horarios, seguridad y reemplazos.</span>
     </a>
-    <a class="module module-bio" href="/biohacker-protocol.html">
-      <b id="m3-kicker">Avanzado</b>
-      <h4 id="m3-title">Biohacker Lab</h4>
-      <p id="m3-copy">Módulo experimental para expertos: protocolos más complejos y controlados.</p>
+    <a class="qmod qmod-bio" href="/biohacker-protocol.html">
+      <b id="m3-title">Biohacker Lab</b>
+      <span id="m3-copy">Módulo avanzado y experimental para usuarios expertos.</span>
     </a>
-    <a class="module module-nutri" href="/food-longevity.html">
-      <b id="m4-kicker">Sin suplementos</b>
-      <h4 id="m4-title">Solo nutrición</h4>
-      <p id="m4-copy">Plan de alimentos enfocado en longevidad para usuarios que prefieren dieta.</p>
+    <a class="qmod qmod-nutri" href="/food-longevity.html">
+      <b id="m4-title">Nutrición</b>
+      <span id="m4-copy">Plan alimentario de longevidad sin suplementos.</span>
     </a>
   </section>
 </main>
@@ -188,29 +180,22 @@ function applyCopy(){
   document.documentElement.lang = IS_EN ? 'en' : 'es';
   const title = document.querySelector('title');
   if (title) title.textContent = tr('LONGEVAPP — Inicio','LONGEVAPP — Home');
-  document.getElementById('hero-eye').textContent = tr('Biblioteca científica + protocolos personalizados','Scientific library + personalized protocols');
-  document.getElementById('hero-title').innerHTML = tr('Tu plataforma para <em>longevidad práctica</em>','Your platform for <em>practical longevity</em>');
-  document.getElementById('hero-sub').textContent = tr('LONGEVAPP combina una biblioteca extensa de moléculas con planes personalizados de suplementos, alimentos y protocolos biohacker para tomar decisiones rápidas, seguras y accionables.','LONGEVAPP combines an extensive molecule library with personalized supplement, nutrition, and biohacker plans so decisions are fast, safer, and actionable.');
-  document.getElementById('cta-library').textContent = tr('Entrar a Biblioteca →','Open Library →');
-  document.getElementById('cta-plan').textContent = tr('Crear Plan Personalizado','Build Personalized Plan');
+  document.getElementById('hero-eye').textContent = tr('Evidencia científica + personalización clínica','Scientific evidence + clinical personalization');
+  document.getElementById('hero-title').innerHTML = tr('Tus suplementos para<br><em>longevidad real</em>','Your supplements for<br><em>real longevity</em>');
+  document.getElementById('hero-sub').textContent = tr('LONGEVAPP integra biblioteca de moléculas, protocolos personalizados y estrategias de nutrición para convertir evidencia compleja en decisiones prácticas según objetivo, presupuesto y perfil biológico.','LONGEVAPP integrates a molecule library, personalized protocols, and nutrition strategies to convert complex evidence into practical decisions by goal, budget, and biological profile.');
+  document.getElementById('trust-line').textContent = tr('Enfoque clínico: plataforma diseñada por médico, priorizando seguridad, interacciones y adherencia.','Clinical-led approach: platform designed by a physician, prioritizing safety, interactions, and adherence.');
+  document.getElementById('flow-1').innerHTML = tr('<b>1.</b> Diagnóstico en 2 minutos','<b>1.</b> 2-minute diagnosis');
+  document.getElementById('flow-2').innerHTML = tr('<b>2.</b> Plan mensual accionable','<b>2.</b> Actionable monthly plan');
+  document.getElementById('flow-3').innerHTML = tr('<b>3.</b> Seguimiento y reemplazos','<b>3.</b> Follow-up and replacements');
 
-  document.getElementById('intro-a-title').textContent = tr('1) Biblioteca de longevidad','1) Longevity library');
-  document.getElementById('intro-a-copy').textContent = tr('Explora moléculas naturales y sintéticas con su mecanismo de acción, evidencia y análisis con IA. En móvil, la biblioteca está organizada por carpetas desplegables por categoría.','Explore natural and synthetic molecules with mechanism, evidence, and AI analysis. On mobile, the library is organized as expandable folders by category.');
-  document.getElementById('intro-b-title').textContent = tr('2) Protocolos personalizados','2) Personalized protocols');
-  document.getElementById('intro-b-copy').textContent = tr('Genera estrategias según edad, sexo, objetivos, presupuesto, disponibilidad y restricciones: plan mixto, nutrición pura o biohacker experimental.','Generate strategies by age, sex, goals, budget, availability, and restrictions: mixed plan, food-only, or experimental biohacker mode.');
-
-  document.getElementById('m1-kicker').textContent = tr('Explorar','Explore');
   document.getElementById('m1-title').textContent = tr('Biblioteca','Library');
-  document.getElementById('m1-copy').textContent = tr('Busca moléculas por categoría y abre análisis detallado en segundos.','Find molecules by category and open detailed analysis in seconds.');
-  document.getElementById('m2-kicker').textContent = tr('Personalización','Personalization');
-  document.getElementById('m2-title').textContent = tr('Plan mensual','Monthly plan');
-  document.getElementById('m2-copy').textContent = tr('Stack de suplementos/alimentos con timing, dosis y reemplazos.','Supplements/food stack with timing, dosages, and replacements.');
-  document.getElementById('m3-kicker').textContent = tr('Avanzado','Advanced');
+  document.getElementById('m1-copy').textContent = tr('Explora moléculas por categoría, evidencia y mecanismo de acción.','Explore molecules by category, evidence, and mechanism of action.');
+  document.getElementById('m2-title').textContent = tr('Plan Personalizado','Personalized Plan');
+  document.getElementById('m2-copy').textContent = tr('Stack mensual con dosis, horarios, seguridad y reemplazos.','Monthly stack with doses, timing, safety, and replacements.');
   document.getElementById('m3-title').textContent = tr('Biohacker Lab','Biohacker Lab');
-  document.getElementById('m3-copy').textContent = tr('Módulo experimental para expertos: protocolos más complejos y controlados.','Experimental expert module: more complex and controlled protocols.');
-  document.getElementById('m4-kicker').textContent = tr('Sin suplementos','No supplements');
-  document.getElementById('m4-title').textContent = tr('Solo nutrición','Food only');
-  document.getElementById('m4-copy').textContent = tr('Plan de alimentos enfocado en longevidad para usuarios que prefieren dieta.','Food-based longevity plan for users who prefer diet over supplements.');
+  document.getElementById('m3-copy').textContent = tr('Módulo avanzado y experimental para usuarios expertos.','Advanced and experimental module for expert users.');
+  document.getElementById('m4-title').textContent = tr('Nutrición','Nutrition');
+  document.getElementById('m4-copy').textContent = tr('Plan alimentario de longevidad sin suplementos.','Food-based longevity plan without supplements.');
 
   const nav = document.querySelectorAll('.topnav a');
   if (nav[0]) nav[0].textContent = tr('Inicio','Home');
