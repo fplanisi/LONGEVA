@@ -7,20 +7,26 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg:#0B1F2E; --surface:rgba(17,24,39,.9); --surface2:rgba(21,28,46,.95); --border:#1F2937;
-  --text:#E5E7EB; --muted:#9CA3AF; --dim:#7F8A9A; --accent:#1F6BFF; --warn:#ff9f73; --danger:#ff5f7f; --accent2:#6C4DFF; --accent3:#6C4DFF;
+  --bg:#0D1220; --bg2:#121828; --surface:#182030; --surface2:#1E2840; --border:#243045; --border2:#304060;
+  --text:#D8E4F0; --tx2:#ACBFD4; --muted:#688098; --dim:#3C5068; --accent:#6AA2CC; --warn:#B8924A; --danger:#C85858; --accent2:#9888C8; --accent3:#55B09A;
+  --bg-glow:#13253a; --grid-line:rgba(216,228,240,.06); --header-bg:rgba(13,18,32,.88); --nav-panel-bg:rgba(24,32,48,.96); --overlay:linear-gradient(to bottom,rgba(255,255,255,.02),rgba(255,255,255,0) 20%,rgba(152,136,200,.12) 62%,rgba(255,255,255,0));
+}
+html[data-theme="light"]{
+  --bg:#F1F4F8; --bg2:#E7ECF3; --surface:#FFFFFF; --surface2:#F6F8FB; --border:#D4DCEA; --border2:#B8C6D8;
+  --text:#152030; --tx2:#334860; --muted:#5E7488; --dim:#94A8BC; --accent:#355F8C; --warn:#8C6828; --danger:#A83838; --accent2:#64508F; --accent3:#3A7865;
+  --bg-glow:#dbe5f0; --grid-line:rgba(21,32,48,.08); --header-bg:rgba(241,244,248,.9); --nav-panel-bg:rgba(255,255,255,.97); --overlay:linear-gradient(to bottom,rgba(255,255,255,.55),rgba(255,255,255,0) 22%,rgba(100,80,143,.08) 62%,rgba(255,255,255,0));
 }
 * { box-sizing:border-box; margin:0; padding:0; }
-html { background:#0B1F2E; max-width:100%; overflow-x:hidden; overscroll-behavior-y:auto;overscroll-behavior-x:none; }
-body { background:radial-gradient(circle at top left,#132d42 0%,#0B1F2E 58%); color:var(--text); font-family:'Instrument Sans',sans-serif; min-height:100vh; max-width:100%; overflow-x:hidden; overscroll-behavior-y:auto;overscroll-behavior-x:none; }
-body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(229,231,235,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(229,231,235,.06) 1px,transparent 1px);background-size:56px 56px;pointer-events:none;z-index:0;opacity:.34}
-body::after{content:'';position:fixed;inset:0;background:linear-gradient(to bottom,rgba(255,255,255,.02),rgba(255,255,255,0) 20%,rgba(108,77,255,.1) 62%,rgba(255,255,255,0));pointer-events:none;z-index:0}
+html { background:var(--bg); max-width:100%; overflow-x:hidden; overscroll-behavior-y:auto;overscroll-behavior-x:none; }
+body { background:radial-gradient(circle at top left,var(--bg-glow) 0%,var(--bg) 58%); color:var(--text); font-family:'Instrument Sans',sans-serif; min-height:100vh; max-width:100%; overflow-x:hidden; overscroll-behavior-y:auto;overscroll-behavior-x:none; }
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);background-size:56px 56px;pointer-events:none;z-index:0;opacity:.34}
+body::after{content:'';position:fixed;inset:0;background:var(--overlay);pointer-events:none;z-index:0}
 .orb{position:fixed;border-radius:50%;filter:blur(120px);pointer-events:none;z-index:0}
 .orb1{width:660px;height:660px;background:rgba(159,123,255,.16);top:-280px;right:-240px}
 .orb2{width:540px;height:540px;background:rgba(255,95,127,.14);bottom:-220px;left:-220px}
 .wrap { position:relative;z-index:10;max-width:1320px; margin:0 auto; padding:0 16px 80px; }
 .bio-main{max-width:960px;margin:0 auto}
-.site-header{position:-webkit-sticky;position:sticky;top:0;z-index:20;padding:14px 36px;display:flex;flex-direction:column;gap:8px;border-bottom:1px solid var(--border);background:rgba(11,31,46,.88);backdrop-filter:blur(10px);margin:0 0 18px}
+.site-header{position:-webkit-sticky;position:sticky;top:0;z-index:20;padding:14px 36px;display:flex;flex-direction:column;gap:8px;border-bottom:1px solid var(--border);background:var(--header-bg);backdrop-filter:blur(10px);margin:0 0 18px}
 .header-top{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .brand-wrap{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
 .logo-name{font-family:'DM Serif Display',serif;font-size:26px;letter-spacing:.1em;color:var(--accent);text-shadow:0 0 30px rgba(127,125,255,.42)}
@@ -38,6 +44,9 @@ body::after{content:'';position:fixed;inset:0;background:linear-gradient(to bott
 .lang-switch{display:flex;gap:4px;align-items:center;padding:3px;border:1px solid var(--border);border-radius:999px;background:rgba(255,255,255,.02)}
 .lang-btn{border:none;background:transparent;color:var(--muted);font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.08em;padding:4px 7px;border-radius:999px;cursor:pointer}
 .lang-btn.active{color:var(--text);background:rgba(159,123,255,.18)}
+.theme-switch{display:flex;gap:4px;align-items:center;padding:3px;border:1px solid var(--border);border-radius:999px;background:rgba(255,255,255,.02)}
+.theme-btn{border:none;background:transparent;color:var(--muted);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.02em;padding:4px 7px;border-radius:999px;cursor:pointer;line-height:1}
+.theme-btn.active{color:var(--text);background:rgba(106,162,204,.2)}
 .dot{width:5px;height:5px;border-radius:50%;animation:pulse 2s infinite}
 .dot-green{background:#c9b6ff}
 @keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(159,123,255,.45)}50%{opacity:.6;box-shadow:0 0 0 3px rgba(159,123,255,0)}}
@@ -114,7 +123,7 @@ textarea { min-height:90px; resize:vertical; }
   body.menu-open{overflow:hidden}
   .topnav-row{display:block;position:absolute;left:50%;width:min(460px,calc(100vw - 24px));top:calc(100% - 2px);opacity:0;transform:translate(-50%,-8px) scale(.985);pointer-events:none;transition:opacity .2s ease,transform .2s ease;z-index:22}
   .topnav-row.open{opacity:1;transform:translate(-50%,0) scale(1);pointer-events:auto}
-  .topnav{width:100%;display:grid;grid-template-columns:1fr;gap:6px;padding:10px;border:1px solid var(--border);border-radius:12px;background:rgba(17,24,39,.96);backdrop-filter:blur(10px);box-shadow:0 14px 30px rgba(68,52,103,.18)}
+  .topnav{width:100%;display:grid;grid-template-columns:1fr;gap:6px;padding:10px;border:1px solid var(--border);border-radius:12px;background:var(--nav-panel-bg);backdrop-filter:blur(10px);box-shadow:0 14px 30px rgba(68,52,103,.18)}
   .topnav a{white-space:normal;text-align:center;padding:10px 8px;font-size:10px;line-height:1.2}
   .badge{display:none}
   .hero{padding:22px 12px 14px}
@@ -152,6 +161,10 @@ textarea { min-height:90px; resize:vertical; }
         <div class="lang-switch">
           <button class="lang-btn" id="lang-es" onclick="setPreferredLang('es')">ES</button>
           <button class="lang-btn" id="lang-en" onclick="setPreferredLang('en')">EN</button>
+        </div>
+        <div class="theme-switch" aria-label="Theme switcher">
+          <button class="theme-btn" id="theme-light" type="button" onclick="setTheme('light')">☀</button>
+          <button class="theme-btn" id="theme-dark" type="button" onclick="setTheme('dark')">◑</button>
         </div>
       </div>
       <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Abrir menú" aria-expanded="false">
@@ -239,6 +252,7 @@ textarea { min-height:90px; resize:vertical; }
 
 <script>
 const state = { sessionId: '', objective: 'muscle', experience: 'intermediate' };
+const THEME_KEY = 'longeva_theme';
 const USER_LANG = getPreferredLang();
 const IS_EN = USER_LANG === 'en';
 const tr = (es, en) => (IS_EN ? en : es);
@@ -497,6 +511,24 @@ function getPreferredLang() {
   return String(navigator.language || 'es').toLowerCase().startsWith('en') ? 'en' : 'es';
 }
 
+function getPreferredTheme() {
+  const saved = String(localStorage.getItem(THEME_KEY) || '').toLowerCase();
+  if (saved === 'light' || saved === 'dark') return saved;
+  return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  document.getElementById('theme-light')?.classList.toggle('active', theme === 'light');
+  document.getElementById('theme-dark')?.classList.toggle('active', theme === 'dark');
+}
+
+function setTheme(theme) {
+  const next = theme === 'light' ? 'light' : 'dark';
+  localStorage.setItem(THEME_KEY, next);
+  applyTheme(next);
+}
+
 function setPreferredLang(lang) {
   const next = lang === 'en' ? 'en' : 'es';
   localStorage.setItem('longeva_lang', next);
@@ -552,6 +584,7 @@ function initToTop() {
   toggle();
 }
 
+applyTheme(getPreferredTheme());
 applyStaticI18n();
 initMobileMenu();
 initToTop();

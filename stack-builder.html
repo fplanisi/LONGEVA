@@ -7,39 +7,34 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg:#0B1F2E;
-  --surface:rgba(17,24,39,.88);
-  --surface2:rgba(20,30,46,.94);
-  --border:#1F2937;
-  --border2:#2f4766;
-  --accent:#1F6BFF;
-  --accent-dim:rgba(106,255,217,.12);
-  --accent2:#6C4DFF;
-  --accent3:#00C48C;
-  --text:#E5E7EB;
-  --muted:#9CA3AF;
-  --dim:#7F8A9A;
-  --gold:#f0c784;
-  --red:#ff6e8a;
+  --bg:#0D1220; --bg2:#121828; --surface:#182030; --surface2:#1E2840; --border:#243045; --border2:#304060;
+  --accent:#6AA2CC; --accent2:#9888C8; --accent3:#55B09A; --text:#D8E4F0; --tx2:#ACBFD4; --muted:#688098; --dim:#3C5068;
+  --gold:#B8924A; --red:#C85858; --accent-dim:rgba(106,162,204,.14); --bg-glow:#13253a; --grid-line:rgba(216,228,240,.06);
+  --header-bg:rgba(13,18,32,.88); --nav-panel-bg:rgba(24,32,48,.96); --overlay:linear-gradient(to bottom,rgba(255,255,255,.02),rgba(255,255,255,0) 20%,rgba(106,162,204,.08) 62%,rgba(255,255,255,0));
+}
+html[data-theme="light"]{
+  --bg:#F1F4F8; --bg2:#E7ECF3; --surface:#FFFFFF; --surface2:#F6F8FB; --border:#D4DCEA; --border2:#B8C6D8;
+  --accent:#355F8C; --accent2:#64508F; --accent3:#3A7865; --text:#152030; --tx2:#334860; --muted:#5E7488; --dim:#94A8BC;
+  --gold:#8C6828; --red:#A83838; --accent-dim:rgba(53,95,140,.12); --bg-glow:#dbe5f0; --grid-line:rgba(21,32,48,.08);
+  --header-bg:rgba(241,244,248,.9); --nav-panel-bg:rgba(255,255,255,.97); --overlay:linear-gradient(to bottom,rgba(255,255,255,.55),rgba(255,255,255,0) 22%,rgba(53,95,140,.08) 62%,rgba(255,255,255,0));
 }
 html { background: var(--bg); max-width: 100%; overflow-x: hidden; overscroll-behavior-y:auto;overscroll-behavior-x:none; }
 body.paid-mode {
-  --accent:#1F6BFF;
-  --accent2:#6C4DFF;
-  --accent3:#00C48C;
-  --accent-dim:rgba(106,255,217,.12);
-  background:radial-gradient(circle at 14% -8%,#153248 0%,#0B1F2E 58%);
+  --accent:#6AA2CC;
+  --accent2:#9888C8;
+  --accent3:#55B09A;
+  --accent-dim:rgba(106,162,204,.14);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
-body{background:radial-gradient(circle at 14% -8%,#153248 0%,#0B1F2E 58%);color:var(--text);font-family:'Instrument Sans',sans-serif;min-height:100vh;max-width:100%;overflow-x:hidden;overscroll-behavior-y:auto;overscroll-behavior-x:none}
+body{background:radial-gradient(circle at 14% -8%,var(--bg-glow) 0%,var(--bg) 58%);color:var(--text);font-family:'Instrument Sans',sans-serif;min-height:100vh;max-width:100%;overflow-x:hidden;overscroll-behavior-y:auto;overscroll-behavior-x:none}
 
 /* ── SURFACE GRID ── */
-body::after{content:'';position:fixed;inset:0;background:linear-gradient(to bottom,rgba(255,255,255,.02),rgba(255,255,255,0) 20%,rgba(31,107,255,.08) 62%,rgba(255,255,255,0));pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;inset:0;background:var(--overlay);pointer-events:none;z-index:0}
 
 /* ── GRID ── */
-body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(229,231,235,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(229,231,235,.06) 1px,transparent 1px);background-size:56px 56px;pointer-events:none;z-index:0;opacity:.34}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);background-size:56px 56px;pointer-events:none;z-index:0;opacity:.34}
 
 /* ── ORBS ── */
 .orb{position:fixed;border-radius:50%;filter:blur(120px);pointer-events:none;z-index:0}
@@ -53,7 +48,7 @@ header {
   display: flex; flex-direction: column;
   border-bottom: 1px solid var(--border);
   gap: 8px;
-  background: rgba(230,237,242,.92);
+  background: var(--header-bg);
   backdrop-filter: blur(10px);
   margin: 0 0 18px;
 }
@@ -74,6 +69,9 @@ header {
 .lang-switch{display:flex;gap:4px;align-items:center;padding:3px;border:1px solid var(--border);border-radius:999px;background:rgba(255,255,255,.02)}
 .lang-btn{border:none;background:transparent;color:var(--muted);font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.08em;padding:4px 7px;border-radius:999px;cursor:pointer}
 .lang-btn.active{color:var(--text);background:rgba(31,107,255,.2)}
+.theme-switch{display:flex;gap:4px;align-items:center;padding:3px;border:1px solid var(--border);border-radius:999px;background:rgba(255,255,255,.02)}
+.theme-btn{border:none;background:transparent;color:var(--muted);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.02em;padding:4px 7px;border-radius:999px;cursor:pointer;line-height:1}
+.theme-btn.active{color:var(--text);background:rgba(106,162,204,.2)}
 .dot{width:5px;height:5px;border-radius:50%;animation:pulse 2s infinite}
 .dot-green{background:var(--accent3)}
 @keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(0,200,160,.4)}50%{opacity:.6;box-shadow:0 0 0 3px rgba(0,200,160,0)}}
@@ -569,7 +567,7 @@ input[type=range]::-webkit-slider-thumb {
   body.menu-open{overflow:hidden}
   .topnav-row{display:block;position:absolute;left:50%;width:min(460px,calc(100vw - 24px));top:calc(100% - 2px);opacity:0;transform:translate(-50%,-8px) scale(.985);pointer-events:none;transition:opacity .2s ease,transform .2s ease;z-index:22}
   .topnav-row.open{opacity:1;transform:translate(-50%,0) scale(1);pointer-events:auto}
-  .topnav { width: 100%; display: grid; grid-template-columns: 1fr; gap: 6px; padding: 0; border: 0; border-radius: 12px; background: rgba(17,24,39,.96); backdrop-filter: blur(10px); box-shadow: 0 14px 30px rgba(0,0,0,.36); }
+  .topnav { width: 100%; display: grid; grid-template-columns: 1fr; gap: 6px; padding: 0; border: 0; border-radius: 12px; background: var(--nav-panel-bg); backdrop-filter: blur(10px); box-shadow: 0 14px 30px rgba(0,0,0,.36); }
   .topnav a { white-space: normal; text-align: center; padding: 10px 8px; font-size: 10px; line-height: 1.2; }
   .badge { display: none; }
   .stack-main { padding: 0 14px 72px; }
@@ -637,6 +635,10 @@ input[type=range]::-webkit-slider-thumb {
       <div class="lang-switch">
         <button class="lang-btn" id="lang-es" onclick="setPreferredLang('es')">ES</button>
         <button class="lang-btn" id="lang-en" onclick="setPreferredLang('en')">EN</button>
+      </div>
+      <div class="theme-switch" aria-label="Theme switcher">
+        <button class="theme-btn" id="theme-light" type="button" onclick="setTheme('light')">☀</button>
+        <button class="theme-btn" id="theme-dark" type="button" onclick="setTheme('dark')">◑</button>
       </div>
     </div>
     <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Abrir menú" aria-expanded="false">
@@ -973,6 +975,7 @@ const USER_LANG = getPreferredLang();
 const IS_EN = USER_LANG === 'en';
 const tr = (es, en) => (IS_EN ? en : es);
 document.documentElement.lang = USER_LANG;
+const THEME_KEY = 'longeva_theme';
 const WIZARD_STATE_KEY = 'longeva_wizard_state_v1';
 const STACK_HISTORY_KEY = 'longeva_stack_history_v1';
 const STACK_SESSION_KEY = 'longeva_paid_session_stack_builder';
@@ -2084,6 +2087,24 @@ function getPreferredLang() {
   return String(navigator.language || 'es').toLowerCase().startsWith('en') ? 'en' : 'es';
 }
 
+function getPreferredTheme() {
+  const saved = String(localStorage.getItem(THEME_KEY) || '').toLowerCase();
+  if (saved === 'light' || saved === 'dark') return saved;
+  return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  document.getElementById('theme-light')?.classList.toggle('active', theme === 'light');
+  document.getElementById('theme-dark')?.classList.toggle('active', theme === 'dark');
+}
+
+function setTheme(theme) {
+  const next = theme === 'light' ? 'light' : 'dark';
+  localStorage.setItem(THEME_KEY, next);
+  applyTheme(next);
+}
+
 function setPreferredLang(lang) {
   const next = lang === 'en' ? 'en' : 'es';
   localStorage.setItem('longeva_lang', next);
@@ -2139,6 +2160,7 @@ function initToTop() {
   toggle();
 }
 
+applyTheme(getPreferredTheme());
 initMobileMenu();
 initToTop();
 
