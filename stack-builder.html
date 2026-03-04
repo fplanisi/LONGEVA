@@ -1109,7 +1109,9 @@ function applyWizardStateToUI() {
   }
   document.getElementById(`step${target}`).style.display = 'block';
   document.getElementById(`sd${target}`).classList.add('active');
-  document.getElementById('prog-label').textContent = `Paso ${target} de 4 — ${stepLabels[target-1]}`;
+  document.getElementById('prog-label').textContent = IS_EN
+    ? `Step ${target} of 4 — ${stepLabels[target-1]}`
+    : `Paso ${target} de 4 — ${stepLabels[target-1]}`;
 }
 
 async function initAccess() {

@@ -461,12 +461,12 @@ async function checkProvider() {
     badge.classList.remove('openai', 'groq');
     if (prov === 'groq') {
       badge.classList.add('groq');
-      name.textContent = 'Groq (testing)';
+      name.textContent = IS_EN ? 'Groq (testing)' : 'Groq (testing)';
     } else if (prov === 'openai') {
       badge.classList.add('openai');
-      name.textContent = 'OpenAI (producción)';
+      name.textContent = IS_EN ? 'OpenAI (production)' : 'OpenAI (producción)';
     } else if (prov === 'anthropic') {
-      name.textContent = 'Claude (producción)';
+      name.textContent = IS_EN ? 'Claude (production)' : 'Claude (producción)';
     } else {
       name.textContent = prov;
     }
