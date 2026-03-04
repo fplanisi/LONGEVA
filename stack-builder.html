@@ -85,6 +85,13 @@ header {
 .hero-title em { font-style: italic; color: var(--accent); display: block; }
 .hero-sub { font-size: 15px; color: var(--muted); max-width: 480px; margin: 0 auto 40px; line-height: 1.7; font-weight: 400; }
 .hero-proof { display: flex; justify-content: center; gap: 32px; flex-wrap: wrap; }
+.hero-link {
+  margin-top: 18px; display: inline-flex; align-items: center; gap: 8px;
+  padding: 9px 14px; border-radius: 999px; border: 1px solid var(--border2);
+  color: var(--text); text-decoration: none; font-size: 12px;
+  background: rgba(255,255,255,.02);
+}
+.hero-link:hover { border-color: var(--accent3); color: var(--accent3); }
 .proof-item { text-align: center; }
 .proof-n { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 300; color: var(--accent); line-height: 1; }
 .proof-l { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--dim); letter-spacing: .1em; text-transform: uppercase; margin-top: 3px; }
@@ -457,6 +464,7 @@ input[type=range]::-webkit-slider-thumb {
       <div class="proof-item"><div class="proof-n">IA</div><div class="proof-l">Análisis</div></div>
       <div class="proof-item"><div class="proof-n">2min</div><div class="proof-l">Proceso</div></div>
     </div>
+    <a class="hero-link" href="/biohacker-protocol.html">🧪 Módulo Biohacker Experimental (Peptidos)</a>
   </div>
 
   <!-- EMAIL GATE -->

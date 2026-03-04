@@ -4,6 +4,7 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const email = String(req.body?.email || '').trim();
+  const returnToRaw = String(req.body?.return_to || '').trim();
   if (!email || !email.includes('@')) {
     return res.status(400).json({ error: 'Email válido requerido' });
   }
@@ -42,8 +43,9 @@ export default async function handler(req, res) {
       });
     }
 
-    const successPath = '/stack-builder.html?paid=1&session_id={CHECKOUT_SESSION_ID}';
-    const cancelPath = '/stack-builder.html?canceled=1';
+    const safeReturnTo = isSafeReturnPath(returnToRaw) ? returnToRaw : '/stack-builder.html';
+    const successPath = `${safeReturnTo}?paid=1&session_id={CHECKOUT_SESSION_ID}`;
+    const cancelPath = `${safeReturnTo}?canceled=1`;
 
     const params = new URLSearchParams();
     params.set('mode', 'payment');
@@ -79,4 +81,8 @@ function setCors(res) {
   res.setHeader('Access-Control-Allow-Origin', process.env.ALLOWED_ORIGIN || '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+}
+
+function isSafeReturnPath(path) {
+  return /^\/[a-zA-Z0-9\-_/\.]*$/.test(path) && !path.includes('..');
 }
