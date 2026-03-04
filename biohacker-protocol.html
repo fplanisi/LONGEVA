@@ -104,6 +104,7 @@ textarea { min-height:90px; resize:vertical; }
       </div>
       <div class="status-row">
         <div class="status-chip">Biohacker Lab · Experimental</div>
+        <div class="status-chip" id="clinical-chip">Marco clínico diseñado por médico</div>
         <div class="lang-switch">
           <button class="lang-btn" id="lang-es" onclick="setPreferredLang('es')">ES</button>
           <button class="lang-btn" id="lang-en" onclick="setPreferredLang('en')">EN</button>
@@ -390,6 +391,8 @@ function applyStaticI18n() {
   if (nav[3]) nav[3].textContent = 'Nutrition';
   set('.logo-tag', 'v3.1 · Hybrid AI + Curated base');
   set('.status-chip', 'Biohacker Lab · Experimental');
+  const chips = document.querySelectorAll('.status-chip');
+  if (chips[1]) chips[1].textContent = 'Physician-designed clinical framework';
   set('.hero-kicker', 'Biohacker Lab · Advanced level');
   set('.hero h1', 'Experimental Peptide Protocol');
   const heroP = document.querySelector('.hero p');

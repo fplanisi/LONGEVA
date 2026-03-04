@@ -86,6 +86,7 @@ body{
       </div>
       <div class="status-row">
         <div class="status-chip">Nutrición · Food-first (gratis)</div>
+        <div class="status-chip" id="clinical-chip">Marco clínico diseñado por médico</div>
         <div class="lang-switch">
           <button class="lang-btn" id="lang-es" onclick="setPreferredLang('es')">ES</button>
           <button class="lang-btn" id="lang-en" onclick="setPreferredLang('en')">EN</button>
@@ -345,6 +346,8 @@ function applyStaticI18n() {
   set('.logo-tag', 'v3.1 · Hybrid AI + Curated base');
   document.title = 'LONGEVA — Longevity Nutrition';
   set('.status-chip', 'Nutrition · Food-first (free)');
+  const chips = document.querySelectorAll('.status-chip');
+  if (chips[1]) chips[1].textContent = 'Physician-designed clinical framework';
   set('#gen-btn', 'Generate food plan');
   const heroTitle = document.querySelector('.hero h1');
   if (heroTitle) heroTitle.innerHTML = 'Longevity nutrition<br>without supplements';

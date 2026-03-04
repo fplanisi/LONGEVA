@@ -107,6 +107,7 @@ header {
 .hero-title { font-family: 'DM Serif Display', serif; font-size: clamp(44px, 6vw, 80px); font-weight: 400; line-height: 1.05; margin-bottom: 20px; }
 .hero-title em { font-style: italic; color: var(--accent); display: block; }
 .hero-sub { font-size: 15px; color: var(--muted); max-width: 480px; margin: 0 auto 40px; line-height: 1.7; font-weight: 400; }
+.hero-trust { margin: -20px auto 22px; display: inline-flex; gap: 8px; align-items: center; border: 1px solid var(--border2); border-radius: 999px; padding: 7px 12px; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: .06em; background: rgba(255,255,255,.02); }
 .hero-proof { display: flex; justify-content: center; gap: 32px; flex-wrap: wrap; }
 .hero-link {
   margin-top: 18px; display: inline-flex; align-items: center; gap: 8px;
@@ -649,6 +650,7 @@ input[type=range]::-webkit-slider-thumb {
       <em>de longevidad</em>
     </h1>
     <p class="hero-sub">120+ moléculas validadas. IA que analiza tu perfil y diseña el stack óptimo para ti — con dosis, horarios y sinergias.</p>
+    <p class="hero-trust" id="hero-trust-med">Diseño clínico por médico · priorización de seguridad y contraindicaciones</p>
     <div class="hero-proof">
       <div class="proof-item"><div class="proof-n">120+</div><div class="proof-l">Moléculas</div></div>
       <div class="proof-item"><div class="proof-n">5</div><div class="proof-l">Variables</div></div>
@@ -1858,6 +1860,7 @@ function applyStaticI18n() {
   set('.hero-kicker', 'Scientific personalization');
   set('.hero-title', 'Build your longevity stack');
   set('.hero-sub', '120+ validated molecules. AI designs your optimal stack with doses, timing, and synergies.');
+  set('#hero-trust-med', 'Physician-led clinical design · safety and contraindication-first logic');
   set('.hero-link', 'Back to library');
   set('.gate-title', 'Unlock your Stack Builder');
   const gateSub = document.querySelector('.gate-sub');
