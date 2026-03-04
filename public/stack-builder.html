@@ -48,7 +48,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 
 /* ── HEADER ── */
 header {
-  position: sticky; top: 0; z-index: 20;
+  position: -webkit-sticky; position: sticky; top: 0; z-index: 20;
   padding: 14px 36px;
   display: flex; flex-direction: column;
   border-bottom: 1px solid var(--border);
@@ -537,6 +537,9 @@ input[type=range]::-webkit-slider-thumb {
 .legal-footer { position: relative; z-index: 10; max-width: 1320px; margin: 18px auto 24px; padding: 0 16px; display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .04em; color: var(--dim); }
 .legal-footer a { color: var(--muted); text-decoration: none; }
 .legal-footer a:hover { color: var(--accent); }
+.to-top{position:fixed;right:16px;bottom:16px;width:42px;height:42px;border-radius:999px;border:1px solid var(--border);background:rgba(5,7,12,.9);color:var(--accent);font-size:18px;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;pointer-events:none;transform:translateY(8px);transition:opacity .2s ease,transform .2s ease,border-color .2s ease;z-index:45}
+.to-top:hover{border-color:var(--accent2);color:#fff}
+.to-top.show{opacity:1;pointer-events:auto;transform:translateY(0)}
 .history-card { background: var(--surface2); border: 0; border-radius: 14px; padding: 18px 20px; margin-top: 20px; }
 .history-title { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .1em; color: var(--accent3); text-transform: uppercase; margin-bottom: 10px; }
 .history-list { display: grid; gap: 8px; }
@@ -555,7 +558,7 @@ input[type=range]::-webkit-slider-thumb {
 .err-box { background: rgba(240,96,96,.06); border: 1px solid rgba(240,96,96,.2); border-radius: 12px; padding: 20px; color: #ff9090; font-family: 'DM Mono', monospace; font-size: 12px; }
 
 @media(max-width: 900px) {
-  header { position: sticky; top: 0; z-index: 20; padding: 14px 12px; margin: 0 0 14px; }
+  header { position: -webkit-sticky; position: sticky; top: 0; z-index: 20; padding: 14px 12px; margin: 0 0 14px; }
   .header-top { align-items: center; justify-content: space-between; flex-direction: row; gap: 8px; }
   .status-row { width: auto; justify-content: flex-end; margin-left: auto; }
   .menu-toggle{display:inline-flex;position:relative;z-index:22}
@@ -614,6 +617,12 @@ input[type=range]::-webkit-slider-thumb {
     margin-bottom: 18px;
     backdrop-filter: none;
   }
+}
+@media(max-width:900px){
+  body.header-compact header{padding:8px 12px;gap:0}
+  body.header-compact .header-top{min-height:34px}
+  body.header-compact .status-row{display:none}
+  body.header-compact .logo-tag{display:none}
 }
 </style>
 </head>
@@ -935,6 +944,7 @@ input[type=range]::-webkit-slider-thumb {
   <span>Uso informativo. No reemplaza evaluación médica profesional.</span>
   <span><a href="/terms.html">Términos</a> · <a href="/privacy.html">Privacidad</a></span>
 </footer>
+<button class="to-top" id="to-top" type="button" aria-label="Volver arriba">↑</button>
 
 <div class="modal" id="safety-modal" role="dialog" aria-modal="true" aria-labelledby="safety-title">
   <div class="modal-card">
@@ -2124,7 +2134,31 @@ function initMobileMenu() {
   });
 }
 
+function initToTop() {
+  const btn = document.getElementById('to-top');
+  if (!btn) return;
+  const toggle = () => btn.classList.toggle('show', window.scrollY > 420);
+  btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  window.addEventListener('scroll', toggle, { passive: true });
+  toggle();
+}
+
+function initHeaderCompact() {
+  const onScroll = () => {
+    if (window.innerWidth > 900) {
+      document.body.classList.remove('header-compact');
+      return;
+    }
+    document.body.classList.toggle('header-compact', window.scrollY > 56);
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  onScroll();
+}
+
 initMobileMenu();
+initToTop();
+initHeaderCompact();
 
 initAccess();
 </script>

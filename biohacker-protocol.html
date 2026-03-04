@@ -20,7 +20,7 @@ body::after{content:'';position:fixed;inset:0;background:linear-gradient(to bott
 .orb2{width:540px;height:540px;background:rgba(255,95,127,.14);bottom:-220px;left:-220px}
 .wrap { position:relative;z-index:10;max-width:1320px; margin:0 auto; padding:0 16px 80px; }
 .bio-main{max-width:960px;margin:0 auto}
-.site-header{position:sticky;top:0;z-index:20;padding:14px 36px;display:flex;flex-direction:column;gap:8px;border-bottom:1px solid var(--border);background:rgba(5,7,12,.86);backdrop-filter:blur(10px);margin:0 0 18px}
+.site-header{position:-webkit-sticky;position:sticky;top:0;z-index:20;padding:14px 36px;display:flex;flex-direction:column;gap:8px;border-bottom:1px solid var(--border);background:rgba(5,7,12,.86);backdrop-filter:blur(10px);margin:0 0 18px}
 .header-top{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .brand-wrap{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
 .logo-name{font-family:'DM Serif Display',serif;font-size:26px;letter-spacing:.1em;color:var(--accent);text-shadow:0 0 30px rgba(127,125,255,.42)}
@@ -97,10 +97,13 @@ textarea { min-height:90px; resize:vertical; }
 .legal-footer{position:relative;z-index:10;max-width:1320px;margin:18px auto 24px;padding:0 16px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.04em;color:var(--muted)}
 .legal-footer a{color:#d9cfff;text-decoration:none}
 .legal-footer a:hover{color:#fff}
+.to-top{position:fixed;right:16px;bottom:16px;width:42px;height:42px;border-radius:999px;border:1px solid var(--border);background:rgba(8,6,16,.9);color:#d9cfff;font-size:18px;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;pointer-events:none;transform:translateY(8px);transition:opacity .2s ease,transform .2s ease,border-color .2s ease;z-index:45}
+.to-top:hover{border-color:rgba(255,130,205,.8);color:#fff}
+.to-top.show{opacity:1;pointer-events:auto;transform:translateY(0)}
 @media(max-width:900px){
   .grid{grid-template-columns:1fr;}
   .wrap{padding:0 12px 64px}
-  .site-header{position:sticky;top:0;z-index:20;padding:14px 12px;margin:0 0 14px}
+  .site-header{position:-webkit-sticky;position:sticky;top:0;z-index:20;padding:14px 12px;margin:0 0 14px}
   .header-top{align-items:center;justify-content:space-between;flex-direction:row;gap:8px}
   .status-row{width:auto;justify-content:flex-end;margin-left:auto}
   .menu-toggle{display:inline-flex;position:relative;z-index:22}
@@ -129,6 +132,12 @@ textarea { min-height:90px; resize:vertical; }
   .item{padding:11px}
   .item h4{font-size:15px}
   .item p{font-size:12px}
+}
+@media(max-width:900px){
+  body.header-compact .site-header{padding:8px 12px;gap:0}
+  body.header-compact .header-top{min-height:34px}
+  body.header-compact .status-row{display:none}
+  body.header-compact .logo-tag{display:none}
 }
 </style>
 </head>
@@ -229,6 +238,7 @@ textarea { min-height:90px; resize:vertical; }
   <span>Módulo experimental. No reemplaza evaluación médica profesional.</span>
   <span><a href="/terms.html">Términos</a> · <a href="/privacy.html">Privacidad</a></span>
 </footer>
+<button class="to-top" id="to-top" type="button" aria-label="Volver arriba">↑</button>
 
 <script>
 const state = { sessionId: '', objective: 'muscle', experience: 'intermediate' };
@@ -535,8 +545,32 @@ function initMobileMenu() {
   });
 }
 
+function initToTop() {
+  const btn = document.getElementById('to-top');
+  if (!btn) return;
+  const toggle = () => btn.classList.toggle('show', window.scrollY > 420);
+  btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  window.addEventListener('scroll', toggle, { passive: true });
+  toggle();
+}
+
+function initHeaderCompact() {
+  const onScroll = () => {
+    if (window.innerWidth > 900) {
+      document.body.classList.remove('header-compact');
+      return;
+    }
+    document.body.classList.toggle('header-compact', window.scrollY > 56);
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  onScroll();
+}
+
 applyStaticI18n();
 initMobileMenu();
+initToTop();
+initHeaderCompact();
 init();
 </script>
 </body>
