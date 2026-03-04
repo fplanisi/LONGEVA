@@ -22,6 +22,12 @@
   --gold:#f0c784;
   --red:#ff6e8a;
 }
+body.paid-mode {
+  --accent:#7ac8ff;
+  --accent2:#9db5ff;
+  --accent3:#f0c784;
+  --accent-dim:rgba(122,200,255,.12);
+}
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -501,8 +507,8 @@ input[type=range]::-webkit-slider-thumb {
 @media(max-width: 640px) {
   header { padding: 14px 12px; }
   .header-right { width: 100%; }
-  .topnav { width: 100%; overflow-x: auto; flex-wrap: nowrap; padding-bottom: 2px; }
-  .topnav a { white-space: nowrap; padding: 9px 14px; font-size: 11px; }
+  .topnav { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .topnav a { white-space: normal; text-align: center; padding: 10px 8px; font-size: 10px; line-height: 1.2; }
   .hbadge { display: none; }
   .wrapper { padding: 0 14px 72px; }
   .hero { padding: 36px 0 24px; }
@@ -885,6 +891,7 @@ async function initAccess() {
 }
 
 function unlockWizard() {
+  document.body.classList.add('paid-mode');
   document.getElementById('email-gate').style.display = 'none';
   document.getElementById('wizard').style.display = 'block';
 }
