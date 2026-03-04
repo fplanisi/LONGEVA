@@ -1303,6 +1303,7 @@ function buildProfilePayload(budgetLabel) {
 async function generateStack() {
   if (!state.paidSessionId) {
     const gate = document.getElementById('email-gate');
+    document.getElementById('wizard').style.display = 'none';
     gate.style.display = 'block';
     setGateMsg(
       tr('Solo falta el pago para generar tu stack. Tus datos ya quedaron cargados.', 'Payment is required before generation. Your profile data is already saved.'),

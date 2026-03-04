@@ -68,6 +68,14 @@ function isOriginAllowed(origin, req) {
   const normalizedOrigin = String(origin || '').trim().replace(/\/$/, '');
   if (!normalizedOrigin) return true;
 
+  // Always allow same-host requests (covers production and preview deployments).
+  try {
+    const parsed = new URL(normalizedOrigin);
+    const originHost = String(parsed.host || '').trim().toLowerCase();
+    const reqHost = String(req.headers?.host || '').trim().toLowerCase();
+    if (originHost && reqHost && originHost === reqHost) return true;
+  } catch (_e) {}
+
   const allowed = getAllowedOrigin(req);
   if (!allowed || allowed === '*') return true;
   if (normalizedOrigin === allowed) return true;
