@@ -20,6 +20,9 @@ body { background:radial-gradient(circle at top left,#221a3a 0%,#05070c 48%); co
 .logo-tag{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:.16em}
 .status-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
 .status-chip{display:flex;align-items:center;gap:6px;padding:6px 11px;border-radius:100px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;background:rgba(159,123,255,.1);border:1px solid rgba(159,123,255,.34);color:#c7b6ff}
+.lang-switch{display:flex;gap:4px;align-items:center;padding:3px;border:1px solid var(--border);border-radius:999px;background:rgba(255,255,255,.02)}
+.lang-btn{border:none;background:transparent;color:var(--muted);font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.08em;padding:4px 7px;border-radius:999px;cursor:pointer}
+.lang-btn.active{color:var(--text);background:rgba(159,123,255,.18)}
 .topnav-row{width:100%}
 .topnav { display:flex; align-items:center; gap:7px; flex-wrap:wrap; }
 .topnav a { color:var(--muted); text-decoration:none; font-size:10px; border:1px solid var(--border); padding:7px 13px; border-radius:999px; font-family:'DM Mono',monospace; letter-spacing:.1em; background:rgba(255,255,255,.01); }
@@ -101,6 +104,10 @@ textarea { min-height:90px; resize:vertical; }
       </div>
       <div class="status-row">
         <div class="status-chip">Biohacker Lab · Experimental</div>
+        <div class="lang-switch">
+          <button class="lang-btn" id="lang-es" onclick="setPreferredLang('es')">ES</button>
+          <button class="lang-btn" id="lang-en" onclick="setPreferredLang('en')">EN</button>
+        </div>
       </div>
     </div>
     <div class="topnav-row">
@@ -173,7 +180,7 @@ textarea { min-height:90px; resize:vertical; }
 
 <script>
 const state = { sessionId: '', objective: 'muscle', experience: 'intermediate' };
-const USER_LANG = String(navigator.language || 'es').toLowerCase().startsWith('en') ? 'en' : 'es';
+const USER_LANG = getPreferredLang();
 const IS_EN = USER_LANG === 'en';
 document.documentElement.lang = USER_LANG;
 
@@ -368,6 +375,7 @@ function escapeHtml(s) {
 }
 
 function applyStaticI18n() {
+  updateLangButtons();
   if (!IS_EN) return;
   const set = (sel, txt) => { const el = document.querySelector(sel); if (el) el.textContent = txt; };
   const nav = document.querySelectorAll('.topnav a');
@@ -383,6 +391,23 @@ function applyStaticI18n() {
   if (heroP) heroP.textContent = 'Not a wellness routine. This is aggressive optimization for advanced users, with phases, monitoring, and clinical red flags.';
   const alert = document.querySelector('.alert');
   if (alert) alert.textContent = 'Experts only. Not medical advice. Real risk of interactions and adverse effects.';
+}
+
+function getPreferredLang() {
+  const saved = String(localStorage.getItem('longeva_lang') || '').toLowerCase();
+  if (saved === 'en' || saved === 'es') return saved;
+  return String(navigator.language || 'es').toLowerCase().startsWith('en') ? 'en' : 'es';
+}
+
+function setPreferredLang(lang) {
+  const next = lang === 'en' ? 'en' : 'es';
+  localStorage.setItem('longeva_lang', next);
+  location.reload();
+}
+
+function updateLangButtons() {
+  document.getElementById('lang-es')?.classList.toggle('active', USER_LANG === 'es');
+  document.getElementById('lang-en')?.classList.toggle('active', USER_LANG === 'en');
 }
 
 applyStaticI18n();

@@ -24,6 +24,9 @@ body{
 .logo-tag{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:.16em}
 .status-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
 .status-chip{display:flex;align-items:center;gap:6px;padding:6px 11px;border-radius:100px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;background:rgba(106,255,217,.1);border:1px solid rgba(106,255,217,.3);color:var(--accent)}
+.lang-switch{display:flex;gap:4px;align-items:center;padding:3px;border:1px solid var(--border);border-radius:999px;background:rgba(255,255,255,.02)}
+.lang-btn{border:none;background:transparent;color:var(--muted);font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.08em;padding:4px 7px;border-radius:999px;cursor:pointer}
+.lang-btn.active{color:var(--text);background:rgba(106,255,217,.14)}
 .topnav-row{width:100%}
 .topnav{display:flex;gap:7px;flex-wrap:wrap}
 .topnav a{font-size:10px;text-decoration:none;color:var(--muted);padding:7px 13px;border-radius:999px;border:1px solid var(--border);background:rgba(255,255,255,.01);font-family:'DM Mono',monospace;letter-spacing:.1em}
@@ -83,6 +86,10 @@ body{
       </div>
       <div class="status-row">
         <div class="status-chip">Nutrición · Food-first (gratis)</div>
+        <div class="lang-switch">
+          <button class="lang-btn" id="lang-es" onclick="setPreferredLang('es')">ES</button>
+          <button class="lang-btn" id="lang-en" onclick="setPreferredLang('en')">EN</button>
+        </div>
       </div>
     </div>
     <div class="topnav-row">
@@ -132,7 +139,7 @@ body{
 
 <script>
 const state = { goal: 'longevity', style: 'omnivore' };
-const USER_LANG = String(navigator.language || 'es').toLowerCase().startsWith('en') ? 'en' : 'es';
+const USER_LANG = getPreferredLang();
 const IS_EN = USER_LANG === 'en';
 document.documentElement.lang = USER_LANG;
 
@@ -253,6 +260,7 @@ document.getElementById('gen-btn').addEventListener('click', () => {
 });
 
 function applyStaticI18n() {
+  updateLangButtons();
   if (!IS_EN) return;
   const set = (sel, txt) => { const el = document.querySelector(sel); if (el) el.textContent = txt; };
   const nav = document.querySelectorAll('.topnav a');
@@ -263,6 +271,23 @@ function applyStaticI18n() {
   set('.logo-tag', 'v3.1 · Hybrid AI + Curated base');
   set('.status-chip', 'Nutrition · Food-first (free)');
   set('#gen-btn', 'Generate food plan');
+}
+
+function getPreferredLang() {
+  const saved = String(localStorage.getItem('longeva_lang') || '').toLowerCase();
+  if (saved === 'en' || saved === 'es') return saved;
+  return String(navigator.language || 'es').toLowerCase().startsWith('en') ? 'en' : 'es';
+}
+
+function setPreferredLang(lang) {
+  const next = lang === 'en' ? 'en' : 'es';
+  localStorage.setItem('longeva_lang', next);
+  location.reload();
+}
+
+function updateLangButtons() {
+  document.getElementById('lang-es')?.classList.toggle('active', USER_LANG === 'es');
+  document.getElementById('lang-en')?.classList.toggle('active', USER_LANG === 'en');
 }
 
 applyStaticI18n();

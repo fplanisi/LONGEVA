@@ -84,6 +84,9 @@ header {
 .logo-tag { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--muted); letter-spacing: .16em; }
 .hbadge { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: .1em; border: 1px solid var(--border2); padding: 5px 12px; border-radius: 100px; }
 .status-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+.lang-switch{display:flex;gap:4px;align-items:center;padding:3px;border:1px solid var(--border);border-radius:999px;background:rgba(255,255,255,.02)}
+.lang-btn{border:none;background:transparent;color:var(--muted);font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.08em;padding:4px 7px;border-radius:999px;cursor:pointer}
+.lang-btn.active{color:var(--text);background:rgba(106,255,217,.12)}
 .topnav-row { width: 100%; }
 .topnav { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
 .topnav a {
@@ -619,6 +622,10 @@ input[type=range]::-webkit-slider-thumb {
     </div>
     <div class="status-row">
       <div class="hbadge">Stack Builder · 2026</div>
+      <div class="lang-switch">
+        <button class="lang-btn" id="lang-es" onclick="setPreferredLang('es')">ES</button>
+        <button class="lang-btn" id="lang-en" onclick="setPreferredLang('en')">EN</button>
+      </div>
     </div>
   </div>
   <div class="topnav-row">
@@ -918,7 +925,7 @@ const state = {
   lastStack: null,
   lastBudgetLabel: ''
 };
-const USER_LANG = String(navigator.language || 'es').toLowerCase().startsWith('en') ? 'en' : 'es';
+const USER_LANG = getPreferredLang();
 const IS_EN = USER_LANG === 'en';
 const tr = (es, en) => (IS_EN ? en : es);
 document.documentElement.lang = USER_LANG;
@@ -1716,6 +1723,7 @@ function loadStackVersion(index) {
 }
 
 function applyStaticI18n() {
+  updateLangButtons();
   if (!IS_EN) return;
   const set = (sel, txt) => { const el = document.querySelector(sel); if (el) el.textContent = txt; };
   const nav = document.querySelectorAll('.topnav a');
@@ -1733,6 +1741,23 @@ function applyStaticI18n() {
   if (gateBtn) gateBtn.textContent = 'Continue to checkout →';
   const email = document.getElementById('user-email');
   if (email) email.placeholder = 'you@email.com';
+}
+
+function getPreferredLang() {
+  const saved = String(localStorage.getItem('longeva_lang') || '').toLowerCase();
+  if (saved === 'en' || saved === 'es') return saved;
+  return String(navigator.language || 'es').toLowerCase().startsWith('en') ? 'en' : 'es';
+}
+
+function setPreferredLang(lang) {
+  const next = lang === 'en' ? 'en' : 'es';
+  localStorage.setItem('longeva_lang', next);
+  location.reload();
+}
+
+function updateLangButtons() {
+  document.getElementById('lang-es')?.classList.toggle('active', USER_LANG === 'es');
+  document.getElementById('lang-en')?.classList.toggle('active', USER_LANG === 'en');
 }
 
 initAccess();
