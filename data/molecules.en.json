@@ -80,7 +80,7 @@
     },
     {
       "id": "trametes-versicolor",
-      "name": "Cola de Pavo",
+      "name": "Turkey Tail",
       "full_name": "Trametes versicolor (Turkey Tail)",
       "type": "natural",
       "category": "Medicinal Mushrooms",
@@ -167,8 +167,8 @@
     },
     {
       "id": "ergothioneine",
-      "name": "Ergotioneína",
-      "full_name": "Ergotioneína (EGT)",
+      "name": "Ergothioneine",
+      "full_name": "Ergothioneine (EGT)",
       "type": "natural",
       "category": "Medicinal Mushrooms",
       "tags": [
@@ -225,7 +225,7 @@
     },
     {
       "id": "hericium-erinaceus",
-      "name": "Melena de León",
+      "name": "Lion’s Mane",
       "full_name": "Hericium erinaceus",
       "type": "natural",
       "category": "Medicinal Mushrooms",
@@ -353,7 +353,7 @@
     },
     {
       "id": "apigenin",
-      "name": "Apigenina",
+      "name": "Apigenin",
       "full_name": "Apigenin",
       "type": "natural",
       "category": "NAD⁺ / Sirtuins",
@@ -384,7 +384,7 @@
     },
     {
       "id": "nicotinic-acid-vitamin-b3",
-      "name": "Niacina",
+      "name": "Niacin",
       "full_name": "Nicotinic Acid (Vitamin B3)",
       "type": "natural",
       "category": "NAD⁺ / Sirtuins",
@@ -414,7 +414,7 @@
     },
     {
       "id": "nicotinamide",
-      "name": "Niacinamida",
+      "name": "Niacinamide",
       "full_name": "Nicotinamide",
       "type": "natural",
       "category": "NAD⁺ / Sirtuins",
@@ -502,8 +502,8 @@
     },
     {
       "id": "pterostilbene",
-      "name": "Pterostilbeno",
-      "full_name": "Pterostilbeno (análogo metilado)",
+      "name": "Pterostilbene",
+      "full_name": "Pterostilbene (methylated analog)",
       "type": "natural",
       "category": "NAD⁺ / Sirtuins",
       "tags": [
@@ -555,7 +555,7 @@
     },
     {
       "id": "l-tryptophan",
-      "name": "Triptófano",
+      "name": "Tryptophan",
       "full_name": "L-Tryptophan",
       "type": "natural",
       "category": "NAD⁺ / Sirtuins",
@@ -584,7 +584,7 @@
     },
     {
       "id": "caffeic-acid",
-      "name": "Ácido cafeico",
+      "name": "Caffeic acid",
       "full_name": "Caffeic acid",
       "type": "natural",
       "category": "Polyphenols",
@@ -612,7 +612,7 @@
     },
     {
       "id": "ellagic-acid",
-      "name": "Ácido elágico",
+      "name": "Ellagic acid",
       "full_name": "Ellagic acid",
       "type": "natural",
       "category": "Polyphenols",
@@ -641,7 +641,7 @@
     },
     {
       "id": "ferulic-acid",
-      "name": "Ácido ferúlico",
+      "name": "Ferulic acid",
       "full_name": "Ferulic acid",
       "type": "natural",
       "category": "Polyphenols",
@@ -669,7 +669,7 @@
     },
     {
       "id": "rosmarinic-acid",
-      "name": "Ácido rosmarínico",
+      "name": "Rosmarinic acid",
       "full_name": "Rosmarinic acid",
       "type": "natural",
       "category": "Polyphenols",
@@ -699,7 +699,7 @@
     },
     {
       "id": "anthocyanins",
-      "name": "Antocianinas",
+      "name": "Anthocyanins",
       "full_name": "Anthocyanins",
       "type": "natural",
       "category": "Polyphenols",
@@ -730,7 +730,7 @@
     },
     {
       "id": "apigenin-food-sources",
-      "name": "Apigenina dietaria",
+      "name": "Dietary apigenin",
       "full_name": "Apigenin (food sources)",
       "type": "natural",
       "category": "Polyphenols",
@@ -758,8 +758,8 @@
     },
     {
       "id": "curcumin",
-      "name": "Curcumina",
-      "full_name": "Curcumina (Cúrcuma longa)",
+      "name": "Curcumin",
+      "full_name": "Curcumin (Curcuma longa)",
       "type": "natural",
       "category": "Polyphenols",
       "tags": [
@@ -787,7 +787,7 @@
     },
     {
       "id": "daidzein",
-      "name": "Daidzeína",
+      "name": "Daidzein",
       "full_name": "Daidzein",
       "type": "natural",
       "category": "Polyphenols",
@@ -816,7 +816,7 @@
     {
       "id": "egcg",
       "name": "EGCG",
-      "full_name": "Epigalocatequina Galato (Té Verde)",
+      "full_name": "Epigallocatechin gallate (Green tea)",
       "type": "natural",
       "category": "Polyphenols",
       "tags": [
@@ -875,7 +875,7 @@
     },
     {
       "id": "genistein",
-      "name": "Genisteína",
+      "name": "Genistein",
       "full_name": "Genistein",
       "type": "natural",
       "category": "Polyphenols",
@@ -905,7 +905,7 @@
     },
     {
       "id": "pomegranate-punicalagins",
-      "name": "Granada (punicalaginas)",
+      "name": "Pomegranate (punicalagins)",
       "full_name": "Pomegranate punicalagins",
       "type": "natural",
       "category": "Polyphenols",
@@ -935,7 +935,7 @@
     },
     {
       "id": "hesperidin",
-      "name": "Hesperidina",
+      "name": "Hesperidin",
       "full_name": "Hesperidin",
       "type": "natural",
       "category": "Polyphenols",
@@ -964,7 +964,7 @@
     },
     {
       "id": "hydroxytyrosol",
-      "name": "Hidroxitirosol",
+      "name": "Hydroxytyrosol",
       "full_name": "Hydroxytyrosol",
       "type": "natural",
       "category": "Polyphenols",
@@ -1023,7 +1023,7 @@
     },
     {
       "id": "luteolin",
-      "name": "Luteolina",
+      "name": "Luteolin",
       "full_name": "Luteolin",
       "type": "natural",
       "category": "Polyphenols",
@@ -1053,7 +1053,7 @@
     },
     {
       "id": "naringenin",
-      "name": "Naringenina",
+      "name": "Naringenin",
       "full_name": "Naringenin",
       "type": "natural",
       "category": "Polyphenols",
@@ -1082,7 +1082,7 @@
     },
     {
       "id": "oleuropein",
-      "name": "Oleuropeína",
+      "name": "Oleuropein",
       "full_name": "Oleuropein",
       "type": "natural",
       "category": "Polyphenols",
@@ -1112,8 +1112,8 @@
     },
     {
       "id": "quercetin",
-      "name": "Quercetina",
-      "full_name": "Quercetina (flavonoide)",
+      "name": "Quercetin",
+      "full_name": "Quercetin (flavonoid)",
       "type": "natural",
       "category": "Polyphenols",
       "tags": [
@@ -1140,8 +1140,8 @@
     },
     {
       "id": "sulforaphane",
-      "name": "Sulforafano",
-      "full_name": "Sulforafano (Brócoli/Brassica)",
+      "name": "Sulforaphane",
+      "full_name": "Sulforaphane (Broccoli/Brassica)",
       "type": "natural",
       "category": "Polyphenols",
       "tags": [
@@ -1168,8 +1168,8 @@
     },
     {
       "id": "urolithin-a",
-      "name": "Urolitina A",
-      "full_name": "Urolitina A (UA)",
+      "name": "Urolithin A",
+      "full_name": "Urolithin A (UA)",
       "type": "natural",
       "category": "Polyphenols",
       "tags": [
@@ -1227,7 +1227,7 @@
     },
     {
       "id": "astragalus-membranaceus",
-      "name": "Astrágalo",
+      "name": "Astragalus",
       "full_name": "Astragalus membranaceus",
       "type": "natural",
       "category": "Adaptogens",
@@ -1574,7 +1574,7 @@
     },
     {
       "id": "lutein",
-      "name": "Luteína",
+      "name": "Lutein",
       "full_name": "Lutein",
       "type": "natural",
       "category": "Longevity Vitamins",
@@ -1603,7 +1603,7 @@
     },
     {
       "id": "magnesium-glycinate-citrate",
-      "name": "Magnesio",
+      "name": "Magnesium",
       "full_name": "Magnesium glycinate/citrate",
       "type": "natural",
       "category": "Longevity Vitamins",
@@ -1661,7 +1661,7 @@
     },
     {
       "id": "selenium",
-      "name": "Selenio",
+      "name": "Selenium",
       "full_name": "Selenium",
       "type": "natural",
       "category": "Longevity Vitamins",
@@ -1720,7 +1720,7 @@
     },
     {
       "id": "ascorbic-acid",
-      "name": "Vitamina C",
+      "name": "Vitamin C",
       "full_name": "Ascorbic acid",
       "type": "natural",
       "category": "Longevity Vitamins",
@@ -1916,7 +1916,7 @@
     },
     {
       "id": "alpha-lipoic-acid",
-      "name": "Ácido alfa lipoico",
+      "name": "Alpha-lipoic acid",
       "full_name": "Alpha-lipoic acid",
       "type": "natural",
       "category": "Mitochondria / Bioenergetics",
@@ -2000,7 +2000,7 @@
     },
     {
       "id": "spermidine",
-      "name": "Espermidina",
+      "name": "Spermidine",
       "full_name": "Spermidine (poliamina)",
       "type": "natural",
       "category": "Mitochondria / Bioenergetics",
@@ -2204,7 +2204,7 @@
     },
     {
       "id": "berberine",
-      "name": "Berberina",
+      "name": "Berberine",
       "full_name": "Berberina HCl",
       "type": "natural",
       "category": "Senolytics / mTOR",
@@ -2373,7 +2373,7 @@
     },
     {
       "id": "trimethylglycine",
-      "name": "Betaína (TMG)",
+      "name": "Betaine (TMG)",
       "full_name": "Trimethylglycine",
       "type": "natural",
       "category": "Epigenetics / Reprogramming",
@@ -2461,7 +2461,7 @@
     },
     {
       "id": "yamanaka-partial",
-      "name": "Reprogramación OSKM",
+      "name": "OSKM reprogramming",
       "full_name": "Factores Yamanaka (reprogramación parcial)",
       "type": "synthetic",
       "category": "Epigenetics / Reprogramming",
@@ -2631,7 +2631,7 @@
     {
       "id": "glycine",
       "name": "Glicina",
-      "full_name": "Glicina (aminoácido)",
+      "full_name": "Glicina (aminoacid)",
       "type": "natural",
       "category": "Amino Acids / Peptides",
       "tags": [
@@ -2710,8 +2710,8 @@
     },
     {
       "id": "taurine",
-      "name": "Taurina",
-      "full_name": "Taurina (β-aminoácido)",
+      "name": "Taurine",
+      "full_name": "Taurina (β-aminoacid)",
       "type": "natural",
       "category": "Amino Acids / Peptides",
       "tags": [
@@ -2741,7 +2741,7 @@
     },
     {
       "id": "aged-garlic-extract",
-      "name": "Ajo añejo",
+      "name": "Aged garlic",
       "full_name": "Aged garlic extract",
       "type": "natural",
       "category": "Medicinal Plants",
@@ -2799,7 +2799,7 @@
     },
     {
       "id": "crocus-sativus",
-      "name": "Azafrán",
+      "name": "Saffron",
       "full_name": "Crocus sativus",
       "type": "natural",
       "category": "Medicinal Plants",
@@ -2917,7 +2917,7 @@
     },
     {
       "id": "origanum-vulgare",
-      "name": "Orégano",
+      "name": "Oregano",
       "full_name": "Origanum vulgare",
       "type": "natural",
       "category": "Medicinal Plants",
@@ -3058,7 +3058,7 @@
     },
     {
       "id": "resistant-starch",
-      "name": "Almidón resistente",
+      "name": "Resistant starch",
       "full_name": "Resistant starch",
       "type": "natural",
       "category": "Microbiome",
@@ -3088,7 +3088,7 @@
     },
     {
       "id": "oat-beta-glucans",
-      "name": "Beta-glucanos de avena",
+      "name": "Oat beta-glucans",
       "full_name": "Oat beta-glucans",
       "type": "natural",
       "category": "Microbiome",
