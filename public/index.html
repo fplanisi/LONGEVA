@@ -7,8 +7,9 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{--bg:#05070c;--surface:#0e141f;--surface2:#121b29;--border:#223147;--accent:#6affd9;--accent2:#52b8ff;--accent3:#d1ff5a;--text:#edf3ff;--muted:#90a5c2;--dim:#4e6380;--gold:#f0c784;--red:#ff6e8a}
+  html{background:var(--bg);max-width:100%;overflow-x:hidden;overscroll-behavior:none}
   *{margin:0;padding:0;box-sizing:border-box}
-  body{background:radial-gradient(circle at 15% -5%,#132235 0%,#05070c 45%);color:var(--text);font-family:'Instrument Sans',sans-serif;min-height:100vh;overflow-x:hidden}
+  body{background:radial-gradient(circle at 15% -5%,#132235 0%,#05070c 45%);color:var(--text);font-family:'Instrument Sans',sans-serif;min-height:100vh;max-width:100%;overflow-x:hidden;overscroll-behavior:none}
   body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(106,255,217,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(106,255,217,.04) 1px,transparent 1px);background-size:56px 56px;pointer-events:none;z-index:0;opacity:.7}
   body::after{content:'';position:fixed;inset:0;background:linear-gradient(to bottom,rgba(255,255,255,.02),rgba(255,255,255,0) 20%,rgba(106,255,217,.02) 60%,rgba(255,255,255,0));pointer-events:none;z-index:0}
   .orb{position:fixed;border-radius:50%;filter:blur(120px);pointer-events:none;z-index:0}
@@ -195,7 +196,7 @@
     .quick-modules{grid-template-columns:1fr}
   }
   @media(max-width:900px){
-    header{position:relative;padding:14px 12px;margin:0 0 14px}
+    header{position:sticky;top:0;z-index:20;padding:14px 12px;margin:0 0 14px}
     .header-top{align-items:center;justify-content:space-between;flex-direction:row;gap:8px}
     .status-row{width:auto;justify-content:flex-end;margin-left:auto}
     .menu-toggle{display:inline-flex;position:relative;z-index:22}

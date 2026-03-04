@@ -11,10 +11,11 @@
   --text:#edf3ff; --muted:#90a5c2; --dim:#4e6380; --accent:#6affd9; --accent2:#52b8ff; --accent3:#d1ff5a; --gold:#f0c784;
 }
 *{box-sizing:border-box;margin:0;padding:0}
+html{background:#05070c;max-width:100%;overflow-x:hidden;overscroll-behavior:none}
 body{
   font-family:'Instrument Sans',sans-serif;
   background:radial-gradient(circle at 15% -5%,#132235 0%,#05070c 45%);
-  color:var(--text); min-height:100vh; overflow-x:hidden;
+  color:var(--text); min-height:100vh; max-width:100%; overflow-x:hidden; overscroll-behavior:none;
 }
 body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(106,255,217,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(106,255,217,.04) 1px,transparent 1px);background-size:56px 56px;pointer-events:none;z-index:0;opacity:.7}
 body::after{content:'';position:fixed;inset:0;background:linear-gradient(to bottom,rgba(255,255,255,.02),rgba(255,255,255,0) 20%,rgba(106,255,217,.02) 60%,rgba(255,255,255,0));pointer-events:none;z-index:0}
@@ -85,7 +86,7 @@ body::after{content:'';position:fixed;inset:0;background:linear-gradient(to bott
 @media(max-width:900px){
   .grid,.opts{grid-template-columns:1fr}
   .wrap{padding:0 12px 60px}
-  .site-header{position:relative;padding:14px 12px;margin:0 0 14px}
+  .site-header{position:sticky;top:0;z-index:20;padding:14px 12px;margin:0 0 14px}
   .header-top{align-items:center;justify-content:space-between;flex-direction:row;gap:8px}
   .status-row{width:auto;justify-content:flex-end;margin-left:auto}
   .menu-toggle{display:inline-flex;position:relative;z-index:22}
