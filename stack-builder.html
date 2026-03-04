@@ -364,6 +364,26 @@ input[type=range]::-webkit-slider-thumb {
 
 .mol-price { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); flex-shrink: 0; text-align: right; }
 .mol-price-n { font-size: 15px; color: var(--text); font-weight: 500; display: block; }
+.mol-actions {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+.mini-btn {
+  border: 1px solid var(--border2);
+  background: rgba(255,255,255,.02);
+  color: var(--muted);
+  border-radius: 8px;
+  padding: 5px 9px;
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .06em;
+  cursor: pointer;
+}
+.mini-btn:hover { color: var(--text); border-color: var(--accent2); }
+.mini-btn.buy { color: var(--accent2); border-color: rgba(82,184,255,.36); }
+.mini-btn.replace { color: var(--gold); border-color: rgba(240,199,132,.36); }
 
 /* BUDGET SUMMARY */
 .budget-card {
@@ -824,7 +844,9 @@ const state = {
   goals: [], budget: null, conditions: [],
   sourcePreference: 'mixed',
   currentProtocol: '',
-  paidSessionId: ''
+  paidSessionId: '',
+  lastStack: null,
+  lastBudgetLabel: ''
 };
 
 // ── EMAIL + PAYWALL ──
@@ -1026,6 +1048,33 @@ function updateProtocol(value) {
   state.currentProtocol = value.trim();
 }
 
+function buildProfilePayload(budgetLabel) {
+  const condMap = {
+    diabetes:'Diabetes/pre-diabetes',
+    hypertension:'Hipertensión',
+    anticoagulants:'Anticoagulantes',
+    cancer:'Antecedentes oncológicos',
+    autoimmune:'Enfermedad autoinmune',
+    statins:'Estatinas',
+    thyroid:'Hipotiroidismo',
+    kidney:'Enfermedad renal',
+    liver:'Enfermedad hepática',
+    pregnant:'Embarazo/lactancia'
+  };
+  const condStr = state.conditions.length ? state.conditions.map(c => condMap[c] || c).join(', ') : 'Ninguna';
+  return {
+    age: state.age,
+    sex: state.sex,
+    goals: state.goals,
+    budget: state.budget,
+    budget_label: budgetLabel,
+    source_preference: state.sourcePreference,
+    conditions: state.conditions,
+    conditions_label: condStr,
+    current_protocol: state.currentProtocol,
+  };
+}
+
 // ── GENERATE ──
 async function generateStack() {
   if (!state.paidSessionId) {
@@ -1066,8 +1115,7 @@ async function generateStack() {
     } else { clearInterval(lsInterval); }
   }, 600);
 
-  const condMap = { diabetes:'Diabetes/pre-diabetes', hypertension:'Hipertensión', anticoagulants:'Anticoagulantes', cancer:'Antecedentes oncológicos', autoimmune:'Enfermedad autoinmune', statins:'Estatinas', thyroid:'Hipotiroidismo', kidney:'Enfermedad renal', liver:'Enfermedad hepática', pregnant:'Embarazo/lactancia' };
-  const condStr = state.conditions.length ? state.conditions.map(c => condMap[c] || c).join(', ') : 'Ninguna';
+  const profilePayload = buildProfilePayload(budgetLabel);
 
   try {
     const res = await fetch('/api/stack-builder', {
@@ -1075,17 +1123,7 @@ async function generateStack() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         session_id: state.paidSessionId,
-        profile: {
-          age: state.age,
-          sex: state.sex,
-          goals: state.goals,
-          budget: state.budget,
-          budget_label: budgetLabel,
-          source_preference: state.sourcePreference,
-          conditions: state.conditions,
-          conditions_label: condStr,
-          current_protocol: state.currentProtocol,
-        },
+        profile: profilePayload,
       })
     });
 
@@ -1103,6 +1141,8 @@ async function generateStack() {
 }
 
 function renderStack(stack, budgetLabel) {
+  state.lastStack = stack;
+  state.lastBudgetLabel = budgetLabel;
   document.getElementById('loading-state').style.display = 'none';
   const out = document.getElementById('stack-output');
   out.style.display = 'block';
@@ -1192,9 +1232,10 @@ function renderStack(stack, budgetLabel) {
           <div class="time-subtitle">${sec.sub} · ${mols.length} item${mols.length>1?'s':''}</div>
         </div>
         <div class="mol-items">`;
-      mols.forEach(m => {
+      mols.forEach((m, idx) => {
         const rankCls = m.priority === 'core' ? 'rank-core' : m.priority === 'support' ? 'rank-support' : 'rank-optional';
         const rankLbl = m.priority === 'core' ? 'CORE' : m.priority === 'support' ? 'SUPP' : 'OPC';
+        const buyLabel = m.name || m.full || 'suplemento longevidad';
         html += `<div class="mol-item">
           <div class="mol-rank ${rankCls}">${rankLbl}</div>
           <div class="mol-info">
@@ -1212,6 +1253,10 @@ function renderStack(stack, budgetLabel) {
           <div class="mol-price">
             <span class="mol-price-n">~$${m.estimated_price}</span>
             /mes
+            <div class="mol-actions">
+              <button class="mini-btn replace" onclick="replaceItem('${sec.key}', ${idx})">Reemplazar</button>
+              <a class="mini-btn buy" href="/api/partner-link?item=${encodeURIComponent(buyLabel)}" target="_blank" rel="noopener">Comprar</a>
+            </div>
           </div>
         </div>`;
       });
@@ -1237,7 +1282,8 @@ function renderStack(stack, budgetLabel) {
 
   // Actions
   html += `<div class="actions-row">
-    <button class="action-btn action-primary" onclick="window.print()">📋 Guardar PDF</button>
+    <button class="action-btn action-primary" onclick="downloadExecutivePDF()">📋 PDF ejecutivo</button>
+    <button class="action-btn action-secondary" onclick="window.print()">🖨 Imprimir vista completa</button>
     <button class="action-btn action-secondary" onclick="location.reload()">↺ Nuevo stack</button>
   </div>`;
 
@@ -1249,6 +1295,97 @@ function renderStack(stack, budgetLabel) {
 
 function fmtText(t) {
   return t.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\n\n/g,'</p><p>').replace(/\n/g,' ');
+}
+
+async function replaceItem(slot, index) {
+  if (!state.lastStack || !state.lastStack[slot] || !state.lastStack[slot][index]) return;
+  const current = state.lastStack[slot][index];
+  const reason = prompt(`¿Por qué quieres reemplazar "${current.name}"? (ej: no se consigue, caro, no tolero)`, 'No se consigue en mi país');
+  if (reason === null) return;
+
+  try {
+    const allNames = ['morning','afternoon','night']
+      .flatMap(k => (state.lastStack[k] || []).map(x => x.name).filter(Boolean));
+    const profilePayload = buildProfilePayload(state.lastBudgetLabel || '');
+    const res = await fetch('/api/replace-item', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        session_id: state.paidSessionId,
+        profile: profilePayload,
+        slot,
+        reason: reason || 'No indicado',
+        current_item: current,
+        existing_items: allNames,
+      }),
+    });
+    const data = await res.json();
+    if (!res.ok || !data.item) throw new Error(data.error || `API error ${res.status}`);
+    state.lastStack[slot][index] = data.item;
+    renderStack(state.lastStack, state.lastBudgetLabel || '');
+    alert(`Reemplazo aplicado: ${current.name} → ${data.item.name}`);
+  } catch (err) {
+    alert(`No pudimos reemplazar el item: ${err.message}`);
+  }
+}
+
+function downloadExecutivePDF() {
+  if (!state.lastStack) {
+    alert('Primero genera un stack.');
+    return;
+  }
+  const stack = state.lastStack;
+  const goalsMap = {
+    longevity: 'Longevidad',
+    cognitive: 'Cognitivo',
+    cardiovascular: 'Cardiovascular',
+    muscle: 'Músculo',
+    energy: 'Energía',
+    inflammation: 'Anti-inflamación',
+  };
+  const goalsTxt = (state.goals || []).map(g => goalsMap[g] || g).join(', ') || 'General';
+  const sexTxt = state.sex === 'male' ? 'Masculino' : 'Femenino';
+  const takeTop = (arr) => (arr || []).slice(0, 4).map(x => `<li><b>${escapeHtml(x.name || '')}</b> — ${escapeHtml(x.dose || '')} · ${escapeHtml(x.why || '')}</li>`).join('');
+  const warnings = (stack.warnings || []).map(w => `<li>${escapeHtml(w)}</li>`).join('');
+  const html = `<!doctype html><html><head><meta charset="utf-8"><title>LONGEVA - Resumen Ejecutivo</title>
+  <style>
+    body{font-family:Arial,sans-serif;color:#111;padding:28px;line-height:1.45}
+    h1{margin:0 0 4px 0;font-size:24px} h2{margin:20px 0 8px;font-size:16px}
+    .muted{color:#555;font-size:12px} .card{border:1px solid #ddd;border-radius:8px;padding:10px 12px;margin-top:10px}
+    ul{margin:6px 0 0 18px} li{margin-bottom:6px}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  </style></head><body>
+  <h1>LONGEVA · Resumen Ejecutivo</h1>
+  <div class="muted">Fecha: ${new Date().toLocaleDateString('es-AR')} · Perfil: ${state.age} años, ${sexTxt} · Objetivo: ${escapeHtml(goalsTxt)}</div>
+  <div class="card"><b>Costo estimado mensual:</b> $${Number(stack.estimated_cost || 0)} · <b>Presupuesto elegido:</b> ${escapeHtml(state.lastBudgetLabel || '-')}</div>
+  <div class="grid">
+    <div class="card"><b>Mañana</b><ul>${takeTop(stack.morning)}</ul></div>
+    <div class="card"><b>Tarde</b><ul>${takeTop(stack.afternoon)}</ul></div>
+  </div>
+  <div class="card"><b>Noche</b><ul>${takeTop(stack.night)}</ul></div>
+  <div class="card"><b>Nota mensual:</b><br>${escapeHtml(stack.monthly_plan_note || '')}</div>
+  <div class="card"><b>Advertencias clave</b><ul>${warnings || '<li>Sin alertas específicas.</li>'}</ul></div>
+  <div class="card"><b>Racional científico breve:</b><br>${escapeHtml(stack.summary || stack.rationale || '')}</div>
+  <p class="muted">Este reporte es informativo y no reemplaza consulta médica profesional.</p>
+  <script>window.onload=()=>window.print()<\/script>
+  </body></html>`;
+  const w = window.open('', '_blank', 'noopener,noreferrer');
+  if (!w) {
+    alert('Tu navegador bloqueó la ventana de impresión. Habilita popups para LONGEVA.');
+    return;
+  }
+  w.document.open();
+  w.document.write(html);
+  w.document.close();
+}
+
+function escapeHtml(s) {
+  return String(s || '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
 }
 
 initAccess();
