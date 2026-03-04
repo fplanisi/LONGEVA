@@ -21,8 +21,15 @@ export default async function handler(req, res) {
   }
 
   try {
-    const appUrl = (process.env.APP_URL || '').replace(/\/$/, '');
-    const origin = req.headers.origin || appUrl;
+    const appUrl = String(process.env.APP_URL || '').trim().replace(/\/$/, '');
+    const requestOrigin = String(req.headers.origin || '').trim().replace(/\/$/, '');
+    const origin = /^https?:\/\//i.test(requestOrigin) ? requestOrigin : appUrl;
+    if (!/^https?:\/\//i.test(origin)) {
+      return res.status(500).json({
+        error: 'APP_URL inválida. Debe incluir protocolo, por ejemplo: https://tu-proyecto.vercel.app',
+      });
+    }
+
     const successPath = '/stack-builder.html?paid=1&session_id={CHECKOUT_SESSION_ID}';
     const cancelPath = '/stack-builder.html?canceled=1';
 
