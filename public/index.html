@@ -325,7 +325,8 @@ const CONFIG = {
   // URL de la base de datos de moléculas
   // En Vercel: '/data/molecules.json'
   // En GitHub Pages: URL raw de GitHub
-  DB_URL: '/data/molecules.json',
+  DB_URL_ES: '/data/molecules.json',
+  DB_URL_EN: '/data/molecules.en.json',
 };
 const USER_LANG = getPreferredLang();
 const IS_EN = USER_LANG === 'en';
@@ -343,7 +344,8 @@ let aiMode = 'base'; // 'base' | 'latest'
 async function init() {
   applyStaticI18n();
   try {
-    const res = await fetch(CONFIG.DB_URL);
+    const dbUrl = IS_EN ? CONFIG.DB_URL_EN : CONFIG.DB_URL_ES;
+    const res = await fetch(dbUrl);
     if (!res.ok) throw new Error('No se pudo cargar la base de datos');
     DB = await res.json();
 

@@ -1796,6 +1796,69 @@ function applyStaticI18n() {
   if (hints[1]) hints[1].textContent = 'Select one primary objective. You can adjust it later.';
   if (hints[2]) hints[2].textContent = 'We recommend the highest-impact stack inside your range. You can also choose natural-only.';
   if (hints[3]) hints[3].textContent = 'Select if applicable. This helps us avoid interactions and contraindications.';
+  const ageLabel = Array.from(document.querySelectorAll('div')).find((el) => el.textContent.trim() === 'EDAD');
+  if (ageLabel) ageLabel.textContent = 'AGE';
+  const sexLabel = Array.from(document.querySelectorAll('div')).find((el) => el.textContent.trim() === 'SEXO BIOLÓGICO');
+  if (sexLabel) sexLabel.textContent = 'BIOLOGICAL SEX';
+  const sourceLabel = Array.from(document.querySelectorAll('div')).find((el) => el.textContent.trim() === 'TIPO DE PROTOCOLO');
+  if (sourceLabel) sourceLabel.textContent = 'PROTOCOL TYPE';
+  const countryLabel = Array.from(document.querySelectorAll('div')).find((el) => el.textContent.trim() === 'PAÍS / DISPONIBILIDAD');
+  if (countryLabel) countryLabel.textContent = 'COUNTRY / AVAILABILITY';
+  const protocolTitle = document.querySelector('.protocol-title');
+  if (protocolTitle) protocolTitle.textContent = 'CURRENT SUPPLEMENT PROTOCOL (OPTIONAL)';
+  const protocolInput = document.getElementById('protocol-input');
+  if (protocolInput) protocolInput.placeholder = 'E.g. creatine 5g/day, omega-3 2g/day, magnesium glycinate 300mg at night...';
+  const condNote = document.querySelector('.cond-note');
+  if (condNote) condNote.textContent = '⚠ This information does not replace medical care. Always validate with your physician.';
+  const ageDisplay = document.getElementById('age-display');
+  if (ageDisplay) ageDisplay.innerHTML = `${state.age} <span>years</span>`;
+
+  const goalLabels = {
+    longevity: ['General longevity', 'Extend healthy lifespan'],
+    cognitive: ['Cognitive function', 'Memory, focus, and neuroprotection'],
+    cardiovascular: ['Cardiovascular health', 'Heart, vessels, and blood pressure'],
+    muscle: ['Muscle mass', 'Strength and sarcopenia prevention'],
+    energy: ['Mitochondrial energy', 'Vitality, fatigue, and ATP support'],
+    inflammation: ['Anti-inflammation', 'Reduce chronic systemic inflammation'],
+  };
+  Object.entries(goalLabels).forEach(([k, vals]) => {
+    const el = Array.from(document.querySelectorAll('#goals-grid .opt')).find((o) => o.getAttribute('onclick')?.includes(`'${k}'`));
+    if (!el) return;
+    const l = el.querySelector('.opt-label');
+    const d = el.querySelector('.opt-desc');
+    if (l) l.textContent = vals[0];
+    if (d) d.textContent = vals[1];
+  });
+
+  const budgetLabels = {
+    50: ['Up to $50/month — Basic', 'Essential stack: highest impact-per-dollar compounds'],
+    150: ['$50–$150/month — Intermediate', 'Full stack with key NAD+, senolytics, and adaptogens'],
+    350: ['$150–$350/month — Advanced', 'Comprehensive protocol including premium compounds'],
+    999: ['$350+/month — No limit', 'Full optimal stack without cost constraints'],
+  };
+  Object.entries(budgetLabels).forEach(([k, vals]) => {
+    const el = Array.from(document.querySelectorAll('#budget-grid .opt')).find((o) => o.getAttribute('onclick')?.includes(`selectBudget(${k}`));
+    if (!el) return;
+    const l = el.querySelector('.opt-label');
+    const d = el.querySelector('.opt-desc');
+    if (l) l.textContent = vals[0];
+    if (d) d.textContent = vals[1];
+  });
+
+  const countryLabels = {
+    AR: ['Argentina', 'Prioritize alternatives with easier local access'],
+    US: ['United States', 'Broad supplements and brand availability'],
+    EU: ['Europe', 'Adjusted for EU products and regulation'],
+    GLOBAL: ['Global', 'Universal options with strong replacement strategy'],
+  };
+  Object.entries(countryLabels).forEach(([k, vals]) => {
+    const el = Array.from(document.querySelectorAll('#country-grid .opt')).find((o) => o.getAttribute('onclick')?.includes(`'${k}'`));
+    if (!el) return;
+    const l = el.querySelector('.opt-label');
+    const d = el.querySelector('.opt-desc');
+    if (l) l.textContent = vals[0];
+    if (d) d.textContent = vals[1];
+  });
 
   const resTitle = document.querySelector('.results-title');
   if (resTitle) resTitle.innerHTML = 'Your personalized<br><em>stack</em>';

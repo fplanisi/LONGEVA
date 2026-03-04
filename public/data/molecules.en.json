@@ -1,0 +1,3636 @@
+{
+  "version": "3.1.0",
+  "last_updated": "2026-03-04",
+  "total": 125,
+  "categories": [
+    "Medicinal Mushrooms",
+    "NAD⁺ / Sirtuins",
+    "Polyphenols",
+    "Adaptogens",
+    "Longevity Vitamins",
+    "Mitochondria / Bioenergetics",
+    "Senolytics / mTOR",
+    "Epigenetics / Reprogramming",
+    "Amino Acids / Peptides",
+    "Medicinal Plants",
+    "Microbiome",
+    "Hormones / Neuroendocrine",
+    "Emerging 2024-2025"
+  ],
+  "molecules": [
+    {
+      "id": "agaricus-subrufescens",
+      "name": "Agaricus blazei",
+      "full_name": "Agaricus subrufescens",
+      "type": "natural",
+      "category": "Medicinal Mushrooms",
+      "tags": [
+        "mushrooms",
+        "natural",
+        "immunity"
+      ],
+      "description": "Immunomodulatory activity and antioxidante relevant for aging.",
+      "pathways": [
+        "Nrf2",
+        "NF-κB"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 209,
+      "key_compounds": [
+        "Beta-glucanos",
+        "Ergosterol"
+      ],
+      "typical_dose": "500-1500 mg/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "inonotus-obliquus",
+      "name": "Chaga",
+      "full_name": "Inonotus obliquus",
+      "type": "natural",
+      "category": "Medicinal Mushrooms",
+      "tags": [
+        "mushrooms",
+        "natural"
+      ],
+      "description": "Potential longevity support via ROS, Nrf2.",
+      "pathways": [
+        "ROS",
+        "Nrf2",
+        "Betulin",
+        "SOD"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 240,
+      "key_compounds": [
+        "Betulin",
+        "Betulinato",
+        "Ergosterol",
+        "Melanina"
+      ],
+      "typical_dose": "500-2000 mg/day extract",
+      "added_date": "2024-01-01",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "trametes-versicolor",
+      "name": "Cola de Pavo",
+      "full_name": "Trametes versicolor (Turkey Tail)",
+      "type": "natural",
+      "category": "Medicinal Mushrooms",
+      "tags": [
+        "mushrooms",
+        "natural",
+        "inflammation"
+      ],
+      "description": "PSK and PSP son sus polisacáridos activos. Inmunomodulador potente aprobado in Japón. Modula microbioma intestinal favorablemente.",
+      "pathways": [
+        "NK-cells",
+        "TH1",
+        "Microbioma",
+        "PSK"
+      ],
+      "evidence_rating": "★★★★☆",
+      "study_count": 520,
+      "key_compounds": [
+        "PSK (Krestin)",
+        "PSP",
+        "Beta-glucanos"
+      ],
+      "typical_dose": "1000-3000 mg/day",
+      "added_date": "2024-01-01",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "cordyceps",
+      "name": "Cordyceps",
+      "full_name": "Cordyceps sinensis / militaris",
+      "type": "natural",
+      "category": "Medicinal Mushrooms",
+      "tags": [
+        "mushrooms",
+        "natural",
+        "mitochondria"
+      ],
+      "description": "Aumenta síntesis of ATP and mejora function mitochondrial vía AMPK. Contiene cordycepina (análogo adenosina). Mejora VO2max in RCT.",
+      "pathways": [
+        "ATP",
+        "Mitocondria",
+        "AMPK",
+        "HIF-1α"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 380,
+      "key_compounds": [
+        "Cordycepina",
+        "Cordycepsina",
+        "Beta-glucanos"
+      ],
+      "typical_dose": "1000-3000 mg/day",
+      "added_date": "2024-01-01",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "flammulina-velutipes",
+      "name": "Enoki",
+      "full_name": "Flammulina velutipes",
+      "type": "natural",
+      "category": "Medicinal Mushrooms",
+      "tags": [
+        "mushrooms",
+        "natural"
+      ],
+      "description": "Fuente alimentaria with compuestos antioxidantes and soporte metabolic.",
+      "pathways": [
+        "Nrf2"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 179,
+      "key_compounds": [
+        "Ergotioneína",
+        "Polisacáridos"
+      ],
+      "typical_dose": "500-1500 mg/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "ergothioneine",
+      "name": "Ergotioneína",
+      "full_name": "Ergotioneína (EGT)",
+      "type": "natural",
+      "category": "Medicinal Mushrooms",
+      "tags": [
+        "mushrooms",
+        "natural",
+        "mitochondria"
+      ],
+      "description": "'Vitamina of longevity' (PNAS). Transportador específico OCTN1. Antioxidante mitochondrial único. Niveles bajos asociados a mayor mortalidad.",
+      "pathways": [
+        "OCTN1",
+        "Mitocondria",
+        "ROS",
+        "Inflamación"
+      ],
+      "evidence_rating": "★★★★☆",
+      "study_count": 190,
+      "key_compounds": [
+        "L-Ergotioneína"
+      ],
+      "typical_dose": "5-25 mg/day",
+      "added_date": "2024-06-01",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "grifola-frondosa",
+      "name": "Maitake",
+      "full_name": "Grifola frondosa",
+      "type": "natural",
+      "category": "Medicinal Mushrooms",
+      "tags": [
+        "mushrooms",
+        "natural",
+        "metabolico"
+      ],
+      "description": "Soporte metabolic e inmune with evidence preclínica and clínica inicial.",
+      "pathways": [
+        "AMPK",
+        "NF-κB"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 229,
+      "key_compounds": [
+        "D-fraction",
+        "Beta-glucanos"
+      ],
+      "typical_dose": "500-2000 mg/day extract",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "hericium-erinaceus",
+      "name": "Melena de León",
+      "full_name": "Hericium erinaceus",
+      "type": "natural",
+      "category": "Medicinal Mushrooms",
+      "tags": [
+        "mushrooms",
+        "natural",
+        "inflammation",
+        "neuro"
+      ],
+      "description": "Potential longevity support via NGF, BDNF.",
+      "pathways": [
+        "NGF",
+        "BDNF",
+        "Nrf2",
+        "NF-κB"
+      ],
+      "evidence_rating": "★★★★☆",
+      "study_count": 410,
+      "key_compounds": [
+        "Hericenona C",
+        "Erinacina A",
+        "Beta-glucanos"
+      ],
+      "typical_dose": "500-3000 mg/day extract estandarizado",
+      "key_studies": [
+        "Mori et al. 2009 - RCT mejora cognitive",
+        "Li et al. 2020 - Neurogenesis",
+        "Saitsu et al. 2019 - Memoria"
+      ],
+      "added_date": "2024-01-01",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "ganoderma-lucidum",
+      "name": "Reishi",
+      "full_name": "Ganoderma lucidum (Lingzhi)",
+      "type": "natural",
+      "category": "Medicinal Mushrooms",
+      "tags": [
+        "mushrooms",
+        "natural",
+        "inflammation"
+      ],
+      "description": "Potential longevity support via NF-κB, Inmunidad.",
+      "pathways": [
+        "NF-κB",
+        "Inmunidad",
+        "Autofagia",
+        "mTOR"
+      ],
+      "evidence_rating": "★★★★☆",
+      "study_count": 680,
+      "key_compounds": [
+        "Ácidos Ganodéricos",
+        "Polisacáridos",
+        "Triterpenos"
+      ],
+      "typical_dose": "1000-4000 mg/day extract 30% polisacáridos",
+      "added_date": "2024-01-01",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "lentinula-edodes",
+      "name": "Shiitake",
+      "full_name": "Lentinula edodes",
+      "type": "natural",
+      "category": "Medicinal Mushrooms",
+      "tags": [
+        "mushrooms",
+        "natural",
+        "immunity",
+        "inflammation"
+      ],
+      "description": "Modulación inmune e inflamatoria with potencial impacto in healthy aging.",
+      "pathways": [
+        "NF-κB",
+        "Nrf2",
+        "mTOR"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 247,
+      "key_compounds": [
+        "Beta-glucanos",
+        "Lentinan",
+        "Eritadenina"
+      ],
+      "typical_dose": "500-2000 mg/day extract",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "tremella-fuciformis",
+      "name": "Tremella",
+      "full_name": "Tremella fuciformis",
+      "type": "natural",
+      "category": "Medicinal Mushrooms",
+      "tags": [
+        "mushrooms",
+        "natural",
+        "piel"
+      ],
+      "description": "Polisacáridos with potencial hidratación cutánea and modulación inflamatoria.",
+      "pathways": [
+        "NF-κB",
+        "Nrf2"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 208,
+      "key_compounds": [
+        "Polisacáridos"
+      ],
+      "typical_dose": "500-1500 mg/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "apigenin",
+      "name": "Apigenina",
+      "full_name": "Apigenin",
+      "type": "natural",
+      "category": "NAD⁺ / Sirtuins",
+      "tags": [
+        "natural",
+        "sirtuins",
+        "inflammation"
+      ],
+      "description": "Flavona with potencial modulación of CD38 and vías inflamatorias.",
+      "pathways": [
+        "CD38",
+        "SIRT1",
+        "NF-κB"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 295,
+      "key_compounds": [
+        "Apigenina"
+      ],
+      "typical_dose": "50-300 mg/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "nicotinic-acid-vitamin-b3",
+      "name": "Niacina",
+      "full_name": "Nicotinic Acid (Vitamin B3)",
+      "type": "natural",
+      "category": "NAD⁺ / Sirtuins",
+      "tags": [
+        "nad",
+        "natural",
+        "sirtuins"
+      ],
+      "description": "Precursor clásico of NAD+ with efectos dose-dependientes.",
+      "pathways": [
+        "NAD+",
+        "SIRT1"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 305,
+      "key_compounds": [
+        "Niacina"
+      ],
+      "typical_dose": "50-500 mg/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "nicotinamide",
+      "name": "Niacinamida",
+      "full_name": "Nicotinamide",
+      "type": "natural",
+      "category": "NAD⁺ / Sirtuins",
+      "tags": [
+        "nad",
+        "natural"
+      ],
+      "description": "Precursor of NAD+ ampliamente estudiado in metabolismo celular.",
+      "pathways": [
+        "NAD+",
+        "PARP"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 273,
+      "key_compounds": [
+        "Nicotinamida"
+      ],
+      "typical_dose": "100-500 mg/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "nmn",
+      "name": "NMN",
+      "full_name": "Nicotinamide Mononucleotide",
+      "type": "natural",
+      "category": "NAD⁺ / Sirtuins",
+      "tags": [
+        "NAD",
+        "natural",
+        "sirtuins"
+      ],
+      "description": "Potential longevity support via NAD⁺, SIRT1-7.",
+      "pathways": [
+        "NAD⁺",
+        "SIRT1-7",
+        "PARP",
+        "NAMPT"
+      ],
+      "evidence_rating": "★★★★☆",
+      "study_count": 310,
+      "key_compounds": [
+        "β-NMN"
+      ],
+      "typical_dose": "250-1000 mg/day sublingual o polvo",
+      "key_studies": [
+        "Yoshino et al. 2021 - RCT humans NMN",
+        "Mills et al. 2016 - NMN ratones",
+        "Igarashi et al. 2022 - Músculo humans"
+      ],
+      "added_date": "2024-01-01",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "nr",
+      "name": "NR",
+      "full_name": "Nicotinamide Riboside",
+      "type": "natural",
+      "category": "NAD⁺ / Sirtuins",
+      "tags": [
+        "NAD",
+        "natural",
+        "sirtuins"
+      ],
+      "description": "Precursor oral of NAD⁺ with buena biodisponibilidad. RCT confirman aumento of NAD⁺ sanguíneo. Activa SIRT3 mitochondrial específicamente.",
+      "pathways": [
+        "NAD⁺",
+        "SIRT3",
+        "Mitocondria",
+        "NAMPT"
+      ],
+      "evidence_rating": "★★★★☆",
+      "study_count": 390,
+      "key_compounds": [
+        "Nicotinamida Ribósido"
+      ],
+      "typical_dose": "300-1000 mg/day",
+      "added_date": "2024-01-01",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "pterostilbene",
+      "name": "Pterostilbeno",
+      "full_name": "Pterostilbeno (análogo metilado)",
+      "type": "natural",
+      "category": "NAD⁺ / Sirtuins",
+      "tags": [
+        "sirtuins",
+        "natural"
+      ],
+      "description": "Potential longevity support via SIRT1, AMPK.",
+      "pathways": [
+        "SIRT1",
+        "AMPK",
+        "Nrf2",
+        "PPAR-α"
+      ],
+      "evidence_rating": "★★★★☆",
+      "study_count": 240,
+      "key_compounds": [
+        "Trans-pterostilbeno"
+      ],
+      "typical_dose": "50-250 mg/day",
+      "added_date": "2024-01-01",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "resveratrol",
+      "name": "Resveratrol",
+      "full_name": "Trans-resveratrol",
+      "type": "natural",
+      "category": "NAD⁺ / Sirtuins",
+      "tags": [
+        "sirtuins",
+        "natural",
+        "inflammation"
+      ],
+      "description": "Activa SIRT1 alostéricamente and AMPK. Mimético of restricción calórica. cardiovascular and neuroprotector. Biodisponibilidad baja (mejorar with piperina).",
+      "pathways": [
+        "SIRT1",
+        "AMPK",
+        "PGC-1α",
+        "NF-κB"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 890,
+      "key_compounds": [
+        "Trans-resveratrol"
+      ],
+      "typical_dose": "100-500 mg/day (with piperina o liposomal)",
+      "added_date": "2024-01-01",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "l-tryptophan",
+      "name": "Triptófano",
+      "full_name": "L-Tryptophan",
+      "type": "natural",
+      "category": "NAD⁺ / Sirtuins",
+      "tags": [
+        "nad",
+        "aminoacido",
+        "natural"
+      ],
+      "description": "Aporta al metabolismo of vías relacionadas with NAD+ vía quinurenina.",
+      "pathways": [
+        "NAD+"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 326,
+      "key_compounds": [
+        "L-triptófano"
+      ],
+      "typical_dose": "500-2000 mg/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "caffeic-acid",
+      "name": "Ácido cafeico",
+      "full_name": "Caffeic acid",
+      "type": "natural",
+      "category": "Polyphenols",
+      "tags": [
+        "natural",
+        "inflammation"
+      ],
+      "description": "Polifenol dietario with potencial anti-inflammatory.",
+      "pathways": [
+        "NF-κB"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 355,
+      "key_compounds": [
+        "Ácido cafeico"
+      ],
+      "typical_dose": "A través of café/plantas",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "ellagic-acid",
+      "name": "Ácido elágico",
+      "full_name": "Ellagic acid",
+      "type": "natural",
+      "category": "Polyphenols",
+      "tags": [
+        "natural",
+        "microbioma"
+      ],
+      "description": "Precursor metabolic of urolitinas with rol in health mitochondrial.",
+      "pathways": [
+        "Microbiome",
+        "Mitophagy"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 339,
+      "key_compounds": [
+        "Ácido elágico"
+      ],
+      "typical_dose": "A través of granada/frutos rojos",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "ferulic-acid",
+      "name": "Ácido ferúlico",
+      "full_name": "Ferulic acid",
+      "type": "natural",
+      "category": "Polyphenols",
+      "tags": [
+        "natural",
+        "antioxidante"
+      ],
+      "description": "Compuesto fenólico with antioxidant activity and metabolic.",
+      "pathways": [
+        "Nrf2"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 310,
+      "key_compounds": [
+        "Ácido ferúlico"
+      ],
+      "typical_dose": "100-500 mg/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "rosmarinic-acid",
+      "name": "Ácido rosmarínico",
+      "full_name": "Rosmarinic acid",
+      "type": "natural",
+      "category": "Polyphenols",
+      "tags": [
+        "natural",
+        "inflammation",
+        "neuro"
+      ],
+      "description": "Polifenol with antioxidant activity and anti-inflammatory.",
+      "pathways": [
+        "Nrf2",
+        "NF-κB"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 352,
+      "key_compounds": [
+        "Ácido rosmarínico"
+      ],
+      "typical_dose": "100-300 mg/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "anthocyanins",
+      "name": "Antocianinas",
+      "full_name": "Anthocyanins",
+      "type": "natural",
+      "category": "Polyphenols",
+      "tags": [
+        "natural",
+        "vascular",
+        "inflammation"
+      ],
+      "description": "Pigmentos bioactivos asociados a function vascular and cognitive.",
+      "pathways": [
+        "eNOS",
+        "NF-κB"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 361,
+      "key_compounds": [
+        "Cianidina",
+        "Delfinidina"
+      ],
+      "typical_dose": "A través of frutos rojos",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "apigenin-food-sources",
+      "name": "Apigenina dietaria",
+      "full_name": "Apigenin (food sources)",
+      "type": "natural",
+      "category": "Polyphenols",
+      "tags": [
+        "natural",
+        "inflammation"
+      ],
+      "description": "Ingesta alimentaria of flavonas with potencial soporte inflamatorio.",
+      "pathways": [
+        "NF-κB"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 364,
+      "key_compounds": [
+        "Apigenina"
+      ],
+      "typical_dose": "A través of perejil/apio/manzanilla",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "curcumin",
+      "name": "Curcumina",
+      "full_name": "Curcumina (Cúrcuma longa)",
+      "type": "natural",
+      "category": "Polyphenols",
+      "tags": [
+        "natural",
+        "inflammation",
+        "senolytic"
+      ],
+      "description": "Inhibits NF-κB and activa Nrf2. Extiende vida in C. elegans. Senolítico and neuroprotector. Biodisponibilidad mejorada with piperina o formulaciones BCM-95.",
+      "pathways": [
+        "NF-κB",
+        "Nrf2",
+        "AMPK",
+        "Autofagia"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 750,
+      "key_compounds": [
+        "Curcumina",
+        "Demetoxicurcumina",
+        "Bisdemetoxicurcumina"
+      ],
+      "typical_dose": "500-2000 mg/day (formulación biodisponible)",
+      "added_date": "2024-01-01",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "daidzein",
+      "name": "Daidzeína",
+      "full_name": "Daidzein",
+      "type": "natural",
+      "category": "Polyphenols",
+      "tags": [
+        "natural",
+        "hormonal"
+      ],
+      "description": "Isoflavona of soja with interés in healthy aging.",
+      "pathways": [
+        "ERβ"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 293,
+      "key_compounds": [
+        "Daidzeína"
+      ],
+      "typical_dose": "30-100 mg/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "egcg",
+      "name": "EGCG",
+      "full_name": "Epigalocatequina Galato (Té Verde)",
+      "type": "natural",
+      "category": "Polyphenols",
+      "tags": [
+        "natural",
+        "inflammation",
+        "mTOR"
+      ],
+      "description": "Potential longevity support via AMPK, mTOR.",
+      "pathways": [
+        "AMPK",
+        "mTOR",
+        "Autofagia",
+        "NF-κB"
+      ],
+      "evidence_rating": "★★★★☆",
+      "study_count": 720,
+      "key_compounds": [
+        "EGCG",
+        "ECG",
+        "EGC"
+      ],
+      "typical_dose": "400-800 mg/day extract estandarizado",
+      "added_date": "2024-01-01",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "fisetin",
+      "name": "Fisetin",
+      "full_name": "3,3',4',5,7-Pentahidroxiflavona",
+      "type": "natural",
+      "category": "Polyphenols",
+      "tags": [
+        "senolytic",
+        "natural"
+      ],
+      "description": "Potential longevity support via Senescencia, NF-κB.",
+      "pathways": [
+        "Senescencia",
+        "NF-κB",
+        "PI3K",
+        "p21/p16"
+      ],
+      "evidence_rating": "★★★★☆",
+      "study_count": 210,
+      "key_compounds": [
+        "Fisetin"
+      ],
+      "typical_dose": "100-500 mg/day (2 días consecutivos/mes protocolo senolítico)",
+      "key_studies": [
+        "Yousefzadeh et al. 2018 - Extensión vida ratones",
+        "Kirkland et al. 2024 - RCT humans",
+        "Grynkiewicz & Demchuk 2019 - Mecanismos"
+      ],
+      "added_date": "2024-01-01",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "genistein",
+      "name": "Genisteína",
+      "full_name": "Genistein",
+      "type": "natural",
+      "category": "Polyphenols",
+      "tags": [
+        "natural",
+        "hormonal",
+        "epigenetics"
+      ],
+      "description": "Isoflavona with actividad estrogénica selectiva and señalización celular.",
+      "pathways": [
+        "ERβ",
+        "AMPK"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 301,
+      "key_compounds": [
+        "Genisteína"
+      ],
+      "typical_dose": "30-100 mg/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "pomegranate-punicalagins",
+      "name": "Granada (punicalaginas)",
+      "full_name": "Pomegranate punicalagins",
+      "type": "natural",
+      "category": "Polyphenols",
+      "tags": [
+        "natural",
+        "mitochondria",
+        "vascular"
+      ],
+      "description": "Polifenoles of granada with antioxidant activity and vascular.",
+      "pathways": [
+        "Nrf2",
+        "NO"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 352,
+      "key_compounds": [
+        "Punicalaginas"
+      ],
+      "typical_dose": "extract o alimento",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "hesperidin",
+      "name": "Hesperidina",
+      "full_name": "Hesperidin",
+      "type": "natural",
+      "category": "Polyphenols",
+      "tags": [
+        "natural",
+        "vascular"
+      ],
+      "description": "Flavanona cítrica with potencial mejora endotelial.",
+      "pathways": [
+        "eNOS",
+        "NF-κB"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 334,
+      "key_compounds": [
+        "Hesperidina"
+      ],
+      "typical_dose": "250-1000 mg/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "hydroxytyrosol",
+      "name": "Hidroxitirosol",
+      "full_name": "Hydroxytyrosol",
+      "type": "natural",
+      "category": "Polyphenols",
+      "tags": [
+        "natural",
+        "cardio",
+        "inflammation"
+      ],
+      "description": "Potential longevity support via Nrf2, LDL oxidation.",
+      "pathways": [
+        "Nrf2",
+        "LDL oxidation"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 281,
+      "key_compounds": [
+        "Hidroxitirosol"
+      ],
+      "typical_dose": "5-30 mg/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "kaempferol",
+      "name": "Kaempferol",
+      "full_name": "Kaempferol",
+      "type": "natural",
+      "category": "Polyphenols",
+      "tags": [
+        "natural",
+        "antioxidante"
+      ],
+      "description": "Flavonol with antioxidant activity and cardiometabólica.",
+      "pathways": [
+        "Nrf2",
+        "AMPK"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 306,
+      "key_compounds": [
+        "Kaempferol"
+      ],
+      "typical_dose": "50-200 mg/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "luteolin",
+      "name": "Luteolina",
+      "full_name": "Luteolin",
+      "type": "natural",
+      "category": "Polyphenols",
+      "tags": [
+        "natural",
+        "inflammation",
+        "neuro"
+      ],
+      "description": "Polifenol with perfil anti-inflammatory and neuroprotector in preclinical models.",
+      "pathways": [
+        "NF-κB",
+        "Nrf2"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 316,
+      "key_compounds": [
+        "Luteolina"
+      ],
+      "typical_dose": "50-200 mg/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "naringenin",
+      "name": "Naringenina",
+      "full_name": "Naringenin",
+      "type": "natural",
+      "category": "Polyphenols",
+      "tags": [
+        "natural",
+        "metabolico"
+      ],
+      "description": "Flavanona with potencial sobre sensibilidad a insulina and lípidos.",
+      "pathways": [
+        "AMPK",
+        "PPAR"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 357,
+      "key_compounds": [
+        "Naringenina"
+      ],
+      "typical_dose": "200-600 mg/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "oleuropein",
+      "name": "Oleuropeína",
+      "full_name": "Oleuropein",
+      "type": "natural",
+      "category": "Polyphenols",
+      "tags": [
+        "natural",
+        "cardio",
+        "inflammation"
+      ],
+      "description": "Potential longevity support via Nrf2, NF-κB.",
+      "pathways": [
+        "Nrf2",
+        "NF-κB"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 306,
+      "key_compounds": [
+        "Oleuropeína"
+      ],
+      "typical_dose": "50-200 mg/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "quercetin",
+      "name": "Quercetina",
+      "full_name": "Quercetina (flavonoide)",
+      "type": "natural",
+      "category": "Polyphenols",
+      "tags": [
+        "senolytic",
+        "natural",
+        "inflammation"
+      ],
+      "description": "Senolítico natural. Combo D+Q (Dasatinib+Quercetina) más estudiado clínicamente. +60% vida in levaduras. RCT in fibrosis pulmonar and COVID long.",
+      "pathways": [
+        "Senescencia",
+        "NF-κB",
+        "BCL-2",
+        "AMPK"
+      ],
+      "evidence_rating": "★★★★☆",
+      "study_count": 640,
+      "key_compounds": [
+        "Quercetina",
+        "Quercetina Fitosoma"
+      ],
+      "typical_dose": "500-1000 mg/day (pulsos 2 días/semana)",
+      "added_date": "2024-01-01",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "sulforaphane",
+      "name": "Sulforafano",
+      "full_name": "Sulforafano (Brócoli/Brassica)",
+      "type": "natural",
+      "category": "Polyphenols",
+      "tags": [
+        "natural",
+        "inflammation",
+        "epigenetics"
+      ],
+      "description": "Potential longevity support via Nrf2, Autofagia.",
+      "pathways": [
+        "Nrf2",
+        "Autofagia",
+        "HDAC",
+        "DNMT"
+      ],
+      "evidence_rating": "★★★★☆",
+      "study_count": 490,
+      "key_compounds": [
+        "Sulforafano",
+        "Glucorafanina"
+      ],
+      "typical_dose": "10-100 mg/day (brotes brócoli: ~5g)",
+      "added_date": "2024-01-01",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "urolithin-a",
+      "name": "Urolitina A",
+      "full_name": "Urolitina A (UA)",
+      "type": "natural",
+      "category": "Polyphenols",
+      "tags": [
+        "natural",
+        "mitochondria"
+      ],
+      "description": "Potential longevity support via Mitofagia, PINK1/Parkin.",
+      "pathways": [
+        "Mitofagia",
+        "PINK1/Parkin",
+        "Mitocondria",
+        "mTOR"
+      ],
+      "evidence_rating": "★★★★☆",
+      "study_count": 195,
+      "key_compounds": [
+        "Urolitina A"
+      ],
+      "typical_dose": "500-1000 mg/day (Mitopure)",
+      "key_studies": [
+        "Andreux et al. 2019 - RCT músculo",
+        "Singh et al. 2022 - Mitofagia humans"
+      ],
+      "added_date": "2024-01-01",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "ashwagandha",
+      "name": "Ashwagandha",
+      "full_name": "Withania somnifera (KSM-66)",
+      "type": "natural",
+      "category": "Adaptogens",
+      "tags": [
+        "adaptogen",
+        "natural",
+        "inflammation"
+      ],
+      "description": "Potential longevity support via Cortisol, NF-κB.",
+      "pathways": [
+        "Cortisol",
+        "NF-κB",
+        "BDNF",
+        "mTOR"
+      ],
+      "evidence_rating": "★★★★☆",
+      "study_count": 480,
+      "key_compounds": [
+        "Withanólida A",
+        "Withanólida D",
+        "Withaferín A"
+      ],
+      "typical_dose": "300-600 mg/day KSM-66 (estandarizado ≥5% withanólidas)",
+      "added_date": "2024-01-01",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "astragalus-membranaceus",
+      "name": "Astrágalo",
+      "full_name": "Astragalus membranaceus",
+      "type": "natural",
+      "category": "Adaptogens",
+      "tags": [
+        "adaptogen",
+        "natural",
+        "immunity"
+      ],
+      "description": "Planta with uso tradicional e interés in inmunosenescencia.",
+      "pathways": [
+        "NF-κB",
+        "Telomerase"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 216,
+      "key_compounds": [
+        "Astragalósidos"
+      ],
+      "typical_dose": "500-1500 mg/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "bacopa",
+      "name": "Bacopa Monnieri",
+      "full_name": "Bacopa monnieri (Brahmi)",
+      "type": "natural",
+      "category": "Adaptogens",
+      "tags": [
+        "adaptogen",
+        "natural"
+      ],
+      "description": "Bacósidos activan síntesis proteica in hipocampo. Inhiben AChE. Neuroprotector potente. Mejora memoria in RCT. Requiere 8-12 semanas.",
+      "pathways": [
+        "Acetilcolina",
+        "BDNF",
+        "Nrf2",
+        "AChE"
+      ],
+      "evidence_rating": "★★★★☆",
+      "study_count": 310,
+      "key_compounds": [
+        "Bacósido A3",
+        "Bacósido II",
+        "Bacopasaponina C"
+      ],
+      "typical_dose": "300-600 mg/day extract estandarizado 20% bacósidos",
+      "added_date": "2024-01-01",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "eleutherococcus-senticosus",
+      "name": "Eleuterococo",
+      "full_name": "Eleutherococcus senticosus",
+      "type": "natural",
+      "category": "Adaptogens",
+      "tags": [
+        "adaptogen",
+        "natural",
+        "energia"
+      ],
+      "description": "Adaptógeno asociado a tolerancia al estrés and fatiga.",
+      "pathways": [
+        "HPA",
+        "AMPK"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 193,
+      "key_compounds": [
+        "Eleuterósidos"
+      ],
+      "typical_dose": "300-1200 mg/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "panax-ginseng",
+      "name": "Ginseng Rojo",
+      "full_name": "Panax ginseng (Ginsenósidos)",
+      "type": "natural",
+      "category": "Adaptogens",
+      "tags": [
+        "adaptogen",
+        "natural",
+        "inflammation"
+      ],
+      "description": "Ginsenósidos Rg1 and Rd activan telomerasa. Rg1 Inhibits p16 (senescencia). AMPK activador. protection cardiovascular and neuroprotección demostradas.",
+      "pathways": [
+        "Telomerasa",
+        "AMPK",
+        "p16",
+        "NF-κB"
+      ],
+      "evidence_rating": "★★★★☆",
+      "study_count": 620,
+      "key_compounds": [
+        "Ginsenósido Rg1",
+        "Ginsenósido Rb1",
+        "Ginsenósido Rd"
+      ],
+      "typical_dose": "200-400 mg/day extract estandarizado",
+      "added_date": "2024-01-01",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "gynostemma-pentaphyllum",
+      "name": "Gynostemma",
+      "full_name": "Gynostemma pentaphyllum",
+      "type": "natural",
+      "category": "Adaptogens",
+      "tags": [
+        "adaptogen",
+        "natural",
+        "metabolico"
+      ],
+      "description": "Adaptógeno with potencial cardiometabólico.",
+      "pathways": [
+        "AMPK",
+        "NO"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 202,
+      "key_compounds": [
+        "Gypenósidos"
+      ],
+      "typical_dose": "300-1200 mg/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "lepidium-meyenii",
+      "name": "Maca",
+      "full_name": "Lepidium meyenii",
+      "type": "natural",
+      "category": "Adaptogens",
+      "tags": [
+        "adaptogen",
+        "natural",
+        "energia"
+      ],
+      "description": "Alimento adaptógeno with evidence in vitalidad and bienestar.",
+      "pathways": [
+        "HPA"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 196,
+      "key_compounds": [
+        "Macamidas"
+      ],
+      "typical_dose": "1-3 g/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "rhodiola",
+      "name": "Rhodiola Rosea",
+      "full_name": "Rhodiola rosea (Raíz dorada)",
+      "type": "natural",
+      "category": "Adaptogens",
+      "tags": [
+        "adaptogen",
+        "natural",
+        "mitochondria"
+      ],
+      "description": "Salidróside activa AMPK and Nrf2. Extiende vida in C. elegans 24%. Mejora cognición bajo estrés. Protector mitochondrial.",
+      "pathways": [
+        "AMPK",
+        "Nrf2",
+        "Autofagia",
+        "FOXO"
+      ],
+      "evidence_rating": "★★★★☆",
+      "study_count": 360,
+      "key_compounds": [
+        "Salidróside",
+        "Rosavina",
+        "Tirosol"
+      ],
+      "typical_dose": "200-600 mg/day (estandarizado 3% rosavina + 1% salidróside)",
+      "added_date": "2024-01-01",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "schisandra-chinensis",
+      "name": "Schisandra",
+      "full_name": "Schisandra chinensis",
+      "type": "natural",
+      "category": "Adaptogens",
+      "tags": [
+        "adaptogen",
+        "natural",
+        "higado"
+      ],
+      "description": "Adaptógeno tradicional with potencial hepatoprotector and anti-estrés.",
+      "pathways": [
+        "Nrf2",
+        "HPA"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 177,
+      "key_compounds": [
+        "Schisandrinas"
+      ],
+      "typical_dose": "500-1500 mg/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "ocimum-sanctum",
+      "name": "Tulsi",
+      "full_name": "Ocimum sanctum",
+      "type": "natural",
+      "category": "Adaptogens",
+      "tags": [
+        "adaptogen",
+        "natural",
+        "inflammation"
+      ],
+      "description": "Planta adaptógena with perfil antioxidante and anti-inflammatory.",
+      "pathways": [
+        "NF-κB",
+        "HPA"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 163,
+      "key_compounds": [
+        "Eugenol",
+        "Ácido rosmarínico"
+      ],
+      "typical_dose": "300-1200 mg/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "astaxanthin",
+      "name": "Astaxantina",
+      "full_name": "Astaxantina (Carotenoide marino)",
+      "type": "natural",
+      "category": "Longevity Vitamins",
+      "tags": [
+        "natural",
+        "mitochondria"
+      ],
+      "description": "Potential longevity support via ROS, Nrf2.",
+      "pathways": [
+        "ROS",
+        "Nrf2",
+        "Mitocondria",
+        "Piel"
+      ],
+      "evidence_rating": "★★★★☆",
+      "study_count": 390,
+      "key_compounds": [
+        "Astaxantina (3S,3'S)"
+      ],
+      "typical_dose": "4-12 mg/day (fuente natural Haematococcus pluvialis)",
+      "added_date": "2024-01-01",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "coq10",
+      "name": "CoQ10 / Ubiquinol",
+      "full_name": "Coenzima Q10 (forma reducida Ubiquinol)",
+      "type": "natural",
+      "category": "Longevity Vitamins",
+      "tags": [
+        "natural",
+        "mitochondria"
+      ],
+      "description": "Potential longevity support via ETC, Mitocondria.",
+      "pathways": [
+        "ETC",
+        "Mitocondria",
+        "ATP",
+        "ROS"
+      ],
+      "evidence_rating": "★★★★☆",
+      "study_count": 830,
+      "key_compounds": [
+        "Ubiquinol (CoQ10 reducido)",
+        "Ubiquinona"
+      ],
+      "typical_dose": "100-300 mg/day Ubiquinol (with grasa)",
+      "added_date": "2024-01-01",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "5-mthf",
+      "name": "Folato",
+      "full_name": "5-MTHF",
+      "type": "natural",
+      "category": "Longevity Vitamins",
+      "tags": [
+        "natural",
+        "metilacion"
+      ],
+      "description": "Potential longevity support via Methylation.",
+      "pathways": [
+        "Methylation"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 345,
+      "key_compounds": [
+        "Folato"
+      ],
+      "typical_dose": "200-800 mcg/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "lutein",
+      "name": "Luteína",
+      "full_name": "Lutein",
+      "type": "natural",
+      "category": "Longevity Vitamins",
+      "tags": [
+        "natural",
+        "ocular",
+        "neuro"
+      ],
+      "description": "Carotenoide asociado a health ocular and cognitive.",
+      "pathways": [
+        "Antioxidant"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 391,
+      "key_compounds": [
+        "Luteína"
+      ],
+      "typical_dose": "10-20 mg/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "magnesium-glycinate-citrate",
+      "name": "Magnesio",
+      "full_name": "Magnesium glycinate/citrate",
+      "type": "natural",
+      "category": "Longevity Vitamins",
+      "tags": [
+        "natural",
+        "metabolico",
+        "sueno"
+      ],
+      "description": "Mineral clave for metabolismo energético and function neuromuscular.",
+      "pathways": [
+        "ATP",
+        "Insulin signaling"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 329,
+      "key_compounds": [
+        "Magnesio"
+      ],
+      "typical_dose": "200-400 mg/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "omega3",
+      "name": "Omega-3 DHA+EPA",
+      "full_name": "Ácidos Grasos Omega-3 (DHA+EPA)",
+      "type": "natural",
+      "category": "Longevity Vitamins",
+      "tags": [
+        "natural",
+        "inflammation"
+      ],
+      "description": "Potential longevity support via Resolvinas, Telómeros.",
+      "pathways": [
+        "Resolvinas",
+        "Telómeros",
+        "NF-κB",
+        "Membrana"
+      ],
+      "evidence_rating": "★★★★★",
+      "study_count": 1200,
+      "key_compounds": [
+        "DHA",
+        "EPA",
+        "DPA"
+      ],
+      "typical_dose": "1000-4000 mg/day EPA+DHA combinado (índice omega-3 >8%)",
+      "added_date": "2024-01-01",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "selenium",
+      "name": "Selenio",
+      "full_name": "Selenium",
+      "type": "natural",
+      "category": "Longevity Vitamins",
+      "tags": [
+        "natural",
+        "antioxidante",
+        "tiroides"
+      ],
+      "description": "Cofactor of selenoproteínas antioxidantes.",
+      "pathways": [
+        "GPx",
+        "Thyroid"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 400,
+      "key_compounds": [
+        "Selenometionina"
+      ],
+      "typical_dose": "50-200 mcg/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "methylcobalamin",
+      "name": "Vitamina B12",
+      "full_name": "Methylcobalamin",
+      "type": "natural",
+      "category": "Longevity Vitamins",
+      "tags": [
+        "natural",
+        "neuro",
+        "metilacion"
+      ],
+      "description": "Importante in metilación and function neurológica.",
+      "pathways": [
+        "Methylation"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 400,
+      "key_compounds": [
+        "Cobalamina"
+      ],
+      "typical_dose": "500-2000 mcg/semana",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "ascorbic-acid",
+      "name": "Vitamina C",
+      "full_name": "Ascorbic acid",
+      "type": "natural",
+      "category": "Longevity Vitamins",
+      "tags": [
+        "natural",
+        "antioxidante"
+      ],
+      "description": "Antioxidante esencial and cofactor in síntesis of colágeno.",
+      "pathways": [
+        "Nrf2"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 346,
+      "key_compounds": [
+        "Ácido ascórbico"
+      ],
+      "typical_dose": "250-1000 mg/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "vitamin-d3",
+      "name": "Vitamina D3",
+      "full_name": "Colecalciferol (D3)",
+      "type": "natural",
+      "category": "Longevity Vitamins",
+      "tags": [
+        "natural",
+        "inflammation"
+      ],
+      "description": "Vitamina of longevity (PNAS 2018). VDR presente in >2000 genes. Deficiencia = mortalidad prematura. Combinar with K2-MK7.",
+      "pathways": [
+        "VDR",
+        "p21",
+        "Inmunidad",
+        "Telómeros"
+      ],
+      "evidence_rating": "★★★★★",
+      "study_count": 1800,
+      "key_compounds": [
+        "Colecalciferol",
+        "25-OH-D3"
+      ],
+      "typical_dose": "2000-5000 UI/day (objetivo sérico: 50-80 ng/mL)",
+      "added_date": "2024-01-01",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "tocopherols-tocotrienols",
+      "name": "Vitamina E",
+      "full_name": "Tocopherols/Tocotrienols",
+      "type": "natural",
+      "category": "Longevity Vitamins",
+      "tags": [
+        "natural",
+        "antioxidante"
+      ],
+      "description": "Antioxidante lipídico with interés in health vascular.",
+      "pathways": [
+        "Lipid oxidation"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 330,
+      "key_compounds": [
+        "Tocoferoles"
+      ],
+      "typical_dose": "100-400 IU/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "vitamin-k2",
+      "name": "Vitamina K2 MK-7",
+      "full_name": "Menaquinona-7 (MK-7)",
+      "type": "natural",
+      "category": "Longevity Vitamins",
+      "tags": [
+        "natural"
+      ],
+      "description": "Dirige calcio a huesos, no arterias. Activa MGP anti-calcificación. Indispensable for longevity cardiovascular. Combinar siempre with D3.",
+      "pathways": [
+        "MGP",
+        "Calcificación",
+        "Osteocalcina",
+        "Hueso"
+      ],
+      "evidence_rating": "★★★★☆",
+      "study_count": 480,
+      "key_compounds": [
+        "MK-7",
+        "MK-4"
+      ],
+      "typical_dose": "100-300 mcg/day MK-7",
+      "added_date": "2024-01-01",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "zeaxanthin",
+      "name": "Zeaxantina",
+      "full_name": "Zeaxanthin",
+      "type": "natural",
+      "category": "Longevity Vitamins",
+      "tags": [
+        "natural",
+        "ocular"
+      ],
+      "description": "Carotenoide with rol in retina and estrés oxidativo.",
+      "pathways": [
+        "Antioxidant"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 386,
+      "key_compounds": [
+        "Zeaxantina"
+      ],
+      "typical_dose": "2-10 mg/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "zinc",
+      "name": "Zinc",
+      "full_name": "Zinc",
+      "type": "natural",
+      "category": "Longevity Vitamins",
+      "tags": [
+        "natural",
+        "immunity"
+      ],
+      "description": "Mineral esencial in inmunidad and defensa antioxidante.",
+      "pathways": [
+        "SOD",
+        "Immune signaling"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 402,
+      "key_compounds": [
+        "Zinc"
+      ],
+      "typical_dose": "10-25 mg/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "acetyl-l-carnitine",
+      "name": "Acetil-L-Carnitina",
+      "full_name": "Acetyl-L-carnitine",
+      "type": "natural",
+      "category": "Mitochondria / Bioenergetics",
+      "tags": [
+        "natural",
+        "mitochondria",
+        "energia"
+      ],
+      "description": "Potential longevity support via β-oxidation, Mitochondria.",
+      "pathways": [
+        "β-oxidation",
+        "Mitochondria"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 178,
+      "key_compounds": [
+        "ALCAR"
+      ],
+      "typical_dose": "500-2000 mg/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "alpha-lipoic-acid",
+      "name": "Ácido alfa lipoico",
+      "full_name": "Alpha-lipoic acid",
+      "type": "natural",
+      "category": "Mitochondria / Bioenergetics",
+      "tags": [
+        "natural",
+        "mitochondria",
+        "metabolico"
+      ],
+      "description": "Cofactor redox mitochondrial with potencial metabolic.",
+      "pathways": [
+        "AMPK",
+        "Nrf2"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 169,
+      "key_compounds": [
+        "R-ALA"
+      ],
+      "typical_dose": "300-600 mg/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "creatine",
+      "name": "Creatina",
+      "full_name": "Creatina Monohidrato",
+      "type": "natural",
+      "category": "Mitochondria / Bioenergetics",
+      "tags": [
+        "natural",
+        "mitochondria"
+      ],
+      "description": "+9% of vida in ratones. Reduce lipofuscina. Mejora function cognitive and masa muscular. 500+ studies. Efectos cognitivos in mayores.",
+      "pathways": [
+        "ATP",
+        "Fosfocreatina",
+        "Músculo",
+        "Cerebro"
+      ],
+      "evidence_rating": "★★★★☆",
+      "study_count": 580,
+      "key_compounds": [
+        "Creatina Monohidrato"
+      ],
+      "typical_dose": "Potential longevity-associated compound with ongoing evidence.",
+      "added_date": "2024-01-01",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "d-ribose",
+      "name": "D-ribosa",
+      "full_name": "D-ribose",
+      "type": "natural",
+      "category": "Mitochondria / Bioenergetics",
+      "tags": [
+        "natural",
+        "energia"
+      ],
+      "description": "Sustrato energético with uso in fatiga and recuperación.",
+      "pathways": [
+        "ATP"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 195,
+      "key_compounds": [
+        "D-ribosa"
+      ],
+      "typical_dose": "3-10 g/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "spermidine",
+      "name": "Espermidina",
+      "full_name": "Spermidine (poliamina)",
+      "type": "natural",
+      "category": "Mitochondria / Bioenergetics",
+      "tags": [
+        "natural",
+        "mitochondria",
+        "senolytic"
+      ],
+      "description": "Potential longevity support via Autofagia, EP300.",
+      "pathways": [
+        "Autofagia",
+        "EP300",
+        "Mitocondria",
+        "mTOR"
+      ],
+      "evidence_rating": "★★★★☆",
+      "study_count": 310,
+      "key_compounds": [
+        "Espermidina",
+        "Espermina",
+        "Putrescina"
+      ],
+      "typical_dose": "1-10 mg/day (o germen of trigo 3-5 cucharadas)",
+      "added_date": "2024-01-01",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "mitoquinone",
+      "name": "MitoQ",
+      "full_name": "Mitoquinone",
+      "type": "synthetic",
+      "category": "Mitochondria / Bioenergetics",
+      "tags": [
+        "mitochondria",
+        "synthetic",
+        "antioxidante"
+      ],
+      "description": "Antioxidante dirigido a mitocondria in investigación clínica.",
+      "pathways": [
+        "Mitochondria",
+        "ROS"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 200,
+      "key_compounds": [
+        "MitoQ"
+      ],
+      "typical_dose": "10-20 mg/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "pyrroloquinoline-quinone",
+      "name": "PQQ",
+      "full_name": "Pyrroloquinoline quinone",
+      "type": "natural",
+      "category": "Mitochondria / Bioenergetics",
+      "tags": [
+        "natural",
+        "mitochondria"
+      ],
+      "description": "Cofactor redox asociado a biogénesis mitochondrial and energía.",
+      "pathways": [
+        "PGC-1α",
+        "Nrf2"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 178,
+      "key_compounds": [
+        "PQQ"
+      ],
+      "typical_dose": "10-20 mg/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "plastoquinonyl-decyltriphenylphosphonium",
+      "name": "SkQ1",
+      "full_name": "Plastoquinonyl decyltriphenylphosphonium",
+      "type": "synthetic",
+      "category": "Mitochondria / Bioenergetics",
+      "tags": [
+        "mitochondria",
+        "synthetic"
+      ],
+      "description": "Compuesto mitochondrial emergente in investigación.",
+      "pathways": [
+        "Mitochondria",
+        "ROS"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 209,
+      "key_compounds": [
+        "SkQ1"
+      ],
+      "typical_dose": "according to formulación",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "alvespimycin",
+      "name": "17-DMAG",
+      "full_name": "Alvespimycin",
+      "type": "synthetic",
+      "category": "Senolytics / mTOR",
+      "tags": [
+        "senolytic",
+        "synthetic"
+      ],
+      "description": "Inhibidor HSP90 estudiado in estrategias senolíticas.",
+      "pathways": [
+        "HSP90",
+        "Senescence"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 107,
+      "key_compounds": [
+        "17-DMAG"
+      ],
+      "typical_dose": "Uso investigación",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "abt-737",
+      "name": "ABT-737",
+      "full_name": "ABT-737",
+      "type": "synthetic",
+      "category": "Senolytics / mTOR",
+      "tags": [
+        "senolytic",
+        "synthetic"
+      ],
+      "description": "Molécula of investigación with acción in células senescentes.",
+      "pathways": [
+        "BCL-2"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 164,
+      "key_compounds": [
+        "ABT-737"
+      ],
+      "typical_dose": "Uso investigación",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "acarbose",
+      "name": "Acarbosa",
+      "full_name": "Acarbose",
+      "type": "synthetic",
+      "category": "Senolytics / mTOR",
+      "tags": [
+        "synthetic",
+        "metabolico",
+        "longevity"
+      ],
+      "description": "Fármaco with datos in modelos of longevity and control glucémico.",
+      "pathways": [
+        "Glucose",
+        "mTOR"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 166,
+      "key_compounds": [
+        "Acarbosa"
+      ],
+      "typical_dose": "25-100 mg with comidas",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "berberine",
+      "name": "Berberina",
+      "full_name": "Berberina HCl",
+      "type": "natural",
+      "category": "Senolytics / mTOR",
+      "tags": [
+        "natural",
+        "mTOR"
+      ],
+      "description": "'Metformina natural'. Activa AMPK vía inhibición Complejo I mitochondrial. Similar eficacia hipoglucémica. Mejora microbioma. Senolítico emergente.",
+      "pathways": [
+        "AMPK",
+        "mTOR",
+        "Microbioma",
+        "Glucosa"
+      ],
+      "evidence_rating": "★★★★☆",
+      "study_count": 610,
+      "key_compounds": [
+        "Berberina HCl",
+        "Dihidroberberina (DHB)"
+      ],
+      "typical_dose": "500-1500 mg/day (DHB es 5x más biodisponible)",
+      "added_date": "2024-01-01",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "dasatinib",
+      "name": "Dasatinib",
+      "full_name": "Dasatinib (BCR-ABL/Src inhibidor)",
+      "type": "synthetic",
+      "category": "Senolytics / mTOR",
+      "tags": [
+        "senolytic",
+        "synthetic"
+      ],
+      "description": "Combo D+Q (with Quercetina) más estudiado clínicamente. Elimina células senescentes in fibrosis pulmonar and COVID long. Requiere supervisión médica.",
+      "pathways": [
+        "BCL-2",
+        "p21/p16",
+        "Senescencia",
+        "SCAPs"
+      ],
+      "evidence_rating": "★★★★☆",
+      "study_count": 390,
+      "key_compounds": [
+        "Dasatinib"
+      ],
+      "typical_dose": "100 mg/day x 2 días + Quercetina 1000mg (protocolo pulso mensual)",
+      "added_date": "2024-01-01",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "metformin",
+      "name": "Metformina",
+      "full_name": "Metformina HCl",
+      "type": "synthetic",
+      "category": "Senolytics / mTOR",
+      "tags": [
+        "synthetic",
+        "mTOR"
+      ],
+      "description": "Potential longevity support via AMPK, mTOR.",
+      "pathways": [
+        "AMPK",
+        "mTOR",
+        "IGF-1",
+        "Mitocondria"
+      ],
+      "evidence_rating": "★★★★★",
+      "study_count": 1450,
+      "key_compounds": [
+        "Metformina HCl"
+      ],
+      "typical_dose": "500-2000 mg/day (off-label antiaging, monitorizar B12)",
+      "added_date": "2024-01-01",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "abt-263",
+      "name": "Navitoclax",
+      "full_name": "ABT-263",
+      "type": "synthetic",
+      "category": "Senolytics / mTOR",
+      "tags": [
+        "senolytic",
+        "synthetic"
+      ],
+      "description": "Senolítico potente in investigación, with limitaciones of seguridad.",
+      "pathways": [
+        "BCL-2",
+        "Senescence"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 137,
+      "key_compounds": [
+        "ABT-263"
+      ],
+      "typical_dose": "Uso investigación",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "piperlongumine",
+      "name": "Piperlongumina",
+      "full_name": "Piperlongumine",
+      "type": "natural",
+      "category": "Senolytics / mTOR",
+      "tags": [
+        "senolytic",
+        "natural"
+      ],
+      "description": "Potential longevity support via Senescence, ROS.",
+      "pathways": [
+        "Senescence",
+        "ROS"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 182,
+      "key_compounds": [
+        "Piperlongumina"
+      ],
+      "typical_dose": "5-20 mg/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "rapamycin",
+      "name": "Rapamicina",
+      "full_name": "Sirolimus (Rapamicina)",
+      "type": "synthetic",
+      "category": "Senolytics / mTOR",
+      "tags": [
+        "senolytic",
+        "synthetic",
+        "mTOR"
+      ],
+      "description": "Potential longevity support via mTOR, Autofagia.",
+      "pathways": [
+        "mTOR",
+        "Autofagia",
+        "Senescencia",
+        "Inmunidad"
+      ],
+      "evidence_rating": "★★★★★",
+      "study_count": 1050,
+      "key_compounds": [
+        "Sirolimus"
+      ],
+      "typical_dose": "Uso clinical: 1-6 mg/semana (antiaging, off-label)",
+      "key_studies": [
+        "Harrison et al. 2009 - ITP extensión vida",
+        "Mannick et al. 2018 - Inmunidad ancianos",
+        "Bitto et al. 2016 - Inicio tardío eficaz"
+      ],
+      "added_date": "2024-01-01",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "trimethylglycine",
+      "name": "Betaína (TMG)",
+      "full_name": "Trimethylglycine",
+      "type": "natural",
+      "category": "Epigenetics / Reprogramming",
+      "tags": [
+        "natural",
+        "metilacion",
+        "epigenetics"
+      ],
+      "description": "Donador of metilos with interés in homocisteína and metilación.",
+      "pathways": [
+        "Methylation"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 161,
+      "key_compounds": [
+        "TMG"
+      ],
+      "typical_dose": "500-2000 mg/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "sodium-butyrate",
+      "name": "Butirato",
+      "full_name": "Sodium butyrate",
+      "type": "natural",
+      "category": "Epigenetics / Reprogramming",
+      "tags": [
+        "natural",
+        "epigenetics",
+        "microbioma"
+      ],
+      "description": "Metabolito of microbiota with actividad epigenética (HDAC).",
+      "pathways": [
+        "HDAC",
+        "Epigenetics"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 204,
+      "key_compounds": [
+        "Butirato"
+      ],
+      "typical_dose": "A través of fibra/prebióticos",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "choline",
+      "name": "Colina",
+      "full_name": "Choline",
+      "type": "natural",
+      "category": "Epigenetics / Reprogramming",
+      "tags": [
+        "natural",
+        "metilacion",
+        "neuro"
+      ],
+      "description": "Nutriente esencial for metilación and function neuronal.",
+      "pathways": [
+        "Methylation"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 195,
+      "key_compounds": [
+        "Colina"
+      ],
+      "typical_dose": "250-1000 mg/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "yamanaka-partial",
+      "name": "Reprogramación OSKM",
+      "full_name": "Factores Yamanaka (reprogramación parcial)",
+      "type": "synthetic",
+      "category": "Epigenetics / Reprogramming",
+      "tags": [
+        "synthetic",
+        "epigenetics"
+      ],
+      "description": "Potential longevity support via Oct4, Sox2.",
+      "pathways": [
+        "Oct4",
+        "Sox2",
+        "Klf4",
+        "Reloj-Epigenético"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 55,
+      "added_date": "2024-01-01",
+      "last_reviewed": "2026-03-04",
+      "typical_dose": ""
+    },
+    {
+      "id": "s-adenosyl-methionine",
+      "name": "SAMe",
+      "full_name": "S-adenosyl methionine",
+      "type": "natural",
+      "category": "Epigenetics / Reprogramming",
+      "tags": [
+        "natural",
+        "epigenetics",
+        "metilacion"
+      ],
+      "description": "Donador universal of metilos in múltiples reacciones celulares.",
+      "pathways": [
+        "Methylation"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 171,
+      "key_compounds": [
+        "SAMe"
+      ],
+      "typical_dose": "200-800 mg/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "l-arginine",
+      "name": "Arginina",
+      "full_name": "L-Arginine",
+      "type": "natural",
+      "category": "Amino Acids / Peptides",
+      "tags": [
+        "natural",
+        "aminoacido",
+        "vascular"
+      ],
+      "description": "Potential longevity support via NO.",
+      "pathways": [
+        "NO"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 256,
+      "key_compounds": [
+        "Arginina"
+      ],
+      "typical_dose": "2-6 g/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "beta-alanine",
+      "name": "Beta-alanina",
+      "full_name": "Beta-alanine",
+      "type": "natural",
+      "category": "Amino Acids / Peptides",
+      "tags": [
+        "natural",
+        "aminoacido",
+        "muscle"
+      ],
+      "description": "Precursor of carnosina for buffering muscular.",
+      "pathways": [
+        "Carnosine"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 256,
+      "key_compounds": [
+        "Beta-alanina"
+      ],
+      "typical_dose": "2-6 g/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "carnosine",
+      "name": "Carnosina",
+      "full_name": "Carnosine",
+      "type": "natural",
+      "category": "Amino Acids / Peptides",
+      "tags": [
+        "natural",
+        "aminoacido",
+        "glycation"
+      ],
+      "description": "Dipéptido with potencial antiglicación and antioxidante.",
+      "pathways": [
+        "Glycation",
+        "ROS"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 287,
+      "key_compounds": [
+        "Carnosina"
+      ],
+      "typical_dose": "500-1000 mg/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "l-citrulline-malate",
+      "name": "Citrulina malato",
+      "full_name": "L-Citrulline malate",
+      "type": "natural",
+      "category": "Amino Acids / Peptides",
+      "tags": [
+        "natural",
+        "aminoacido",
+        "vascular"
+      ],
+      "description": "Precursor of arginina with soporte of óxido nítrico and rendimiento.",
+      "pathways": [
+        "NO"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 259,
+      "key_compounds": [
+        "Citrulina"
+      ],
+      "typical_dose": "3-8 g/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "glycine",
+      "name": "Glicina",
+      "full_name": "Glicina (aminoácido)",
+      "type": "natural",
+      "category": "Amino Acids / Peptides",
+      "tags": [
+        "natural"
+      ],
+      "description": "Potential longevity support via Glutatión, Metilación.",
+      "pathways": [
+        "Glutatión",
+        "Metilación",
+        "Colágeno",
+        "mTOR"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 245,
+      "key_compounds": [
+        "Glicina"
+      ],
+      "typical_dose": "2-10 g/day (antes of dormir 3g for sueño)",
+      "added_date": "2024-01-01",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "nac",
+      "name": "NAC",
+      "full_name": "N-Acetil Cisteína",
+      "type": "synthetic",
+      "category": "Amino Acids / Peptides",
+      "tags": [
+        "synthetic",
+        "inflammation"
+      ],
+      "description": "Potential longevity support via Glutatión, Nrf2.",
+      "pathways": [
+        "Glutatión",
+        "Nrf2",
+        "ROS",
+        "ADN"
+      ],
+      "evidence_rating": "★★★★☆",
+      "study_count": 620,
+      "key_compounds": [
+        "N-Acetil Cisteína"
+      ],
+      "typical_dose": "600-1800 mg/day (dividido in 2-3 tomas)",
+      "added_date": "2024-01-01",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "l-proline",
+      "name": "Prolina",
+      "full_name": "L-Proline",
+      "type": "natural",
+      "category": "Amino Acids / Peptides",
+      "tags": [
+        "natural",
+        "aminoacido",
+        "piel"
+      ],
+      "description": "Aminoacid estructural in matriz extracelular and colágeno.",
+      "pathways": [
+        "Collagen"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 262,
+      "key_compounds": [
+        "Prolina"
+      ],
+      "typical_dose": "500-2000 mg/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "taurine",
+      "name": "Taurina",
+      "full_name": "Taurina (β-aminoácido)",
+      "type": "natural",
+      "category": "Amino Acids / Peptides",
+      "tags": [
+        "natural",
+        "mitochondria",
+        "inflammation"
+      ],
+      "description": "Potential longevity support via SIRT1, Mitocondria.",
+      "pathways": [
+        "SIRT1",
+        "Mitocondria",
+        "Inflamación",
+        "Epigenética"
+      ],
+      "evidence_rating": "★★★★★",
+      "study_count": 215,
+      "key_compounds": [
+        "L-Taurina"
+      ],
+      "typical_dose": "1000-4000 mg/day",
+      "key_studies": [
+        "Singh et al. 2023 Science - Extensión vida",
+        "Yamori et al. 2010 - longevity humana"
+      ],
+      "added_date": "2024-01-01",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "aged-garlic-extract",
+      "name": "Ajo añejo",
+      "full_name": "Aged garlic extract",
+      "type": "natural",
+      "category": "Medicinal Plants",
+      "tags": [
+        "natural",
+        "cardio",
+        "inflammation"
+      ],
+      "description": "Compuestos sulfurados with beneficio vascular and antioxidante.",
+      "pathways": [
+        "NO",
+        "NF-κB"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 165,
+      "key_compounds": [
+        "S-alil-cisteína"
+      ],
+      "typical_dose": "600-1200 mg/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "ocimum-basilicum",
+      "name": "Albahaca",
+      "full_name": "Ocimum basilicum",
+      "type": "natural",
+      "category": "Medicinal Plants",
+      "tags": [
+        "natural",
+        "inflammation"
+      ],
+      "description": "Hierba aromática rica in polifenoles bioactivos.",
+      "pathways": [
+        "NF-κB"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 237,
+      "key_compounds": [
+        "Eugenol"
+      ],
+      "typical_dose": "A través of alimento",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "crocus-sativus",
+      "name": "Azafrán",
+      "full_name": "Crocus sativus",
+      "type": "natural",
+      "category": "Medicinal Plants",
+      "tags": [
+        "natural",
+        "neuro",
+        "animo"
+      ],
+      "description": "Interés clinical in ánimo and function cognitive.",
+      "pathways": [
+        "BDNF",
+        "NF-κB"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 168,
+      "key_compounds": [
+        "Crocin",
+        "Safranal"
+      ],
+      "typical_dose": "15-30 mg/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "boswellia-serrata",
+      "name": "Boswellia",
+      "full_name": "Boswellia serrata",
+      "type": "natural",
+      "category": "Medicinal Plants",
+      "tags": [
+        "natural",
+        "inflammation"
+      ],
+      "description": "extract anti-inflammatory with potencial in dolor crónico.",
+      "pathways": [
+        "5-LOX",
+        "NF-κB"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 181,
+      "key_compounds": [
+        "AKBA"
+      ],
+      "typical_dose": "300-1000 mg/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "cinnamomum-verum",
+      "name": "Canela",
+      "full_name": "Cinnamomum verum",
+      "type": "natural",
+      "category": "Medicinal Plants",
+      "tags": [
+        "natural",
+        "metabolico"
+      ],
+      "description": "Especia asociada a mejor control glucémico in algunos contextos.",
+      "pathways": [
+        "Insulin signaling"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 167,
+      "key_compounds": [
+        "Cinamaldehído"
+      ],
+      "typical_dose": "1-3 g/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "ginger-gingerols",
+      "name": "Jengibre",
+      "full_name": "Ginger (gingerols)",
+      "type": "natural",
+      "category": "Medicinal Plants",
+      "tags": [
+        "natural",
+        "inflammation",
+        "digestivo"
+      ],
+      "description": "Planta with efectos antiinflamatorios and metabólicos.",
+      "pathways": [
+        "COX",
+        "NF-κB"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 219,
+      "key_compounds": [
+        "Gingeroles"
+      ],
+      "typical_dose": "1-3 g/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "origanum-vulgare",
+      "name": "Orégano",
+      "full_name": "Origanum vulgare",
+      "type": "natural",
+      "category": "Medicinal Plants",
+      "tags": [
+        "natural",
+        "antioxidante"
+      ],
+      "description": "Hierba with compuestos fenólicos antioxidantes.",
+      "pathways": [
+        "Nrf2"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 199,
+      "key_compounds": [
+        "Carvacrol"
+      ],
+      "typical_dose": "A través of alimento",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "rosmarinus-officinalis",
+      "name": "Romero",
+      "full_name": "Rosmarinus officinalis",
+      "type": "natural",
+      "category": "Medicinal Plants",
+      "tags": [
+        "natural",
+        "antioxidante",
+        "neuro"
+      ],
+      "description": "Hierba with compuestos antioxidantes and neuroprotectores.",
+      "pathways": [
+        "Nrf2"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 239,
+      "key_compounds": [
+        "Ácido carnósico"
+      ],
+      "typical_dose": "A través of alimento/extract",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "salvia-officinalis",
+      "name": "Salvia",
+      "full_name": "Salvia officinalis",
+      "type": "natural",
+      "category": "Medicinal Plants",
+      "tags": [
+        "natural",
+        "neuro"
+      ],
+      "description": "Interés in memoria and function cognitive.",
+      "pathways": [
+        "Cholinergic"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 199,
+      "key_compounds": [
+        "Ácido rosmarínico"
+      ],
+      "typical_dose": "A través of alimento/extract",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "thymus-vulgaris",
+      "name": "Tomillo",
+      "full_name": "Thymus vulgaris",
+      "type": "natural",
+      "category": "Medicinal Plants",
+      "tags": [
+        "natural",
+        "antioxidante"
+      ],
+      "description": "Hierba rica in terpenos with antioxidant activity.",
+      "pathways": [
+        "Nrf2"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 228,
+      "key_compounds": [
+        "Timol"
+      ],
+      "typical_dose": "A través of alimento",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "akkermansia",
+      "name": "Akkermansia",
+      "full_name": "Akkermansia muciniphila",
+      "type": "natural",
+      "category": "Microbiome",
+      "tags": [
+        "natural",
+        "inflammation",
+        "mTOR"
+      ],
+      "description": "Marcadora of longevity in centenarios. Pasteurizada es eficaz. Reduce inflamación metabolic. Mejora glucosa e integridad intestinal.",
+      "pathways": [
+        "Mucina",
+        "IL-6",
+        "Glucosa",
+        "GLP-1"
+      ],
+      "evidence_rating": "★★★★☆",
+      "study_count": 245,
+      "key_compounds": [
+        "Akkermansia muciniphila pasteurizada",
+        "Proteína Amuc_1100"
+      ],
+      "typical_dose": "100-200 mg/day pasteurizada (Pendulum, Life Biosciences)",
+      "added_date": "2024-01-01",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "resistant-starch",
+      "name": "Almidón resistente",
+      "full_name": "Resistant starch",
+      "type": "natural",
+      "category": "Microbiome",
+      "tags": [
+        "natural",
+        "microbioma",
+        "fibra"
+      ],
+      "description": "Sustrato fermentable asociado a health metabolic.",
+      "pathways": [
+        "SCFA",
+        "Microbiome"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 330,
+      "key_compounds": [
+        "RS2/RS3"
+      ],
+      "typical_dose": "10-30 g/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "oat-beta-glucans",
+      "name": "Beta-glucanos de avena",
+      "full_name": "Oat beta-glucans",
+      "type": "natural",
+      "category": "Microbiome",
+      "tags": [
+        "natural",
+        "microbioma",
+        "cardio"
+      ],
+      "description": "Fibra soluble with evidence cardiometabólica and microbiota.",
+      "pathways": [
+        "SCFA",
+        "LDL"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 297,
+      "key_compounds": [
+        "Beta-glucanos"
+      ],
+      "typical_dose": "3-6 g/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "fructo-oligosaccharides",
+      "name": "FOS",
+      "full_name": "Fructo-oligosaccharides",
+      "type": "natural",
+      "category": "Microbiome",
+      "tags": [
+        "natural",
+        "microbioma",
+        "fibra"
+      ],
+      "description": "Prebiótico clásico in estrategias of microbioma.",
+      "pathways": [
+        "Microbiome"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 325,
+      "key_compounds": [
+        "FOS"
+      ],
+      "typical_dose": "2-10 g/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "galacto-oligosaccharides",
+      "name": "GOS",
+      "full_name": "Galacto-oligosaccharides",
+      "type": "natural",
+      "category": "Microbiome",
+      "tags": [
+        "natural",
+        "microbioma",
+        "fibra"
+      ],
+      "description": "Prebiótico with impacto in bifidobacterias.",
+      "pathways": [
+        "Microbiome"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 336,
+      "key_compounds": [
+        "GOS"
+      ],
+      "typical_dose": "2-8 g/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "inulin",
+      "name": "Inulina",
+      "full_name": "Inulin",
+      "type": "natural",
+      "category": "Microbiome",
+      "tags": [
+        "natural",
+        "microbioma",
+        "fibra"
+      ],
+      "description": "Potential longevity support via Microbiome, SCFA.",
+      "pathways": [
+        "Microbiome",
+        "SCFA"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 317,
+      "key_compounds": [
+        "Inulina"
+      ],
+      "typical_dose": "5-15 g/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "pectin",
+      "name": "Pectina",
+      "full_name": "Pectin",
+      "type": "natural",
+      "category": "Microbiome",
+      "tags": [
+        "natural",
+        "microbioma",
+        "fibra"
+      ],
+      "description": "Fibra fermentable asociada a AGCC and barrera intestinal.",
+      "pathways": [
+        "SCFA"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 324,
+      "key_compounds": [
+        "Pectina"
+      ],
+      "typical_dose": "5-15 g/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "partially-hydrolyzed-guar-gum",
+      "name": "PHGG",
+      "full_name": "Partially hydrolyzed guar gum",
+      "type": "natural",
+      "category": "Microbiome",
+      "tags": [
+        "natural",
+        "microbioma",
+        "fibra"
+      ],
+      "description": "Fibra soluble bien tolerada for soporte of microbiota.",
+      "pathways": [
+        "SCFA"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 338,
+      "key_compounds": [
+        "PHGG"
+      ],
+      "typical_dose": "5-15 g/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "5-hydroxytryptophan",
+      "name": "5-HTP",
+      "full_name": "5-Hydroxytryptophan",
+      "type": "natural",
+      "category": "Hormones / Neuroendocrine",
+      "tags": [
+        "natural",
+        "neuro",
+        "sueno"
+      ],
+      "description": "Precursor serotoninérgico with uso in ánimo/sueño.",
+      "pathways": [
+        "Serotonin"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 174,
+      "key_compounds": [
+        "5-HTP"
+      ],
+      "typical_dose": "50-200 mg/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "dehydroepiandrosterone",
+      "name": "DHEA",
+      "full_name": "Dehydroepiandrosterone",
+      "type": "synthetic",
+      "category": "Hormones / Neuroendocrine",
+      "tags": [
+        "synthetic",
+        "hormonal"
+      ],
+      "description": "Hormona precursora with uso clinical selectivo and cautela.",
+      "pathways": [
+        "HPA",
+        "Androgens"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 81,
+      "key_compounds": [
+        "DHEA"
+      ],
+      "typical_dose": "5-25 mg/day bajo supervisión",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "l-theanine",
+      "name": "L-Teanina",
+      "full_name": "L-Theanine",
+      "type": "natural",
+      "category": "Hormones / Neuroendocrine",
+      "tags": [
+        "natural",
+        "neuro",
+        "estres"
+      ],
+      "description": "Potential longevity support via GABA, Alpha waves.",
+      "pathways": [
+        "GABA",
+        "Alpha waves"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 187,
+      "key_compounds": [
+        "L-Teanina"
+      ],
+      "typical_dose": "100-400 mg/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "melatonin",
+      "name": "Melatonina",
+      "full_name": "N-acetil-5-metoxitriptamina",
+      "type": "natural",
+      "category": "Hormones / Neuroendocrine",
+      "tags": [
+        "natural",
+        "epigenetics",
+        "mitochondria"
+      ],
+      "description": "Potential longevity support via Mitocondria, Autofagia.",
+      "pathways": [
+        "Mitocondria",
+        "Autofagia",
+        "Ritmo-circadiano",
+        "ROS"
+      ],
+      "evidence_rating": "★★★★☆",
+      "study_count": 740,
+      "key_compounds": [
+        "Melatonina"
+      ],
+      "typical_dose": "0.3-5 mg/noche (dose bajas más fisiológicas)",
+      "added_date": "2024-01-01",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "pregnenolone",
+      "name": "Pregnenolona",
+      "full_name": "Pregnenolone",
+      "type": "synthetic",
+      "category": "Hormones / Neuroendocrine",
+      "tags": [
+        "synthetic",
+        "hormonal",
+        "neuro"
+      ],
+      "description": "Neuroesteroide in investigación with uso clinical limitado.",
+      "pathways": [
+        "Neurosteroids"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 110,
+      "key_compounds": [
+        "Pregnenolona"
+      ],
+      "typical_dose": "5-30 mg/day bajo supervisión",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "17-alpha-estradiol",
+      "name": "17α-Estradiol",
+      "full_name": "17-alpha estradiol",
+      "type": "synthetic",
+      "category": "Emerging 2024-2025",
+      "tags": [
+        "synthetic",
+        "emergente",
+        "hormonal"
+      ],
+      "description": "Compuesto with datos preclínicos of longevity in investigación.",
+      "pathways": [
+        "ER signaling"
+      ],
+      "evidence_rating": "★★☆☆☆",
+      "study_count": 113,
+      "key_compounds": [
+        "17α-E2"
+      ],
+      "typical_dose": "Uso investigación",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "calcium-alpha-ketoglutarate",
+      "name": "Calcio alfa-cetoglutarato",
+      "full_name": "Calcium alpha-ketoglutarate",
+      "type": "natural",
+      "category": "Emerging 2024-2025",
+      "tags": [
+        "natural",
+        "emergente",
+        "metabolico"
+      ],
+      "description": "Potential longevity support via TCA cycle, Epigenetics.",
+      "pathways": [
+        "TCA cycle",
+        "Epigenetics"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 64,
+      "key_compounds": [
+        "Ca-AKG"
+      ],
+      "typical_dose": "1-3 g/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "ss-31-elamipretide",
+      "name": "Elamipretida",
+      "full_name": "SS-31 (Elamipretide)",
+      "type": "synthetic",
+      "category": "Emerging 2024-2025",
+      "tags": [
+        "synthetic",
+        "mitochondria",
+        "emergente"
+      ],
+      "description": "Péptido mitochondrial in investigación clínica.",
+      "pathways": [
+        "Mitochondria"
+      ],
+      "evidence_rating": "★★☆☆☆",
+      "study_count": 51,
+      "key_compounds": [
+        "SS-31"
+      ],
+      "typical_dose": "Uso investigación",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "lonafarnib",
+      "name": "Lonafarnib",
+      "full_name": "Lonafarnib / Zokinvy",
+      "type": "synthetic",
+      "category": "Emerging 2024-2025",
+      "tags": [
+        "synthetic",
+        "epigenetics"
+      ],
+      "description": "Potential longevity support via Lamina-A, Progerina.",
+      "pathways": [
+        "Lamina-A",
+        "Progerina",
+        "Farnesilación",
+        "ADN"
+      ],
+      "evidence_rating": "★★★★☆",
+      "study_count": 88,
+      "added_date": "2024-06-01",
+      "last_reviewed": "2026-03-04",
+      "typical_dose": ""
+    },
+    {
+      "id": "car-t-senolytic-strategy",
+      "name": "Senolytics CAR-T (concepto)",
+      "full_name": "CAR-T senolytic strategy",
+      "type": "synthetic",
+      "category": "Emerging 2024-2025",
+      "tags": [
+        "synthetic",
+        "senolytic",
+        "emergente"
+      ],
+      "description": "Enfoque celular experimental for eliminación of células senescentes.",
+      "pathways": [
+        "Senescence"
+      ],
+      "evidence_rating": "★★☆☆☆",
+      "study_count": 79,
+      "key_compounds": [
+        "CAR-T"
+      ],
+      "typical_dose": "Investigacional",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "polyamine-rich-extract",
+      "name": "Spermidine-rich wheat germ",
+      "full_name": "Polyamine-rich extract",
+      "type": "natural",
+      "category": "Emerging 2024-2025",
+      "tags": [
+        "natural",
+        "autofagia"
+      ],
+      "description": "Fuentes ricas in poliaminas asociadas a autofagia.",
+      "pathways": [
+        "Autophagy"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 102,
+      "key_compounds": [
+        "Poliaminas"
+      ],
+      "typical_dose": "according to extract",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "trehalose",
+      "name": "Trehalosa",
+      "full_name": "Trehalose",
+      "type": "natural",
+      "category": "Emerging 2024-2025",
+      "tags": [
+        "natural",
+        "autofagia",
+        "emergente"
+      ],
+      "description": "Potential longevity support via Autophagy.",
+      "pathways": [
+        "Autophagy"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 116,
+      "key_compounds": [
+        "Trehalosa"
+      ],
+      "typical_dose": "2-10 g/day",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    },
+    {
+      "id": "urolithin-b",
+      "name": "Urolitina B",
+      "full_name": "Urolithin B",
+      "type": "natural",
+      "category": "Emerging 2024-2025",
+      "tags": [
+        "natural",
+        "mitochondria",
+        "emergente"
+      ],
+      "description": "Potential longevity support via Mitophagy.",
+      "pathways": [
+        "Mitophagy"
+      ],
+      "evidence_rating": "★★★☆☆",
+      "study_count": 70,
+      "key_compounds": [
+        "Urolitina B"
+      ],
+      "typical_dose": "dose in investigación",
+      "key_studies": [
+        "Recent systematic review in healthy aging",
+        "Clinical trial o human cohort (when available)",
+        "Mechanistic studies in preclinical models"
+      ],
+      "added_date": "2026-03-04",
+      "last_reviewed": "2026-03-04"
+    }
+  ]
+}
