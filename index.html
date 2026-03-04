@@ -40,6 +40,9 @@
   h1{font-family:'DM Serif Display',serif;font-size:clamp(34px,5vw,68px);line-height:1.06;margin-bottom:12px;letter-spacing:.01em}
   h1 em{font-style:italic;color:var(--accent3);text-shadow:0 0 45px rgba(209,255,90,.2)}
   .hero-sub{font-size:14px;color:var(--muted);max-width:580px;margin:0 auto 28px;line-height:1.65;font-weight:300}
+  .flow-strip{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:0 auto 16px;max-width:760px}
+  .flow-step{border:1px solid var(--border);background:rgba(255,255,255,.015);border-radius:10px;padding:8px 10px;font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.05em}
+  .flow-step b{color:var(--accent2);font-weight:500}
 
   /* SEARCH */
   .search-box{max-width:760px;margin:0 auto}
@@ -162,8 +165,13 @@
     .quick-modules{grid-template-columns:1fr}
   }
   @media(max-width:768px){
-    header{padding:18px 20px 0}
+    header{position:relative;padding:14px 12px}
+    .header-right{width:100%}
+    .topnav{width:100%;overflow-x:auto;flex-wrap:nowrap;padding-bottom:2px}
+    .topnav a{white-space:nowrap}
+    .badge{display:none}
     .hero{padding:28px 20px 20px}
+    .hero::before{inset:0}
     .main{padding:0 16px 60px}
     .grid{grid-template-columns:1fr}
     #ai-panel,#discover-panel{padding:18px}
@@ -196,6 +204,11 @@
   <p class="hero-eye">Geroscience · Natural + Sintética · IA con búsqueda web</p>
   <h1>Cada molécula que puede<br><em>alargar tu vida</em></h1>
   <p class="hero-sub">Base curada de 120+ compuestos con evidencia científica validada, potenciada con IA para análisis profundos y descubrimiento de novedades 2025-2026 en tiempo real.</p>
+  <div class="flow-strip">
+    <div class="flow-step"><b>1.</b> Explora moléculas en Biblioteca</div>
+    <div class="flow-step"><b>2.</b> Diseña protocolo en Stack Builder</div>
+    <div class="flow-step"><b>3.</b> Ajusta con Biohacker o Nutrición</div>
+  </div>
 
   <div class="search-box">
     <div class="search-wrap">
