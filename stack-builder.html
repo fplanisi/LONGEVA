@@ -1408,11 +1408,19 @@ async function generateStack() {
   const lsSteps = ['ls1','ls2','ls3','ls4','ls5'];
   let si = 0;
   const lsInterval = setInterval(() => {
-    if (si > 0) { document.getElementById(lsSteps[si-1]).classList.replace('active','done'); }
-    if (si < lsSteps.length) {
-      document.getElementById(lsSteps[si]).classList.add('active');
-      si++;
-    } else { clearInterval(lsInterval); }
+    const activeIdx = si % lsSteps.length;
+    lsSteps.forEach((id, idx) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.classList.remove('active', 'done');
+      if (idx === activeIdx) {
+        el.classList.add('active');
+      } else {
+        const distance = (activeIdx - idx + lsSteps.length) % lsSteps.length;
+        if (distance > 0 && distance <= 2) el.classList.add('done');
+      }
+    });
+    si += 1;
   }, 600);
 
   const profilePayload = buildProfilePayload(budgetLabel);
