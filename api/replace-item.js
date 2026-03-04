@@ -8,7 +8,7 @@ export default async function handler(req, res) {
   if (!rateLimit(req, res, { prefix: 'replace_item', max: 30, windowMs: 60_000 })) return;
 
   const paywallDisabled = isPaywallBypassEnabled();
-  const { session_id: sessionId, profile, current_item: currentItem, existing_items: existingItems, reason, slot } = req.body || {};
+  const { session_id: sessionId, profile, current_item: currentItem, existing_items: existingItems, excluded_items: excludedItems, reason, slot } = req.body || {};
   if (!profile || !currentItem) return res.status(400).json({ error: 'profile y current_item son requeridos' });
   if (!paywallDisabled && !sessionId) return res.status(400).json({ error: 'session_id es requerido' });
 
@@ -20,12 +20,17 @@ export default async function handler(req, res) {
 
     const provider = process.env.AI_PROVIDER || 'openai';
     let raw;
-    if (provider === 'anthropic') raw = await callAnthropic(profile, currentItem, existingItems, reason, slot);
-    else if (provider === 'openai') raw = await callOpenAI(profile, currentItem, existingItems, reason, slot);
-    else raw = await callGroq(profile, currentItem, existingItems, reason, slot);
+    if (provider === 'anthropic') raw = await callAnthropic(profile, currentItem, existingItems, excludedItems, reason, slot);
+    else if (provider === 'openai') raw = await callOpenAI(profile, currentItem, existingItems, excludedItems, reason, slot);
+    else raw = await callGroq(profile, currentItem, existingItems, excludedItems, reason, slot);
 
     const parsed = parseJsonFromModel(raw);
     if (!parsed?.name) return res.status(500).json({ error: 'La IA no devolvió un reemplazo válido' });
+    const excludedNorm = new Set([...(existingItems || []), ...(excludedItems || [])].map((x) => normalizeName(x)).filter(Boolean));
+    const candidateNorm = [parsed?.name, parsed?.full].map((x) => normalizeName(x)).filter(Boolean);
+    if (candidateNorm.some((x) => excludedNorm.has(x))) {
+      return res.status(409).json({ error: 'Reemplazo repetido. Intenta nuevamente.' });
+    }
     return res.status(200).json({ item: parsed, provider });
   } catch (error) {
     return res.status(500).json({ error: error.message || 'Error generando reemplazo' });
@@ -44,7 +49,7 @@ async function verifyPaidSession(sessionId) {
   return { ok: payload.payment_status === 'paid' || payload.status === 'complete' };
 }
 
-async function callOpenAI(profile, currentItem, existingItems, reason, slot) {
+async function callOpenAI(profile, currentItem, existingItems, excludedItems, reason, slot) {
   const model = process.env.OPENAI_MODEL_STACK || process.env.OPENAI_MODEL || 'gpt-4.1';
   const response = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
@@ -58,7 +63,7 @@ async function callOpenAI(profile, currentItem, existingItems, reason, slot) {
       temperature: 0.2,
       messages: [
         { role: 'system', content: getSystemPrompt() },
-        { role: 'user', content: buildPrompt(profile, currentItem, existingItems, reason, slot) },
+        { role: 'user', content: buildPrompt(profile, currentItem, existingItems, excludedItems, reason, slot) },
       ],
     }),
   });
@@ -68,7 +73,7 @@ async function callOpenAI(profile, currentItem, existingItems, reason, slot) {
   return data.choices?.[0]?.message?.content || '';
 }
 
-async function callAnthropic(profile, currentItem, existingItems, reason, slot) {
+async function callAnthropic(profile, currentItem, existingItems, excludedItems, reason, slot) {
   const response = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: {
@@ -80,7 +85,7 @@ async function callAnthropic(profile, currentItem, existingItems, reason, slot) 
       model: 'claude-sonnet-4-20250514',
       max_tokens: 900,
       system: getSystemPrompt(),
-      messages: [{ role: 'user', content: buildPrompt(profile, currentItem, existingItems, reason, slot) }],
+      messages: [{ role: 'user', content: buildPrompt(profile, currentItem, existingItems, excludedItems, reason, slot) }],
     }),
   });
   const data = await response.json();
@@ -88,7 +93,7 @@ async function callAnthropic(profile, currentItem, existingItems, reason, slot) 
   return data.content?.filter((b) => b.type === 'text').map((b) => b.text).join('\n') || '';
 }
 
-async function callGroq(profile, currentItem, existingItems, reason, slot) {
+async function callGroq(profile, currentItem, existingItems, excludedItems, reason, slot) {
   const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
     method: 'POST',
     headers: {
@@ -101,7 +106,7 @@ async function callGroq(profile, currentItem, existingItems, reason, slot) {
       temperature: 0.2,
       messages: [
         { role: 'system', content: getSystemPrompt() },
-        { role: 'user', content: buildPrompt(profile, currentItem, existingItems, reason, slot) },
+        { role: 'user', content: buildPrompt(profile, currentItem, existingItems, excludedItems, reason, slot) },
       ],
     }),
   });
@@ -118,7 +123,7 @@ Debes proponer un reemplazo funcionalmente equivalente, dentro del presupuesto, 
 Si el usuario pidió solo alimentos, mantén formato de alimento/porciones y no uses suplementos.`;
 }
 
-function buildPrompt(profile, currentItem, existingItems, reason, slot) {
+function buildPrompt(profile, currentItem, existingItems, excludedItems, reason, slot) {
   const sourcePreference = profile?.source_preference || 'mixed';
   return `Reemplaza el siguiente item del stack:
 - Item actual: ${JSON.stringify(currentItem)}
@@ -133,6 +138,7 @@ function buildPrompt(profile, currentItem, existingItems, reason, slot) {
     conditions: profile.conditions_label,
   })}
 - Items ya presentes (no repetir): ${(existingItems || []).join(', ') || 'ninguno'}
+- Items descartados/excluidos (prohibido repetir): ${(excludedItems || []).join(', ') || 'ninguno'}
 
 Devuelve SOLO este JSON:
 {
@@ -148,10 +154,15 @@ Devuelve SOLO este JSON:
 
 Reglas:
 - No repetir items existentes.
+- No repetir items existentes ni excluidos.
 - Si source_preference=natural_only usar solo naturales.
 - Si source_preference=food_only usar alimentos (no suplementos).
 - Mantener costo similar o menor al item actual cuando sea posible.
 - Responder solo JSON.`;
+}
+
+function normalizeName(value) {
+  return String(value || '').trim().toLowerCase();
 }
 
 function parseJsonFromModel(rawText) {

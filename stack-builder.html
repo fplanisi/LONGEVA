@@ -943,7 +943,10 @@ const state = {
   currentProtocol: '',
   paidSessionId: '',
   lastStack: null,
-  lastBudgetLabel: ''
+  lastBudgetLabel: '',
+  replaceUsage: 0,
+  replaceLimit: 3,
+  replacedOut: []
 };
 const USER_LANG = getPreferredLang();
 const IS_EN = USER_LANG === 'en';
@@ -1440,6 +1443,8 @@ async function generateStack() {
 
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || `API error ${res.status}`);
+    state.replaceUsage = 0;
+    state.replacedOut = [];
     renderStack(data.stack, budgetLabel);
     trackEvent('stack_generate_success', {
       estimated_cost: data.stack?.estimated_cost || null,
@@ -1502,6 +1507,7 @@ function renderStack(stack, budgetLabel) {
   ];
 
   let html = '';
+  const replacementsLeft = Math.max(0, state.replaceLimit - state.replaceUsage);
 
   // Budget bar
   html += `<div class="budget-card">
@@ -1518,6 +1524,10 @@ function renderStack(stack, budgetLabel) {
       <div style="font-size:14px;color:var(--muted);font-weight:500">${budgetLabel}</div>
       <div class="confidence-badge">${tr('Confianza', 'Confidence')}: ${confidence.label} (${confidence.score}/100)</div>
     </div>
+  </div>`;
+  html += `<div class="monthly-card" style="margin-top:10px;">
+    <div class="monthly-title">${tr('Cambios de reemplazo', 'Replacement changes')}</div>
+    <div style="font-size:12px;color:var(--muted);">${tr('Usados', 'Used')}: <strong>${state.replaceUsage}/${state.replaceLimit}</strong> · ${tr('Disponibles', 'Available')}: <strong>${replacementsLeft}</strong></div>
   </div>`;
 
   html += `<div class="monthly-card">
@@ -1643,6 +1653,10 @@ function fmtText(t) {
 
 async function replaceItem(slot, index) {
   if (!state.lastStack || !state.lastStack[slot] || !state.lastStack[slot][index]) return;
+  if (state.replaceUsage >= state.replaceLimit) {
+    alert(tr(`Ya usaste los ${state.replaceLimit} cambios disponibles para este plan.`, `You already used the ${state.replaceLimit} available changes for this plan.`));
+    return;
+  }
   const current = state.lastStack[slot][index];
   const reason = prompt(
     tr(`¿Por qué quieres reemplazar "${current.name}"? (ej: no se consigue, caro, no tolero)`, `Why do you want to replace "${current.name}"? (e.g. unavailable, expensive, not tolerated)`),
@@ -1653,6 +1667,12 @@ async function replaceItem(slot, index) {
   try {
     const allNames = ['morning','afternoon','night']
       .flatMap(k => (state.lastStack[k] || []).map(x => x.name).filter(Boolean));
+    const excludedNames = Array.from(new Set([
+      ...allNames,
+      ...state.replacedOut,
+      current?.name || '',
+      current?.full || '',
+    ].filter(Boolean)));
     const profilePayload = buildProfilePayload(state.lastBudgetLabel || '');
     const res = await fetch('/api/replace-item', {
       method: 'POST',
@@ -1664,10 +1684,18 @@ async function replaceItem(slot, index) {
         reason: reason || tr('No indicado', 'Not specified'),
         current_item: current,
         existing_items: allNames,
+        excluded_items: excludedNames,
       }),
     });
     const data = await res.json();
     if (!res.ok || !data.item) throw new Error(data.error || `API error ${res.status}`);
+    const normalizedExcluded = new Set(excludedNames.map(normalizeName));
+    const candidateNames = [data.item?.name, data.item?.full].filter(Boolean).map(normalizeName);
+    if (candidateNames.some((n) => normalizedExcluded.has(n))) {
+      throw new Error(tr('La IA devolvió un item repetido/descartado. Intenta de nuevo.', 'AI returned a repeated/discarded item. Try again.'));
+    }
+    state.replacedOut = Array.from(new Set([...state.replacedOut, current?.name || '', current?.full || ''].filter(Boolean)));
+    state.replaceUsage += 1;
     state.lastStack[slot][index] = data.item;
     renderStack(state.lastStack, state.lastBudgetLabel || '');
     trackEvent('replace_item_used', { slot, reason: reason || '', from: current.name || '', to: data.item.name || '' });
@@ -1804,8 +1832,14 @@ function loadStackVersion(index) {
   if (!selected?.stack) return;
   state.lastStack = selected.stack;
   state.lastBudgetLabel = selected.budgetLabel || state.lastBudgetLabel || '';
+  state.replaceUsage = 0;
+  state.replacedOut = [];
   renderStack(selected.stack, state.lastBudgetLabel);
   trackEvent('stack_version_loaded', { index });
+}
+
+function normalizeName(value) {
+  return String(value || '').trim().toLowerCase();
 }
 
 function applyStaticI18n() {
