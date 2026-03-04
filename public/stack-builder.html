@@ -663,7 +663,7 @@ input[type=range]::-webkit-slider-thumb {
     <div class="step-card" id="step2" style="display:none">
       <div class="step-num">02 / 04</div>
       <h2 class="step-q">¿Cuáles son tus objetivos?</h2>
-      <p class="step-hint">Puedes seleccionar varios. El stack se priorizará según su importancia.</p>
+      <p class="step-hint">Selecciona un objetivo principal. Luego podrás ajustarlo cuando quieras.</p>
       <div class="opts-grid cols-2" id="goals-grid">
         <div class="opt" onclick="toggleGoal('longevity',this)">
           <div class="opt-icon">⏳</div>
@@ -707,7 +707,7 @@ input[type=range]::-webkit-slider-thumb {
       <div class="step-num">03 / 04</div>
       <h2 class="step-q">¿Cuál es tu presupuesto mensual?</h2>
       <p class="step-hint">Te recomendamos el stack más eficiente dentro de tu rango. También puedes elegir si quieres un enfoque natural.</p>
-      <div class="opts-grid">
+      <div class="opts-grid" id="budget-grid">
         <div class="opt" onclick="selectBudget(50,this)">
           <div class="opt-icon">🌱</div>
           <div class="opt-text"><div class="opt-label">Hasta $50/mes — Básico</div><div class="opt-desc">Stack esencial: las 4-5 moléculas con mayor impacto por dólar</div></div>
@@ -950,6 +950,13 @@ function updateAge(v) {
 }
 
 function selectSex(s) {
+  if (state.sex === s) {
+    state.sex = null;
+    document.getElementById('sex-m').classList.remove('selected');
+    document.getElementById('sex-f').classList.remove('selected');
+    checkStep1();
+    return;
+  }
   state.sex = s;
   document.getElementById('sex-m').classList.toggle('selected', s === 'male');
   document.getElementById('sex-f').classList.toggle('selected', s === 'female');
@@ -962,11 +969,12 @@ function checkStep1() {
 
 // ── STEP 2 ──
 function toggleGoal(g, el) {
-  if (state.goals.includes(g)) {
-    state.goals = state.goals.filter(x => x !== g);
-    el.classList.remove('selected');
+  const alreadySelected = state.goals.length === 1 && state.goals[0] === g;
+  document.querySelectorAll('#goals-grid .opt').forEach(o => o.classList.remove('selected'));
+  if (alreadySelected) {
+    state.goals = [];
   } else {
-    state.goals.push(g);
+    state.goals = [g];
     el.classList.add('selected');
   }
   document.getElementById('next2').disabled = state.goals.length === 0;
@@ -974,9 +982,14 @@ function toggleGoal(g, el) {
 
 // ── STEP 3 ──
 function selectBudget(b, el) {
-  state.budget = b;
-  document.querySelectorAll('#step3 .opts-grid:first-of-type .opt').forEach(o => o.classList.remove('selected'));
-  el.classList.add('selected');
+  const sameBudget = state.budget === b;
+  document.querySelectorAll('#budget-grid .opt').forEach(o => o.classList.remove('selected'));
+  if (sameBudget) {
+    state.budget = null;
+  } else {
+    state.budget = b;
+    el.classList.add('selected');
+  }
   checkStep3();
 }
 
