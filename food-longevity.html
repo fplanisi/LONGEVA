@@ -8,12 +8,12 @@
 <style>
 :root{
   --bg:#0D1220; --bg2:#121828; --surface:#182030; --surface2:#1E2840; --border:#243045; --border2:#304060;
-  --text:#D8E4F0; --tx2:#ACBFD4; --muted:#688098; --dim:#3C5068; --accent:#6AA2CC; --accent2:#9888C8; --accent3:#55B09A; --gold:#B8924A;
+  --text:#D8E4F0; --tx2:#ACBFD4; --muted:#688098; --dim:#3C5068; --accent:#6AA2CC; --accent2:#9888C8; --accent3:#55B09A; --gold:#B8924A; --on-accent:#0D1220;
   --bg-glow:#13253a; --grid-line:rgba(216,228,240,.06); --header-bg:rgba(13,18,32,.88); --nav-panel-bg:rgba(24,32,48,.96); --overlay:linear-gradient(to bottom,rgba(255,255,255,.02),rgba(255,255,255,0) 20%,rgba(106,162,204,.08) 62%,rgba(255,255,255,0));
 }
 html[data-theme="light"]{
   --bg:#F1F4F8; --bg2:#E7ECF3; --surface:#FFFFFF; --surface2:#F6F8FB; --border:#D4DCEA; --border2:#B8C6D8;
-  --text:#152030; --tx2:#334860; --muted:#5E7488; --dim:#94A8BC; --accent:#355F8C; --accent2:#64508F; --accent3:#3A7865; --gold:#8C6828;
+  --text:#152030; --tx2:#334860; --muted:#5E7488; --dim:#94A8BC; --accent:#355F8C; --accent2:#64508F; --accent3:#3A7865; --gold:#8C6828; --on-accent:#F6F8FB;
   --bg-glow:#dbe5f0; --grid-line:rgba(21,32,48,.08); --header-bg:rgba(241,244,248,.9); --nav-panel-bg:rgba(255,255,255,.97); --overlay:linear-gradient(to bottom,rgba(255,255,255,.55),rgba(255,255,255,0) 22%,rgba(53,95,140,.08) 62%,rgba(255,255,255,0));
 }
 *{box-sizing:border-box;margin:0;padding:0}
@@ -78,7 +78,7 @@ body::after{content:'';position:fixed;inset:0;background:var(--overlay);pointer-
 .opt:hover{border-color:rgba(82,184,255,.45)}
 .opt.active{border-color:var(--accent2);background:rgba(82,184,255,.12)}
 .btn{border:none;border-radius:10px;padding:11px 16px;font-weight:650;cursor:pointer}
-.btn-main{background:var(--accent2);color:#0a2f4a}
+.btn-main{background:var(--accent2);color:var(--on-accent)}
 .plan{margin-top:10px;border:1px solid var(--border);border-radius:12px;overflow:hidden}
 .plan-head{background:var(--surface2);padding:10px 12px;border-bottom:1px solid var(--border);font-weight:600}
 .plan-body{padding:12px}
@@ -91,7 +91,7 @@ body::after{content:'';position:fixed;inset:0;background:var(--overlay);pointer-
 .legal-footer{position:relative;z-index:10;max-width:1320px;margin:18px auto 24px;padding:0 16px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.04em;color:var(--dim)}
 .legal-footer a{color:var(--muted);text-decoration:none}
 .legal-footer a:hover{color:var(--accent)}
-.to-top{position:fixed;right:16px;bottom:16px;width:42px;height:42px;border-radius:999px;border:1px solid var(--border);background:rgba(17,24,39,.95);color:var(--accent);font-size:18px;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;pointer-events:none;transform:translateY(8px);transition:opacity .2s ease,transform .2s ease,border-color .2s ease;z-index:45}
+.to-top{position:fixed;right:16px;bottom:16px;width:42px;height:42px;border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--accent);font-size:18px;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;pointer-events:none;transform:translateY(8px);transition:opacity .2s ease,transform .2s ease,border-color .2s ease;z-index:45}
 .to-top:hover{border-color:var(--accent2);color:var(--text)}
 .to-top.show{opacity:1;pointer-events:auto;transform:translateY(0)}
 .result-modal{position:fixed;inset:0;z-index:80;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(4,8,14,.78);backdrop-filter:blur(6px)}
