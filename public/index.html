@@ -19,6 +19,10 @@
   .logo-name{font-family:'DM Serif Display',serif;font-size:24px;letter-spacing:.08em;color:var(--accent);text-shadow:0 0 40px rgba(0,200,160,.4)}
   .logo-tag{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:.15em;margin-left:8px}
   .header-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .topnav{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+  .topnav a{padding:6px 12px;border-radius:999px;border:1px solid var(--border);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;color:var(--muted);text-decoration:none;transition:.2s;background:rgba(255,255,255,.01)}
+  .topnav a:hover{color:var(--text);border-color:var(--accent2)}
+  .topnav a.active{color:var(--accent);border-color:rgba(0,200,160,.35);background:rgba(0,200,160,.07)}
   .badge{display:flex;align-items:center;gap:7px;padding:5px 12px;border-radius:100px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em}
   .badge-live{background:rgba(0,200,160,.07);border:1px solid rgba(0,200,160,.18);color:var(--accent)}
   .badge-provider{background:rgba(0,152,255,.07);border:1px solid rgba(0,152,255,.18);color:var(--accent2)}
@@ -164,6 +168,12 @@
     <span class="logo-tag">v3.1 · Híbrido IA + Base curada</span>
   </div>
   <div class="header-right">
+    <nav class="topnav">
+      <a href="/index.html" class="active">Biblioteca</a>
+      <a href="/stack-builder.html">Stack Builder</a>
+      <a href="/biohacker-protocol.html">Biohacker</a>
+      <a href="/food-longevity.html">Nutrición</a>
+    </nav>
     <div class="badge badge-live"><div class="dot dot-green"></div>Base científica activa</div>
     <div class="badge badge-provider" id="provider-badge"><div class="dot dot-blue"></div><span id="provider-name">Conectando...</span></div>
   </div>

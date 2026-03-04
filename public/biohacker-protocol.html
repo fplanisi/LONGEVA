@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LONGEVA — Protocolo Biohacker</title>
+<style>
+:root {
+  --bg:#090c12; --surface:#121723; --surface2:#171e2d; --border:#283246;
+  --text:#ecf2ff; --muted:#9ea8bd; --accent:#73f0c2; --warn:#f0b573; --danger:#ff7d7d;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+body { background:radial-gradient(circle at top left,#12202d 0%,#090c12 45%); color:var(--text); font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif; min-height:100vh; }
+.wrap { max-width:960px; margin:0 auto; padding:24px 16px 80px; }
+.top { display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; gap:10px; flex-wrap:wrap; }
+.brand { letter-spacing:.14em; font-size:14px; color:var(--accent); }
+.topnav { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.topnav a { color:var(--muted); text-decoration:none; font-size:11px; border:1px solid var(--border); padding:7px 12px; border-radius:999px; font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace; letter-spacing:.05em; background:rgba(255,255,255,.01); }
+.topnav a:hover { color:var(--text); border-color:var(--warn); }
+.topnav a.active { color:var(--accent); border-color:var(--accent); background:rgba(115,240,194,.1); }
+.hero { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:26px; margin-bottom:18px; }
+.hero h1 { font-size:30px; margin-bottom:8px; font-weight:650; }
+.hero p { color:var(--muted); line-height:1.55; font-size:14px; max-width:760px; }
+.alert { margin-top:14px; background:rgba(255,125,125,.08); border:1px solid rgba(255,125,125,.35); color:#ffc6c6; font-size:13px; padding:12px 14px; border-radius:10px; }
+.card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:22px; margin-bottom:14px; }
+.label { display:block; font-size:12px; color:var(--muted); margin-bottom:10px; letter-spacing:.06em; text-transform:uppercase; }
+.grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.opt { border:1px solid var(--border); background:var(--surface2); color:var(--text); border-radius:10px; padding:12px; cursor:pointer; font-size:14px; }
+.opt.active { border-color:var(--accent); background:rgba(115,240,194,.1); }
+textarea,input[type="text"] {
+  width:100%; border:1px solid var(--border); background:var(--surface2); color:var(--text);
+  border-radius:10px; padding:12px; outline:none;
+}
+textarea { min-height:90px; resize:vertical; }
+.row { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:12px; }
+.check { display:flex; align-items:flex-start; gap:8px; font-size:13px; color:var(--muted); }
+.btn { border:none; border-radius:10px; padding:12px 18px; font-weight:650; cursor:pointer; }
+.btn-main { background:var(--accent); color:#042018; }
+.btn-main:disabled { opacity:.45; cursor:not-allowed; }
+.msg { margin-top:8px; font-size:12px; color:var(--muted); min-height:16px; }
+#result { display:none; }
+.pill { display:inline-block; padding:5px 10px; border-radius:100px; font-size:11px; border:1px solid var(--border); color:var(--muted); margin:0 5px 6px 0; }
+.risk { font-weight:700; text-transform:uppercase; font-size:12px; }
+.risk.alto { color:var(--danger); }
+.risk.medio { color:var(--warn); }
+.risk.bajo { color:var(--accent); }
+.phase { border:1px solid var(--border); border-radius:12px; margin-top:12px; overflow:hidden; }
+.phase-head { background:var(--surface2); padding:10px 12px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
+.phase-body { padding:12px; }
+.item { border:1px solid var(--border); border-radius:10px; padding:10px; margin-bottom:9px; }
+.item:last-child { margin-bottom:0; }
+.item h4 { font-size:14px; margin-bottom:6px; }
+.item p { font-size:12px; color:var(--muted); line-height:1.45; margin-bottom:6px; }
+.tags { display:flex; gap:6px; flex-wrap:wrap; }
+.tag { font-size:10px; color:var(--muted); border:1px solid var(--border); border-radius:6px; padding:2px 6px; }
+.danger-box { margin-top:12px; border:1px solid rgba(255,125,125,.35); background:rgba(255,125,125,.08); color:#ffd0d0; border-radius:10px; padding:12px; font-size:12px; line-height:1.5; }
+@media(max-width:760px){ .grid{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="brand">LONGEVA · EXPERIMENTAL</div>
+    <nav class="topnav">
+      <a href="/index.html">Biblioteca</a>
+      <a href="/stack-builder.html">Stack Builder</a>
+      <a href="/biohacker-protocol.html" class="active">Biohacker</a>
+      <a href="/food-longevity.html">Nutrición</a>
+    </nav>
+  </div>
+
+  <div class="hero">
+    <h1>Protocolo Biohacker de Peptidos</h1>
+    <p>Modulo separado para usuarios avanzados. Se enfoca en protocolos experimentales por objetivo (muscular, grasa, longevidad, piel, recuperacion) con fases, monitoreo y banderas de seguridad.</p>
+    <div class="alert">Solo para expertos. Esto no es consejo medico. Riesgo real de interacciones y efectos adversos.</div>
+  </div>
+
+  <div id="paywall" class="card">
+    <label class="label">Acceso premium (mismo paywall)</label>
+    <div class="row">
+      <input id="email" type="text" placeholder="tu@email.com" />
+      <button id="pay-btn" class="btn btn-main">Continuar al pago</button>
+    </div>
+    <div class="msg" id="pay-msg"></div>
+  </div>
+
+  <div id="form" class="card" style="display:none;">
+    <label class="label">Objetivo principal</label>
+    <div class="grid" id="objective-grid">
+      <button class="opt" data-value="muscle">Muscular / rendimiento</button>
+      <button class="opt" data-value="fat_loss">Perdida de grasa</button>
+      <button class="opt" data-value="longevity">Longevidad</button>
+      <button class="opt" data-value="skin">Salud cutanea</button>
+      <button class="opt" data-value="recovery">Recuperacion</button>
+    </div>
+
+    <label class="label" style="margin-top:16px;">Nivel de experiencia</label>
+    <div class="grid" id="exp-grid">
+      <button class="opt active" data-value="intermediate">Intermedio</button>
+      <button class="opt" data-value="advanced">Avanzado</button>
+    </div>
+
+    <label class="label" style="margin-top:16px;">Condiciones / medicacion actual</label>
+    <textarea id="contra" placeholder="Ej: hipertension, anticoagulantes, antecedente oncologico..."></textarea>
+
+    <label class="label" style="margin-top:16px;">Protocolo actual (suplementos/peptidos)</label>
+    <textarea id="current" placeholder="Ej: Creatina 5g, omega 3, no peptidos aun..."></textarea>
+
+    <div class="row">
+      <div class="check">
+        <input id="expert-check" type="checkbox">
+        <label for="expert-check">Confirmo que entiendo que este modulo es experimental y requiere supervision profesional.</label>
+      </div>
+    </div>
+    <div class="row">
+      <button id="gen-btn" class="btn btn-main" disabled>Generar Protocolo Experimental</button>
+    </div>
+    <div class="msg" id="form-msg"></div>
+  </div>
+
+  <div id="result" class="card"></div>
+</div>
+
+<script>
+const state = { sessionId: '', objective: 'muscle', experience: 'intermediate' };
+
+const payBtn = document.getElementById('pay-btn');
+const payMsg = document.getElementById('pay-msg');
+const genBtn = document.getElementById('gen-btn');
+const formMsg = document.getElementById('form-msg');
+const expertCheck = document.getElementById('expert-check');
+
+document.getElementById('objective-grid').addEventListener('click', (e) => {
+  const btn = e.target.closest('.opt');
+  if (!btn) return;
+  state.objective = btn.dataset.value;
+  document.querySelectorAll('#objective-grid .opt').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+});
+
+document.getElementById('exp-grid').addEventListener('click', (e) => {
+  const btn = e.target.closest('.opt');
+  if (!btn) return;
+  state.experience = btn.dataset.value;
+  document.querySelectorAll('#exp-grid .opt').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+});
+
+expertCheck.addEventListener('change', () => {
+  genBtn.disabled = !expertCheck.checked;
+});
+
+payBtn.addEventListener('click', startCheckout);
+genBtn.addEventListener('click', generateProtocol);
+
+async function startCheckout() {
+  const email = document.getElementById('email').value.trim();
+  if (!email || !email.includes('@')) {
+    payMsg.textContent = 'Ingresa un email valido.';
+    return;
+  }
+  payMsg.textContent = 'Creando checkout...';
+  payBtn.disabled = true;
+  try {
+    const res = await fetch('/api/create-checkout-session', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, return_to: '/biohacker-protocol.html' }),
+    });
+    const data = await res.json();
+    if (!res.ok || !data.url) throw new Error(data.error || 'No se pudo iniciar checkout');
+    localStorage.setItem('longeva_email', email);
+    localStorage.setItem('longeva_return_to', '/biohacker-protocol.html');
+    window.location.href = data.url;
+  } catch (err) {
+    payMsg.textContent = `Error: ${err.message}`;
+    payBtn.disabled = false;
+  }
+}
+
+async function init() {
+  const params = new URLSearchParams(window.location.search);
+  const sessionId = params.get('session_id') || localStorage.getItem('longeva_paid_session') || '';
+  const paid = params.get('paid');
+  const savedEmail = localStorage.getItem('longeva_email') || '';
+  if (savedEmail) document.getElementById('email').value = savedEmail;
+
+  if (!sessionId) return;
+  if (paid !== '1' && !localStorage.getItem('longeva_paid_session')) return;
+
+  payMsg.textContent = 'Verificando pago...';
+  try {
+    const res = await fetch(`/api/checkout-status?session_id=${encodeURIComponent(sessionId)}`);
+    const data = await res.json();
+    if (!res.ok || !data.paid) throw new Error(data.error || 'Pago no confirmado');
+    state.sessionId = sessionId;
+    localStorage.setItem('longeva_paid_session', sessionId);
+    document.getElementById('paywall').style.display = 'none';
+    document.getElementById('form').style.display = 'block';
+  } catch (err) {
+    payMsg.textContent = `No pudimos validar tu pago: ${err.message}`;
+  }
+}
+
+async function generateProtocol() {
+  if (!state.sessionId) {
+    formMsg.textContent = 'Sesion de pago no encontrada.';
+    return;
+  }
+  formMsg.textContent = 'Generando protocolo...';
+  genBtn.disabled = true;
+
+  const profile = {
+    objective: state.objective,
+    experience: state.experience,
+    contraindications: document.getElementById('contra').value.trim() || 'Ninguna',
+    current_stack: document.getElementById('current').value.trim() || 'No reportado',
+    budget_label: 'Premium',
+  };
+
+  try {
+    const res = await fetch('/api/biohacker-protocol', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ session_id: state.sessionId, profile }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'No se pudo generar protocolo');
+    renderResult(data.protocol);
+    formMsg.textContent = '';
+  } catch (err) {
+    formMsg.textContent = `Error: ${err.message}`;
+    genBtn.disabled = false;
+  }
+}
+
+function renderResult(p) {
+  const out = document.getElementById('result');
+  const risk = (p.risk_level || 'medio').toLowerCase();
+  let html = `
+    <h2 style="font-size:24px;margin-bottom:8px;">Protocolo Experimental</h2>
+    <p style="color:var(--muted);font-size:13px;line-height:1.5;margin-bottom:10px;">${escapeHtml(p.summary || '')}</p>
+    <div class="pill">Costo estimado: $${Number(p.estimated_monthly_cost || 0)}</div>
+    <div class="pill risk ${risk}">Riesgo ${escapeHtml(risk)}</div>
+  `;
+
+  (p.protocol_phases || []).forEach((ph) => {
+    html += `<div class="phase">
+      <div class="phase-head">
+        <strong>${escapeHtml(ph.phase || 'Fase')}</strong>
+        <span style="font-size:12px;color:var(--muted);">${escapeHtml(ph.duration_weeks || '?')} semanas</span>
+      </div>
+      <div class="phase-body">`;
+    (ph.items || []).forEach((it) => {
+      html += `<div class="item">
+        <h4>${escapeHtml(it.peptide || 'Peptido')}</h4>
+        <p>${escapeHtml(it.reason || '')}</p>
+        <div class="tags">
+          <span class="tag">${escapeHtml(it.dose || '-')}</span>
+          <span class="tag">${escapeHtml(it.frequency || '-')}</span>
+          <span class="tag">${escapeHtml(it.timing || '-')}</span>
+          <span class="tag">${escapeHtml(it.route || '-')}</span>
+          <span class="tag">Evidencia: ${escapeHtml(it.evidence || '-')}</span>
+          <span class="tag">~$${Number(it.monthly_cost || 0)}/mes</span>
+        </div>
+      </div>`;
+    });
+    html += `</div></div>`;
+  });
+
+  const list = (arr) => (arr || []).map(x => `<li>${escapeHtml(x)}</li>`).join('');
+  html += `
+    <div style="margin-top:14px;">
+      <h3 style="font-size:15px;margin-bottom:6px;">Monitoreo recomendado</h3>
+      <ul style="margin-left:18px;color:var(--muted);font-size:13px;line-height:1.5;">${list(p.monitoring)}</ul>
+    </div>
+    <div style="margin-top:10px;">
+      <h3 style="font-size:15px;margin-bottom:6px;">Contraindicaciones</h3>
+      <ul style="margin-left:18px;color:var(--muted);font-size:13px;line-height:1.5;">${list(p.contraindications)}</ul>
+    </div>
+    <div class="danger-box">
+      <strong>Red flags:</strong>
+      <ul style="margin:6px 0 0 18px;">${list(p.red_flags)}</ul>
+    </div>
+    <div class="danger-box" style="margin-top:10px;">
+      ${escapeHtml(p.disclaimer || 'Modulo experimental para expertos. Requiere supervision medica.')}
+    </div>
+  `;
+
+  out.innerHTML = html;
+  out.style.display = 'block';
+  document.getElementById('form').style.display = 'none';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function escapeHtml(s) {
+  return String(s || '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
+}
+
+init();
+</script>
+</body>
+</html>
