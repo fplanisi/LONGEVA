@@ -79,6 +79,9 @@
 
   /* FILTERS */
   .filters{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin-top:12px}
+  .filters-extra-wrap{margin-top:8px;text-align:center}
+  .filters-extra-toggle{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;border:1px dashed var(--border);font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:.06em;cursor:pointer;background:rgba(255,255,255,.01)}
+  .filters-extra{margin-top:8px}
   .fp{padding:4px 12px;border-radius:100px;border:1px solid var(--border);background:rgba(255,255,255,.01);color:var(--muted);font-family:'DM Mono',monospace;font-size:9px;cursor:pointer;transition:.2s}
   .fp:hover,.fp.active{border-color:var(--accent2);color:var(--text);background:rgba(82,184,255,.1)}
 
@@ -94,7 +97,7 @@
   /* DISCOVER BANNER */
   #discover-panel{display:none;background:linear-gradient(135deg,rgba(82,184,255,.09),rgba(106,255,217,.04));border:1px solid rgba(82,184,255,.34);border-radius:18px;padding:28px;margin-bottom:32px;position:relative}
   #discover-panel::before{content:'🔬 DESCUBRIMIENTOS RECIENTES 2025-2026';font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.15em;color:var(--accent2);display:block;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(0,152,255,.15)}
-  #discover-content{font-size:13px;line-height:1.75;color:#35546b;font-weight:300}
+  #discover-content{font-size:13px;line-height:1.75;color:#c7d2de;font-weight:300}
   #discover-content h3{font-family:'DM Serif Display',serif;font-size:15px;color:var(--text);margin:14px 0 6px}
   #discover-content strong{color:var(--accent2);font-weight:500}
   .disc-close{position:absolute;top:16px;right:16px;background:transparent;border:1px solid var(--border);color:var(--dim);border-radius:7px;padding:4px 10px;cursor:pointer;font-family:'DM Mono',monospace;font-size:9px;transition:.2s}
@@ -117,12 +120,12 @@
   .ts{background:rgba(0,152,255,.1);border:1px solid rgba(0,152,255,.25);color:var(--accent2)}
   .tp{background:rgba(123,97,255,.1);border:1px solid rgba(123,97,255,.25);color:var(--accent3)}
   .te{background:rgba(240,192,96,.1);border:1px solid rgba(240,192,96,.25);color:var(--gold)}
-  .ai-body{font-size:13px;line-height:1.78;color:#35546b;font-weight:300}
+  .ai-body{font-size:13px;line-height:1.78;color:#c7d2de;font-weight:300}
   .ai-body h3{font-family:'DM Serif Display',serif;font-size:15px;color:var(--text);margin:16px 0 6px;font-weight:400}
   .ai-body h3:first-child{margin-top:0}
   .ai-body p{margin-bottom:8px}
   .ai-body ul{margin:4px 0 8px 16px}
-  .ai-body li{margin-bottom:4px;color:#4f6a82}
+  .ai-body li{margin-bottom:4px;color:#aebdca}
   .ai-body strong{color:var(--accent);font-weight:500}
   .ai-provider-note{margin-top:14px;padding-top:12px;border-top:1px solid var(--border);font-family:'DM Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:.05em}
 
@@ -157,7 +160,7 @@
   .card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px}
   .mol-n{font-family:'DM Serif Display',serif;font-size:15px;color:var(--text);line-height:1.2}
   .tb{flex-shrink:0;padding:2px 7px;border-radius:100px;font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.07em;text-transform:uppercase;margin-left:8px;margin-top:2px}
-  .card-desc{font-size:11px;color:var(--muted);line-height:1.5;margin-bottom:9px;font-weight:300}
+  .card-desc{font-size:11px;color:var(--muted);line-height:1.5;margin-bottom:9px;font-weight:300;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
   .chips{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:9px}
   .chip{padding:1px 7px;background:rgba(82,184,255,.1);border:1px solid rgba(82,184,255,.24);border-radius:100px;font-family:'DM Mono',monospace;font-size:7px;color:var(--accent2)}
   .card-meta{display:flex;align-items:center;justify-content:space-between;padding-top:9px;border-top:1px solid var(--border)}
@@ -283,14 +286,19 @@
       <button class="fp" onclick="fil('natural',this)">🌿 Naturales</button>
       <button class="fp" onclick="fil('synthetic',this)">⚗️ Sintéticas</button>
       <button class="fp" onclick="fil('hongos',this)">🍄 Hongos</button>
-      <button class="fp" onclick="fil('adaptogen',this)">Adaptógenos</button>
-      <button class="fp" onclick="fil('senolytic',this)">Senolíticas</button>
       <button class="fp" onclick="fil('mTOR',this)">mTOR/AMPK</button>
       <button class="fp" onclick="fil('NAD',this)">NAD⁺/Sirtuinas</button>
-      <button class="fp" onclick="fil('mitocondria',this)">Mitocondria</button>
-      <button class="fp" onclick="fil('inflamacion',this)">Anti-inflam.</button>
-      <button class="fp" onclick="fil('epigenetica',this)">Epigenética</button>
+      <button class="fp" onclick="fil('senolytic',this)">Senolíticas</button>
     </div>
+    <details class="filters-extra-wrap" id="filters-extra-wrap">
+      <summary class="filters-extra-toggle" id="filters-extra-toggle">+ Más filtros</summary>
+      <div class="filters filters-extra">
+        <button class="fp" onclick="fil('adaptogen',this)">Adaptógenos</button>
+        <button class="fp" onclick="fil('mitocondria',this)">Mitocondria</button>
+        <button class="fp" onclick="fil('inflamacion',this)">Anti-inflam.</button>
+        <button class="fp" onclick="fil('epigenetica',this)">Epigenética</button>
+      </div>
+    </details>
   </div>
 </section>
 
@@ -406,16 +414,18 @@ function applyStaticI18n() {
   const modeLatest = document.getElementById('mode-latest');
   if (modeLatest) modeLatest.innerHTML = '🔍 2025-2026 updates';
   if (modeLatest) modeLatest.title = 'Searches recent papers with web search (Anthropic)';
+  const extraToggle = document.getElementById('filters-extra-toggle');
+  if (extraToggle) extraToggle.textContent = '+ More filters';
   const filterBtns = document.querySelectorAll('.filters .fp');
   const filterMap = [
     'All',
     '🌿 Natural',
     '⚗️ Synthetic',
     '🍄 Mushrooms',
-    'Adaptogens',
-    'Senolytics',
     'mTOR/AMPK',
     'NAD+/Sirtuins',
+    'Senolytics',
+    'Adaptogens',
     'Mitochondria',
     'Anti-inflammatory',
     'Epigenetics',
@@ -607,7 +617,7 @@ function render() {
       h += `<div class="card js-mol-card" data-mol="${encoded}" style="animation-delay:${i * .035}s">
         <div class="card-top"><div class="mol-n">${m.name}</div><div class="tb ${tc}">${tl} ${typeLabel}</div></div>
         <div class="card-desc">${description}</div>
-        <div class="chips">${(m.pathways||[]).map(p=>`<span class="chip">${p}</span>`).join('')}</div>
+        <div class="chips">${(m.pathways||[]).slice(0,2).map(p=>`<span class="chip">${p}</span>`).join('')}</div>
         <div class="card-meta"><div class="ev">${tr('Evidencia', 'Evidence')} <span>${m.evidence_rating||'N/A'}</span> · ${m.study_count||0}+ ${tr('est.', 'studies')}</div><div class="explore">${tr('Ver análisis →', 'View analysis →')}</div></div>
       </div>`;
     });
