@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LONGEVA — Moléculas de Longevidad</title>
+<title>LONGEVAPP — Moléculas de Longevidad</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{--bg:#05070c;--surface:#0e141f;--surface2:#121b29;--border:#223147;--accent:#6affd9;--accent2:#52b8ff;--accent3:#d1ff5a;--text:#edf3ff;--muted:#90a5c2;--dim:#4e6380;--gold:#f0c784;--red:#ff6e8a}
@@ -168,6 +168,13 @@
   .qmod:hover{border-color:var(--accent2);transform:translateY(-1px)}
   .qmod b{display:block;font-size:12px;margin-bottom:3px}
   .qmod span{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace}
+  .qmod-primary{border-color:rgba(106,255,217,.45);background:linear-gradient(140deg,rgba(106,255,217,.08),rgba(209,255,90,.05));box-shadow:0 0 0 1px rgba(106,255,217,.18) inset}
+  .qmod-primary b{color:var(--accent)}
+  .qmod-bio{border-color:rgba(159,123,255,.55);background:linear-gradient(130deg,rgba(159,123,255,.16),rgba(255,95,127,.12));box-shadow:0 0 22px rgba(159,123,255,.2)}
+  .qmod-bio b{color:#f4d8ff}
+  .qmod-bio::after{content:'ADVANCED';display:inline-block;margin-top:6px;padding:2px 7px;border-radius:999px;border:1px solid rgba(255,180,220,.55);font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.08em;color:#ffd4ea;background:rgba(255,120,190,.1)}
+  .qmod-bio{animation:bioPulse 2.4s ease-in-out infinite}
+  @keyframes bioPulse{0%,100%{box-shadow:0 0 16px rgba(159,123,255,.18)}50%{box-shadow:0 0 30px rgba(255,95,127,.32)}}
 
   @media(max-width:900px){
     .stats{grid-template-columns:repeat(2,minmax(120px,1fr));padding:0 16px}
@@ -216,7 +223,7 @@
 <header>
   <div class="header-top">
   <div class="brand-wrap">
-    <span class="logo-name">LONGEVA</span>
+    <span class="logo-name">LONGEVAPP</span>
     <span class="logo-tag">v3.1 · Híbrido IA + Base curada</span>
   </div>
   <div class="status-row">
@@ -231,7 +238,7 @@
   <div class="topnav-row">
     <nav class="topnav">
       <a href="/index.html" class="active">Biblioteca</a>
-      <a href="/stack-builder.html">Stack Builder</a>
+      <a href="/stack-builder.html">Plan Personalizado</a>
       <a href="/biohacker-protocol.html">Biohacker</a>
       <a href="/food-longevity.html">Nutrición</a>
     </nav>
@@ -240,8 +247,8 @@
 
 <section class="hero">
   <p class="hero-eye">Decisiones personalizadas · Ahorro de tiempo · Seguimiento 30 días</p>
-  <h1>Cada molécula que puede<br><em>alargar tu vida</em></h1>
-  <p class="hero-sub">No es una enciclopedia: define qué tomar/comer según tu perfil, presupuesto y disponibilidad local, con ajustes y reemplazos durante 30 días.</p>
+  <h1>Tu mapa inteligente para<br><em>longevidad real</em></h1>
+  <p class="hero-sub">Explora evidencia, luego pasa a tu Plan Personalizado para obtener una estrategia mensual accionable según tu perfil, presupuesto y disponibilidad local.</p>
   <p class="trust-line" id="medical-trust">Enfoque clínico: plataforma diseñada por médico, con prioridad en seguridad e interacciones.</p>
   <div class="flow-strip">
     <div class="flow-step"><b>1.</b> Diagnóstico en 2 minutos</div>
@@ -279,8 +286,8 @@
       <button class="fp" onclick="fil('epigenetica',this)">Epigenética</button>
     </div>
     <div class="quick-modules">
-      <a class="qmod" href="/stack-builder.html"><b>Stack Builder</b><span>Plan personalizado + historial de versiones + reemplazos</span></a>
-      <a class="qmod" href="/biohacker-protocol.html"><b>Biohacker Lab</b><span>Módulo experimental para expertos</span></a>
+      <a class="qmod qmod-primary" href="/stack-builder.html"><b>Plan Personalizado</b><span>Empieza aquí: protocolo mensual + reemplazos + seguimiento</span></a>
+      <a class="qmod qmod-bio" href="/biohacker-protocol.html"><b>Biohacker Lab</b><span>Módulo avanzado y experimental para expertos</span></a>
       <a class="qmod" href="/food-longevity.html"><b>Nutrición</b><span>Enfoque solo alimentos, sin suplementos</span></a>
     </div>
   </div>
@@ -368,28 +375,28 @@ function applyStaticI18n() {
   updateLangButtons();
   if (!IS_EN) return;
   const set = (sel, text) => { const el = document.querySelector(sel); if (el) el.textContent = text; };
-  document.title = 'LONGEVA — Longevity Molecules';
+  document.title = 'LONGEVAPP — Longevity Molecules';
   set('.logo-tag', 'v3.1 · Hybrid AI + Curated base');
   const badges = document.querySelectorAll('.badge-live');
   if (badges[0]) badges[0].childNodes[1].nodeValue = ' Scientific base active';
   set('.hero-eye', 'Personalized decisions · Time savings · 30-day follow-up');
   const h1 = document.querySelector('h1');
-  if (h1) h1.innerHTML = 'Every molecule that can<br><em>extend your life</em>';
-  set('.hero-sub', 'Not a wiki: decide what to take/eat by profile, budget, and local availability, with replacements over 30 days.');
+  if (h1) h1.innerHTML = 'Your intelligent map for<br><em>real longevity</em>';
+  set('.hero-sub', 'Explore evidence first, then move into your Personalized Plan for a practical monthly strategy based on profile, budget, and local availability.');
   const steps = document.querySelectorAll('.flow-step');
   if (steps[0]) steps[0].innerHTML = '<b>1.</b> 2-minute diagnosis';
   if (steps[1]) steps[1].innerHTML = '<b>2.</b> Monthly action plan';
   if (steps[2]) steps[2].innerHTML = '<b>3.</b> Follow-up and replacements';
   const nav = document.querySelectorAll('.topnav a');
   if (nav[0]) nav[0].textContent = 'Library';
-  if (nav[1]) nav[1].textContent = 'Stack Builder';
+  if (nav[1]) nav[1].textContent = 'Personalized Plan';
   if (nav[2]) nav[2].textContent = 'Biohacker';
   if (nav[3]) nav[3].textContent = 'Nutrition';
   const qmods = document.querySelectorAll('.qmod');
-  if (qmods[0]) qmods[0].querySelector('b').textContent = 'Stack Builder';
-  if (qmods[0]) qmods[0].querySelector('span').textContent = 'Personalized plan + version history + replacements';
+  if (qmods[0]) qmods[0].querySelector('b').textContent = 'Personalized Plan';
+  if (qmods[0]) qmods[0].querySelector('span').textContent = 'Start here: monthly protocol + replacements + follow-up';
   if (qmods[1]) qmods[1].querySelector('b').textContent = 'Biohacker Lab';
-  if (qmods[1]) qmods[1].querySelector('span').textContent = 'Experimental module for advanced users';
+  if (qmods[1]) qmods[1].querySelector('span').textContent = 'Advanced and experimental module for expert users';
   if (qmods[2]) qmods[2].querySelector('b').textContent = 'Nutrition';
   if (qmods[2]) qmods[2].querySelector('span').textContent = 'Food-first approach, no supplements';
   const si = document.getElementById('si');

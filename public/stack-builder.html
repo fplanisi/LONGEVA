@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LONGEVA — Tu Stack Personalizado</title>
+<title>LONGEVAPP — Tu Plan Personalizado</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -23,10 +23,10 @@
   --red:#ff6e8a;
 }
 body.paid-mode {
-  --accent:#7ac8ff;
-  --accent2:#9db5ff;
-  --accent3:#f0c784;
-  --accent-dim:rgba(122,200,255,.12);
+  --accent:#6affd9;
+  --accent2:#52b8ff;
+  --accent3:#d1ff5a;
+  --accent-dim:rgba(106,255,217,.12);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -623,7 +623,7 @@ input[type=range]::-webkit-slider-thumb {
       <span class="logo-tag">v3.1 · Híbrido IA + Base curada</span>
     </div>
     <div class="status-row">
-      <div class="hbadge">Stack Builder · 2026</div>
+      <div class="hbadge">Plan Personalizado · 2026</div>
       <div class="lang-switch">
         <button class="lang-btn" id="lang-es" onclick="setPreferredLang('es')">ES</button>
         <button class="lang-btn" id="lang-en" onclick="setPreferredLang('en')">EN</button>
@@ -633,7 +633,7 @@ input[type=range]::-webkit-slider-thumb {
   <div class="topnav-row">
     <nav class="topnav">
       <a href="/index.html">Biblioteca</a>
-      <a href="/stack-builder.html" class="active">Stack Builder</a>
+      <a href="/stack-builder.html" class="active">Plan Personalizado</a>
       <a href="/biohacker-protocol.html">Biohacker</a>
       <a href="/food-longevity.html">Nutrición</a>
     </nav>
@@ -662,7 +662,7 @@ input[type=range]::-webkit-slider-thumb {
 
   <!-- EMAIL GATE -->
   <div id="email-gate">
-    <div class="gate-title">Desbloquea tu Stack Builder</div>
+    <div class="gate-title">Desbloquea tu Plan Personalizado</div>
     <p class="gate-sub">Ingresa tu email y continúa al pago seguro con Stripe para generar tu protocolo mensual personalizado.</p>
     <div class="email-row">
       <input class="email-input" id="user-email" type="email" placeholder="tu@email.com">
@@ -1645,7 +1645,7 @@ function renderStack(stack, budgetLabel) {
   </div>`;
 
   // Disclaimer
-  html += `<div class="disclaimer">⚕ ${tr('AVISO MÉDICO: Este stack es informativo y está basado en evidencia científica disponible. No reemplaza el consejo médico profesional. Consulta con tu médico antes de comenzar cualquier protocolo de suplementación, especialmente si tienes condiciones de salud o tomas medicamentos. LONGEVA no se hace responsable del uso de esta información.', 'MEDICAL NOTICE: This stack is informational and based on currently available scientific evidence. It does not replace professional medical advice. Consult your physician before starting any supplementation protocol, especially with health conditions or medications. LONGEVA is not liable for use of this information.')}</div>`;
+  html += `<div class="disclaimer">⚕ ${tr('AVISO MÉDICO: Este stack es informativo y está basado en evidencia científica disponible. No reemplaza el consejo médico profesional. Consulta con tu médico antes de comenzar cualquier protocolo de suplementación, especialmente si tienes condiciones de salud o tomas medicamentos. LONGEVAPP no se hace responsable del uso de esta información.', 'MEDICAL NOTICE: This stack is informational and based on currently available scientific evidence. It does not replace professional medical advice. Consult your physician before starting any supplementation protocol, especially with health conditions or medications. LONGEVAPP is not liable for use of this information.')}</div>`;
   html += renderHistorySection();
 
   out.innerHTML = html;
@@ -1727,7 +1727,7 @@ function downloadExecutivePDF() {
   const sexTxt = state.sex === 'male' ? tr('Masculino', 'Male') : tr('Femenino', 'Female');
   const takeTop = (arr) => (arr || []).slice(0, 4).map(x => `<li><b>${escapeHtml(x.name || '')}</b> — ${escapeHtml(x.dose || '')} · ${escapeHtml(x.why || '')}</li>`).join('');
   const warnings = (stack.warnings || []).map(w => `<li>${escapeHtml(w)}</li>`).join('');
-  const html = `<!doctype html><html><head><meta charset="utf-8"><title>LONGEVA - ${tr('Resumen Ejecutivo', 'Executive Summary')}</title>
+  const html = `<!doctype html><html><head><meta charset="utf-8"><title>LONGEVAPP - ${tr('Resumen Ejecutivo', 'Executive Summary')}</title>
   <style>
     body{font-family:Arial,sans-serif;color:#111;padding:28px;line-height:1.45}
     h1{margin:0 0 4px 0;font-size:24px} h2{margin:20px 0 8px;font-size:16px}
@@ -1735,7 +1735,7 @@ function downloadExecutivePDF() {
     ul{margin:6px 0 0 18px} li{margin-bottom:6px}
     .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   </style></head><body>
-  <h1>LONGEVA · ${tr('Resumen Ejecutivo', 'Executive Summary')}</h1>
+  <h1>LONGEVAPP · ${tr('Resumen Ejecutivo', 'Executive Summary')}</h1>
   <div class="muted">${tr('Fecha', 'Date')}: ${new Date().toLocaleDateString(IS_EN ? 'en-US' : 'es-AR')} · ${tr('Perfil', 'Profile')}: ${state.age} ${tr('años', 'years')}, ${sexTxt} · ${tr('Objetivo', 'Goal')}: ${escapeHtml(goalsTxt)}</div>
   <div class="card"><b>${tr('Costo estimado mensual', 'Estimated monthly cost')}:</b> $${Number(stack.estimated_cost || 0)} · <b>${tr('Presupuesto elegido', 'Selected budget')}:</b> ${escapeHtml(state.lastBudgetLabel || '-')}</div>
   <div class="grid">
@@ -1751,7 +1751,7 @@ function downloadExecutivePDF() {
   </body></html>`;
   const w = window.open('', '_blank', 'noopener,noreferrer');
   if (!w) {
-    alert(tr('Tu navegador bloqueó la ventana de impresión. Habilita popups para LONGEVA.', 'Your browser blocked the print window. Enable popups for LONGEVA.'));
+    alert(tr('Tu navegador bloqueó la ventana de impresión. Habilita popups para LONGEVAPP.', 'Your browser blocked the print window. Enable popups for LONGEVAPP.'));
     return;
   }
   w.document.open();
@@ -1852,17 +1852,17 @@ function applyStaticI18n() {
   const set = (sel, txt) => { const el = document.querySelector(sel); if (el) el.textContent = txt; };
   const nav = document.querySelectorAll('.topnav a');
   if (nav[0]) nav[0].textContent = 'Library';
-  if (nav[1]) nav[1].textContent = 'Stack Builder';
+  if (nav[1]) nav[1].textContent = 'Personalized Plan';
   if (nav[2]) nav[2].textContent = 'Biohacker';
   if (nav[3]) nav[3].textContent = 'Nutrition';
   set('.logo-tag', 'v3.1 · Hybrid AI + Curated base');
-  document.title = 'LONGEVA — Your Personalized Stack';
+  document.title = 'LONGEVAPP — Your Personalized Plan';
   set('.hero-kicker', 'Scientific personalization');
   set('.hero-title', 'Build your longevity stack');
   set('.hero-sub', '120+ validated molecules. AI designs your optimal stack with doses, timing, and synergies.');
   set('#hero-trust-med', 'Physician-led clinical design · safety and contraindication-first logic');
   set('.hero-link', 'Back to library');
-  set('.gate-title', 'Unlock your Stack Builder');
+  set('.gate-title', 'Unlock your Personalized Plan');
   const gateSub = document.querySelector('.gate-sub');
   if (gateSub) gateSub.textContent = 'Enter your email and continue to secure checkout to generate your personalized monthly protocol.';
   const gateBtn = document.getElementById('gate-btn');

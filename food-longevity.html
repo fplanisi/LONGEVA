@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LONGEVA — Nutrición de Longevidad</title>
+<title>LONGEVAPP — Nutrición de Longevidad</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -81,7 +81,7 @@ body{
   <header class="site-header">
     <div class="header-top">
       <div class="brand-wrap">
-        <span class="logo-name">LONGEVA</span>
+        <span class="logo-name">LONGEVAPP</span>
         <span class="logo-tag">v3.1 · Híbrido IA + Base curada</span>
       </div>
       <div class="status-row">
@@ -96,7 +96,7 @@ body{
     <div class="topnav-row">
     <nav class="topnav">
       <a href="/index.html">Biblioteca</a>
-      <a href="/stack-builder.html">Stack Builder</a>
+      <a href="/stack-builder.html">Plan Personalizado</a>
       <a href="/biohacker-protocol.html">Biohacker</a>
       <a href="/food-longevity.html" class="active">Nutrición</a>
     </nav>
@@ -329,7 +329,7 @@ document.getElementById('gen-btn').addEventListener('click', () => {
     html += `</div></div>`;
   }
 
-  html += `<p class="note">${tr('Sugerencia práctica: arma 2-3 comidas base repetibles por semana para adherencia. Si querés personalización completa con dosis/ciclos, usá Stack Builder.', 'Practical tip: build 2-3 repeatable base meals per week to improve adherence. For full personalization with doses/cycles, use Stack Builder.')}</p>`;
+  html += `<p class="note">${tr('Sugerencia práctica: arma 2-3 comidas base repetibles por semana para adherencia. Si querés personalización completa con dosis/ciclos, usá Plan Personalizado.', 'Practical tip: build 2-3 repeatable base meals per week to improve adherence. For full personalization with doses/cycles, use Personalized Plan.')}</p>`;
   out.innerHTML = html;
   out.style.display = 'block';
 });
@@ -340,11 +340,11 @@ function applyStaticI18n() {
   const set = (sel, txt) => { const el = document.querySelector(sel); if (el) el.textContent = txt; };
   const nav = document.querySelectorAll('.topnav a');
   if (nav[0]) nav[0].textContent = 'Library';
-  if (nav[1]) nav[1].textContent = 'Stack Builder';
+  if (nav[1]) nav[1].textContent = 'Personalized Plan';
   if (nav[2]) nav[2].textContent = 'Biohacker';
   if (nav[3]) nav[3].textContent = 'Nutrition';
   set('.logo-tag', 'v3.1 · Hybrid AI + Curated base');
-  document.title = 'LONGEVA — Longevity Nutrition';
+  document.title = 'LONGEVAPP — Longevity Nutrition';
   set('.status-chip', 'Nutrition · Food-first (free)');
   const chips = document.querySelectorAll('.status-chip');
   if (chips[1]) chips[1].textContent = 'Physician-designed clinical framework';
