@@ -182,6 +182,7 @@ textarea { min-height:90px; resize:vertical; }
 const state = { sessionId: '', objective: 'muscle', experience: 'intermediate' };
 const USER_LANG = getPreferredLang();
 const IS_EN = USER_LANG === 'en';
+const tr = (es, en) => (IS_EN ? en : es);
 document.documentElement.lang = USER_LANG;
 
 const payBtn = document.getElementById('pay-btn');
@@ -216,10 +217,10 @@ genBtn.addEventListener('click', generateProtocol);
 async function startCheckout() {
   const email = document.getElementById('email').value.trim();
   if (!email || !email.includes('@')) {
-    payMsg.textContent = 'Ingresa un email valido.';
+    payMsg.textContent = tr('Ingresa un email valido.', 'Enter a valid email.');
     return;
   }
-  payMsg.textContent = 'Creando checkout...';
+  payMsg.textContent = tr('Creando checkout...', 'Creating checkout...');
   payBtn.disabled = true;
   try {
     const res = await fetch('/api/create-checkout-session', {
@@ -228,12 +229,12 @@ async function startCheckout() {
       body: JSON.stringify({ email, return_to: '/biohacker-protocol.html' }),
     });
     const data = await res.json();
-    if (!res.ok || !data.url) throw new Error(data.error || 'No se pudo iniciar checkout');
+    if (!res.ok || !data.url) throw new Error(data.error || tr('No se pudo iniciar checkout', 'Could not start checkout'));
     localStorage.setItem('longeva_email', email);
     localStorage.setItem('longeva_return_to', '/biohacker-protocol.html');
     window.location.href = data.url;
   } catch (err) {
-    payMsg.textContent = `Error: ${err.message}`;
+    payMsg.textContent = `${tr('Error', 'Error')}: ${err.message}`;
     payBtn.disabled = false;
   }
 }
@@ -259,34 +260,34 @@ async function init() {
   if (!sessionId) return;
   if (paid !== '1' && !localStorage.getItem('longeva_paid_session')) return;
 
-  payMsg.textContent = 'Verificando pago...';
+  payMsg.textContent = tr('Verificando pago...', 'Verifying payment...');
   try {
     const res = await fetch(`/api/checkout-status?session_id=${encodeURIComponent(sessionId)}`);
     const data = await res.json();
-    if (!res.ok || !data.paid) throw new Error(data.error || 'Pago no confirmado');
+    if (!res.ok || !data.paid) throw new Error(data.error || tr('Pago no confirmado', 'Payment not confirmed'));
     state.sessionId = sessionId;
     localStorage.setItem('longeva_paid_session', sessionId);
     document.getElementById('paywall').style.display = 'none';
     document.getElementById('form').style.display = 'block';
   } catch (err) {
-    payMsg.textContent = `No pudimos validar tu pago: ${err.message}`;
+    payMsg.textContent = `${tr('No pudimos validar tu pago', 'Could not validate your payment')}: ${err.message}`;
   }
 }
 
 async function generateProtocol() {
   if (!state.sessionId) {
-    formMsg.textContent = 'Sesion de pago no encontrada.';
+    formMsg.textContent = tr('Sesion de pago no encontrada.', 'Payment session not found.');
     return;
   }
-  formMsg.textContent = 'Generando protocolo...';
+  formMsg.textContent = tr('Generando protocolo...', 'Generating protocol...');
   genBtn.disabled = true;
 
   const profile = {
     objective: state.objective,
     experience: state.experience,
     lang: USER_LANG,
-    contraindications: document.getElementById('contra').value.trim() || 'Ninguna',
-    current_stack: document.getElementById('current').value.trim() || 'No reportado',
+    contraindications: document.getElementById('contra').value.trim() || tr('Ninguna', 'None'),
+    current_stack: document.getElementById('current').value.trim() || tr('No reportado', 'Not reported'),
     budget_label: 'Premium',
   };
 
@@ -297,43 +298,45 @@ async function generateProtocol() {
       body: JSON.stringify({ session_id: state.sessionId, profile }),
     });
     const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'No se pudo generar protocolo');
+    if (!res.ok) throw new Error(data.error || tr('No se pudo generar protocolo', 'Could not generate protocol'));
     renderResult(data.protocol);
     formMsg.textContent = '';
   } catch (err) {
-    formMsg.textContent = `Error: ${err.message}`;
+    formMsg.textContent = `${tr('Error', 'Error')}: ${err.message}`;
     genBtn.disabled = false;
   }
 }
 
 function renderResult(p) {
   const out = document.getElementById('result');
-  const risk = (p.risk_level || 'medio').toLowerCase();
+  const riskRaw = String(p.risk_level || 'medio').toLowerCase();
+  const risk = riskRaw === 'high' ? 'alto' : riskRaw === 'medium' ? 'medio' : riskRaw === 'low' ? 'bajo' : riskRaw;
+  const riskLabel = riskRaw === 'high' ? 'high' : riskRaw === 'medium' ? 'medium' : riskRaw === 'low' ? 'low' : riskRaw;
   let html = `
-    <h2 style="font-size:24px;margin-bottom:8px;">Protocolo Experimental</h2>
+    <h2 style="font-size:24px;margin-bottom:8px;">${tr('Protocolo Experimental', 'Experimental Protocol')}</h2>
     <p style="color:var(--muted);font-size:13px;line-height:1.5;margin-bottom:10px;">${escapeHtml(p.summary || '')}</p>
-    <div class="pill">Costo estimado: $${Number(p.estimated_monthly_cost || 0)}</div>
-    <div class="pill risk ${risk}">Riesgo ${escapeHtml(risk)}</div>
+    <div class="pill">${tr('Costo estimado', 'Estimated cost')}: $${Number(p.estimated_monthly_cost || 0)}</div>
+    <div class="pill risk ${risk}">${tr('Riesgo', 'Risk')} ${escapeHtml(IS_EN ? riskLabel : risk)}</div>
   `;
 
   (p.protocol_phases || []).forEach((ph) => {
     html += `<div class="phase">
       <div class="phase-head">
-        <strong>${escapeHtml(ph.phase || 'Fase')}</strong>
-        <span style="font-size:12px;color:var(--muted);">${escapeHtml(ph.duration_weeks || '?')} semanas</span>
+        <strong>${escapeHtml(ph.phase || tr('Fase', 'Phase'))}</strong>
+        <span style="font-size:12px;color:var(--muted);">${escapeHtml(ph.duration_weeks || '?')} ${tr('semanas', 'weeks')}</span>
       </div>
       <div class="phase-body">`;
     (ph.items || []).forEach((it) => {
       html += `<div class="item">
-        <h4>${escapeHtml(it.peptide || 'Peptido')}</h4>
+        <h4>${escapeHtml(it.peptide || tr('Peptido', 'Peptide'))}</h4>
         <p>${escapeHtml(it.reason || '')}</p>
         <div class="tags">
           <span class="tag">${escapeHtml(it.dose || '-')}</span>
           <span class="tag">${escapeHtml(it.frequency || '-')}</span>
           <span class="tag">${escapeHtml(it.timing || '-')}</span>
           <span class="tag">${escapeHtml(it.route || '-')}</span>
-          <span class="tag">Evidencia: ${escapeHtml(it.evidence || '-')}</span>
-          <span class="tag">~$${Number(it.monthly_cost || 0)}/mes</span>
+          <span class="tag">${tr('Evidencia', 'Evidence')}: ${escapeHtml(it.evidence || '-')}</span>
+          <span class="tag">~$${Number(it.monthly_cost || 0)}/${tr('mes', 'mo')}</span>
         </div>
       </div>`;
     });
@@ -343,19 +346,19 @@ function renderResult(p) {
   const list = (arr) => (arr || []).map(x => `<li>${escapeHtml(x)}</li>`).join('');
   html += `
     <div style="margin-top:14px;">
-      <h3 style="font-size:15px;margin-bottom:6px;">Monitoreo recomendado</h3>
+      <h3 style="font-size:15px;margin-bottom:6px;">${tr('Monitoreo recomendado', 'Recommended monitoring')}</h3>
       <ul style="margin-left:18px;color:var(--muted);font-size:13px;line-height:1.5;">${list(p.monitoring)}</ul>
     </div>
     <div style="margin-top:10px;">
-      <h3 style="font-size:15px;margin-bottom:6px;">Contraindicaciones</h3>
+      <h3 style="font-size:15px;margin-bottom:6px;">${tr('Contraindicaciones', 'Contraindications')}</h3>
       <ul style="margin-left:18px;color:var(--muted);font-size:13px;line-height:1.5;">${list(p.contraindications)}</ul>
     </div>
     <div class="danger-box">
-      <strong>Red flags:</strong>
+      <strong>${tr('Red flags', 'Red flags')}:</strong>
       <ul style="margin:6px 0 0 18px;">${list(p.red_flags)}</ul>
     </div>
     <div class="danger-box" style="margin-top:10px;">
-      ${escapeHtml(p.disclaimer || 'Modulo experimental para expertos. Requiere supervision medica.')}
+      ${escapeHtml(p.disclaimer || tr('Modulo experimental para expertos. Requiere supervision medica.', 'Experimental module for advanced users. Requires medical supervision.'))}
     </div>
   `;
 
@@ -378,6 +381,7 @@ function applyStaticI18n() {
   updateLangButtons();
   if (!IS_EN) return;
   const set = (sel, txt) => { const el = document.querySelector(sel); if (el) el.textContent = txt; };
+  document.title = 'LONGEVA — Biohacker Protocol';
   const nav = document.querySelectorAll('.topnav a');
   if (nav[0]) nav[0].textContent = 'Library';
   if (nav[1]) nav[1].textContent = 'Stack Builder';
@@ -389,8 +393,36 @@ function applyStaticI18n() {
   set('.hero h1', 'Experimental Peptide Protocol');
   const heroP = document.querySelector('.hero p');
   if (heroP) heroP.textContent = 'Not a wellness routine. This is aggressive optimization for advanced users, with phases, monitoring, and clinical red flags.';
+  const heroList = document.querySelectorAll('.hero-list div');
+  if (heroList[0]) heroList[0].innerHTML = '<b>Real challenge:</b> balancing outcomes vs risk.';
+  if (heroList[1]) heroList[1].innerHTML = '<b>Core rule:</b> if you cannot measure it, do not escalate.';
+  if (heroList[2]) heroList[2].innerHTML = '<b>Goal:</b> actionable protocol without self-deception.';
   const alert = document.querySelector('.alert');
   if (alert) alert.textContent = 'Experts only. Not medical advice. Real risk of interactions and adverse effects.';
+  set('#paywall .label', 'Premium access (same paywall)');
+  const email = document.getElementById('email');
+  if (email) email.placeholder = 'you@email.com';
+  set('#pay-btn', 'Continue to checkout');
+  set('#form .label:nth-of-type(1)', 'Main objective');
+  set('#form .label:nth-of-type(2)', 'Experience level');
+  set('#form .label:nth-of-type(3)', 'Current conditions / medication');
+  set('#form .label:nth-of-type(4)', 'Current protocol (supplements/peptides)');
+  const contra = document.getElementById('contra');
+  if (contra) contra.placeholder = 'E.g. hypertension, anticoagulants, oncological history...';
+  const current = document.getElementById('current');
+  if (current) current.placeholder = 'E.g. creatine 5g, omega-3, no peptides yet...';
+  const objectives = document.querySelectorAll('#objective-grid .opt');
+  if (objectives[0]) objectives[0].textContent = 'Muscle / performance';
+  if (objectives[1]) objectives[1].textContent = 'Fat loss';
+  if (objectives[2]) objectives[2].textContent = 'Longevity';
+  if (objectives[3]) objectives[3].textContent = 'Skin health';
+  if (objectives[4]) objectives[4].textContent = 'Recovery';
+  const exp = document.querySelectorAll('#exp-grid .opt');
+  if (exp[0]) exp[0].textContent = 'Intermediate';
+  if (exp[1]) exp[1].textContent = 'Advanced';
+  const check = document.querySelector('.check label');
+  if (check) check.textContent = 'I confirm that I understand this module is experimental and requires professional supervision.';
+  set('#gen-btn', 'Generate experimental protocol');
 }
 
 function getPreferredLang() {

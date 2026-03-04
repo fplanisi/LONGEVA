@@ -1266,18 +1266,18 @@ function updateProtocol(value) {
 
 function buildProfilePayload(budgetLabel) {
   const condMap = {
-    diabetes:'Diabetes/pre-diabetes',
-    hypertension:'Hipertensión',
-    anticoagulants:'Anticoagulantes',
-    cancer:'Antecedentes oncológicos',
-    autoimmune:'Enfermedad autoinmune',
-    statins:'Estatinas',
-    thyroid:'Hipotiroidismo',
-    kidney:'Enfermedad renal',
-    liver:'Enfermedad hepática',
-    pregnant:'Embarazo/lactancia'
+    diabetes: tr('Diabetes/pre-diabetes', 'Diabetes/pre-diabetes'),
+    hypertension: tr('Hipertensión', 'Hypertension'),
+    anticoagulants: tr('Anticoagulantes', 'Anticoagulants'),
+    cancer: tr('Antecedentes oncológicos', 'Cancer history'),
+    autoimmune: tr('Enfermedad autoinmune', 'Autoimmune disease'),
+    statins: tr('Estatinas', 'Statins'),
+    thyroid: tr('Hipotiroidismo', 'Thyroid condition'),
+    kidney: tr('Enfermedad renal', 'Kidney disease'),
+    liver: tr('Enfermedad hepática', 'Liver disease'),
+    pregnant: tr('Embarazo/lactancia', 'Pregnancy/lactation')
   };
-  const condStr = state.conditions.length ? state.conditions.map(c => condMap[c] || c).join(', ') : 'Ninguna';
+  const condStr = state.conditions.length ? state.conditions.map(c => condMap[c] || c).join(', ') : tr('Ninguna', 'None');
   return {
     age: state.age,
     sex: state.sex,
@@ -1314,17 +1314,29 @@ async function generateStack() {
   }
 
   // Build profile chips
-  const budgetLabel = state.budget >= 999 ? 'Sin límite' : state.budget >= 350 ? '$150–350/mes' : state.budget >= 150 ? '$50–150/mes' : 'Hasta $50/mes';
-  const goalLabels = { longevity:'Longevidad', cognitive:'Cognitivo', cardiovascular:'Cardiovascular', muscle:'Músculo', energy:'Energía', inflammation:'Anti-inflamación' };
+  const budgetLabel = state.budget >= 999 ? tr('Sin límite', 'No limit') : state.budget >= 350 ? '$150–350/mo' : state.budget >= 150 ? '$50–150/mo' : tr('Hasta $50/mes', 'Up to $50/mo');
+  const goalLabels = { longevity: tr('Longevidad', 'Longevity'), cognitive: tr('Cognitivo', 'Cognitive'), cardiovascular: tr('Cardiovascular', 'Cardiovascular'), muscle: tr('Músculo', 'Muscle'), energy: tr('Energía', 'Energy'), inflammation: tr('Anti-inflamación', 'Anti-inflammatory') };
+  const condChipMap = {
+    diabetes: tr('Diabetes/pre-diabetes', 'Diabetes/pre-diabetes'),
+    hypertension: tr('Hipertensión', 'Hypertension'),
+    anticoagulants: tr('Anticoagulantes', 'Anticoagulants'),
+    cancer: tr('Antecedentes oncológicos', 'Cancer history'),
+    autoimmune: tr('Enfermedad autoinmune', 'Autoimmune disease'),
+    statins: tr('Estatinas', 'Statins'),
+    thyroid: tr('Hipotiroidismo', 'Thyroid condition'),
+    kidney: tr('Enfermedad renal', 'Kidney disease'),
+    liver: tr('Enfermedad hepática', 'Liver disease'),
+    pregnant: tr('Embarazo/lactancia', 'Pregnancy/lactation')
+  };
   const chips = [
-    `${state.age} años`,
-    state.sex === 'male' ? '♂ Masculino' : '♀ Femenino',
+    `${state.age} ${tr('años', 'years')}`,
+    state.sex === 'male' ? `♂ ${tr('Masculino', 'Male')}` : `♀ ${tr('Femenino', 'Female')}`,
     ...state.goals.map(g => goalLabels[g]),
     budgetLabel,
-    `Región: ${state.country}`,
-    state.sourcePreference === 'natural_only' ? 'Solo natural' : state.sourcePreference === 'synthetic_ok' ? 'Incluye sintéticos' : state.sourcePreference === 'food_only' ? 'Solo alimentos' : 'Mixto',
-    ...(state.conditions.length ? state.conditions.slice(0,2) : ['Sin condiciones']),
-    state.currentProtocol ? 'Con protocolo actual' : 'Sin protocolo previo'
+    `${tr('Región', 'Region')}: ${state.country}`,
+    state.sourcePreference === 'natural_only' ? tr('Solo natural', 'Natural only') : state.sourcePreference === 'synthetic_ok' ? tr('Incluye sintéticos', 'Synthetic allowed') : state.sourcePreference === 'food_only' ? tr('Solo alimentos', 'Food only') : tr('Mixto', 'Mixed'),
+    ...(state.conditions.length ? state.conditions.slice(0,2).map(c => condChipMap[c] || c) : [tr('Sin condiciones', 'No conditions')]),
+    state.currentProtocol ? tr('Con protocolo actual', 'With current protocol') : tr('Sin protocolo previo', 'No prior protocol')
   ];
   document.getElementById('profile-bar').innerHTML = chips.map(c => `<div class="profile-chip">${c}</div>`).join('');
   trackEvent('stack_generate_start', {
@@ -1370,7 +1382,7 @@ async function generateStack() {
 
   } catch (err) {
     clearInterval(lsInterval);
-    document.getElementById('loading-state').innerHTML = `<div class="err-box">⚠ Error generando el stack: ${err.message}<br><br>Verifica variables de entorno y endpoint /api/stack-builder.</div>`;
+    document.getElementById('loading-state').innerHTML = `<div class="err-box">⚠ ${tr('Error generando el stack', 'Error generating stack')}: ${err.message}<br><br>${tr('Verifica variables de entorno y endpoint /api/stack-builder.', 'Check environment variables and /api/stack-builder endpoint.')}</div>`;
     trackEvent('stack_generate_error', { message: err.message || 'unknown' });
   }
 }
@@ -1378,9 +1390,9 @@ async function generateStack() {
 function openSafetyModal() {
   const list = document.getElementById('safety-list');
   const items = [];
-  if (state.conditions.length) items.push(`Condiciones reportadas: ${state.conditions.join(', ')}`);
-  if (state.currentProtocol) items.push('Hay protocolo actual informado (evitar duplicaciones/interacciones).');
-  if (!items.length) items.push('No reportaste condiciones, aun así valida tolerancia y dosis inicial.');
+  if (state.conditions.length) items.push(`${tr('Condiciones reportadas', 'Reported conditions')}: ${state.conditions.join(', ')}`);
+  if (state.currentProtocol) items.push(tr('Hay protocolo actual informado (evitar duplicaciones/interacciones).', 'Current protocol detected (avoid duplicates/interactions).'));
+  if (!items.length) items.push(tr('No reportaste condiciones, aun así valida tolerancia y dosis inicial.', 'No conditions reported. Still validate tolerance and starting dose.'));
   list.innerHTML = items.map(i => `<li>${i}</li>`).join('');
   document.getElementById('safety-modal').classList.add('open');
 }
@@ -1407,15 +1419,20 @@ function renderStack(stack, budgetLabel) {
   const costClass = pct > 90 ? 'warn' : 'ok';
   const isFoodOnly = state.sourcePreference === 'food_only';
   const weekly = stack.weekly_food_plan && typeof stack.weekly_food_plan === 'object' ? stack.weekly_food_plan : {};
-  const weekDays = ['lunes','martes','miercoles','jueves','viernes','sabado','domingo'];
+  const weekDays = IS_EN ? ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'] : ['lunes','martes','miercoles','jueves','viernes','sabado','domingo'];
+  const weekDayFallback = ['lunes','martes','miercoles','jueves','viernes','sabado','domingo'];
+  const dayLabelMap = {
+    monday: 'Monday', tuesday: 'Tuesday', wednesday: 'Wednesday', thursday: 'Thursday', friday: 'Friday', saturday: 'Saturday', sunday: 'Sunday',
+    lunes: 'Monday', martes: 'Tuesday', miercoles: 'Wednesday', jueves: 'Thursday', viernes: 'Friday', sabado: 'Saturday', domingo: 'Sunday'
+  };
   const hasWeeklyPlan = isFoodOnly && weekDays.every(d => weekly[d] && typeof weekly[d] === 'object');
   const dietExtras = Array.isArray(stack.diet_extras) ? stack.diet_extras.filter(Boolean) : [];
   const confidence = computeStackConfidence(stack);
 
   const sections = [
-    { key: 'morning', icon: '🌅', label: 'Mañana', sub: 'En ayunas o con desayuno', cls: 'time-morning' },
-    { key: 'afternoon', icon: '☀️', label: 'Tarde', sub: 'Con la comida principal', cls: 'time-afternoon' },
-    { key: 'night', icon: '🌙', label: 'Noche', sub: 'Antes de dormir', cls: 'time-night' },
+    { key: 'morning', icon: '🌅', label: tr('Mañana', 'Morning'), sub: tr('En ayunas o con desayuno', 'Fasted or with breakfast'), cls: 'time-morning' },
+    { key: 'afternoon', icon: '☀️', label: tr('Tarde', 'Afternoon'), sub: tr('Con la comida principal', 'With main meal'), cls: 'time-afternoon' },
+    { key: 'night', icon: '🌙', label: tr('Noche', 'Night'), sub: tr('Antes de dormir', 'Before sleep'), cls: 'time-night' },
   ];
 
   let html = '';
@@ -1423,33 +1440,33 @@ function renderStack(stack, budgetLabel) {
   // Budget bar
   html += `<div class="budget-card">
     <div>
-      <div class="budget-label">Costo estimado / mes</div>
+      <div class="budget-label">${tr('Costo estimado / mes', 'Estimated cost / month')}</div>
       <div class="budget-val ${costClass}">$${stack.estimated_cost}</div>
     </div>
     <div class="budget-bar-wrap">
-      <div class="budget-label">Uso del presupuesto</div>
+      <div class="budget-label">${tr('Uso del presupuesto', 'Budget usage')}</div>
       <div class="budget-bar"><div class="budget-fill" style="width:${pct}%"></div></div>
     </div>
     <div>
-      <div class="budget-label">Presupuesto</div>
+      <div class="budget-label">${tr('Presupuesto', 'Budget')}</div>
       <div style="font-size:14px;color:var(--muted);font-weight:500">${budgetLabel}</div>
-      <div class="confidence-badge">Confianza: ${confidence.label} (${confidence.score}/100)</div>
+      <div class="confidence-badge">${tr('Confianza', 'Confidence')}: ${confidence.label} (${confidence.score}/100)</div>
     </div>
   </div>`;
 
   html += `<div class="monthly-card">
-    <div class="monthly-title">Plan mensual visual · 30 días</div>
-    <div style="font-size:12px;color:var(--muted);margin-bottom:12px">${stack.monthly_plan_note || (isFoodOnly ? 'Rota este menú semanal durante 4 semanas y ajusta por tolerancia y adherencia.' : 'Sostén este patrón cada día durante 4 semanas y reevalúa tolerancia al día 30.')}</div>
+    <div class="monthly-title">${tr('Plan mensual visual · 30 días', 'Visual monthly plan · 30 days')}</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:12px">${stack.monthly_plan_note || (isFoodOnly ? tr('Rota este menú semanal durante 4 semanas y ajusta por tolerancia y adherencia.', 'Rotate this weekly menu for 4 weeks and adjust by tolerance and adherence.') : tr('Sostén este patrón cada día durante 4 semanas y reevalúa tolerancia al día 30.', 'Keep this pattern daily for 4 weeks and re-evaluate tolerance on day 30.'))}</div>
     <div class="monthly-grid">
-      <div class="monthly-col"><h4>🌅 Mañana</h4><p>${(stack.morning || []).length} ${isFoodOnly ? 'items/alimentos' : 'moléculas'} · al despertar o desayuno</p></div>
-      <div class="monthly-col"><h4>☀️ Tarde</h4><p>${(stack.afternoon || []).length} ${isFoodOnly ? 'items/alimentos' : 'moléculas'} · con comida principal</p></div>
-      <div class="monthly-col"><h4>🌙 Noche</h4><p>${(stack.night || []).length} ${isFoodOnly ? 'items/alimentos' : 'moléculas'} · antes de dormir</p></div>
+      <div class="monthly-col"><h4>🌅 ${tr('Mañana', 'Morning')}</h4><p>${(stack.morning || []).length} ${isFoodOnly ? tr('items/alimentos', 'items/foods') : tr('moléculas', 'molecules')} · ${tr('al despertar o desayuno', 'on waking or breakfast')}</p></div>
+      <div class="monthly-col"><h4>☀️ ${tr('Tarde', 'Afternoon')}</h4><p>${(stack.afternoon || []).length} ${isFoodOnly ? tr('items/alimentos', 'items/foods') : tr('moléculas', 'molecules')} · ${tr('con comida principal', 'with main meal')}</p></div>
+      <div class="monthly-col"><h4>🌙 ${tr('Noche', 'Night')}</h4><p>${(stack.night || []).length} ${isFoodOnly ? tr('items/alimentos', 'items/foods') : tr('moléculas', 'molecules')} · ${tr('antes de dormir', 'before sleep')}</p></div>
     </div>
   </div>`;
 
   if (!isFoodOnly && dietExtras.length) {
     html += `<div class="diet-extras-card">
-      <div class="diet-extras-title">🥗 Alimentos extra para potenciar el stack</div>
+      <div class="diet-extras-title">🥗 ${tr('Alimentos extra para potenciar el stack', 'Extra foods to support the stack')}</div>
       <div class="diet-extras-list">
         ${dietExtras.map(x => `<span class="diet-extras-item">${x}</span>`).join('')}
       </div>
@@ -1458,20 +1475,20 @@ function renderStack(stack, budgetLabel) {
 
   if (hasWeeklyPlan) {
     html += `<div class="monthly-card">
-      <div class="monthly-title">Menú semanal · nutrición de longevidad</div>
+      <div class="monthly-title">${tr('Menú semanal · nutrición de longevidad', 'Weekly menu · longevity nutrition')}</div>
       <div class="weekly-food-grid">`;
-    weekDays.forEach((d) => {
-      const day = weekly[d] || {};
+    weekDays.forEach((d, idx) => {
+      const day = weekly[d] || weekly[weekDayFallback[idx]] || {};
       const mealRow = (k, label) => {
         const vals = Array.isArray(day[k]) ? day[k] : [];
-        return `<div class="day-meal"><b>${label}</b><p>${vals.length ? vals.join(' · ') : 'Sin definir'}</p></div>`;
+        return `<div class="day-meal"><b>${label}</b><p>${vals.length ? vals.join(' · ') : tr('Sin definir', 'Not defined')}</p></div>`;
       };
       html += `<div class="day-card">
-        <div class="day-name">${d}</div>
-        ${mealRow('desayuno','Desayuno')}
-        ${mealRow('almuerzo','Almuerzo')}
-        ${mealRow('merienda','Merienda')}
-        ${mealRow('cena','Cena')}
+        <div class="day-name">${IS_EN ? (dayLabelMap[d] || d) : d}</div>
+        ${mealRow(IS_EN ? 'breakfast' : 'desayuno', tr('Desayuno', 'Breakfast'))}
+        ${mealRow(IS_EN ? 'lunch' : 'almuerzo', tr('Almuerzo', 'Lunch'))}
+        ${mealRow(IS_EN ? 'snack' : 'merienda', tr('Merienda', 'Snack'))}
+        ${mealRow(IS_EN ? 'dinner' : 'cena', tr('Cena', 'Dinner'))}
       </div>`;
     });
     html += `</div></div>`;
@@ -1492,7 +1509,7 @@ function renderStack(stack, budgetLabel) {
         <div class="mol-items">`;
       mols.forEach((m, idx) => {
         const rankCls = m.priority === 'core' ? 'rank-core' : m.priority === 'support' ? 'rank-support' : 'rank-optional';
-        const rankLbl = m.priority === 'core' ? 'CORE' : m.priority === 'support' ? 'SUPP' : 'OPC';
+        const rankLbl = m.priority === 'core' ? 'CORE' : m.priority === 'support' ? tr('SUPP', 'SUPPORT') : tr('OPC', 'OPTIONAL');
         const buyLabel = m.name || m.full || 'suplemento longevidad';
         const conf = evidenceToConfidence(m.evidence || '');
         html += `<div class="mol-item">
@@ -1507,15 +1524,15 @@ function renderStack(stack, budgetLabel) {
               <span class="mol-tag tag-dose">⚖ ${m.dose}</span>
               ${m.synergy ? `<span class="mol-tag tag-synergy">⚡ ${m.synergy}</span>` : ''}
               <span class="mol-tag tag-evidence">${m.evidence}</span>
-              <span class="mol-tag tag-evidence">Confianza ${conf}</span>
+              <span class="mol-tag tag-evidence">${tr('Confianza', 'Confidence')} ${conf}</span>
             </div>
           </div>
           <div class="mol-price">
             <span class="mol-price-n">~$${m.estimated_price}</span>
-            /mes
+            /${tr('mes', 'month')}
             <div class="mol-actions">
-              <button class="mini-btn replace" onclick="replaceItem('${sec.key}', ${idx})">Reemplazar</button>
-              <a class="mini-btn buy" href="/api/partner-link?item=${encodeURIComponent(buyLabel)}" target="_blank" rel="noopener">Comprar</a>
+              <button class="mini-btn replace" onclick="replaceItem('${sec.key}', ${idx})">${tr('Reemplazar', 'Replace')}</button>
+              <a class="mini-btn buy" href="/api/partner-link?item=${encodeURIComponent(buyLabel)}" target="_blank" rel="noopener">${tr('Comprar', 'Buy')}</a>
             </div>
           </div>
         </div>`;
@@ -1527,7 +1544,7 @@ function renderStack(stack, budgetLabel) {
 
   // Warnings
   if (stack.warnings?.length) {
-    html += `<div class="warnings-card"><div class="warnings-title">⚠ Consideraciones para tu perfil</div>`;
+    html += `<div class="warnings-card"><div class="warnings-title">⚠ ${tr('Consideraciones para tu perfil', 'Profile considerations')}</div>`;
     stack.warnings.forEach(w => { html += `<div class="warning-item"><span>→</span><span>${w}</span></div>`; });
     html += `</div>`;
   }
@@ -1535,20 +1552,20 @@ function renderStack(stack, budgetLabel) {
   // Rationale
   if (stack.rationale) {
     html += `<div class="rationale-card">
-      <div class="rationale-title">🔬 Por qué este stack para tu perfil</div>
+      <div class="rationale-title">🔬 ${tr('Por qué este stack para tu perfil', 'Why this stack for your profile')}</div>
       <div class="rationale-body">${stack.summary ? `<p><strong>${stack.summary}</strong></p>` : ''}${fmtText(stack.rationale)}</div>
     </div>`;
   }
 
   // Actions
   html += `<div class="actions-row">
-    <button class="action-btn action-primary" onclick="downloadExecutivePDF()">📋 PDF ejecutivo</button>
-    <button class="action-btn action-secondary" onclick="window.print()">🖨 Imprimir vista completa</button>
-    <button class="action-btn action-secondary" onclick="location.reload()">↺ Nuevo stack</button>
+    <button class="action-btn action-primary" onclick="downloadExecutivePDF()">📋 ${tr('PDF ejecutivo', 'Executive PDF')}</button>
+    <button class="action-btn action-secondary" onclick="window.print()">🖨 ${tr('Imprimir vista completa', 'Print full view')}</button>
+    <button class="action-btn action-secondary" onclick="location.reload()">↺ ${tr('Nuevo stack', 'New stack')}</button>
   </div>`;
 
   // Disclaimer
-  html += `<div class="disclaimer">⚕ AVISO MÉDICO: Este stack es informativo y está basado en evidencia científica disponible. No reemplaza el consejo médico profesional. Consulta con tu médico antes de comenzar cualquier protocolo de suplementación, especialmente si tienes condiciones de salud o tomas medicamentos. LONGEVA no se hace responsable del uso de esta información.</div>`;
+  html += `<div class="disclaimer">⚕ ${tr('AVISO MÉDICO: Este stack es informativo y está basado en evidencia científica disponible. No reemplaza el consejo médico profesional. Consulta con tu médico antes de comenzar cualquier protocolo de suplementación, especialmente si tienes condiciones de salud o tomas medicamentos. LONGEVA no se hace responsable del uso de esta información.', 'MEDICAL NOTICE: This stack is informational and based on currently available scientific evidence. It does not replace professional medical advice. Consult your physician before starting any supplementation protocol, especially with health conditions or medications. LONGEVA is not liable for use of this information.')}</div>`;
   html += renderHistorySection();
 
   out.innerHTML = html;
@@ -1561,7 +1578,10 @@ function fmtText(t) {
 async function replaceItem(slot, index) {
   if (!state.lastStack || !state.lastStack[slot] || !state.lastStack[slot][index]) return;
   const current = state.lastStack[slot][index];
-  const reason = prompt(`¿Por qué quieres reemplazar "${current.name}"? (ej: no se consigue, caro, no tolero)`, 'No se consigue en mi país');
+  const reason = prompt(
+    tr(`¿Por qué quieres reemplazar "${current.name}"? (ej: no se consigue, caro, no tolero)`, `Why do you want to replace "${current.name}"? (e.g. unavailable, expensive, not tolerated)`),
+    tr('No se consigue en mi país', 'Not available in my country')
+  );
   if (reason === null) return;
 
   try {
@@ -1575,7 +1595,7 @@ async function replaceItem(slot, index) {
         session_id: state.paidSessionId,
         profile: profilePayload,
         slot,
-        reason: reason || 'No indicado',
+        reason: reason || tr('No indicado', 'Not specified'),
         current_item: current,
         existing_items: allNames,
       }),
@@ -1585,9 +1605,9 @@ async function replaceItem(slot, index) {
     state.lastStack[slot][index] = data.item;
     renderStack(state.lastStack, state.lastBudgetLabel || '');
     trackEvent('replace_item_used', { slot, reason: reason || '', from: current.name || '', to: data.item.name || '' });
-    alert(`Reemplazo aplicado: ${current.name} → ${data.item.name}`);
+    alert(tr(`Reemplazo aplicado: ${current.name} → ${data.item.name}`, `Replacement applied: ${current.name} → ${data.item.name}`));
   } catch (err) {
-    alert(`No pudimos reemplazar el item: ${err.message}`);
+    alert(tr(`No pudimos reemplazar el item: ${err.message}`, `Could not replace item: ${err.message}`));
   }
 }
 
@@ -1598,18 +1618,18 @@ function downloadExecutivePDF() {
   }
   const stack = state.lastStack;
   const goalsMap = {
-    longevity: 'Longevidad',
-    cognitive: 'Cognitivo',
-    cardiovascular: 'Cardiovascular',
-    muscle: 'Músculo',
-    energy: 'Energía',
-    inflammation: 'Anti-inflamación',
+    longevity: tr('Longevidad', 'Longevity'),
+    cognitive: tr('Cognitivo', 'Cognitive'),
+    cardiovascular: tr('Cardiovascular', 'Cardiovascular'),
+    muscle: tr('Músculo', 'Muscle'),
+    energy: tr('Energía', 'Energy'),
+    inflammation: tr('Anti-inflamación', 'Anti-inflammatory'),
   };
-  const goalsTxt = (state.goals || []).map(g => goalsMap[g] || g).join(', ') || 'General';
-  const sexTxt = state.sex === 'male' ? 'Masculino' : 'Femenino';
+  const goalsTxt = (state.goals || []).map(g => goalsMap[g] || g).join(', ') || tr('General', 'General');
+  const sexTxt = state.sex === 'male' ? tr('Masculino', 'Male') : tr('Femenino', 'Female');
   const takeTop = (arr) => (arr || []).slice(0, 4).map(x => `<li><b>${escapeHtml(x.name || '')}</b> — ${escapeHtml(x.dose || '')} · ${escapeHtml(x.why || '')}</li>`).join('');
   const warnings = (stack.warnings || []).map(w => `<li>${escapeHtml(w)}</li>`).join('');
-  const html = `<!doctype html><html><head><meta charset="utf-8"><title>LONGEVA - Resumen Ejecutivo</title>
+  const html = `<!doctype html><html><head><meta charset="utf-8"><title>LONGEVA - ${tr('Resumen Ejecutivo', 'Executive Summary')}</title>
   <style>
     body{font-family:Arial,sans-serif;color:#111;padding:28px;line-height:1.45}
     h1{margin:0 0 4px 0;font-size:24px} h2{margin:20px 0 8px;font-size:16px}
@@ -1617,18 +1637,18 @@ function downloadExecutivePDF() {
     ul{margin:6px 0 0 18px} li{margin-bottom:6px}
     .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   </style></head><body>
-  <h1>LONGEVA · Resumen Ejecutivo</h1>
-  <div class="muted">Fecha: ${new Date().toLocaleDateString('es-AR')} · Perfil: ${state.age} años, ${sexTxt} · Objetivo: ${escapeHtml(goalsTxt)}</div>
-  <div class="card"><b>Costo estimado mensual:</b> $${Number(stack.estimated_cost || 0)} · <b>Presupuesto elegido:</b> ${escapeHtml(state.lastBudgetLabel || '-')}</div>
+  <h1>LONGEVA · ${tr('Resumen Ejecutivo', 'Executive Summary')}</h1>
+  <div class="muted">${tr('Fecha', 'Date')}: ${new Date().toLocaleDateString(IS_EN ? 'en-US' : 'es-AR')} · ${tr('Perfil', 'Profile')}: ${state.age} ${tr('años', 'years')}, ${sexTxt} · ${tr('Objetivo', 'Goal')}: ${escapeHtml(goalsTxt)}</div>
+  <div class="card"><b>${tr('Costo estimado mensual', 'Estimated monthly cost')}:</b> $${Number(stack.estimated_cost || 0)} · <b>${tr('Presupuesto elegido', 'Selected budget')}:</b> ${escapeHtml(state.lastBudgetLabel || '-')}</div>
   <div class="grid">
-    <div class="card"><b>Mañana</b><ul>${takeTop(stack.morning)}</ul></div>
-    <div class="card"><b>Tarde</b><ul>${takeTop(stack.afternoon)}</ul></div>
+    <div class="card"><b>${tr('Mañana', 'Morning')}</b><ul>${takeTop(stack.morning)}</ul></div>
+    <div class="card"><b>${tr('Tarde', 'Afternoon')}</b><ul>${takeTop(stack.afternoon)}</ul></div>
   </div>
-  <div class="card"><b>Noche</b><ul>${takeTop(stack.night)}</ul></div>
-  <div class="card"><b>Nota mensual:</b><br>${escapeHtml(stack.monthly_plan_note || '')}</div>
-  <div class="card"><b>Advertencias clave</b><ul>${warnings || '<li>Sin alertas específicas.</li>'}</ul></div>
-  <div class="card"><b>Racional científico breve:</b><br>${escapeHtml(stack.summary || stack.rationale || '')}</div>
-  <p class="muted">Este reporte es informativo y no reemplaza consulta médica profesional.</p>
+  <div class="card"><b>${tr('Noche', 'Night')}</b><ul>${takeTop(stack.night)}</ul></div>
+  <div class="card"><b>${tr('Nota mensual', 'Monthly note')}:</b><br>${escapeHtml(stack.monthly_plan_note || '')}</div>
+  <div class="card"><b>${tr('Advertencias clave', 'Key warnings')}</b><ul>${warnings || `<li>${tr('Sin alertas específicas.', 'No specific alerts.')}</li>`}</ul></div>
+  <div class="card"><b>${tr('Racional científico breve', 'Scientific rationale')}:</b><br>${escapeHtml(stack.summary || stack.rationale || '')}</div>
+  <p class="muted">${tr('Este reporte es informativo y no reemplaza consulta médica profesional.', 'This report is informational and does not replace professional medical advice.')}</p>
   <script>window.onload=()=>window.print()<\/script>
   </body></html>`;
   const w = window.open('', '_blank', 'noopener,noreferrer');
@@ -1653,20 +1673,20 @@ function escapeHtml(s) {
 function evidenceToConfidence(evidenceText) {
   const text = String(evidenceText || '');
   const stars = (text.match(/★/g) || []).length;
-  if (stars >= 4) return 'Alta';
-  if (stars >= 3) return 'Media';
-  return 'Baja';
+  if (stars >= 4) return tr('Alta', 'High');
+  if (stars >= 3) return tr('Media', 'Medium');
+  return tr('Baja', 'Low');
 }
 
 function computeStackConfidence(stack) {
   const items = ['morning', 'afternoon', 'night'].flatMap(k => stack[k] || []);
-  if (!items.length) return { score: 60, label: 'Media' };
+  if (!items.length) return { score: 60, label: tr('Media', 'Medium') };
   const points = items.map((it) => {
     const stars = (String(it.evidence || '').match(/★/g) || []).length;
     return Math.min(100, Math.max(30, stars * 20));
   });
   const score = Math.round(points.reduce((a, b) => a + b, 0) / points.length);
-  const label = score >= 80 ? 'Alta' : score >= 60 ? 'Media' : 'Baja';
+  const label = score >= 80 ? tr('Alta', 'High') : score >= 60 ? tr('Media', 'Medium') : tr('Baja', 'Low');
   return { score, label };
 }
 
@@ -1700,14 +1720,14 @@ function renderHistorySection() {
   const history = getStackHistory();
   if (!history.length) return '';
   const rows = history.map((v, idx) => {
-    const date = new Date(v.createdAt || Date.now()).toLocaleString('es-AR');
+    const date = new Date(v.createdAt || Date.now()).toLocaleString(IS_EN ? 'en-US' : 'es-AR');
     return `<div class="history-item">
       <div class="history-meta">v${history.length - idx} · ${date} · ${escapeHtml(v.goal || 'general')} · $${Number(v.estimatedCost || 0)}</div>
-      <button class="history-btn" onclick="loadStackVersion(${idx})">Cargar</button>
+      <button class="history-btn" onclick="loadStackVersion(${idx})">${tr('Cargar', 'Load')}</button>
     </div>`;
   }).join('');
   return `<div class="history-card">
-    <div class="history-title">Historial de versiones</div>
+    <div class="history-title">${tr('Historial de versiones', 'Version history')}</div>
     <div class="history-list">${rows}</div>
   </div>`;
 }
@@ -1782,6 +1802,51 @@ function applyStaticI18n() {
   set('#results-sub', 'Generated with AI · Evidence-based 2026');
   set('.loading-title', 'Analyzing your profile...');
   set('.loading-sub', 'Cross-checking 120+ molecules with your data');
+  set('#safety-title', 'Safety check');
+  const safetyP = document.querySelector('#safety-modal p');
+  if (safetyP) safetyP.textContent = 'Before generating, confirm that you reviewed potential contraindications for your profile:';
+
+  const sexMLabel = document.querySelector('#sex-m .opt-label');
+  const sexMDesc = document.querySelector('#sex-m .opt-desc');
+  const sexFLabel = document.querySelector('#sex-f .opt-label');
+  const sexFDesc = document.querySelector('#sex-f .opt-desc');
+  if (sexMLabel) sexMLabel.textContent = 'Male';
+  if (sexMDesc) sexMDesc.textContent = 'Prioritize testosterone, prostate, and cardiovascular profile';
+  if (sexFLabel) sexFLabel.textContent = 'Female';
+  if (sexFDesc) sexFDesc.textContent = 'Prioritize estrogen axis, hormonal balance, and bone health';
+
+  const sourceLabels = {
+    natural_only: ['Natural only', 'Mushrooms, polyphenols and non-synthetic compounds'],
+    mixed: ['Mixed', 'Natural + synthetic based on evidence'],
+    synthetic_ok: ['Synthetic allowed', 'Maximum optimization without source restrictions'],
+    food_only: ['Food only', 'Meal-based plan without capsules or supplements'],
+  };
+  Object.entries(sourceLabels).forEach(([k, vals]) => {
+    const el = Array.from(document.querySelectorAll('#source-pref-grid .opt')).find((o) => o.getAttribute('onclick')?.includes(`'${k}'`));
+    if (!el) return;
+    const l = el.querySelector('.opt-label');
+    const d = el.querySelector('.opt-desc');
+    if (l) l.textContent = vals[0];
+    if (d) d.textContent = vals[1];
+  });
+
+  const condMap = {
+    diabetes: 'Diabetes / pre-diabetes',
+    hypertension: 'Hypertension',
+    anticoagulants: 'Anticoagulants (warfarin, etc.)',
+    cancer: 'Cancer history',
+    autoimmune: 'Autoimmune disease',
+    statins: 'Statins (cholesterol)',
+    thyroid: 'Thyroid condition',
+    kidney: 'Kidney disease',
+    liver: 'Liver disease',
+    pregnant: 'Pregnancy / lactation',
+    none: 'None of the above ✓',
+  };
+  Object.entries(condMap).forEach(([key, txt]) => {
+    const el = Array.from(document.querySelectorAll('.cond-tag')).find((o) => o.getAttribute('onclick')?.includes(`'${key}'`));
+    if (el) el.textContent = txt;
+  });
 }
 
 function getPreferredLang() {

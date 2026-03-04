@@ -141,6 +141,7 @@ body{
 const state = { goal: 'longevity', style: 'omnivore' };
 const USER_LANG = getPreferredLang();
 const IS_EN = USER_LANG === 'en';
+const tr = (es, en) => (IS_EN ? en : es);
 document.documentElement.lang = USER_LANG;
 
 const plans = {
@@ -206,16 +207,89 @@ const plans = {
   },
 };
 
+const plansEn = {
+  longevity: {
+    title: 'Anti-inflammatory longevity foundation',
+    nutrients: ['Polyphenols', 'Prebiotic fiber', 'Omega-3', 'Sulfur compounds'],
+    foods: [
+      { name: 'Berries + dark cocoa', why: 'Anthocyanins and flavanols linked to lower inflammation and better vascular function.' },
+      { name: 'Extra virgin olive oil', why: 'Oleuropein and hydroxytyrosol with favorable cardiometabolic profile.' },
+      { name: 'Cruciferous vegetables (broccoli, cauliflower, arugula)', why: 'Sulforaphane and glucosinolates support endogenous antioxidant defense.' },
+      { name: 'Legumes + oats', why: 'Fermentable fiber for microbiota and short-chain fatty acid production.' },
+    ],
+  },
+  metabolic: {
+    title: 'Glucose stability and insulin sensitivity',
+    nutrients: ['Soluble fiber', 'Dietary magnesium', 'Polyphenols', 'Satiety protein'],
+    foods: [
+      { name: 'Vinegar + salad before meals', why: 'Food strategy to reduce postprandial glycemic spikes.' },
+      { name: 'Beans, lentils and chickpeas', why: 'Moderate glycemic load with high fiber/protein intake.' },
+      { name: 'Cinnamon + nuts', why: 'Better adherence and appetite control in recomposition plans.' },
+      { name: 'Fatty fish or tofu/tempeh', why: 'High-quality protein to preserve lean mass and metabolic health.' },
+    ],
+  },
+  cognitive: {
+    title: 'Neuroprotection and cognitive performance',
+    nutrients: ['Omega-3 DHA/EPA', 'Choline', 'Neuroactive polyphenols', 'Carotenoids'],
+    foods: [
+      { name: 'Sardine/salmon or algae + walnuts', why: 'Structural lipids relevant for neuronal membranes.' },
+      { name: 'Eggs (or soy/lecithin if vegan)', why: 'Dietary choline linked to cognition and neurotransmission.' },
+      { name: 'Green tea + berries', why: 'Catechins and anthocyanins support vascular and antioxidant brain health.' },
+      { name: 'Leafy greens + olive oil', why: 'Lutein and improved absorption with dietary fats.' },
+    ],
+  },
+  muscle: {
+    title: 'Muscle, recovery and active aging',
+    nutrients: ['High-quality protein', 'Leucine', 'Omega-3', 'Potassium and magnesium'],
+    foods: [
+      { name: 'Greek yogurt/kefir or firm tofu', why: 'Dense protein source to reach muscle protein synthesis threshold.' },
+      { name: 'Eggs + potato/brown rice', why: 'Practical combo for performance and post-training recovery.' },
+      { name: 'Fatty fish or chia/flax + nuts', why: 'Anti-inflammatory profile for recovery support.' },
+      { name: 'Potassium-rich fruits', why: 'Electrolyte support for muscular function.' },
+    ],
+  },
+  cardio: {
+    title: 'Lipid profile and vascular health',
+    nutrients: ['Omega-3', 'Polyphenols', 'Potassium', 'Soluble fiber'],
+    foods: [
+      { name: 'Oats + nuts', why: 'Soluble fiber and unsaturated fats linked to improved LDL/non-HDL profile.' },
+      { name: 'Olive oil + tomato + garlic', why: 'Mediterranean pattern with cardioprotective evidence.' },
+      { name: 'Legumes 4-5x/week', why: 'Improves cardiometabolic markers when sustained.' },
+      { name: 'Fatty fish 2-3x/week', why: 'Dietary EPA/DHA for vascular support.' },
+    ],
+  },
+  skin: {
+    title: 'Skin, collagen and nutritional photoprotection',
+    nutrients: ['Dietary vitamin C', 'Carotenoids', 'Protein', 'Monounsaturated fats'],
+    foods: [
+      { name: 'Citrus, kiwi and bell pepper', why: 'Substrates for endogenous collagen synthesis.' },
+      { name: 'Cooked tomato + olive oil', why: 'Better bioavailability of carotenoids with fats.' },
+      { name: 'Bone broth or legumes + soy', why: 'Structural amino acid support based on dietary preference.' },
+      { name: 'Seeds and nuts', why: 'Vitamin E and barrier-supportive fats.' },
+    ],
+  },
+};
+
 const veganSwaps = [
   'Swap pescado azul por microalgas (DHA/EPA) + chía/linaza.',
   'Swap yogur/huevos por tofu/tempeh/soja texturizada.',
   'Usar legumbres + cereal integral para proteína completa diaria.',
+];
+const veganSwapsEn = [
+  'Swap fatty fish for microalgae (DHA/EPA) + chia/flax.',
+  'Swap yogurt/eggs for tofu/tempeh/textured soy.',
+  'Use legumes + whole grains daily for complete protein coverage.',
 ];
 
 const vegetarianSwaps = [
   'Mantener huevos y lácteos fermentados como base proteica.',
   'Reforzar omega-3 con chía/linaza y nuez.',
   'Aumentar variedad de legumbres para fibra prebiótica.',
+];
+const vegetarianSwapsEn = [
+  'Keep eggs and fermented dairy as protein anchors.',
+  'Reinforce omega-3 intake with chia/flax and walnuts.',
+  'Increase legume variety for prebiotic fiber.',
 ];
 
 document.getElementById('goal-grid').addEventListener('click', (e) => {
@@ -235,26 +309,26 @@ document.getElementById('style-grid').addEventListener('click', (e) => {
 });
 
 document.getElementById('gen-btn').addEventListener('click', () => {
-  const p = plans[state.goal];
+  const p = IS_EN ? plansEn[state.goal] : plans[state.goal];
   const out = document.getElementById('result');
 
-  let html = `<div class="label">Plan recomendado</div>`;
+  let html = `<div class="label">${tr('Plan recomendado', 'Recommended plan')}</div>`;
   html += `<h3 style="font-size:22px;margin-bottom:6px;">${p.title}</h3>`;
   html += `<div>${p.nutrients.map(n => `<span class="pill">${n}</span>`).join('')}</div>`;
-  html += `<div class="plan"><div class="plan-head">Alimentos clave para esta semana</div><div class="plan-body">`;
+  html += `<div class="plan"><div class="plan-head">${tr('Alimentos clave para esta semana', 'Key foods for this week')}</div><div class="plan-body">`;
   p.foods.forEach(f => {
     html += `<div class="food"><h4>${f.name}</h4><p>${f.why}</p></div>`;
   });
   html += `</div></div>`;
 
   if (state.style === 'vegan' || state.style === 'vegetarian') {
-    const swaps = state.style === 'vegan' ? veganSwaps : vegetarianSwaps;
-    html += `<div class="plan"><div class="plan-head">Ajustes para ${state.style === 'vegan' ? 'vegano' : 'vegetariano'}</div><div class="plan-body">`;
+    const swaps = state.style === 'vegan' ? (IS_EN ? veganSwapsEn : veganSwaps) : (IS_EN ? vegetarianSwapsEn : vegetarianSwaps);
+    html += `<div class="plan"><div class="plan-head">${tr('Ajustes para', 'Adjustments for')} ${state.style === 'vegan' ? tr('vegano', 'vegan') : tr('vegetariano', 'vegetarian')}</div><div class="plan-body">`;
     swaps.forEach(s => { html += `<div class="food"><p>${s}</p></div>`; });
     html += `</div></div>`;
   }
 
-  html += `<p class="note">Sugerencia práctica: arma 2-3 comidas base repetibles por semana para adherencia. Si querés personalización completa con dosis/ciclos, usá Stack Builder.</p>`;
+  html += `<p class="note">${tr('Sugerencia práctica: arma 2-3 comidas base repetibles por semana para adherencia. Si querés personalización completa con dosis/ciclos, usá Stack Builder.', 'Practical tip: build 2-3 repeatable base meals per week to improve adherence. For full personalization with doses/cycles, use Stack Builder.')}</p>`;
   out.innerHTML = html;
   out.style.display = 'block';
 });
@@ -269,8 +343,28 @@ function applyStaticI18n() {
   if (nav[2]) nav[2].textContent = 'Biohacker';
   if (nav[3]) nav[3].textContent = 'Nutrition';
   set('.logo-tag', 'v3.1 · Hybrid AI + Curated base');
+  document.title = 'LONGEVA — Longevity Nutrition';
   set('.status-chip', 'Nutrition · Food-first (free)');
   set('#gen-btn', 'Generate food plan');
+  set('.hero h1', 'Longevity nutrition<br>without supplements');
+  const heroP = document.querySelector('.hero p');
+  if (heroP) heroP.textContent = 'Food recommendations rich in compounds associated with metabolic health, mitochondrial function, low inflammation, and healthy aging.';
+  set('.badge', 'No capsules · Food and habits only');
+  const labels = document.querySelectorAll('.label');
+  if (labels[0]) labels[0].textContent = '1) Main objective';
+  if (labels[1]) labels[1].textContent = '2) Dietary style';
+  const goals = document.querySelectorAll('#goal-grid .opt');
+  if (goals[0]) goals[0].textContent = 'General longevity';
+  if (goals[1]) goals[1].textContent = 'Metabolic health';
+  if (goals[2]) goals[2].textContent = 'Cognitive health';
+  if (goals[3]) goals[3].textContent = 'Muscle and performance';
+  if (goals[4]) goals[4].textContent = 'Cardiovascular';
+  if (goals[5]) goals[5].textContent = 'Skin and connective tissue';
+  const styles = document.querySelectorAll('#style-grid .opt');
+  if (styles[0]) styles[0].textContent = 'Omnivore';
+  if (styles[1]) styles[1].textContent = 'Vegetarian';
+  if (styles[2]) styles[2].textContent = 'Vegan';
+  set('.note', 'This module prioritizes natural sources of polyphenols, omega-3, prebiotic fiber, sulfur compounds, carotenoids, choline, and high-quality protein.');
 }
 
 function getPreferredLang() {
