@@ -82,14 +82,14 @@ header {
 .logo span { font-style: italic; }
 .hbadge { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: .1em; border: 1px solid var(--border2); padding: 5px 12px; border-radius: 100px; }
 .header-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
-.topnav { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.topnav { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
 .topnav a {
   text-decoration: none; color: var(--muted); font-family: 'DM Mono', monospace;
-  font-size: 10px; letter-spacing: .08em; border: 1px solid var(--border2);
-  border-radius: 999px; padding: 6px 12px; transition: .2s; background: rgba(255,255,255,.01);
+  font-size: 10px; letter-spacing: .1em; border: 1px solid var(--border);
+  border-radius: 999px; padding: 7px 13px; transition: .2s; background: rgba(255,255,255,.01);
 }
-.topnav a:hover { color: var(--text); border-color: var(--accent2); }
-.topnav a.active { color: var(--accent); border-color: var(--accent); background: rgba(200,240,96,.08); }
+.topnav a:hover { color: var(--text); border-color: var(--accent2); box-shadow: 0 0 0 1px rgba(82,184,255,.18) inset; }
+.topnav a.active { color: var(--accent3); border-color: rgba(209,255,90,.45); background: rgba(209,255,90,.08); }
 
 /* ── MAIN WRAPPER ── */
 .wrapper { position: relative; z-index: 10; max-width: 860px; margin: 0 auto; padding: 0 24px 100px; }
