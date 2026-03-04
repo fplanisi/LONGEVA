@@ -22,7 +22,7 @@
   --gold:#f0c784;
   --red:#ff6e8a;
 }
-html { background: var(--bg); max-width: 100%; overflow-x: hidden; overscroll-behavior: none; }
+html { background: var(--bg); max-width: 100%; overflow-x: hidden; overscroll-behavior-y:auto;overscroll-behavior-x:none; }
 body.paid-mode {
   --accent:#6affd9;
   --accent2:#52b8ff;
@@ -33,7 +33,7 @@ body.paid-mode {
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
-body{background:radial-gradient(circle at 15% -5%,#132235 0%,#05070c 45%);color:var(--text);font-family:'Instrument Sans',sans-serif;min-height:100vh;max-width:100%;overflow-x:hidden;overscroll-behavior:none}
+body{background:radial-gradient(circle at 15% -5%,#132235 0%,#05070c 45%);color:var(--text);font-family:'Instrument Sans',sans-serif;min-height:100vh;max-width:100%;overflow-x:hidden;overscroll-behavior-y:auto;overscroll-behavior-x:none}
 
 /* ── SURFACE GRID ── */
 body::after{content:'';position:fixed;inset:0;background:linear-gradient(to bottom,rgba(255,255,255,.02),rgba(255,255,255,0) 20%,rgba(106,255,217,.02) 60%,rgba(255,255,255,0));pointer-events:none;z-index:0}
