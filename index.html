@@ -363,10 +363,13 @@ function applyStaticI18n() {
   updateLangButtons();
   if (!IS_EN) return;
   const set = (sel, text) => { const el = document.querySelector(sel); if (el) el.textContent = text; };
+  document.title = 'LONGEVA — Longevity Molecules';
   set('.logo-tag', 'v3.1 · Hybrid AI + Curated base');
   const badges = document.querySelectorAll('.badge-live');
   if (badges[0]) badges[0].childNodes[1].nodeValue = ' Scientific base active';
   set('.hero-eye', 'Personalized decisions · Time savings · 30-day follow-up');
+  const h1 = document.querySelector('h1');
+  if (h1) h1.innerHTML = 'Every molecule that can<br><em>extend your life</em>';
   set('.hero-sub', 'Not a wiki: decide what to take/eat by profile, budget, and local availability, with replacements over 30 days.');
   const steps = document.querySelectorAll('.flow-step');
   if (steps[0]) steps[0].innerHTML = '<b>1.</b> 2-minute diagnosis';
@@ -378,13 +381,47 @@ function applyStaticI18n() {
   if (nav[2]) nav[2].textContent = 'Biohacker';
   if (nav[3]) nav[3].textContent = 'Nutrition';
   const qmods = document.querySelectorAll('.qmod');
+  if (qmods[0]) qmods[0].querySelector('b').textContent = 'Stack Builder';
   if (qmods[0]) qmods[0].querySelector('span').textContent = 'Personalized plan + version history + replacements';
+  if (qmods[1]) qmods[1].querySelector('b').textContent = 'Biohacker Lab';
   if (qmods[1]) qmods[1].querySelector('span').textContent = 'Experimental module for advanced users';
+  if (qmods[2]) qmods[2].querySelector('b').textContent = 'Nutrition';
   if (qmods[2]) qmods[2].querySelector('span').textContent = 'Food-first approach, no supplements';
   const si = document.getElementById('si');
   if (si) si.placeholder = 'Search molecule or ask about any compound...';
   const sbtn = document.getElementById('sbtn');
   if (sbtn) sbtn.textContent = 'Analyze →';
+  const modeBase = document.getElementById('mode-base');
+  if (modeBase) modeBase.innerHTML = '📚 Curated base';
+  const modeLatest = document.getElementById('mode-latest');
+  if (modeLatest) modeLatest.innerHTML = '🔍 2025-2026 updates';
+  if (modeLatest) modeLatest.title = 'Searches recent papers with web search (Anthropic)';
+  const filterBtns = document.querySelectorAll('.filters .fp');
+  const filterMap = [
+    'All',
+    '🌿 Natural',
+    '⚗️ Synthetic',
+    '🍄 Mushrooms',
+    'Adaptogens',
+    'Senolytics',
+    'mTOR/AMPK',
+    'NAD+/Sirtuins',
+    'Mitochondria',
+    'Anti-inflammatory',
+    'Epigenetics',
+  ];
+  filterBtns.forEach((btn, i) => { if (filterMap[i]) btn.textContent = filterMap[i]; });
+  const statLabels = document.querySelectorAll('.stat-l');
+  if (statLabels[0]) statLabels[0].textContent = 'Molecules';
+  if (statLabels[1]) statLabels[1].textContent = 'Categories';
+  if (statLabels[2]) statLabels[2].textContent = 'DB Version';
+  if (statLabels[3]) statLabels[3].textContent = 'Updated';
+  const discoverBtn = document.querySelector('.discover-btn');
+  if (discoverBtn) discoverBtn.innerHTML = '<span>🔬</span> Discover new 2025-2026 molecules with AI';
+  const closeBtn = document.querySelector('.disc-close');
+  if (closeBtn) closeBtn.textContent = '✕ Close';
+  const loading = document.querySelector('#mols .nores');
+  if (loading && loading.textContent.includes('Cargando')) loading.textContent = 'Loading database...';
 }
 
 function getPreferredLang() {
@@ -504,10 +541,12 @@ function render() {
   let h = '';
   Object.entries(cats).forEach(([cat, ms]) => {
     const col = CC[cat] || '#888';
-    h += `<div class="cat-sec"><div class="cat-lbl"><div class="cat-dot" style="background:${col}"></div><span class="cat-txt">${cat}</span><div class="cat-line"></div><span class="cat-txt">${ms.length} mol.</span></div><div class="grid">`;
+    const catLabel = translateCategory(cat);
+    h += `<div class="cat-sec"><div class="cat-lbl"><div class="cat-dot" style="background:${col}"></div><span class="cat-txt">${catLabel}</span><div class="cat-line"></div><span class="cat-txt">${ms.length} ${tr('mol.', 'mol.')}</span></div><div class="grid">`;
     ms.forEach((m, i) => {
       const tc = m.type === 'natural' ? 'tn' : 'ts';
       const tl = m.type === 'natural' ? '🌿' : '⚗️';
+      const typeLabel = m.type === 'natural' ? tr('Natural', 'Natural') : tr('Sintética', 'Synthetic');
       const encoded = encodeURIComponent(JSON.stringify({
         name: m.name || '',
         full_name: m.full_name || m.name || '',
@@ -516,16 +555,36 @@ function render() {
         study_count: m.study_count || 0,
       }));
       h += `<div class="card js-mol-card" data-mol="${encoded}" style="animation-delay:${i * .035}s">
-        <div class="card-top"><div class="mol-n">${m.name}</div><div class="tb ${tc}">${tl} ${m.type==='natural'?'Natural':'Sintética'}</div></div>
+        <div class="card-top"><div class="mol-n">${m.name}</div><div class="tb ${tc}">${tl} ${typeLabel}</div></div>
         <div class="card-desc">${m.description||''}</div>
         <div class="chips">${(m.pathways||[]).map(p=>`<span class="chip">${p}</span>`).join('')}</div>
-        <div class="card-meta"><div class="ev">Evidencia <span>${m.evidence_rating||'N/A'}</span> · ${m.study_count||0}+ est.</div><div class="explore">Ver análisis →</div></div>
+        <div class="card-meta"><div class="ev">${tr('Evidencia', 'Evidence')} <span>${m.evidence_rating||'N/A'}</span> · ${m.study_count||0}+ ${tr('est.', 'studies')}</div><div class="explore">${tr('Ver análisis →', 'View analysis →')}</div></div>
       </div>`;
     });
     h += `</div></div>`;
   });
   document.getElementById('mols').innerHTML = h;
   bindMoleculeCards();
+}
+
+function translateCategory(cat) {
+  if (!IS_EN) return cat;
+  const map = {
+    'Hongos Medicinales': 'Medicinal Mushrooms',
+    'NAD⁺ / Sirtuinas': 'NAD⁺ / Sirtuins',
+    'Polifenoles': 'Polyphenols',
+    'Adaptógenos': 'Adaptogens',
+    'Vitaminas de Longevidad': 'Longevity Vitamins',
+    'Mitocondria / Bioenergética': 'Mitochondria / Bioenergetics',
+    'Senolíticos / mTOR': 'Senolytics / mTOR',
+    'Epigenética / Reprogramación': 'Epigenetics / Reprogramming',
+    'Aminoácidos / Péptidos': 'Amino Acids / Peptides',
+    'Plantas Medicinales': 'Medicinal Plants',
+    'Microbioma': 'Microbiome',
+    'Hormonas / Neuroendocrino': 'Hormones / Neuroendocrine',
+    'Emergentes 2025-2026': 'Emerging 2025-2026',
+  };
+  return map[cat] || cat;
 }
 
 function bindMoleculeCards() {

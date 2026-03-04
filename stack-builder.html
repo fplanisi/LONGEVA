@@ -1139,7 +1139,9 @@ function unlockWizard() {
 
 // ── STEP NAV ──
 let currentStep = 1;
-const stepLabels = ['Perfil básico','Objetivos','Presupuesto','Condiciones y protocolo'];
+const stepLabels = IS_EN
+  ? ['Basic profile', 'Goals', 'Budget', 'Conditions and protocol']
+  : ['Perfil básico', 'Objetivos', 'Presupuesto', 'Condiciones y protocolo'];
 
 function goStep(n) {
   document.getElementById(`step${currentStep}`).style.display = 'none';
@@ -1153,13 +1155,11 @@ function goStep(n) {
   currentStep = n;
   document.getElementById(`step${n}`).style.display = 'block';
   document.getElementById(`sd${n}`).classList.add('active');
-  document.getElementById('prog-label').textContent = `Paso ${n} de 4 — ${stepLabels[n-1]}`;
+  document.getElementById('prog-label').textContent = IS_EN
+    ? `Step ${n} of 4 — ${stepLabels[n-1]}`
+    : `Paso ${n} de 4 — ${stepLabels[n-1]}`;
   const stepEl = document.getElementById(`step${n}`);
-  if (window.matchMedia('(max-width: 640px)').matches) {
-    stepEl?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  } else {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
+  stepEl?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   persistWizardState();
   trackEvent('wizard_step_change', { step: n });
 }
@@ -1167,7 +1167,7 @@ function goStep(n) {
 // ── STEP 1 ──
 function updateAge(v) {
   state.age = parseInt(v);
-  document.getElementById('age-display').innerHTML = `${v} <span>años</span>`;
+  document.getElementById('age-display').innerHTML = `${v} <span>${tr('años', 'years')}</span>`;
   checkStep1();
   persistWizardState();
 }
@@ -1732,8 +1732,11 @@ function applyStaticI18n() {
   if (nav[2]) nav[2].textContent = 'Biohacker';
   if (nav[3]) nav[3].textContent = 'Nutrition';
   set('.logo-tag', 'v3.1 · Hybrid AI + Curated base');
+  document.title = 'LONGEVA — Your Personalized Stack';
   set('.hero-kicker', 'Scientific personalization');
+  set('.hero-title', 'Build your longevity stack');
   set('.hero-sub', '120+ validated molecules. AI designs your optimal stack with doses, timing, and synergies.');
+  set('.hero-link', 'Back to library');
   set('.gate-title', 'Unlock your Stack Builder');
   const gateSub = document.querySelector('.gate-sub');
   if (gateSub) gateSub.textContent = 'Enter your email and continue to secure checkout to generate your personalized monthly protocol.';
@@ -1741,6 +1744,44 @@ function applyStaticI18n() {
   if (gateBtn) gateBtn.textContent = 'Continue to checkout →';
   const email = document.getElementById('user-email');
   if (email) email.placeholder = 'you@email.com';
+  set('#prog-label', 'Step 1 of 4 — Basic profile');
+  set('#next1', 'Next →');
+  set('#next2', 'Next →');
+  set('#next3', 'Next →');
+
+  const backs = document.querySelectorAll('.btn-back');
+  backs.forEach((btn) => { if (btn.textContent.includes('Atrás')) btn.textContent = '← Back'; });
+
+  const nexts = document.querySelectorAll('.btn-next');
+  nexts.forEach((btn) => {
+    if (btn.textContent.includes('Siguiente')) btn.textContent = 'Next →';
+    if (btn.textContent.includes('Generar mi stack')) btn.textContent = 'Generate my stack →';
+    if (btn.textContent.includes('Continuar y generar')) btn.textContent = 'Continue and generate';
+  });
+
+  const stepNums = document.querySelectorAll('.step-num');
+  if (stepNums[0]) stepNums[0].textContent = '01 / 04';
+  if (stepNums[1]) stepNums[1].textContent = '02 / 04';
+  if (stepNums[2]) stepNums[2].textContent = '03 / 04';
+  if (stepNums[3]) stepNums[3].textContent = '04 / 04';
+
+  const stepQ = document.querySelectorAll('.step-q');
+  if (stepQ[0]) stepQ[0].textContent = 'What is your biological profile?';
+  if (stepQ[1]) stepQ[1].textContent = 'What is your main goal?';
+  if (stepQ[2]) stepQ[2].textContent = 'What is your monthly budget?';
+  if (stepQ[3]) stepQ[3].textContent = 'Anything we should consider?';
+
+  const hints = document.querySelectorAll('.step-hint');
+  if (hints[0]) hints[0].textContent = 'Age and sex define which molecules are highest priority for you.';
+  if (hints[1]) hints[1].textContent = 'Select one primary objective. You can adjust it later.';
+  if (hints[2]) hints[2].textContent = 'We recommend the highest-impact stack inside your range. You can also choose natural-only.';
+  if (hints[3]) hints[3].textContent = 'Select if applicable. This helps us avoid interactions and contraindications.';
+
+  const resTitle = document.querySelector('.results-title');
+  if (resTitle) resTitle.innerHTML = 'Your personalized<br><em>stack</em>';
+  set('#results-sub', 'Generated with AI · Evidence-based 2026');
+  set('.loading-title', 'Analyzing your profile...');
+  set('.loading-sub', 'Cross-checking 120+ molecules with your data');
 }
 
 function getPreferredLang() {

@@ -12,9 +12,7 @@ export function setCors(req, res, methods = 'POST, OPTIONS') {
 export function enforceOrigin(req, res) {
   const origin = String(req.headers?.origin || '').trim();
   if (!origin) return true;
-  const allowed = getAllowedOrigin(req);
-  if (!allowed) return true;
-  if (origin !== allowed) {
+  if (!isOriginAllowed(origin, req)) {
     res.status(403).json({ error: 'Origin no permitido' });
     return false;
   }
@@ -64,6 +62,28 @@ function getAllowedOrigin(req) {
   const host = String(req.headers?.host || '').trim();
   if (!host) return '';
   return `https://${host}`.replace(/\/$/, '');
+}
+
+function isOriginAllowed(origin, req) {
+  const normalizedOrigin = String(origin || '').trim().replace(/\/$/, '');
+  if (!normalizedOrigin) return true;
+
+  const allowed = getAllowedOrigin(req);
+  if (!allowed || allowed === '*') return true;
+  if (normalizedOrigin === allowed) return true;
+
+  // Allow Vercel preview deployments in non-production to avoid blocking QA links.
+  const env = String(process.env.VERCEL_ENV || process.env.NODE_ENV || '').toLowerCase();
+  if (env === 'production') return false;
+
+  try {
+    const parsed = new URL(normalizedOrigin);
+    if (parsed.protocol === 'https:' && parsed.hostname.endsWith('.vercel.app')) {
+      return true;
+    }
+  } catch (_e) {}
+
+  return false;
 }
 
 function getClientIp(req) {
