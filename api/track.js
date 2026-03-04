@@ -1,7 +1,11 @@
+import { enforceOrigin, rateLimit, setCors } from './_lib/security.js';
+
 export default async function handler(req, res) {
-  setCors(res);
+  setCors(req, res, 'POST, OPTIONS');
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+  if (!enforceOrigin(req, res)) return;
+  if (!rateLimit(req, res, { prefix: 'track', max: 120, windowMs: 60_000 })) return;
 
   try {
     const event = String(req.body?.event || '').trim();
@@ -16,10 +20,4 @@ export default async function handler(req, res) {
   } catch (error) {
     return res.status(500).json({ error: error.message || 'tracking error' });
   }
-}
-
-function setCors(res) {
-  res.setHeader('Access-Control-Allow-Origin', process.env.ALLOWED_ORIGIN || '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 }

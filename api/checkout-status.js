@@ -1,9 +1,13 @@
+import { enforceOrigin, isPaywallBypassEnabled, rateLimit, setCors } from './_lib/security.js';
+
 export default async function handler(req, res) {
-  setCors(res);
+  setCors(req, res, 'GET, OPTIONS');
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
+  if (!enforceOrigin(req, res)) return;
+  if (!rateLimit(req, res, { prefix: 'checkout_status', max: 40, windowMs: 60_000 })) return;
 
-  if (isPaywallDisabled()) {
+  if (isPaywallBypassEnabled()) {
     return res.status(200).json({
       paid: true,
       bypass: true,
@@ -41,15 +45,4 @@ export default async function handler(req, res) {
   } catch (error) {
     return res.status(500).json({ error: error.message || 'Error verificando pago', paid: false });
   }
-}
-
-function setCors(res) {
-  res.setHeader('Access-Control-Allow-Origin', process.env.ALLOWED_ORIGIN || '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-}
-
-function isPaywallDisabled() {
-  const flag = String(process.env.PAYWALL_DISABLED || '').toLowerCase();
-  return flag === '1' || flag === 'true' || flag === 'yes' || flag === 'on';
 }

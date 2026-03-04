@@ -1,7 +1,11 @@
+import { enforceOrigin, isPaywallBypassEnabled, rateLimit, setCors } from './_lib/security.js';
+
 export default async function handler(req, res) {
-  setCors(res);
+  setCors(req, res, 'POST, OPTIONS');
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+  if (!enforceOrigin(req, res)) return;
+  if (!rateLimit(req, res, { prefix: 'checkout', max: 12, windowMs: 60_000 })) return;
 
   const email = String(req.body?.email || '').trim();
   const returnToRaw = String(req.body?.return_to || '').trim();
@@ -10,7 +14,7 @@ export default async function handler(req, res) {
   }
   const safeReturnTo = isSafeReturnPath(returnToRaw) ? returnToRaw : '/stack-builder.html';
 
-  if (isPaywallDisabled()) {
+  if (isPaywallBypassEnabled()) {
     return res.status(200).json({
       url: `${safeReturnTo}?paid=1&session_id=dev_bypass`,
       id: 'dev_bypass',
@@ -85,17 +89,6 @@ export default async function handler(req, res) {
   }
 }
 
-function setCors(res) {
-  res.setHeader('Access-Control-Allow-Origin', process.env.ALLOWED_ORIGIN || '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-}
-
 function isSafeReturnPath(path) {
   return /^\/[a-zA-Z0-9\-_/\.]*$/.test(path) && !path.includes('..');
-}
-
-function isPaywallDisabled() {
-  const flag = String(process.env.PAYWALL_DISABLED || '').toLowerCase();
-  return flag === '1' || flag === 'true' || flag === 'yes' || flag === 'on';
 }

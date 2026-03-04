@@ -1,9 +1,13 @@
+import { enforceOrigin, isPaywallBypassEnabled, rateLimit, setCors } from './_lib/security.js';
+
 export default async function handler(req, res) {
-  setCors(res);
+  setCors(req, res, 'POST, OPTIONS');
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+  if (!enforceOrigin(req, res)) return;
+  if (!rateLimit(req, res, { prefix: 'stack_builder', max: 20, windowMs: 60_000 })) return;
 
-  const paywallDisabled = isPaywallDisabled();
+  const paywallDisabled = isPaywallBypassEnabled();
   const { profile, session_id: sessionId } = req.body || {};
   if (!profile) {
     return res.status(400).json({ error: 'profile es requerido' });
@@ -215,15 +219,4 @@ function parseJsonFromModel(rawText) {
     }
     throw new Error('La IA no devolvió JSON válido');
   }
-}
-
-function setCors(res) {
-  res.setHeader('Access-Control-Allow-Origin', process.env.ALLOWED_ORIGIN || '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-}
-
-function isPaywallDisabled() {
-  const flag = String(process.env.PAYWALL_DISABLED || '').toLowerCase();
-  return flag === '1' || flag === 'true' || flag === 'yes' || flag === 'on';
 }
