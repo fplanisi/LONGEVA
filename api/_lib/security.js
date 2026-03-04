@@ -24,9 +24,11 @@ export function enforceOrigin(req, res) {
 export function isPaywallBypassEnabled() {
   const flag = String(process.env.PAYWALL_DISABLED || '').toLowerCase();
   const requested = flag === '1' || flag === 'true' || flag === 'yes' || flag === 'on';
+  const forceProd = String(process.env.PAYWALL_BYPASS_IN_PROD || '').toLowerCase();
+  const allowProd = forceProd === '1' || forceProd === 'true' || forceProd === 'yes' || forceProd === 'on';
   const env = String(process.env.VERCEL_ENV || process.env.NODE_ENV || '').toLowerCase();
   const isProd = env === 'production';
-  return requested && !isProd;
+  return requested && (!isProd || allowProd);
 }
 
 export function rateLimit(req, res, opts = {}) {

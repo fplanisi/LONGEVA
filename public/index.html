@@ -497,8 +497,12 @@ async function askMol(name, fullName, pathways, category, studyCount) {
   document.getElementById('si').value = name;
   srQuery = '';
   render();
+  const panel = document.getElementById('ai-panel');
+  const area = document.getElementById('ai-area');
+  panel.style.display = 'block';
+  area.innerHTML = `<div class="loading"><div class="spin"></div>Analizando <strong style="color:var(--accent)">${name}</strong>...</div>`;
+  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
   await searchIA(name, fullName, pathways, category, studyCount);
-  document.getElementById('ai-panel').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 async function searchIA(forceName, forceFull, forcePaths, forceCat, forceStudies) {

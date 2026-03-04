@@ -25,9 +25,14 @@ body { background:radial-gradient(circle at top left,#221a3a 0%,#05070c 48%); co
 .topnav a { color:var(--muted); text-decoration:none; font-size:10px; border:1px solid var(--border); padding:7px 13px; border-radius:999px; font-family:'DM Mono',monospace; letter-spacing:.1em; background:rgba(255,255,255,.01); }
 .topnav a:hover { color:var(--text); border-color:var(--accent2); box-shadow:0 0 0 1px rgba(82,184,255,.18) inset; }
 .topnav a.active { color:#d1ff5a; border-color:rgba(209,255,90,.45); background:rgba(209,255,90,.08); }
-.hero { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:26px; margin-bottom:18px; }
-.hero h1 { font-family:'DM Serif Display',serif; font-size:30px; margin-bottom:8px; font-weight:400; }
-.hero p { color:var(--muted); line-height:1.55; font-size:14px; max-width:760px; }
+.hero { background:linear-gradient(135deg,rgba(159,123,255,.14),rgba(255,95,127,.08),var(--surface)); border:1px solid var(--border); border-radius:16px; padding:26px; margin-bottom:18px; position:relative; overflow:hidden; }
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 85% 10%,rgba(255,95,127,.12),transparent 45%);pointer-events:none}
+.hero-kicker{display:inline-flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;color:#d7c8ff;text-transform:uppercase;border:1px solid rgba(159,123,255,.4);border-radius:999px;padding:5px 10px;margin-bottom:10px;background:rgba(159,123,255,.08)}
+.hero h1 { font-family:'DM Serif Display',serif; font-size:34px; margin-bottom:10px; font-weight:400; line-height:1.08; max-width:760px; }
+.hero p { color:var(--muted); line-height:1.6; font-size:14px; max-width:760px; }
+.hero-list{margin-top:12px;display:grid;gap:6px}
+.hero-list div{font-size:12px;color:#c8c2e5}
+.hero-list b{color:#ffd5df}
 .alert { margin-top:14px; background:rgba(255,95,127,.12); border:1px solid rgba(255,95,127,.4); color:#ffd0da; font-size:13px; padding:12px 14px; border-radius:10px; }
 .card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:22px; margin-bottom:14px; }
 .label { display:block; font-size:12px; color:var(--muted); margin-bottom:10px; letter-spacing:.06em; text-transform:uppercase; }
@@ -109,8 +114,14 @@ textarea { min-height:90px; resize:vertical; }
   </header>
 
   <div class="hero">
-    <h1>Protocolo Biohacker de Peptidos</h1>
-    <p>Modulo separado para usuarios avanzados. Se enfoca en protocolos experimentales por objetivo (muscular, grasa, longevidad, piel, recuperacion) con fases, monitoreo y banderas de seguridad.</p>
+    <div class="hero-kicker">Biohacker Lab · Nivel avanzado</div>
+    <h1>Protocolo Experimental de Péptidos</h1>
+    <p>Esto no es una rutina wellness. Es un módulo de optimización agresiva para perfiles avanzados, con fases, monitoreo y red flags clínicos para decidir cuándo frenar.</p>
+    <div class="hero-list">
+      <div><b>Reto real:</b> balancear resultados vs riesgo.</div>
+      <div><b>Regla clave:</b> si no podés medir, no deberías escalar.</div>
+      <div><b>Objetivo:</b> protocolo accionable sin autoengaños.</div>
+    </div>
     <div class="alert">Solo para expertos. Esto no es consejo medico. Riesgo real de interacciones y efectos adversos.</div>
   </div>
 
