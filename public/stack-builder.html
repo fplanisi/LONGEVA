@@ -553,7 +553,7 @@ input[type=range]::-webkit-slider-thumb {
 /* ERROR */
 .err-box { background: rgba(240,96,96,.06); border: 1px solid rgba(240,96,96,.2); border-radius: 12px; padding: 20px; color: #ff9090; font-family: 'DM Mono', monospace; font-size: 12px; }
 
-@media(max-width: 640px) {
+@media(max-width: 900px) {
   header { position: relative; padding: 14px 12px; margin: 0 0 14px; }
   .header-top { align-items: center; justify-content: space-between; flex-direction: row; gap: 8px; }
   .status-row { width: auto; justify-content: flex-end; margin-left: auto; }
@@ -677,7 +677,7 @@ input[type=range]::-webkit-slider-thumb {
       <button class="gate-btn" id="gate-btn" onclick="startCheckout()">Continuar al pago →</button>
     </div>
     <div class="gate-note">Paywall activo desde día 1 · Cobro gestionado por Stripe</div>
-    <div class="gate-legal">Al continuar aceptas <a href="/legal/terms.html" target="_blank" rel="noopener">Términos</a> / <a href="/legal/privacy.html" target="_blank" rel="noopener">Privacidad</a>.</div>
+    <div class="gate-legal">Al continuar aceptas <a href="/terms.html" target="_blank" rel="noopener">Términos</a> / <a href="/privacy.html" target="_blank" rel="noopener">Privacidad</a>.</div>
     <div class="gate-msg" id="gate-msg"></div>
   </div>
 
@@ -932,7 +932,7 @@ input[type=range]::-webkit-slider-thumb {
 </div>
 <footer class="legal-footer">
   <span>Uso informativo. No reemplaza evaluación médica profesional.</span>
-  <span><a href="/legal/terms.html">Términos</a> · <a href="/legal/privacy.html">Privacidad</a></span>
+  <span><a href="/terms.html">Términos</a> · <a href="/privacy.html">Privacidad</a></span>
 </footer>
 
 <div class="modal" id="safety-modal" role="dialog" aria-modal="true" aria-labelledby="safety-title">
@@ -2119,7 +2119,7 @@ function initMobileMenu() {
     if (e.key === 'Escape') closeMenu();
   });
   window.addEventListener('resize', () => {
-    if (window.innerWidth > 640) closeMenu();
+    if (window.innerWidth > 900) closeMenu();
   });
 }
 
