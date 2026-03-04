@@ -88,11 +88,12 @@ body::after{content:'';position:fixed;inset:0;background:linear-gradient(to bott
 .to-top.show{opacity:1;pointer-events:auto;transform:translateY(0)}
 @media(max-width:900px){
   .grid,.opts{grid-template-columns:1fr}
-  body{padding-top:72px}
+  body{padding-top:56px}
   .wrap{padding:0 12px 60px}
-  .site-header{position:fixed;top:0;left:0;right:0;z-index:40;padding:14px 12px;margin:0}
+  .site-header{position:fixed;top:0;left:0;right:0;z-index:40;padding:8px 12px;margin:0}
   .header-top{align-items:center;justify-content:space-between;flex-direction:row;gap:8px}
   .status-row{width:auto;justify-content:flex-end;margin-left:auto}
+  .logo-tag{display:none}
   .menu-toggle{display:inline-flex;position:relative;z-index:22}
   .mobile-nav-backdrop{display:block;position:fixed;inset:0;background:rgba(4,8,14,.5);backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .22s ease;z-index:19}
   body.menu-open .mobile-nav-backdrop{opacity:1;pointer-events:auto}
@@ -115,12 +116,6 @@ body::after{content:'';position:fixed;inset:0;background:linear-gradient(to bott
   .food{padding:11px}
   .food h4{font-size:15px}
   .food p,.note{font-size:12px;line-height:1.5}
-}
-@media(max-width:900px){
-  body.header-compact .site-header{padding:8px 12px;gap:0}
-  body.header-compact .header-top{min-height:34px}
-  body.header-compact .status-row{display:none}
-  body.header-compact .logo-tag{display:none}
 }
 </style>
 </head>
@@ -497,24 +492,9 @@ function initToTop() {
   toggle();
 }
 
-function initHeaderCompact() {
-  const onScroll = () => {
-    if (window.innerWidth > 900) {
-      document.body.classList.remove('header-compact');
-      return;
-    }
-    const y = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
-    document.body.classList.toggle('header-compact', y > 56);
-  };
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onScroll);
-  onScroll();
-}
-
 applyStaticI18n();
 initMobileMenu();
 initToTop();
-initHeaderCompact();
 </script>
 </body>
 </html>
