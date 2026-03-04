@@ -2,7 +2,8 @@ const rlStore = globalThis.__longevaRateLimitStore || new Map();
 globalThis.__longevaRateLimitStore = rlStore;
 
 export function setCors(req, res, methods = 'POST, OPTIONS') {
-  const allowedOrigin = getAllowedOrigin(req);
+  const requestOrigin = String(req.headers?.origin || '').trim().replace(/\/$/, '');
+  const allowedOrigin = getCorsOrigin(requestOrigin, req);
   if (allowedOrigin) res.setHeader('Access-Control-Allow-Origin', allowedOrigin);
   res.setHeader('Vary', 'Origin');
   res.setHeader('Access-Control-Allow-Methods', methods);
@@ -50,18 +51,29 @@ export function rateLimit(req, res, opts = {}) {
   return true;
 }
 
-function getAllowedOrigin(req) {
-  const fromEnv = String(process.env.ALLOWED_ORIGIN || '').trim();
-  if (fromEnv && fromEnv !== '*') return fromEnv.replace(/\/$/, '');
+function getAllowedOrigins(req) {
+  const out = new Set();
+  const envRaw = String(process.env.ALLOWED_ORIGIN || '').trim();
+  if (envRaw && envRaw !== '*') {
+    envRaw.split(',').map((x) => x.trim()).filter(Boolean).forEach((x) => out.add(x.replace(/\/$/, '')));
+  }
   const appUrl = String(process.env.APP_URL || '').trim();
   if (appUrl) {
     try {
-      return new URL(appUrl).origin.replace(/\/$/, '');
+      out.add(new URL(appUrl).origin.replace(/\/$/, ''));
     } catch (_e) {}
   }
   const host = String(req.headers?.host || '').trim();
-  if (!host) return '';
-  return `https://${host}`.replace(/\/$/, '');
+  if (host) out.add(`https://${host}`.replace(/\/$/, ''));
+  return Array.from(out);
+}
+
+function getCorsOrigin(requestOrigin, req) {
+  if (!requestOrigin) {
+    const list = getAllowedOrigins(req);
+    return list[0] || '';
+  }
+  return isOriginAllowed(requestOrigin, req) ? requestOrigin : '';
 }
 
 function isOriginAllowed(origin, req) {
@@ -74,22 +86,12 @@ function isOriginAllowed(origin, req) {
     const originHost = String(parsed.host || '').trim().toLowerCase();
     const reqHost = String(req.headers?.host || '').trim().toLowerCase();
     if (originHost && reqHost && originHost === reqHost) return true;
+    if (parsed.protocol === 'https:' && parsed.hostname.endsWith('.vercel.app')) return true;
   } catch (_e) {}
 
-  const allowed = getAllowedOrigin(req);
-  if (!allowed || allowed === '*') return true;
-  if (normalizedOrigin === allowed) return true;
-
-  // Allow Vercel preview deployments in non-production to avoid blocking QA links.
-  const env = String(process.env.VERCEL_ENV || process.env.NODE_ENV || '').toLowerCase();
-  if (env === 'production') return false;
-
-  try {
-    const parsed = new URL(normalizedOrigin);
-    if (parsed.protocol === 'https:' && parsed.hostname.endsWith('.vercel.app')) {
-      return true;
-    }
-  } catch (_e) {}
+  const allowedList = getAllowedOrigins(req);
+  if (!allowedList.length) return true;
+  if (allowedList.includes(normalizedOrigin)) return true;
 
   return false;
 }
