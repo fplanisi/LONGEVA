@@ -27,6 +27,7 @@ body.paid-mode {
   --accent2:#52b8ff;
   --accent3:#d1ff5a;
   --accent-dim:rgba(106,255,217,.12);
+  background:radial-gradient(circle at 15% -5%,#132235 0%,#05070c 45%);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -880,7 +881,7 @@ input[type=range]::-webkit-slider-thumb {
   <!-- RESULTS -->
   <div id="results">
     <div class="results-hero">
-      <h2 class="results-title">Tu stack<br><em>personalizado</em></h2>
+      <h2 class="results-title">Tu plan de longevidad<br><em>personalizado</em></h2>
       <p class="results-sub" id="results-sub">Generado con IA · Basado en evidencia científica 2026</p>
     </div>
 
@@ -1104,6 +1105,14 @@ async function initAccess() {
   applyStaticI18n();
   trackEvent('stack_page_view', { path: location.pathname });
   initWizardUI();
+  const params = new URLSearchParams(window.location.search);
+  const preview = String(params.get('preview') || '').toLowerCase();
+  if (preview === 'paid') {
+    state.paidSessionId = 'preview_paid';
+    unlockWizard();
+    setGateMsg(tr('Modo preview activo (sin checkout).', 'Preview mode active (no checkout).'), 'ok');
+    return;
+  }
   try {
     const bypassRes = await fetch('/api/checkout-status');
     const bypassData = await bypassRes.json();
@@ -1114,7 +1123,6 @@ async function initAccess() {
     }
   } catch (_e) {}
 
-  const params = new URLSearchParams(window.location.search);
   const sessionId = params.get('session_id') || localStorage.getItem(STACK_SESSION_KEY) || '';
   const paidFlag = params.get('paid');
   const canceled = params.get('canceled');
@@ -1951,7 +1959,7 @@ function applyStaticI18n() {
   });
 
   const resTitle = document.querySelector('.results-title');
-  if (resTitle) resTitle.innerHTML = 'Your personalized<br><em>stack</em>';
+  if (resTitle) resTitle.innerHTML = 'Your personalized<br><em>longevity plan</em>';
   set('#results-sub', 'Generated with AI · Evidence-based 2026');
   set('.loading-title', 'Analyzing your profile...');
   set('.loading-sub', 'Cross-checking 120+ molecules with your data');
