@@ -69,10 +69,21 @@ header {
   padding: 28px 48px;
   display: flex; align-items: center; justify-content: space-between;
   border-bottom: 1px solid var(--border);
+  gap: 12px;
+  flex-wrap: wrap;
 }
 .logo { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 300; letter-spacing: .15em; color: var(--accent); text-shadow: 0 0 30px rgba(200,240,96,.3); }
 .logo span { font-style: italic; }
 .hbadge { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: .1em; border: 1px solid var(--border2); padding: 5px 12px; border-radius: 100px; }
+.header-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
+.topnav { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.topnav a {
+  text-decoration: none; color: var(--muted); font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; letter-spacing: .08em; border: 1px solid var(--border2);
+  border-radius: 999px; padding: 6px 12px; transition: .2s; background: rgba(255,255,255,.01);
+}
+.topnav a:hover { color: var(--text); border-color: var(--accent2); }
+.topnav a.active { color: var(--accent); border-color: var(--accent); background: rgba(200,240,96,.08); }
 
 /* ── MAIN WRAPPER ── */
 .wrapper { position: relative; z-index: 10; max-width: 860px; margin: 0 auto; padding: 0 24px 100px; }
@@ -445,7 +456,14 @@ input[type=range]::-webkit-slider-thumb {
 
 <header>
   <div class="logo">LONG<span>EVA</span></div>
-  <div class="hbadge">Stack Builder · 2026</div>
+  <div class="header-right">
+    <nav class="topnav">
+      <a href="/index.html">Biblioteca</a>
+      <a href="/stack-builder.html" class="active">Stack Builder</a>
+      <a href="/biohacker-protocol.html">Biohacker</a>
+    </nav>
+    <div class="hbadge">Stack Builder · 2026</div>
+  </div>
 </header>
 
 <div class="wrapper">
@@ -577,7 +595,7 @@ input[type=range]::-webkit-slider-thumb {
     <div class="step-card" id="step3" style="display:none">
       <div class="step-num">03 / 04</div>
       <h2 class="step-q">¿Cuál es tu presupuesto mensual?</h2>
-      <p class="step-hint">Te recomendamos el stack más eficiente dentro de tu rango. Sin desperdicio.</p>
+      <p class="step-hint">Te recomendamos el stack más eficiente dentro de tu rango. También puedes elegir si quieres un enfoque natural.</p>
       <div class="opts-grid">
         <div class="opt" onclick="selectBudget(50,this)">
           <div class="opt-icon">🌱</div>
@@ -597,6 +615,24 @@ input[type=range]::-webkit-slider-thumb {
         <div class="opt" onclick="selectBudget(999,this)">
           <div class="opt-icon">💎</div>
           <div class="opt-text"><div class="opt-label">$350+/mes — Sin límite</div><div class="opt-desc">El stack óptimo completo sin restricciones de coste</div></div>
+          <div class="opt-check"></div>
+        </div>
+      </div>
+      <div style="font-size:12px;color:var(--muted);font-family:'JetBrains Mono',monospace;letter-spacing:.08em;margin:20px 0 10px">TIPO DE PROTOCOLO</div>
+      <div class="opts-grid cols-3" id="source-pref-grid">
+        <div class="opt" onclick="selectSourcePreference('natural_only',this)">
+          <div class="opt-icon">🍄</div>
+          <div class="opt-text"><div class="opt-label">Solo natural</div><div class="opt-desc">Hongos, polifenoles y compuestos no sintéticos</div></div>
+          <div class="opt-check"></div>
+        </div>
+        <div class="opt selected" onclick="selectSourcePreference('mixed',this)">
+          <div class="opt-icon">⚖️</div>
+          <div class="opt-text"><div class="opt-label">Mixto</div><div class="opt-desc">Naturales + sintéticos según evidencia</div></div>
+          <div class="opt-check"></div>
+        </div>
+        <div class="opt" onclick="selectSourcePreference('synthetic_ok',this)">
+          <div class="opt-icon">🧪</div>
+          <div class="opt-text"><div class="opt-label">Incluye sintéticos</div><div class="opt-desc">Optimización máxima sin restricción de origen</div></div>
           <div class="opt-check"></div>
         </div>
       </div>
@@ -670,6 +706,7 @@ input[type=range]::-webkit-slider-thumb {
 const state = {
   email: '', age: 40, sex: null,
   goals: [], budget: null, conditions: [],
+  sourcePreference: 'mixed',
   currentProtocol: '',
   paidSessionId: ''
 };
@@ -806,9 +843,20 @@ function toggleGoal(g, el) {
 // ── STEP 3 ──
 function selectBudget(b, el) {
   state.budget = b;
-  document.querySelectorAll('#step3 .opt').forEach(o => o.classList.remove('selected'));
+  document.querySelectorAll('#step3 .opts-grid:first-of-type .opt').forEach(o => o.classList.remove('selected'));
   el.classList.add('selected');
-  document.getElementById('next3').disabled = false;
+  checkStep3();
+}
+
+function selectSourcePreference(mode, el) {
+  state.sourcePreference = mode;
+  document.querySelectorAll('#source-pref-grid .opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  checkStep3();
+}
+
+function checkStep3() {
+  document.getElementById('next3').disabled = !state.budget;
 }
 
 // ── STEP 4 ──
@@ -851,6 +899,7 @@ async function generateStack() {
     state.sex === 'male' ? '♂ Masculino' : '♀ Femenino',
     ...state.goals.map(g => goalLabels[g]),
     budgetLabel,
+    state.sourcePreference === 'natural_only' ? 'Solo natural' : state.sourcePreference === 'synthetic_ok' ? 'Incluye sintéticos' : 'Mixto',
     ...(state.conditions.length ? state.conditions.slice(0,2) : ['Sin condiciones']),
     state.currentProtocol ? 'Con protocolo actual' : 'Sin protocolo previo'
   ];
@@ -882,6 +931,7 @@ async function generateStack() {
           goals: state.goals,
           budget: state.budget,
           budget_label: budgetLabel,
+          source_preference: state.sourcePreference,
           conditions: state.conditions,
           conditions_label: condStr,
           current_protocol: state.currentProtocol,

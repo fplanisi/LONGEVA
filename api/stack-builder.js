@@ -108,12 +108,19 @@ function buildPrompt(profile) {
   const goals = (profile?.goals || []).map((g) => goalLabels[g] || g).join(', ') || 'No definido';
   const conditions = profile?.conditions_label || 'Ninguna';
   const currentProtocol = profile?.current_protocol || 'No usa suplementos actualmente';
+  const sourcePreferenceMap = {
+    natural_only: 'Solo naturales (hongos, polifenoles, compuestos naturales)',
+    mixed: 'Mixto (naturales + sintéticos)',
+    synthetic_ok: 'Incluye sintéticos sin restricción',
+  };
+  const sourcePreference = sourcePreferenceMap[profile?.source_preference] || sourcePreferenceMap.mixed;
 
   return `Diseña un stack de longevidad personalizado para:
 - Edad: ${profile.age} años
 - Sexo biológico: ${profile.sex === 'male' ? 'Masculino' : 'Femenino'}
 - Objetivos principales: ${goals}
 - Presupuesto mensual: ${budgetLabel}
+- Preferencia de origen de moléculas: ${sourcePreference}
 - Condiciones de salud / medicamentos: ${conditions}
 - Protocolo actual de suplementos: ${currentProtocol}
 
@@ -135,6 +142,8 @@ Reglas:
 - No repitas moléculas entre mañana/tarde/noche salvo que sea explícitamente dividido en dosis
 - Si hay condiciones o medicamentos, excluye interacciones de riesgo y explica warnings
 - Si el protocolo actual ya incluye algo útil, intégralo y evita duplicados
+- Si la preferencia es "Solo naturales", NO incluyas moléculas sintéticas ni fármacos
+- Si la preferencia es "Mixto", prioriza naturales y usa sintéticos solo si aportan ventaja fuerte
 - Distribuye por farmacocinética y adherencia real de 30 días
 - Responde solo con el JSON.`;
 }

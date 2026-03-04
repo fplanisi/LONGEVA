@@ -12,9 +12,12 @@
 * { box-sizing:border-box; margin:0; padding:0; }
 body { background:radial-gradient(circle at top left,#12202d 0%,#090c12 45%); color:var(--text); font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif; min-height:100vh; }
 .wrap { max-width:960px; margin:0 auto; padding:24px 16px 80px; }
-.top { display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; }
+.top { display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; gap:10px; flex-wrap:wrap; }
 .brand { letter-spacing:.14em; font-size:14px; color:var(--accent); }
-.back { color:var(--muted); text-decoration:none; font-size:13px; border:1px solid var(--border); padding:8px 12px; border-radius:8px; }
+.topnav { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.topnav a { color:var(--muted); text-decoration:none; font-size:11px; border:1px solid var(--border); padding:7px 12px; border-radius:999px; font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace; letter-spacing:.05em; background:rgba(255,255,255,.01); }
+.topnav a:hover { color:var(--text); border-color:var(--warn); }
+.topnav a.active { color:var(--accent); border-color:var(--accent); background:rgba(115,240,194,.1); }
 .hero { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:26px; margin-bottom:18px; }
 .hero h1 { font-size:30px; margin-bottom:8px; font-weight:650; }
 .hero p { color:var(--muted); line-height:1.55; font-size:14px; max-width:760px; }
@@ -58,7 +61,11 @@ textarea { min-height:90px; resize:vertical; }
 <div class="wrap">
   <div class="top">
     <div class="brand">LONGEVA · EXPERIMENTAL</div>
-    <a class="back" href="/stack-builder.html">Volver a Stack</a>
+    <nav class="topnav">
+      <a href="/index.html">Biblioteca</a>
+      <a href="/stack-builder.html">Stack Builder</a>
+      <a href="/biohacker-protocol.html" class="active">Biohacker</a>
+    </nav>
   </div>
 
   <div class="hero">
