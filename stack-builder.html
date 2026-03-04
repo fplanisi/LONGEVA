@@ -620,7 +620,7 @@ input[type=range]::-webkit-slider-thumb {
         </div>
       </div>
       <div style="font-size:12px;color:var(--muted);font-family:'JetBrains Mono',monospace;letter-spacing:.08em;margin:20px 0 10px">TIPO DE PROTOCOLO</div>
-      <div class="opts-grid cols-3" id="source-pref-grid">
+      <div class="opts-grid cols-2" id="source-pref-grid">
         <div class="opt" onclick="selectSourcePreference('natural_only',this)">
           <div class="opt-icon">🍄</div>
           <div class="opt-text"><div class="opt-label">Solo natural</div><div class="opt-desc">Hongos, polifenoles y compuestos no sintéticos</div></div>
@@ -634,6 +634,11 @@ input[type=range]::-webkit-slider-thumb {
         <div class="opt" onclick="selectSourcePreference('synthetic_ok',this)">
           <div class="opt-icon">🧪</div>
           <div class="opt-text"><div class="opt-label">Incluye sintéticos</div><div class="opt-desc">Optimización máxima sin restricción de origen</div></div>
+          <div class="opt-check"></div>
+        </div>
+        <div class="opt" onclick="selectSourcePreference('food_only',this)">
+          <div class="opt-icon">🥗</div>
+          <div class="opt-text"><div class="opt-label">Solo alimentos</div><div class="opt-desc">Plan por comidas sin cápsulas ni suplementos</div></div>
           <div class="opt-check"></div>
         </div>
       </div>
@@ -900,7 +905,7 @@ async function generateStack() {
     state.sex === 'male' ? '♂ Masculino' : '♀ Femenino',
     ...state.goals.map(g => goalLabels[g]),
     budgetLabel,
-    state.sourcePreference === 'natural_only' ? 'Solo natural' : state.sourcePreference === 'synthetic_ok' ? 'Incluye sintéticos' : 'Mixto',
+    state.sourcePreference === 'natural_only' ? 'Solo natural' : state.sourcePreference === 'synthetic_ok' ? 'Incluye sintéticos' : state.sourcePreference === 'food_only' ? 'Solo alimentos' : 'Mixto',
     ...(state.conditions.length ? state.conditions.slice(0,2) : ['Sin condiciones']),
     state.currentProtocol ? 'Con protocolo actual' : 'Sin protocolo previo'
   ];
@@ -1004,7 +1009,7 @@ function renderStack(stack, budgetLabel) {
       <div class="time-header">
         <div class="time-icon">${sec.icon}</div>
         <div class="time-title">${sec.label}</div>
-        <div class="time-subtitle">${sec.sub} · ${mols.length} suplemento${mols.length>1?'s':''}</div>
+        <div class="time-subtitle">${sec.sub} · ${mols.length} item${mols.length>1?'s':''}</div>
       </div>
       <div class="mol-items">`;
     mols.forEach(m => {

@@ -112,6 +112,7 @@ function buildPrompt(profile) {
     natural_only: 'Solo naturales (hongos, polifenoles, compuestos naturales)',
     mixed: 'Mixto (naturales + sintéticos)',
     synthetic_ok: 'Incluye sintéticos sin restricción',
+    food_only: 'Solo alimentos (sin suplementos, sin cápsulas, sin compuestos aislados)',
   };
   const sourcePreference = sourcePreferenceMap[profile?.source_preference] || sourcePreferenceMap.mixed;
 
@@ -144,6 +145,8 @@ Reglas:
 - Si el protocolo actual ya incluye algo útil, intégralo y evita duplicados
 - Si la preferencia es "Solo naturales", NO incluyas moléculas sintéticas ni fármacos
 - Si la preferencia es "Mixto", prioriza naturales y usa sintéticos solo si aportan ventaja fuerte
+- Si la preferencia es "Solo alimentos", NO incluyas suplementos. Usa alimentos concretos por franja horaria y en "dose" pon porciones (ej: "150 g", "1 taza", "2 huevos").
+- Si la preferencia es "Solo alimentos", el campo "full" debe describir el alimento/fuente nutricional y "estimated_price" debe ser costo mensual estimado de ese alimento.
 - Distribuye por farmacocinética y adherencia real de 30 días
 - Responde solo con el JSON.`;
 }
