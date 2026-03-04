@@ -53,6 +53,7 @@ header {
   gap: 8px;
   background: rgba(5,7,12,.86);
   backdrop-filter: blur(10px);
+  margin: 0 0 18px;
 }
 .header-top { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .brand-wrap { display: flex; align-items: baseline; gap: 9px; flex-wrap: wrap; }
@@ -539,7 +540,7 @@ input[type=range]::-webkit-slider-thumb {
 .err-box { background: rgba(240,96,96,.06); border: 1px solid rgba(240,96,96,.2); border-radius: 12px; padding: 20px; color: #ff9090; font-family: 'DM Mono', monospace; font-size: 12px; }
 
 @media(max-width: 640px) {
-  header { padding: 14px 12px; }
+  header { padding: 14px 12px; margin: 0 0 14px; }
   .header-top { align-items: flex-start; flex-direction: column; gap: 8px; }
   .status-row { width: 100%; justify-content: flex-start; }
   .topnav { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
@@ -1959,6 +1960,8 @@ function applyStaticI18n() {
   if (proofLabels[1]) proofLabels[1].textContent = 'Variables';
   if (proofLabels[2]) proofLabels[2].textContent = 'AI analysis';
   if (proofLabels[3]) proofLabels[3].textContent = 'Process';
+  const proofNums = document.querySelectorAll('.proof-n');
+  if (proofNums[2]) proofNums[2].textContent = 'AI';
   const ls1 = document.getElementById('ls1');
   const ls2 = document.getElementById('ls2');
   const ls3 = document.getElementById('ls3');
