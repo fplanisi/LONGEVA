@@ -3,20 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LONGEVAPP — Moléculas de Longevidad</title>
+<title>LONGEVAPP — Inicio</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root{--bg:#05070c;--surface:#0e141f;--surface2:#121b29;--border:#223147;--accent:#6affd9;--accent2:#52b8ff;--accent3:#d1ff5a;--text:#edf3ff;--muted:#90a5c2;--dim:#4e6380;--gold:#f0c784;--red:#ff6e8a}
+  :root{--bg:#05070c;--surface:#0e141f;--surface2:#121b29;--border:#223147;--accent:#6affd9;--accent2:#52b8ff;--accent3:#d1ff5a;--text:#edf3ff;--muted:#90a5c2;--dim:#4e6380}
   html{background:var(--bg);max-width:100%;overflow-x:hidden;overscroll-behavior-y:auto;overscroll-behavior-x:none}
   *{margin:0;padding:0;box-sizing:border-box}
   body{background:radial-gradient(circle at 15% -5%,#132235 0%,#05070c 45%);color:var(--text);font-family:'Instrument Sans',sans-serif;min-height:100vh;max-width:100%;overflow-x:hidden;overscroll-behavior-y:auto;overscroll-behavior-x:none}
   body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(106,255,217,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(106,255,217,.04) 1px,transparent 1px);background-size:56px 56px;pointer-events:none;z-index:0;opacity:.7}
-  body::after{content:'';position:fixed;inset:0;background:linear-gradient(to bottom,rgba(255,255,255,.02),rgba(255,255,255,0) 20%,rgba(106,255,217,.02) 60%,rgba(255,255,255,0));pointer-events:none;z-index:0}
   .orb{position:fixed;border-radius:50%;filter:blur(120px);pointer-events:none;z-index:0}
   .orb1{width:680px;height:680px;background:rgba(106,255,217,.09);top:-260px;right:-240px}
   .orb2{width:540px;height:540px;background:rgba(82,184,255,.08);bottom:-200px;left:-200px}
 
-  /* HEADER */
   header{position:-webkit-sticky;position:sticky;top:0;z-index:20;padding:14px 36px;display:flex;flex-direction:column;gap:8px;border-bottom:1px solid var(--border);background:rgba(5,7,12,.86);backdrop-filter:blur(10px);margin:0 0 18px}
   .header-top{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px}
   .brand-wrap{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
@@ -33,174 +31,53 @@
   .topnav-row{width:100%}
   .topnav{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
   .topnav a{padding:7px 13px;border-radius:999px;border:1px solid var(--border);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--muted);text-decoration:none;transition:.2s;background:rgba(255,255,255,.01)}
-  .topnav a:hover{color:var(--text);border-color:var(--accent2);box-shadow:0 0 0 1px rgba(82,184,255,.18) inset}
+  .topnav a:hover{color:var(--text);border-color:var(--accent2)}
   .topnav a.active{color:var(--accent3);border-color:rgba(209,255,90,.45);background:rgba(209,255,90,.08)}
   .topnav a.nav-bio{border-color:rgba(159,123,255,.32);color:#c9bddf}
-  .topnav a.nav-bio:hover{color:#f6dbff;border-color:rgba(159,123,255,.75);background:rgba(159,123,255,.14);box-shadow:0 0 0 1px rgba(159,123,255,.28) inset,0 0 14px rgba(159,123,255,.2)}
-  .topnav a.nav-bio.active{color:#ffd6ee;border-color:rgba(255,122,199,.72);background:linear-gradient(135deg,rgba(159,123,255,.3),rgba(255,95,127,.24));box-shadow:0 0 0 1px rgba(255,122,199,.25) inset,0 0 18px rgba(255,95,127,.26)}
+  .topnav a.nav-bio:hover{color:#f6dbff;border-color:rgba(159,123,255,.75);background:rgba(159,123,255,.14)}
   .badge{display:flex;align-items:center;gap:7px;padding:6px 11px;border-radius:100px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em}
   .badge-live{background:rgba(106,255,217,.1);border:1px solid rgba(106,255,217,.26);color:var(--accent)}
-  .badge-provider{background:rgba(82,184,255,.1);border:1px solid rgba(82,184,255,.28);color:var(--accent2)}
-  .badge-provider.openai{color:#9ed0ff;background:rgba(158,208,255,.1);border-color:rgba(158,208,255,.3)}
-  .badge-provider.groq{color:#ff9d6a;background:rgba(255,157,106,.08);border-color:rgba(255,157,106,.24)}
   .lang-switch{display:flex;gap:4px;align-items:center;padding:3px;border:1px solid var(--border);border-radius:999px;background:rgba(255,255,255,.02)}
   .lang-btn{border:none;background:transparent;color:var(--muted);font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.08em;padding:4px 7px;border-radius:999px;cursor:pointer}
   .lang-btn.active{color:var(--text);background:rgba(106,255,217,.12)}
-  .dot{width:5px;height:5px;border-radius:50%;animation:pulse 2s infinite}
-  .dot-green{background:var(--accent)}
-  .dot-blue{background:var(--accent2)}
-  @keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(0,200,160,.4)}50%{opacity:.6;box-shadow:0 0 0 3px rgba(0,200,160,0)}}
 
-  /* HERO */
-  .hero{position:relative;z-index:10;text-align:center;padding:48px 48px 28px;max-width:1320px;margin:0 auto 10px}
+  .hero{position:relative;z-index:10;text-align:center;padding:52px 48px 26px;max-width:1320px;margin:0 auto 14px}
   .hero::before{content:'';position:absolute;inset:0 26px;background:linear-gradient(145deg,rgba(106,255,217,.06),rgba(82,184,255,.03));border:1px solid rgba(106,255,217,.12);border-radius:20px;z-index:-1}
   .hero-eye{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--dim);text-transform:uppercase;margin-bottom:14px}
-  h1{font-family:'DM Serif Display',serif;font-size:clamp(34px,5vw,68px);line-height:1.06;margin-bottom:12px;letter-spacing:.01em}
+  h1{font-family:'DM Serif Display',serif;font-size:clamp(34px,5vw,66px);line-height:1.06;margin-bottom:12px;letter-spacing:.01em}
   h1 em{font-style:italic;color:var(--accent3);text-shadow:0 0 45px rgba(209,255,90,.2)}
-  .hero-sub{font-size:14px;color:var(--muted);max-width:580px;margin:0 auto 28px;line-height:1.65;font-weight:300}
-  .trust-line{margin:-8px auto 18px;max-width:760px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;color:#a9b8ce;border:1px solid var(--border);border-radius:999px;padding:7px 12px;display:inline-flex;gap:8px;align-items:center;background:rgba(255,255,255,.02)}
-  .flow-strip{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:0 auto 16px;max-width:760px}
-  .flow-step{border:1px solid var(--border);background:rgba(255,255,255,.015);border-radius:10px;padding:8px 10px;font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.05em}
-  .flow-step b{color:var(--accent2);font-weight:500}
+  .hero-sub{font-size:15px;color:var(--muted);max-width:860px;margin:0 auto 18px;line-height:1.65;font-weight:300}
+  .hero-cta{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:12px;border:1px solid var(--border);text-decoration:none;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.08em;color:var(--text);background:rgba(255,255,255,.02);transition:.2s}
+  .btn:hover{transform:translateY(-1px);border-color:var(--accent2)}
+  .btn-primary{background:linear-gradient(135deg,rgba(106,255,217,.24),rgba(82,184,255,.14));border-color:rgba(106,255,217,.5);color:var(--accent)}
 
-  /* SEARCH */
-  .search-box{max-width:760px;margin:0 auto}
-  .search-wrap{display:flex;align-items:center;background:linear-gradient(160deg,var(--surface2),var(--surface));border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:.3s;box-shadow:0 10px 35px rgba(0,0,0,.28)}
-  .search-wrap:focus-within{border-color:rgba(106,255,217,.55);box-shadow:0 0 0 3px rgba(106,255,217,.1),0 12px 38px rgba(0,0,0,.36)}
-  .si{padding:0 13px 0 17px;color:var(--dim);flex-shrink:0}
-  .search-input{flex:1;background:transparent;border:none;outline:none;padding:15px 0;font-family:'Instrument Sans',sans-serif;font-size:14px;color:var(--text)}
-  .search-input::placeholder{color:var(--dim)}
-  .sbtn{margin:7px;padding:10px 18px;background:linear-gradient(120deg,var(--accent),#42f3cb);color:#03120d;border:none;border-radius:9px;font-family:'Instrument Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:.2s;flex-shrink:0;white-space:nowrap}
-  .sbtn:hover{transform:translateY(-1px);box-shadow:0 0 18px rgba(106,255,217,.35)}
-  .sbtn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+  .main{position:relative;z-index:10;max-width:1320px;margin:0 auto;padding:0 40px 64px}
+  .intro-grid{display:grid;grid-template-columns:repeat(2,minmax(280px,1fr));gap:12px;margin:14px 0 16px}
+  .intro-card{border:1px solid var(--border);border-radius:14px;background:linear-gradient(160deg,var(--surface2),var(--surface));padding:16px}
+  .intro-card h3{font-family:'DM Serif Display',serif;font-size:24px;line-height:1.2;margin-bottom:6px}
+  .intro-card p{color:var(--muted);font-size:14px;line-height:1.55}
 
-  /* SEARCH MODES */
-  .search-modes{display:flex;justify-content:center;gap:8px;margin-top:10px}
-  .mode-btn{padding:5px 14px;border-radius:100px;border:1px solid var(--border);background:rgba(255,255,255,.01);color:var(--muted);font-family:'DM Mono',monospace;font-size:10px;cursor:pointer;transition:.2s;display:flex;align-items:center;gap:5px}
-  .mode-btn:hover,.mode-btn.active{border-color:var(--accent);color:var(--accent);background:rgba(106,255,217,.08)}
-  .mode-btn.mode-latest{border-color:rgba(0,152,255,.3);color:var(--accent2)}
-  .mode-btn.mode-latest:hover,.mode-btn.mode-latest.active{background:rgba(0,152,255,.07);border-color:var(--accent2)}
+  .modules{display:grid;grid-template-columns:repeat(3,minmax(200px,1fr));gap:12px}
+  .module{border:1px solid var(--border);border-radius:14px;background:linear-gradient(160deg,var(--surface2),var(--surface));padding:16px;text-decoration:none;color:var(--text);transition:.2s}
+  .module:hover{transform:translateY(-2px)}
+  .module b{display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;color:var(--dim);margin-bottom:8px;text-transform:uppercase}
+  .module h4{font-family:'DM Serif Display',serif;font-size:28px;line-height:1.1;margin-bottom:8px}
+  .module p{font-size:13px;color:var(--muted);line-height:1.5}
+  .module-library{border-color:rgba(106,255,217,.38)}
+  .module-plan{border-color:rgba(82,184,255,.36)}
+  .module-bio{border-color:rgba(159,123,255,.5);background:linear-gradient(130deg,rgba(159,123,255,.16),rgba(255,95,127,.12));box-shadow:0 0 20px rgba(159,123,255,.15)}
+  .module-nutri{border-color:rgba(52,211,153,.38)}
 
-  /* FILTERS */
-  .filters{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin-top:12px}
-  .fp{padding:4px 12px;border-radius:100px;border:1px solid var(--border);background:rgba(255,255,255,.01);color:var(--muted);font-family:'DM Mono',monospace;font-size:9px;cursor:pointer;transition:.2s}
-  .fp:hover,.fp.active{border-color:var(--accent2);color:var(--text);background:rgba(82,184,255,.1)}
+  .legal-footer{position:relative;z-index:10;max-width:1320px;margin:12px auto 22px;padding:0 16px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-family:'DM Mono',monospace;font-size:10px;color:var(--dim)}
+  .legal-footer a{color:var(--muted);text-decoration:none}
+  .legal-footer a:hover{color:var(--accent)}
 
-  /* STATS */
-  .stats{position:relative;z-index:10;display:grid;grid-template-columns:repeat(4,minmax(130px,1fr));gap:10px;max-width:1320px;margin:0 auto 26px;padding:0 48px}
-  .stats>div{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
-  .stat-n{font-family:'DM Serif Display',serif;font-size:24px;color:var(--accent);display:block;line-height:1;margin-bottom:5px}
-  .stat-l{font-family:'DM Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:.14em;text-transform:uppercase}
-
-  /* MAIN */
-  .main{position:relative;z-index:10;max-width:1500px;margin:0 auto;padding:0 40px 80px}
-
-  /* DISCOVER BANNER */
-  #discover-panel{display:none;background:linear-gradient(135deg,rgba(82,184,255,.09),rgba(106,255,217,.04));border:1px solid rgba(82,184,255,.34);border-radius:18px;padding:28px;margin-bottom:32px;position:relative}
-  #discover-panel::before{content:'🔬 DESCUBRIMIENTOS RECIENTES 2025-2026';font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.15em;color:var(--accent2);display:block;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(0,152,255,.15)}
-  #discover-content{font-size:13px;line-height:1.75;color:#b0cce0;font-weight:300}
-  #discover-content h3{font-family:'DM Serif Display',serif;font-size:15px;color:var(--text);margin:14px 0 6px}
-  #discover-content strong{color:var(--accent2);font-weight:500}
-  .disc-close{position:absolute;top:16px;right:16px;background:transparent;border:1px solid var(--border);color:var(--dim);border-radius:7px;padding:4px 10px;cursor:pointer;font-family:'DM Mono',monospace;font-size:9px;transition:.2s}
-  .disc-close:hover{border-color:var(--accent2);color:var(--accent2)}
-
-  /* AI PANEL */
-  #ai-panel{display:none;background:linear-gradient(155deg,var(--surface2),var(--surface));border:1px solid rgba(106,255,217,.26);border-radius:18px;padding:28px;margin-bottom:32px;position:relative;box-shadow:0 12px 40px rgba(0,0,0,.26)}
-  #ai-panel.panel-flash{box-shadow:0 0 0 2px rgba(106,255,217,.35),0 12px 40px rgba(0,0,0,.26)}
-  #ai-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:.5}
-  .ai-head{display:flex;align-items:flex-start;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--border);gap:12px}
-  .ai-mol-name{font-family:'DM Serif Display',serif;font-size:22px;color:var(--text);flex:1}
-  .ai-head-right{display:flex;gap:6px;align-items:flex-start;flex-shrink:0;margin-top:2px}
-  .cbtn{background:transparent;border:1px solid var(--border);color:var(--dim);border-radius:7px;padding:4px 10px;cursor:pointer;font-family:'DM Mono',monospace;font-size:9px;transition:.2s}
-  .cbtn:hover{border-color:var(--accent);color:var(--accent)}
-  .latest-btn{border-color:rgba(0,152,255,.3);color:var(--accent2)}
-  .latest-btn:hover{background:rgba(0,152,255,.07);border-color:var(--accent2)}
-  .ai-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px}
-  .at{padding:2px 9px;border-radius:100px;font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.07em;text-transform:uppercase}
-  .tn{background:rgba(0,200,160,.1);border:1px solid rgba(0,200,160,.25);color:var(--accent)}
-  .ts{background:rgba(0,152,255,.1);border:1px solid rgba(0,152,255,.25);color:var(--accent2)}
-  .tp{background:rgba(123,97,255,.1);border:1px solid rgba(123,97,255,.25);color:var(--accent3)}
-  .te{background:rgba(240,192,96,.1);border:1px solid rgba(240,192,96,.25);color:var(--gold)}
-  .ai-body{font-size:13px;line-height:1.78;color:#b0cce0;font-weight:300}
-  .ai-body h3{font-family:'DM Serif Display',serif;font-size:15px;color:var(--text);margin:16px 0 6px;font-weight:400}
-  .ai-body h3:first-child{margin-top:0}
-  .ai-body p{margin-bottom:8px}
-  .ai-body ul{margin:4px 0 8px 16px}
-  .ai-body li{margin-bottom:4px;color:#8ab0c5}
-  .ai-body strong{color:var(--accent);font-weight:500}
-  .ai-provider-note{margin-top:14px;padding-top:12px;border-top:1px solid var(--border);font-family:'DM Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:.05em}
-
-  /* LOADING */
-  .loading{display:flex;align-items:center;gap:10px;color:var(--muted);font-family:'DM Mono',monospace;font-size:11px}
-  .spin{width:15px;height:15px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
-  .spin-blue{border-top-color:var(--accent2)}
-  @keyframes spin{to{transform:rotate(360deg)}}
-
-  /* DISCOVER BTN */
-  .discover-wrap{display:flex;justify-content:center;margin-bottom:28px}
-  .discover-btn{display:flex;align-items:center;gap:8px;padding:10px 22px;background:rgba(0,152,255,.07);border:1px solid rgba(0,152,255,.2);border-radius:100px;color:var(--accent2);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.08em;cursor:pointer;transition:.25s}
-  .discover-btn:hover{background:rgba(0,152,255,.12);border-color:rgba(0,152,255,.4);transform:translateY(-1px)}
-  .discover-btn span{font-size:15px}
-
-  /* GRID */
-  .cat-sec{margin-bottom:32px}
-  .cat-lbl{display:flex;align-items:center;gap:8px;margin-bottom:12px}
-  .cat-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
-  .cat-txt{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);white-space:nowrap}
-  .cat-line{flex:1;height:1px;background:var(--border)}
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:10px}
-  .card{background:linear-gradient(160deg,var(--surface2),var(--surface));border:1px solid var(--border);border-radius:12px;padding:17px;cursor:pointer;transition:.2s;position:relative;overflow:hidden}
-  .card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(var(--accent),transparent);opacity:.35}
-  .card:hover{border-color:rgba(106,255,217,.32);transform:translateY(-3px);box-shadow:0 14px 34px rgba(0,0,0,.28)}
-  .card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px}
-  .mol-n{font-family:'DM Serif Display',serif;font-size:15px;color:var(--text);line-height:1.2}
-  .tb{flex-shrink:0;padding:2px 7px;border-radius:100px;font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.07em;text-transform:uppercase;margin-left:8px;margin-top:2px}
-  .card-desc{font-size:11px;color:var(--muted);line-height:1.5;margin-bottom:9px;font-weight:300}
-  .chips{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:9px}
-  .chip{padding:1px 7px;background:rgba(82,184,255,.1);border:1px solid rgba(82,184,255,.24);border-radius:100px;font-family:'DM Mono',monospace;font-size:7px;color:var(--accent2)}
-  .card-meta{display:flex;align-items:center;justify-content:space-between;padding-top:9px;border-top:1px solid var(--border)}
-  .ev{font-family:'DM Mono',monospace;font-size:8px;color:var(--dim)}
-  .ev span{color:var(--gold)}
-  .explore{font-family:'DM Mono',monospace;font-size:8px;color:var(--accent);opacity:0;transition:.2s}
-  .card:hover .explore{opacity:1}
-
-  /* ERROR / EMPTY */
-  .nores{text-align:center;padding:50px 20px;color:var(--muted);font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.08em}
-  .err{background:rgba(244,63,94,.06);border:1px solid rgba(244,63,94,.2);border-radius:10px;padding:12px 16px;color:#ff8080;font-family:'DM Mono',monospace;font-size:11px}
-
-  /* SCROLLBAR */
-  ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
-
-  @keyframes fu{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-  .card{animation:fu .3s ease both}
-
-  .quick-modules{display:grid;grid-template-columns:repeat(3,minmax(200px,1fr));gap:10px;max-width:860px;margin:14px auto 0}
-  .qmod{border:1px solid var(--border);background:rgba(255,255,255,.015);border-radius:12px;padding:10px 12px;text-decoration:none;color:var(--text);text-align:left;transition:.2s}
-  .qmod:hover{border-color:var(--accent2);transform:translateY(-1px)}
-  .qmod b{display:block;font-size:12px;margin-bottom:3px}
-  .qmod span{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace}
-  .qmod-primary{border-color:rgba(106,255,217,.55);background:linear-gradient(140deg,rgba(106,255,217,.14),rgba(209,255,90,.1));box-shadow:0 0 0 1px rgba(106,255,217,.22) inset,0 0 14px rgba(106,255,217,.14)}
-  .qmod-primary b{color:var(--accent)}
-  .qmod-primary:hover{border-color:rgba(106,255,217,.9);box-shadow:0 0 0 1px rgba(106,255,217,.3) inset,0 0 22px rgba(106,255,217,.24)}
-  .qmod-nutri{border-color:rgba(82,184,255,.42);background:linear-gradient(140deg,rgba(82,184,255,.12),rgba(106,255,217,.06));box-shadow:0 0 0 1px rgba(82,184,255,.18) inset}
-  .qmod-nutri b{color:#9ed0ff}
-  .qmod-nutri:hover{border-color:rgba(82,184,255,.86);box-shadow:0 0 0 1px rgba(82,184,255,.28) inset,0 0 18px rgba(82,184,255,.18)}
-  .qmod-bio{border-color:rgba(159,123,255,.55);background:linear-gradient(130deg,rgba(159,123,255,.16),rgba(255,95,127,.12));box-shadow:0 0 22px rgba(159,123,255,.2)}
-  .qmod-bio b{color:#f4d8ff}
-  .qmod-bio::after{content:'ADVANCED';display:inline-block;margin-top:6px;padding:2px 7px;border-radius:999px;border:1px solid rgba(255,180,220,.55);font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.08em;color:#ffd4ea;background:rgba(255,120,190,.1)}
-  .qmod-bio{animation:bioPulse 2.4s ease-in-out infinite}
-  @keyframes bioPulse{0%,100%{box-shadow:0 0 16px rgba(159,123,255,.18)}50%{box-shadow:0 0 30px rgba(255,95,127,.32)}}
-
-  @media(max-width:900px){
-    .stats{grid-template-columns:repeat(2,minmax(120px,1fr));padding:0 16px}
-    .quick-modules{grid-template-columns:1fr}
-  }
   @media(max-width:900px){
     body{padding-top:56px}
     header{position:fixed;top:0;left:0;right:0;z-index:40;padding:8px 12px;margin:0}
     .header-top{align-items:center;justify-content:space-between;flex-direction:row;gap:8px}
-    .status-row{width:auto;justify-content:flex-end;margin-left:auto}
-    .logo-tag{display:none}
+    .logo-tag,.badge{display:none}
     .menu-toggle{display:inline-flex;position:relative;z-index:22}
     .mobile-nav-backdrop{display:block;position:fixed;inset:0;background:rgba(4,8,14,.5);backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .22s ease;z-index:19}
     body.menu-open .mobile-nav-backdrop{opacity:1;pointer-events:auto}
@@ -208,41 +85,15 @@
     .topnav-row{display:block;position:absolute;left:50%;width:min(460px,calc(100vw - 24px));top:calc(100% - 2px);opacity:0;transform:translate(-50%,-8px) scale(.985);pointer-events:none;transition:opacity .2s ease,transform .2s ease;z-index:22}
     .topnav-row.open{opacity:1;transform:translate(-50%,0) scale(1);pointer-events:auto}
     .topnav{width:100%;display:grid;grid-template-columns:1fr;gap:6px;padding:10px;border:1px solid var(--border);border-radius:12px;background:rgba(5,7,12,.96);backdrop-filter:blur(10px);box-shadow:0 16px 34px rgba(0,0,0,.36)}
-    .topnav a{white-space:normal;text-align:center;padding:10px 8px;font-size:10px;line-height:1.2}
-    .badge{display:none}
-    .hero{padding:22px 12px 14px}
+    .topnav a{text-align:center;padding:10px 8px;font-size:10px}
+    .hero{padding:20px 12px 12px}
     .hero::before{inset:0}
-    .hero-eye{font-size:9px;margin-bottom:10px}
-    h1{font-size:clamp(30px,9vw,42px);line-height:1.08}
-    .hero-sub{font-size:13px;line-height:1.58;margin-bottom:18px}
-    .flow-strip{gap:6px;margin-bottom:12px}
-    .flow-step{padding:8px 9px;font-size:9px}
-    .search-input{font-size:16px;padding:14px 0}
-    .sbtn{padding:11px 15px;font-size:12px}
-    .mode-btn,.fp{padding:7px 11px;font-size:10px}
-    .quick-modules{gap:8px;margin-top:10px}
-    .qmod{padding:12px}
-    .qmod b{font-size:13px}
-    .qmod span{font-size:11px;line-height:1.35}
-    .stats{gap:8px}
-    .stats>div{padding:12px}
-    .stat-n{font-size:22px}
-    .main{padding:0 16px 60px}
-    .grid{grid-template-columns:1fr}
-    #ai-panel,#discover-panel{padding:18px}
-    .search-modes{flex-wrap:wrap;gap:6px}
-    .discover-btn{padding:12px 16px;font-size:10px}
-    .card{padding:15px}
-    .mol-n{font-size:16px}
-    .card-desc{font-size:12px;line-height:1.45}
-    .chip{font-size:8px;padding:2px 8px}
+    h1{font-size:clamp(30px,9vw,42px)}
+    .hero-sub{font-size:13px}
+    .main{padding:0 16px 48px}
+    .intro-grid{grid-template-columns:1fr}
+    .modules{grid-template-columns:1fr}
   }
-  .legal-footer{position:relative;z-index:10;max-width:1320px;margin:18px auto 22px;padding:0 16px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.04em;color:var(--dim)}
-  .legal-footer a{color:var(--muted);text-decoration:none}
-  .legal-footer a:hover{color:var(--accent)}
-  .to-top{position:fixed;right:16px;bottom:16px;width:42px;height:42px;border-radius:999px;border:1px solid var(--border);background:rgba(5,7,12,.9);color:var(--accent);font-size:18px;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;pointer-events:none;transform:translateY(8px);transition:opacity .2s ease,transform .2s ease,border-color .2s ease;z-index:45}
-  .to-top:hover{border-color:var(--accent2);color:#fff}
-  .to-top.show{opacity:1;pointer-events:auto;transform:translateY(0)}
 </style>
 </head>
 <body>
@@ -251,25 +102,25 @@
 
 <header>
   <div class="header-top">
-  <div class="brand-wrap">
-    <span class="logo-name">LONGEVAPP</span>
-    <span class="logo-tag">v3.1 · Híbrido IA + Base curada</span>
-  </div>
-  <div class="status-row">
-    <div class="badge badge-live"><div class="dot dot-green"></div>Base científica activa</div>
-    <div class="badge badge-provider" id="provider-badge"><div class="dot dot-blue"></div><span id="provider-name">Conectando...</span></div>
-    <div class="lang-switch">
-      <button class="lang-btn" id="lang-es" onclick="setPreferredLang('es')">ES</button>
-      <button class="lang-btn" id="lang-en" onclick="setPreferredLang('en')">EN</button>
+    <div class="brand-wrap">
+      <span class="logo-name">LONGEVAPP</span>
+      <span class="logo-tag">v3.1 · Plataforma de longevidad</span>
+    </div>
+    <div class="status-row">
+      <div class="badge badge-live">Inicio</div>
+      <div class="lang-switch" aria-label="Language switcher">
+        <button class="lang-btn" id="lang-es" type="button" onclick="setLanguage('es')">ES</button>
+        <button class="lang-btn" id="lang-en" type="button" onclick="setLanguage('en')">EN</button>
+      </div>
+      <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="topnav">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </div>
-  <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Abrir menú" aria-expanded="false">
-    <span></span><span></span><span></span>
-  </button>
-  </div>
-  <div class="topnav-row">
-    <nav class="topnav">
-      <a href="/index.html" class="active">Biblioteca</a>
+  <div class="topnav-row" id="topnav-row">
+    <nav class="topnav" id="topnav">
+      <a href="/index.html" class="active">Inicio</a>
+      <a href="/library.html">Biblioteca</a>
       <a href="/stack-builder.html">Plan Personalizado</a>
       <a href="/biohacker-protocol.html" class="nav-bio">Biohacker</a>
       <a href="/food-longevity.html">Nutrición</a>
@@ -279,615 +130,123 @@
 </header>
 
 <section class="hero">
-  <p class="hero-eye">Decisiones personalizadas · Ahorro de tiempo · Seguimiento 30 días</p>
-  <h1>Tu mapa inteligente para<br><em>longevidad real</em></h1>
-  <p class="hero-sub">Explora evidencia, luego pasa a tu Plan Personalizado para obtener una estrategia mensual accionable según tu perfil, presupuesto y disponibilidad local.</p>
-  <p class="trust-line" id="medical-trust">Enfoque clínico: plataforma diseñada por médico, con prioridad en seguridad e interacciones.</p>
-  <div class="flow-strip">
-    <div class="flow-step"><b>1.</b> Diagnóstico en 2 minutos</div>
-    <div class="flow-step"><b>2.</b> Plan accionable mensual</div>
-    <div class="flow-step"><b>3.</b> Seguimiento y reemplazos</div>
-  </div>
-
-  <div class="search-box">
-    <div class="search-wrap">
-      <div class="si"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div>
-      <input class="search-input" id="si" type="text" placeholder="Buscar molécula o preguntar sobre cualquier compuesto..." autocomplete="off">
-      <button class="sbtn" id="sbtn" onclick="searchIA()">Analizar →</button>
-    </div>
-
-    <div class="search-modes">
-      <button class="mode-btn active" id="mode-base" onclick="setMode('base',this)" title="Análisis con base curada">
-        📚 Base curada
-      </button>
-      <button class="mode-btn mode-latest" id="mode-latest" onclick="setMode('latest',this)" title="Busca papers recientes con web search (Anthropic)">
-        🔍 Novedades 2025-2026
-      </button>
-    </div>
-
-    <div class="filters">
-      <button class="fp active" onclick="fil('all',this)">Todas</button>
-      <button class="fp" onclick="fil('natural',this)">🌿 Naturales</button>
-      <button class="fp" onclick="fil('synthetic',this)">⚗️ Sintéticas</button>
-      <button class="fp" onclick="fil('hongos',this)">🍄 Hongos</button>
-      <button class="fp" onclick="fil('adaptogen',this)">Adaptógenos</button>
-      <button class="fp" onclick="fil('senolytic',this)">Senolíticas</button>
-      <button class="fp" onclick="fil('mTOR',this)">mTOR/AMPK</button>
-      <button class="fp" onclick="fil('NAD',this)">NAD⁺/Sirtuinas</button>
-      <button class="fp" onclick="fil('mitocondria',this)">Mitocondria</button>
-      <button class="fp" onclick="fil('inflamacion',this)">Anti-inflam.</button>
-      <button class="fp" onclick="fil('epigenetica',this)">Epigenética</button>
-    </div>
-    <div class="quick-modules">
-      <a class="qmod qmod-primary" href="/stack-builder.html"><b>Plan Personalizado</b><span>Empieza aquí: protocolo mensual + reemplazos + seguimiento</span></a>
-      <a class="qmod qmod-bio" href="/biohacker-protocol.html"><b>Biohacker Lab</b><span>Módulo avanzado y experimental para expertos</span></a>
-      <a class="qmod qmod-nutri" href="/food-longevity.html"><b>Nutrición</b><span>Enfoque solo alimentos, sin suplementos</span></a>
-    </div>
+  <p class="hero-eye" id="hero-eye">Biblioteca científica + protocolos personalizados</p>
+  <h1 id="hero-title">Tu plataforma para <em>longevidad práctica</em></h1>
+  <p class="hero-sub" id="hero-sub">LONGEVAPP combina una biblioteca extensa de moléculas con planes personalizados de suplementos, alimentos y protocolos biohacker para tomar decisiones rápidas, seguras y accionables.</p>
+  <div class="hero-cta">
+    <a class="btn btn-primary" id="cta-library" href="/library.html">Entrar a Biblioteca →</a>
+    <a class="btn" id="cta-plan" href="/stack-builder.html">Crear Plan Personalizado</a>
   </div>
 </section>
 
-<div class="stats">
-  <div><span class="stat-n" id="cnt">—</span><span class="stat-l">Moléculas</span></div>
-  <div><span class="stat-n" id="cat-cnt">—</span><span class="stat-l">Categorías</span></div>
-  <div><span class="stat-n" id="db-version">—</span><span class="stat-l">Versión DB</span></div>
-  <div><span class="stat-n" id="db-date">—</span><span class="stat-l">Actualizada</span></div>
-</div>
-
 <main class="main">
-  <!-- Botón descubrimiento -->
-  <div class="discover-wrap">
-    <button class="discover-btn" onclick="discoverNew()">
-      <span>🔬</span> Descubrir nuevas moléculas 2025-2026 con IA
-    </button>
-  </div>
+  <section class="intro-grid">
+    <article class="intro-card">
+      <h3 id="intro-a-title">1) Biblioteca de longevidad</h3>
+      <p id="intro-a-copy">Explora moléculas naturales y sintéticas con su mecanismo de acción, evidencia y análisis con IA. En móvil, la biblioteca está organizada por carpetas desplegables por categoría.</p>
+    </article>
+    <article class="intro-card">
+      <h3 id="intro-b-title">2) Protocolos personalizados</h3>
+      <p id="intro-b-copy">Genera estrategias según edad, sexo, objetivos, presupuesto, disponibilidad y restricciones: plan mixto, nutrición pura o biohacker experimental.</p>
+    </article>
+  </section>
 
-  <!-- Panel descubrimiento -->
-  <div id="discover-panel">
-    <button class="disc-close" onclick="document.getElementById('discover-panel').style.display='none'">✕ Cerrar</button>
-    <div id="discover-content"></div>
-  </div>
-
-  <!-- Panel análisis IA -->
-  <div id="ai-panel">
-    <div id="ai-area"></div>
-  </div>
-
-  <!-- Grid de moléculas -->
-  <div id="mols"><div class="nores">Cargando base de datos...</div></div>
+  <section class="modules">
+    <a class="module module-library" href="/library.html">
+      <b id="m1-kicker">Explorar</b>
+      <h4 id="m1-title">Biblioteca</h4>
+      <p id="m1-copy">Busca moléculas por categoría y abre análisis detallado en segundos.</p>
+    </a>
+    <a class="module module-plan" href="/stack-builder.html">
+      <b id="m2-kicker">Personalización</b>
+      <h4 id="m2-title">Plan mensual</h4>
+      <p id="m2-copy">Stack de suplementos/alimentos con timing, dosis y reemplazos.</p>
+    </a>
+    <a class="module module-bio" href="/biohacker-protocol.html">
+      <b id="m3-kicker">Avanzado</b>
+      <h4 id="m3-title">Biohacker Lab</h4>
+      <p id="m3-copy">Módulo experimental para expertos: protocolos más complejos y controlados.</p>
+    </a>
+    <a class="module module-nutri" href="/food-longevity.html">
+      <b id="m4-kicker">Sin suplementos</b>
+      <h4 id="m4-title">Solo nutrición</h4>
+      <p id="m4-copy">Plan de alimentos enfocado en longevidad para usuarios que prefieren dieta.</p>
+    </a>
+  </section>
 </main>
+
 <footer class="legal-footer">
-  <span>Uso informativo. No reemplaza evaluación médica profesional.</span>
+  <span>© 2026 LONGEVAPP</span>
   <span><a href="/terms.html">Términos</a> · <a href="/privacy.html">Privacidad</a></span>
 </footer>
-<button class="to-top" id="to-top" type="button" aria-label="Volver arriba">↑</button>
 
 <script>
-// ─────────────────────────────────────────────
-// CONFIG — Cambia API_BASE según el entorno
-// ─────────────────────────────────────────────
-const CONFIG = {
-  // En desarrollo local: 'http://localhost:3000'
-  // En Vercel: '' (misma URL)
-  API_BASE: '',
-  // URL de la base de datos de moléculas
-  // En Vercel: '/data/molecules.json'
-  // En GitHub Pages: URL raw de GitHub
-  DB_URL_ES: '/data/molecules.json',
-  DB_URL_EN: '/data/molecules.en.json',
-};
-const USER_LANG = getPreferredLang();
-const IS_EN = USER_LANG === 'en';
-document.documentElement.lang = USER_LANG;
-const tr = (es, en) => (IS_EN ? en : es);
+let IS_EN = false;
+function tr(es, en){ return IS_EN ? en : es; }
 
-let DB = null;
-let curFilter = 'all';
-let srQuery = '';
-let aiMode = 'base'; // 'base' | 'latest'
+function applyCopy(){
+  document.documentElement.lang = IS_EN ? 'en' : 'es';
+  const title = document.querySelector('title');
+  if (title) title.textContent = tr('LONGEVAPP — Inicio','LONGEVAPP — Home');
+  document.getElementById('hero-eye').textContent = tr('Biblioteca científica + protocolos personalizados','Scientific library + personalized protocols');
+  document.getElementById('hero-title').innerHTML = tr('Tu plataforma para <em>longevidad práctica</em>','Your platform for <em>practical longevity</em>');
+  document.getElementById('hero-sub').textContent = tr('LONGEVAPP combina una biblioteca extensa de moléculas con planes personalizados de suplementos, alimentos y protocolos biohacker para tomar decisiones rápidas, seguras y accionables.','LONGEVAPP combines an extensive molecule library with personalized supplement, nutrition, and biohacker plans so decisions are fast, safer, and actionable.');
+  document.getElementById('cta-library').textContent = tr('Entrar a Biblioteca →','Open Library →');
+  document.getElementById('cta-plan').textContent = tr('Crear Plan Personalizado','Build Personalized Plan');
 
-// ─────────────────────────────────────────────
-// INIT — Carga la base de datos al arrancar
-// ─────────────────────────────────────────────
-async function init() {
-  applyStaticI18n();
-  try {
-    const dbUrl = IS_EN ? CONFIG.DB_URL_EN : CONFIG.DB_URL_ES;
-    const res = await fetch(dbUrl);
-    if (!res.ok) throw new Error('No se pudo cargar la base de datos');
-    DB = await res.json();
+  document.getElementById('intro-a-title').textContent = tr('1) Biblioteca de longevidad','1) Longevity library');
+  document.getElementById('intro-a-copy').textContent = tr('Explora moléculas naturales y sintéticas con su mecanismo de acción, evidencia y análisis con IA. En móvil, la biblioteca está organizada por carpetas desplegables por categoría.','Explore natural and synthetic molecules with mechanism, evidence, and AI analysis. On mobile, the library is organized as expandable folders by category.');
+  document.getElementById('intro-b-title').textContent = tr('2) Protocolos personalizados','2) Personalized protocols');
+  document.getElementById('intro-b-copy').textContent = tr('Genera estrategias según edad, sexo, objetivos, presupuesto, disponibilidad y restricciones: plan mixto, nutrición pura o biohacker experimental.','Generate strategies by age, sex, goals, budget, availability, and restrictions: mixed plan, food-only, or experimental biohacker mode.');
 
-    // Actualizar stats
-    document.getElementById('cnt').textContent = DB.total || DB.molecules.length;
-    document.getElementById('cat-cnt').textContent = DB.categories?.length || '—';
-    document.getElementById('db-version').textContent = DB.version || '—';
-    document.getElementById('db-date').textContent = DB.last_updated?.slice(0,7) || '—';
+  document.getElementById('m1-kicker').textContent = tr('Explorar','Explore');
+  document.getElementById('m1-title').textContent = tr('Biblioteca','Library');
+  document.getElementById('m1-copy').textContent = tr('Busca moléculas por categoría y abre análisis detallado en segundos.','Find molecules by category and open detailed analysis in seconds.');
+  document.getElementById('m2-kicker').textContent = tr('Personalización','Personalization');
+  document.getElementById('m2-title').textContent = tr('Plan mensual','Monthly plan');
+  document.getElementById('m2-copy').textContent = tr('Stack de suplementos/alimentos con timing, dosis y reemplazos.','Supplements/food stack with timing, dosages, and replacements.');
+  document.getElementById('m3-kicker').textContent = tr('Avanzado','Advanced');
+  document.getElementById('m3-title').textContent = tr('Biohacker Lab','Biohacker Lab');
+  document.getElementById('m3-copy').textContent = tr('Módulo experimental para expertos: protocolos más complejos y controlados.','Experimental expert module: more complex and controlled protocols.');
+  document.getElementById('m4-kicker').textContent = tr('Sin suplementos','No supplements');
+  document.getElementById('m4-title').textContent = tr('Solo nutrición','Food only');
+  document.getElementById('m4-copy').textContent = tr('Plan de alimentos enfocado en longevidad para usuarios que prefieren dieta.','Food-based longevity plan for users who prefer diet over supplements.');
 
-    render();
-    checkProvider();
-  } catch (e) {
-    document.getElementById('mols').innerHTML = `<div class="err">⚠ ${tr('Error cargando base de datos', 'Error loading database')}: ${e.message}</div>`;
-  }
-}
-
-function applyStaticI18n() {
-  updateLangButtons();
-  if (!IS_EN) return;
-  const menuBtn = document.getElementById('menu-toggle');
-  if (menuBtn) menuBtn.setAttribute('aria-label', 'Open menu');
-  const set = (sel, text) => { const el = document.querySelector(sel); if (el) el.textContent = text; };
-  document.title = 'LONGEVAPP — Longevity Molecules';
-  set('.logo-tag', 'v3.1 · Hybrid AI + Curated base');
-  const badges = document.querySelectorAll('.badge-live');
-  if (badges[0]) badges[0].childNodes[1].nodeValue = ' Scientific base active';
-  set('.hero-eye', 'Personalized decisions · Time savings · 30-day follow-up');
-  const h1 = document.querySelector('h1');
-  if (h1) h1.innerHTML = 'Your intelligent map for<br><em>real longevity</em>';
-  set('.hero-sub', 'Explore evidence first, then move into your Personalized Plan for a practical monthly strategy based on profile, budget, and local availability.');
-  const steps = document.querySelectorAll('.flow-step');
-  if (steps[0]) steps[0].innerHTML = '<b>1.</b> 2-minute diagnosis';
-  if (steps[1]) steps[1].innerHTML = '<b>2.</b> Monthly action plan';
-  if (steps[2]) steps[2].innerHTML = '<b>3.</b> Follow-up and replacements';
   const nav = document.querySelectorAll('.topnav a');
-  if (nav[0]) nav[0].textContent = 'Library';
-  if (nav[1]) nav[1].textContent = 'Personalized Plan';
-  if (nav[2]) nav[2].textContent = 'Biohacker';
-  if (nav[3]) nav[3].textContent = 'Nutrition';
-  const qmods = document.querySelectorAll('.qmod');
-  if (qmods[0]) qmods[0].querySelector('b').textContent = 'Personalized Plan';
-  if (qmods[0]) qmods[0].querySelector('span').textContent = 'Start here: monthly protocol + replacements + follow-up';
-  if (qmods[1]) qmods[1].querySelector('b').textContent = 'Biohacker Lab';
-  if (qmods[1]) qmods[1].querySelector('span').textContent = 'Advanced and experimental module for expert users';
-  if (qmods[2]) qmods[2].querySelector('b').textContent = 'Nutrition';
-  if (qmods[2]) qmods[2].querySelector('span').textContent = 'Food-first approach, no supplements';
-  const si = document.getElementById('si');
-  if (si) si.placeholder = 'Search molecule or ask about any compound...';
-  const sbtn = document.getElementById('sbtn');
-  if (sbtn) sbtn.textContent = 'Analyze →';
-  const trust = document.getElementById('medical-trust');
-  if (trust) trust.textContent = 'Clinical-led approach: platform designed by a physician, prioritizing safety and interactions.';
-  const modeBase = document.getElementById('mode-base');
-  if (modeBase) modeBase.innerHTML = '📚 Curated base';
-  const modeLatest = document.getElementById('mode-latest');
-  if (modeLatest) modeLatest.innerHTML = '🔍 2025-2026 updates';
-  if (modeLatest) modeLatest.title = 'Searches recent papers with web search (Anthropic)';
-  const filterBtns = document.querySelectorAll('.filters .fp');
-  const filterMap = [
-    'All',
-    '🌿 Natural',
-    '⚗️ Synthetic',
-    '🍄 Mushrooms',
-    'Adaptogens',
-    'Senolytics',
-    'mTOR/AMPK',
-    'NAD+/Sirtuins',
-    'Mitochondria',
-    'Anti-inflammatory',
-    'Epigenetics',
-  ];
-  filterBtns.forEach((btn, i) => { if (filterMap[i]) btn.textContent = filterMap[i]; });
-  const statLabels = document.querySelectorAll('.stat-l');
-  if (statLabels[0]) statLabels[0].textContent = 'Molecules';
-  if (statLabels[1]) statLabels[1].textContent = 'Categories';
-  if (statLabels[2]) statLabels[2].textContent = 'DB Version';
-  if (statLabels[3]) statLabels[3].textContent = 'Updated';
-  const discoverBtn = document.querySelector('.discover-btn');
-  if (discoverBtn) discoverBtn.innerHTML = '<span>🔬</span> Discover new 2025-2026 molecules with AI';
-  const closeBtn = document.querySelector('.disc-close');
-  if (closeBtn) closeBtn.textContent = '✕ Close';
-  const loading = document.querySelector('#mols .nores');
-  if (loading && loading.textContent.includes('Cargando')) loading.textContent = 'Loading database...';
+  if (nav[0]) nav[0].textContent = tr('Inicio','Home');
+  if (nav[1]) nav[1].textContent = tr('Biblioteca','Library');
+  if (nav[2]) nav[2].textContent = tr('Plan Personalizado','Personalized Plan');
+  if (nav[3]) nav[3].textContent = tr('Biohacker','Biohacker');
+  if (nav[4]) nav[4].textContent = tr('Nutrición','Nutrition');
+
+  const footer = document.querySelector('.legal-footer span:last-child');
+  if (footer) footer.innerHTML = IS_EN ? '<a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a>' : '<a href="/terms.html">Términos</a> · <a href="/privacy.html">Privacidad</a>';
+
+  document.getElementById('lang-es').classList.toggle('active', !IS_EN);
+  document.getElementById('lang-en').classList.toggle('active', IS_EN);
 }
 
-function getPreferredLang() {
-  const saved = String(localStorage.getItem('longeva_lang') || '').toLowerCase();
-  if (saved === 'en' || saved === 'es') return saved;
-  return String(navigator.language || 'es').toLowerCase().startsWith('en') ? 'en' : 'es';
+function setLanguage(lang){
+  IS_EN = lang === 'en';
+  localStorage.setItem('longeva_lang', IS_EN ? 'en' : 'es');
+  applyCopy();
 }
 
-function setPreferredLang(lang) {
-  const next = lang === 'en' ? 'en' : 'es';
-  localStorage.setItem('longeva_lang', next);
-  location.reload();
-}
+(function init(){
+  const saved = localStorage.getItem('longeva_lang');
+  IS_EN = saved ? saved === 'en' : String(navigator.language || 'es').toLowerCase().startsWith('en');
+  applyCopy();
 
-function updateLangButtons() {
-  document.getElementById('lang-es')?.classList.toggle('active', USER_LANG === 'es');
-  document.getElementById('lang-en')?.classList.toggle('active', USER_LANG === 'en');
-}
-
-function initMobileMenu() {
-  const btn = document.getElementById('menu-toggle');
-  const row = document.querySelector('.topnav-row');
+  const menuToggle = document.getElementById('menu-toggle');
+  const topnavRow = document.getElementById('topnav-row');
   const backdrop = document.getElementById('mobile-nav-backdrop');
-  if (!btn || !row) return;
-  const closeMenu = () => {
-    row.classList.remove('open');
-    btn.classList.remove('active');
-    btn.setAttribute('aria-expanded', 'false');
-    document.body.classList.remove('menu-open');
-  };
-  const openMenu = () => {
-    row.classList.add('open');
-    btn.classList.add('active');
-    btn.setAttribute('aria-expanded', 'true');
-    document.body.classList.add('menu-open');
-  };
-  btn.addEventListener('click', () => {
-    if (row.classList.contains('open')) closeMenu();
-    else openMenu();
-  });
+  function closeMenu(){ document.body.classList.remove('menu-open'); menuToggle.classList.remove('active'); topnavRow.classList.remove('open'); menuToggle.setAttribute('aria-expanded','false'); }
+  function toggleMenu(){ const open = !topnavRow.classList.contains('open'); if(open){ document.body.classList.add('menu-open'); menuToggle.classList.add('active'); topnavRow.classList.add('open'); menuToggle.setAttribute('aria-expanded','true'); } else { closeMenu(); } }
+  menuToggle?.addEventListener('click', toggleMenu);
   backdrop?.addEventListener('click', closeMenu);
-  row.querySelectorAll('a').forEach((a) => a.addEventListener('click', closeMenu));
-  document.addEventListener('click', (e) => {
-    if (row.contains(e.target) || btn.contains(e.target)) return;
-    closeMenu();
-  });
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeMenu();
-  });
-  window.addEventListener('resize', () => {
-    if (window.innerWidth > 900) closeMenu();
-  });
-}
-
-initMobileMenu();
-
-// ─────────────────────────────────────────────
-// PROVIDER CHECK
-// ─────────────────────────────────────────────
-async function checkProvider() {
-  try {
-    const res = await fetch(`${CONFIG.API_BASE}/api/analyze`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ molecule: '__ping__' }),
-    });
-    const data = await res.json();
-    const prov = data.provider || 'unknown';
-    const badge = document.getElementById('provider-badge');
-    const name = document.getElementById('provider-name');
-    badge.classList.remove('openai', 'groq');
-    if (prov === 'groq') {
-      badge.classList.add('groq');
-      name.textContent = IS_EN ? 'Groq (testing)' : 'Groq (testing)';
-    } else if (prov === 'openai') {
-      badge.classList.add('openai');
-      name.textContent = IS_EN ? 'OpenAI (production)' : 'OpenAI (producción)';
-    } else if (prov === 'anthropic') {
-      name.textContent = IS_EN ? 'Claude (production)' : 'Claude (producción)';
-    } else {
-      name.textContent = prov;
-    }
-  } catch {
-    document.getElementById('provider-name').textContent = tr('API no detectada', 'API not detected');
-  }
-}
-
-// ─────────────────────────────────────────────
-// FILTER + RENDER
-// ─────────────────────────────────────────────
-function fil(f, btn) {
-  curFilter = f;
-  document.querySelectorAll('.fp').forEach(x => x.classList.remove('active'));
-  btn.classList.add('active');
-  render();
-}
-
-function setMode(m, btn) {
-  aiMode = m;
-  document.querySelectorAll('.mode-btn').forEach(x => x.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('si').placeholder = m === 'latest'
-    ? tr('Buscar novedades: Taurina 2024, nuevas senolíticas, NAD+ estudios recientes...', 'Search updates: Taurine 2024, new senolytics, recent NAD+ studies...')
-    : tr('Buscar molécula o preguntar sobre cualquier compuesto...', 'Search molecule or ask about any compound...');
-}
-
-function getFiltered() {
-  if (!DB) return [];
-  let mols = [...DB.molecules];
-  if (srQuery) {
-    const q = srQuery.toLowerCase();
-    mols = mols.filter(m =>
-      m.name?.toLowerCase().includes(q) ||
-      m.full_name?.toLowerCase().includes(q) ||
-      m.category?.toLowerCase().includes(q) ||
-      m.description?.toLowerCase().includes(q) ||
-      m.pathways?.some(p => p.toLowerCase().includes(q))
-    );
-  }
-  if (curFilter === 'all') return mols;
-  if (curFilter === 'natural') return mols.filter(m => m.type === 'natural');
-  if (curFilter === 'synthetic') return mols.filter(m => m.type === 'synthetic');
-  if (curFilter === 'hongos') return mols.filter(m => m.tags?.includes('hongos'));
-  if (curFilter === 'mTOR') return mols.filter(m => m.tags?.includes('mTOR') || m.pathways?.some(p => p.includes('mTOR')));
-  if (curFilter === 'sirtuins') return mols.filter(m => m.tags?.includes('sirtuins') || m.tags?.includes('NAD') || m.pathways?.some(p => p.includes('SIRT')));
-  if (curFilter === 'senolytic') return mols.filter(m => m.tags?.includes('senolytic'));
-  if (curFilter === 'NAD') return mols.filter(m => m.tags?.includes('NAD'));
-  if (curFilter === 'adaptogen') return mols.filter(m => m.tags?.includes('adaptogen'));
-  if (curFilter === 'mitocondria') return mols.filter(m => m.tags?.includes('mitocondria'));
-  if (curFilter === 'inflamacion') return mols.filter(m => m.tags?.includes('inflamacion'));
-  if (curFilter === 'epigenetica') return mols.filter(m => m.tags?.includes('epigenetica'));
-  return mols;
-}
-
-const CC = {
-  'Hongos Medicinales':'#00c8a0','NAD⁺ / Sirtuinas':'#a78bfa',
-  'Polifenoles':'#34d399','Adaptógenos':'#f59e0b',
-  'Vitaminas de Longevidad':'#60a5fa','Mitocondria / Bioenergética':'#f97316',
-  'Senolíticos / mTOR':'#f43f5e','Epigenética / Reprogramación':'#e879f9',
-  'Aminoácidos / Péptidos':'#84cc16','Plantas Medicinales':'#22c55e',
-  'Microbioma':'#2dd4bf','Hormonas / Neuroendocrino':'#fbbf24',
-  'Emergentes 2025-2026':'#e11d48'
-};
-
-function render() {
-  const fl = getFiltered();
-  document.getElementById('cnt').textContent = fl.length;
-  if (!fl.length) {
-    document.getElementById('mols').innerHTML = `<div class="nores">${tr('Sin resultados. Usa el botón "Analizar →" para consultar con IA cualquier compuesto.', 'No results. Use "Analyze →" to query AI about any compound.')}</div>`;
-    return;
-  }
-  const cats = {};
-  fl.forEach(m => { if (!cats[m.category]) cats[m.category] = []; cats[m.category].push(m); });
-  let h = '';
-  Object.entries(cats).forEach(([cat, ms]) => {
-    const col = CC[cat] || '#888';
-    const catLabel = translateCategory(cat);
-    h += `<div class="cat-sec"><div class="cat-lbl"><div class="cat-dot" style="background:${col}"></div><span class="cat-txt">${catLabel}</span><div class="cat-line"></div><span class="cat-txt">${ms.length} ${tr('mol.', 'mol.')}</span></div><div class="grid">`;
-    ms.forEach((m, i) => {
-      const tc = m.type === 'natural' ? 'tn' : 'ts';
-      const tl = m.type === 'natural' ? '🌿' : '⚗️';
-      const typeLabel = m.type === 'natural' ? tr('Natural', 'Natural') : tr('Sintética', 'Synthetic');
-      const description = IS_EN
-        ? (m.description_en || buildEnglishCardDescription(m))
-        : (m.description || '');
-      const encoded = encodeURIComponent(JSON.stringify({
-        name: m.name || '',
-        full_name: m.full_name || m.name || '',
-        pathways: m.pathways || [],
-        category: m.category || '',
-        study_count: m.study_count || 0,
-      }));
-      h += `<div class="card js-mol-card" data-mol="${encoded}" style="animation-delay:${i * .035}s">
-        <div class="card-top"><div class="mol-n">${m.name}</div><div class="tb ${tc}">${tl} ${typeLabel}</div></div>
-        <div class="card-desc">${description}</div>
-        <div class="chips">${(m.pathways||[]).map(p=>`<span class="chip">${p}</span>`).join('')}</div>
-        <div class="card-meta"><div class="ev">${tr('Evidencia', 'Evidence')} <span>${m.evidence_rating||'N/A'}</span> · ${m.study_count||0}+ ${tr('est.', 'studies')}</div><div class="explore">${tr('Ver análisis →', 'View analysis →')}</div></div>
-      </div>`;
-    });
-    h += `</div></div>`;
-  });
-  document.getElementById('mols').innerHTML = h;
-  bindMoleculeCards();
-}
-
-function translateCategory(cat) {
-  if (!IS_EN) return cat;
-  const map = {
-    'Hongos Medicinales': 'Medicinal Mushrooms',
-    'NAD⁺ / Sirtuinas': 'NAD⁺ / Sirtuins',
-    'Polifenoles': 'Polyphenols',
-    'Adaptógenos': 'Adaptogens',
-    'Vitaminas de Longevidad': 'Longevity Vitamins',
-    'Mitocondria / Bioenergética': 'Mitochondria / Bioenergetics',
-    'Senolíticos / mTOR': 'Senolytics / mTOR',
-    'Epigenética / Reprogramación': 'Epigenetics / Reprogramming',
-    'Aminoácidos / Péptidos': 'Amino Acids / Peptides',
-    'Plantas Medicinales': 'Medicinal Plants',
-    'Microbioma': 'Microbiome',
-    'Hormonas / Neuroendocrino': 'Hormones / Neuroendocrine',
-    'Emergentes 2025-2026': 'Emerging 2025-2026',
-  };
-  return map[cat] || cat;
-}
-
-function buildEnglishCardDescription(m) {
-  const pathways = Array.isArray(m?.pathways) ? m.pathways.slice(0, 2).join(', ') : '';
-  if (pathways) return `Potential longevity support via ${pathways}.`;
-  const category = translateCategory(m?.category || 'Longevity compounds');
-  return `${category} candidate associated with healthy aging pathways.`;
-}
-
-function bindMoleculeCards() {
-  document.querySelectorAll('.js-mol-card').forEach((card) => {
-    card.addEventListener('click', async () => {
-      try {
-        const raw = card.getAttribute('data-mol') || '';
-        const payload = JSON.parse(decodeURIComponent(raw));
-        await askMol(
-          payload.name,
-          payload.full_name,
-          payload.pathways || [],
-          payload.category || '',
-          payload.study_count || 0
-        );
-      } catch (_e) {}
-    });
-  });
-}
-
-// ─────────────────────────────────────────────
-// IA — Analizar molécula
-// ─────────────────────────────────────────────
-async function askMol(name, fullName, pathways, category, studyCount) {
-  document.getElementById('si').value = name;
-  srQuery = '';
-  render();
-  const panel = document.getElementById('ai-panel');
-  const area = document.getElementById('ai-area');
-  panel.style.display = 'block';
-  panel.classList.remove('panel-flash');
-  area.innerHTML = `<div class="loading"><div class="spin"></div>${tr('Analizando', 'Analyzing')} <strong style="color:var(--accent)">${name}</strong>...</div>`;
-  scrollToAiPanel(true);
-  await searchIA(name, fullName, pathways, category, studyCount);
-}
-
-async function searchIA(forceName, forceFull, forcePaths, forceCat, forceStudies) {
-  const q = forceName || document.getElementById('si').value.trim();
-  if (!q || q === '__ping__') return;
-
-  if (!forceName) {
-    srQuery = q;
-    render();
-  }
-
-  const panel = document.getElementById('ai-panel');
-  const area = document.getElementById('ai-area');
-  panel.style.display = 'block';
-
-  const isLatest = aiMode === 'latest';
-  area.innerHTML = `<div class="loading"><div class="spin ${isLatest?'spin-blue':''}"></div>${isLatest ? `${tr('Buscando novedades 2025-2026 sobre', 'Searching 2025-2026 updates for')} <strong style="color:var(--accent2)">${q}</strong>...` : `${tr('Analizando', 'Analyzing')} <strong style="color:var(--accent)">${q}</strong>...`}</div>`;
-
-  if (!forceName) scrollToAiPanel(false);
-
-  // Buscar en la DB local
-  const lm = DB?.molecules?.find(m =>
-    m.name?.toLowerCase() === q.toLowerCase() ||
-    m.full_name?.toLowerCase().includes(q.toLowerCase()) ||
-    q.toLowerCase().includes(m.name?.toLowerCase() || '')
-  );
-
-  const mol = lm || {
-    name: q, full_name: forceFull || q,
-    pathways: forcePaths || [], category: forceCat || '',
-    evidence_rating: 'N/A', study_count: forceStudies || 0, type: 'unknown'
-  };
-
-  try {
-    const res = await fetch(`${CONFIG.API_BASE}/api/analyze`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        molecule: mol.name,
-        full_name: mol.full_name,
-        pathways: mol.pathways,
-        category: mol.category,
-        study_count: mol.study_count,
-        mode: isLatest ? 'latest' : 'base',
-        lang: USER_LANG,
-      }),
-    });
-
-    if (!res.ok) throw new Error(`Error ${res.status}`);
-    const data = await res.json();
-
-    area.innerHTML = `
-      <div class="ai-head">
-        <div class="ai-mol-name">${mol.full_name || q}</div>
-        <div class="ai-head-right">
-          ${!isLatest ? `<button class="cbtn latest-btn" onclick="setModeAndSearch('${mol.name.replace(/'/g,"\\'")}')">🔍 ${tr('Ver novedades', 'See updates')}</button>` : ''}
-          <button class="cbtn" onclick="document.getElementById('ai-panel').style.display='none'">✕</button>
-        </div>
-      </div>
-      <div class="ai-tags">
-        ${mol.type==='natural'?'<span class="at tn">🌿 Natural</span>':''}
-        ${mol.type==='synthetic'?'<span class="at ts">⚗️ Sintética</span>':''}
-        ${mol.category?`<span class="at tp">${mol.category}</span>`:''}
-        ${(mol.pathways||[]).slice(0,4).map(p=>`<span class="at tp">${p}</span>`).join('')}
-        ${mol.evidence_rating&&mol.evidence_rating!=='N/A'?`<span class="at te">Evidencia ${mol.evidence_rating}</span>`:''}
-        ${isLatest?`<span class="at" style="background:rgba(0,152,255,.1);border:1px solid rgba(0,152,255,.25);color:var(--accent2)">🔍 ${tr('Búsqueda web', 'Web search')}</span>`:''}
-      </div>
-      <div class="ai-body">${fmt(data.text || '')}</div>
-      <div class="ai-provider-note">Análisis generado con ${
-        data.provider === 'anthropic'
-          ? 'Claude (Anthropic)'
-          : data.provider === 'groq'
-            ? 'Llama 3.3 70B (Groq - modo testing)'
-            : data.provider === 'openai'
-              ? 'GPT-4.1 (OpenAI)'
-              : data.provider
-      }</div>`;
-    panel.classList.add('panel-flash');
-    setTimeout(() => panel.classList.remove('panel-flash'), 900);
-
-  } catch (e) {
-    area.innerHTML = `<div class="err">⚠ ${tr('Error al conectar con el backend. ¿Está ejecutándose el servidor?', 'Error connecting to backend. Is the server running?')} (${e.message})</div>`;
-  }
-}
-
-function setModeAndSearch(name) {
-  aiMode = 'latest';
-  document.querySelectorAll('.mode-btn').forEach(x => x.classList.remove('active'));
-  document.getElementById('mode-latest').classList.add('active');
-  askMol(name);
-}
-
-// ─────────────────────────────────────────────
-// DISCOVER — Nuevas moléculas 2025-2026
-// ─────────────────────────────────────────────
-async function discoverNew() {
-  const panel = document.getElementById('discover-panel');
-  const content = document.getElementById('discover-content');
-  panel.style.display = 'block';
-  content.innerHTML = `<div class="loading"><div class="spin spin-blue"></div>${tr('Buscando últimos descubrimientos en PubMed, Nature Aging, bioRxiv...', 'Searching latest discoveries in PubMed, Nature Aging, bioRxiv...')}</div>`;
-  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-  try {
-    const res = await fetch(`${CONFIG.API_BASE}/api/discover`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ query: 'nuevas moléculas longevidad antiaging 2025 2026' }),
-    });
-    const data = await res.json();
-    if (data.limited) {
-      content.innerHTML = `<p style="color:var(--muted)">⚠ ${data.text}</p>`;
-    } else {
-      content.innerHTML = fmt(data.text || '');
-    }
-  } catch (e) {
-    content.innerHTML = `<div class="err">⚠ ${tr('Error', 'Error')}: ${e.message}</div>`;
-  }
-}
-
-// ─────────────────────────────────────────────
-// FORMAT MARKDOWN → HTML
-// ─────────────────────────────────────────────
-function fmt(t) {
-  return t
-    .replace(/^### (.+)$/gm, '<h3>$1</h3>')
-    .replace(/^## (.+)$/gm, '<h3>$1</h3>')
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/^- (.+)$/gm, '<li>$1</li>')
-    .replace(/(<li>[^<]*<\/li>\n?)+/g, m => `<ul>${m}</ul>`)
-    .replace(/\n{2,}/g, '</p><p>')
-    .replace(/(→|⟶|=>)/g, '<span style="color:var(--accent)">$1</span>')
-    .split('\n').filter(l => l.trim()).join('\n');
-}
-
-function scrollToAiPanel(force = false) {
-  const panel = document.getElementById('ai-panel');
-  if (!panel) return;
-  const header = document.querySelector('header');
-  const headerH = header ? header.getBoundingClientRect().height : 0;
-  const y = window.scrollY + panel.getBoundingClientRect().top - headerH - 10;
-  if (force || Math.abs(window.scrollY - y) > 24) {
-    window.scrollTo({ top: Math.max(y, 0), behavior: 'smooth' });
-  }
-}
-
-function initToTop() {
-  const btn = document.getElementById('to-top');
-  if (!btn) return;
-  const toggle = () => btn.classList.toggle('show', window.scrollY > 420);
-  btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-  window.addEventListener('scroll', toggle, { passive: true });
-  toggle();
-}
-
-// ─────────────────────────────────────────────
-// EVENTS
-// ─────────────────────────────────────────────
-document.getElementById('si').addEventListener('keydown', e => {
-  if (e.key === 'Enter') { srQuery = ''; searchIA(); }
-});
-document.getElementById('si').addEventListener('input', e => {
-  srQuery = e.target.value.trim();
-  if (DB) render();
-});
-
-// START
-initToTop();
-init();
+  window.addEventListener('resize', () => { if (window.innerWidth > 900) closeMenu(); });
+  document.querySelectorAll('.topnav a').forEach((a) => a.addEventListener('click', closeMenu));
+})();
 </script>
 </body>
 </html>
