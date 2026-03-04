@@ -22,6 +22,13 @@
   .logo-name{font-family:'DM Serif Display',serif;font-size:26px;letter-spacing:.1em;color:var(--accent);text-shadow:0 0 30px rgba(106,255,217,.45)}
   .logo-tag{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:.16em}
   .status-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+  .menu-toggle{display:none;align-items:center;justify-content:center;flex-direction:column;gap:4px;width:34px;height:34px;border-radius:9px;border:1px solid var(--border);background:rgba(255,255,255,.02);cursor:pointer;transition:border-color .2s ease,background .2s ease}
+  .menu-toggle span{display:block;width:15px;height:2px;border-radius:999px;background:var(--accent);transition:transform .2s ease,opacity .2s ease}
+  .menu-toggle.active{border-color:rgba(106,255,217,.55);background:rgba(106,255,217,.08)}
+  .menu-toggle.active span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+  .menu-toggle.active span:nth-child(2){opacity:0}
+  .menu-toggle.active span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+  .mobile-nav-backdrop{display:none}
   .topnav-row{width:100%}
   .topnav{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
   .topnav a{padding:7px 13px;border-radius:999px;border:1px solid var(--border);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--muted);text-decoration:none;transition:.2s;background:rgba(255,255,255,.01)}
@@ -187,11 +194,17 @@
     .stats{grid-template-columns:repeat(2,minmax(120px,1fr));padding:0 16px}
     .quick-modules{grid-template-columns:1fr}
   }
-  @media(max-width:768px){
+  @media(max-width:900px){
     header{position:relative;padding:14px 12px;margin:0 0 14px}
-    .header-top{align-items:flex-start;flex-direction:column;gap:8px}
-    .status-row{width:100%;justify-content:flex-start}
-    .topnav{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:6px}
+    .header-top{align-items:center;justify-content:space-between;flex-direction:row;gap:8px}
+    .status-row{width:auto;justify-content:flex-end;margin-left:auto}
+    .menu-toggle{display:inline-flex;position:relative;z-index:22}
+    .mobile-nav-backdrop{display:block;position:fixed;inset:0;background:rgba(4,8,14,.5);backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .22s ease;z-index:19}
+    body.menu-open .mobile-nav-backdrop{opacity:1;pointer-events:auto}
+    body.menu-open{overflow:hidden}
+    .topnav-row{display:block;position:absolute;left:12px;right:12px;top:calc(100% - 2px);opacity:0;transform:translateY(-8px) scale(.985);pointer-events:none;transition:opacity .2s ease,transform .2s ease;z-index:22}
+    .topnav-row.open{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
+    .topnav{width:100%;display:grid;grid-template-columns:1fr;gap:6px;padding:10px;border:1px solid var(--border);border-radius:12px;background:rgba(5,7,12,.96);backdrop-filter:blur(10px);box-shadow:0 16px 34px rgba(0,0,0,.36)}
     .topnav a{white-space:normal;text-align:center;padding:10px 8px;font-size:10px;line-height:1.2}
     .badge{display:none}
     .hero{padding:22px 12px 14px}
@@ -221,6 +234,9 @@
     .card-desc{font-size:12px;line-height:1.45}
     .chip{font-size:8px;padding:2px 8px}
   }
+  .legal-footer{position:relative;z-index:10;max-width:1320px;margin:18px auto 22px;padding:0 16px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.04em;color:var(--dim)}
+  .legal-footer a{color:var(--muted);text-decoration:none}
+  .legal-footer a:hover{color:var(--accent)}
 </style>
 </head>
 <body>
@@ -241,6 +257,9 @@
       <button class="lang-btn" id="lang-en" onclick="setPreferredLang('en')">EN</button>
     </div>
   </div>
+  <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Abrir menú" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
   </div>
   <div class="topnav-row">
     <nav class="topnav">
@@ -250,6 +269,7 @@
       <a href="/food-longevity.html">Nutrición</a>
     </nav>
   </div>
+  <div class="mobile-nav-backdrop" id="mobile-nav-backdrop"></div>
 </header>
 
 <section class="hero">
@@ -329,6 +349,10 @@
   <!-- Grid de moléculas -->
   <div id="mols"><div class="nores">Cargando base de datos...</div></div>
 </main>
+<footer class="legal-footer">
+  <span>Uso informativo. No reemplaza evaluación médica profesional.</span>
+  <span><a href="/terms.html">Términos</a> · <a href="/privacy.html">Privacidad</a></span>
+</footer>
 
 <script>
 // ─────────────────────────────────────────────
@@ -381,6 +405,8 @@ async function init() {
 function applyStaticI18n() {
   updateLangButtons();
   if (!IS_EN) return;
+  const menuBtn = document.getElementById('menu-toggle');
+  if (menuBtn) menuBtn.setAttribute('aria-label', 'Open menu');
   const set = (sel, text) => { const el = document.querySelector(sel); if (el) el.textContent = text; };
   document.title = 'LONGEVAPP — Longevity Molecules';
   set('.logo-tag', 'v3.1 · Hybrid AI + Curated base');
@@ -461,6 +487,43 @@ function updateLangButtons() {
   document.getElementById('lang-es')?.classList.toggle('active', USER_LANG === 'es');
   document.getElementById('lang-en')?.classList.toggle('active', USER_LANG === 'en');
 }
+
+function initMobileMenu() {
+  const btn = document.getElementById('menu-toggle');
+  const row = document.querySelector('.topnav-row');
+  const backdrop = document.getElementById('mobile-nav-backdrop');
+  if (!btn || !row) return;
+  const closeMenu = () => {
+    row.classList.remove('open');
+    btn.classList.remove('active');
+    btn.setAttribute('aria-expanded', 'false');
+    document.body.classList.remove('menu-open');
+  };
+  const openMenu = () => {
+    row.classList.add('open');
+    btn.classList.add('active');
+    btn.setAttribute('aria-expanded', 'true');
+    document.body.classList.add('menu-open');
+  };
+  btn.addEventListener('click', () => {
+    if (row.classList.contains('open')) closeMenu();
+    else openMenu();
+  });
+  backdrop?.addEventListener('click', closeMenu);
+  row.querySelectorAll('a').forEach((a) => a.addEventListener('click', closeMenu));
+  document.addEventListener('click', (e) => {
+    if (row.contains(e.target) || btn.contains(e.target)) return;
+    closeMenu();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeMenu();
+  });
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 900) closeMenu();
+  });
+}
+
+initMobileMenu();
 
 // ─────────────────────────────────────────────
 // PROVIDER CHECK

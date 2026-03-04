@@ -1,4 +1,10 @@
 {
+  "redirects": [
+    { "source": "/terms", "destination": "/terms.html", "permanent": true },
+    { "source": "/privacy", "destination": "/privacy.html", "permanent": true },
+    { "source": "/legal/terms.html", "destination": "/terms.html", "permanent": true },
+    { "source": "/legal/privacy.html", "destination": "/privacy.html", "permanent": true }
+  ],
   "functions": {
     "api/*.js": {
       "maxDuration": 30
