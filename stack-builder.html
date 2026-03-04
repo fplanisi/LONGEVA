@@ -106,16 +106,16 @@ header {
 .topnav a.nav-bio.active { color: #ffd6ee; border-color: rgba(255,122,199,.72); background: linear-gradient(135deg,rgba(159,123,255,.3),rgba(255,95,127,.24)); box-shadow: 0 0 0 1px rgba(255,122,199,.25) inset, 0 0 18px rgba(255,95,127,.26); }
 
 /* ── MAIN WRAPPER ── */
-.wrapper { position: relative; z-index: 10; max-width: 860px; margin: 0 auto; padding: 0 24px 100px; }
+.stack-main { position: relative; z-index: 10; max-width: 860px; margin: 0 auto; padding: 0 24px 100px; }
 
 /* ── HERO ── */
 .hero { position: relative; z-index: 10; text-align: center; padding: 48px 48px 28px; max-width: 1320px; margin: 0 auto; }
 .hero::before { content:''; position:absolute; inset:0 26px; background:linear-gradient(145deg,rgba(106,255,217,.06),rgba(82,184,255,.03)); border:1px solid rgba(106,255,217,.12); border-radius:20px; z-index:-1; }
 .hero-kicker { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .2em; color: var(--muted); text-transform: uppercase; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 12px; }
 .hero-kicker::before, .hero-kicker::after { content: ''; width: 40px; height: 1px; background: var(--border2); }
-.hero-title { font-family: 'DM Serif Display', serif; font-size: clamp(44px, 6vw, 80px); font-weight: 400; line-height: 1.05; margin-bottom: 20px; }
+.hero-title { font-family: 'DM Serif Display', serif; font-size: clamp(34px,5vw,68px); font-weight: 400; line-height: 1.06; margin-bottom: 12px; letter-spacing: .01em; }
 .hero-title em { font-style: italic; color: var(--accent3); display: block; text-shadow:0 0 45px rgba(209,255,90,.2); }
-.hero-sub { font-size: 15px; color: var(--muted); max-width: 480px; margin: 0 auto 40px; line-height: 1.7; font-weight: 400; }
+.hero-sub { font-size: 14px; color: var(--muted); max-width: 580px; margin: 0 auto 28px; line-height: 1.65; font-weight: 300; }
 .hero-trust { margin: -20px auto 22px; display: inline-flex; gap: 8px; align-items: center; border: 1px solid var(--border2); border-radius: 999px; padding: 7px 12px; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: .06em; background: rgba(255,255,255,.02); }
 .hero-proof { display: flex; justify-content: center; gap: 32px; flex-wrap: wrap; }
 .hero-link {
@@ -571,11 +571,11 @@ input[type=range]::-webkit-slider-thumb {
   .topnav { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
   .topnav a { white-space: normal; text-align: center; padding: 10px 8px; font-size: 10px; line-height: 1.2; }
   .badge { display: none; }
-  .wrapper { padding: 0 14px 72px; }
+  .stack-main { padding: 0 14px 72px; }
   .hero { padding: 22px 12px 14px; }
   .hero::before { inset: 0; }
   .hero-kicker { font-size: 9px; margin-bottom: 12px; }
-  .hero-title { font-size: clamp(34px, 11vw, 54px); margin-bottom: 12px; }
+  .hero-title { font-size: clamp(30px,9vw,42px); margin-bottom: 10px; }
   .hero-sub { font-size: 13px; line-height: 1.6; margin-bottom: 22px; }
   .hero-proof { gap: 16px; }
   .proof-n { font-size: 24px; }
@@ -650,25 +650,25 @@ input[type=range]::-webkit-slider-thumb {
   </div>
 </header>
 
-<div class="wrapper">
-
-  <!-- HERO -->
-  <div class="hero">
-    <div class="hero-kicker">Personalización científica</div>
-    <h1 class="hero-title">
-      Tu protocolo exacto
-      <em>de longevidad</em>
-    </h1>
-    <p class="hero-sub">120+ moléculas validadas. IA que analiza tu perfil y diseña el stack óptimo para ti — con dosis, horarios y sinergias.</p>
-    <p class="hero-trust" id="hero-trust-med">Diseño clínico por médico · priorización de seguridad y contraindicaciones</p>
-    <div class="hero-proof">
-      <div class="proof-item"><div class="proof-n">120+</div><div class="proof-l">Moléculas</div></div>
-      <div class="proof-item"><div class="proof-n">5</div><div class="proof-l">Variables</div></div>
-      <div class="proof-item"><div class="proof-n">IA</div><div class="proof-l">Análisis</div></div>
-      <div class="proof-item"><div class="proof-n">2min</div><div class="proof-l">Proceso</div></div>
-    </div>
-    <a class="hero-link" href="/biohacker-protocol.html">🧪 Módulo Biohacker Experimental (Peptidos)</a>
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-kicker">Personalización científica</div>
+  <h1 class="hero-title">
+    Tu protocolo exacto
+    <em>de longevidad</em>
+  </h1>
+  <p class="hero-sub">120+ moléculas validadas. IA que analiza tu perfil y diseña el stack óptimo para ti — con dosis, horarios y sinergias.</p>
+  <p class="hero-trust" id="hero-trust-med">Diseño clínico por médico · priorización de seguridad y contraindicaciones</p>
+  <div class="hero-proof">
+    <div class="proof-item"><div class="proof-n">120+</div><div class="proof-l">Moléculas</div></div>
+    <div class="proof-item"><div class="proof-n">5</div><div class="proof-l">Variables</div></div>
+    <div class="proof-item"><div class="proof-n">IA</div><div class="proof-l">Análisis</div></div>
+    <div class="proof-item"><div class="proof-n">2min</div><div class="proof-l">Proceso</div></div>
   </div>
+  <a class="hero-link" href="/biohacker-protocol.html">🧪 Módulo Biohacker Experimental (Peptidos)</a>
+</div>
+
+<div class="stack-main">
 
   <!-- EMAIL GATE -->
   <div id="email-gate">
@@ -1868,7 +1868,8 @@ function applyStaticI18n() {
   set('.logo-tag', 'v3.1 · Hybrid AI + Curated base');
   document.title = 'LONGEVAPP — Your Personalized Plan';
   set('.hero-kicker', 'Scientific personalization');
-  set('.hero-title', 'Build your longevity stack');
+  const heroTitle = document.querySelector('.hero-title');
+  if (heroTitle) heroTitle.innerHTML = 'Build your exact<br><em>longevity stack</em>';
   set('.hero-sub', '120+ validated molecules. AI designs your optimal stack with doses, timing, and synergies.');
   set('#hero-trust-med', 'Physician-led clinical design · safety and contraindication-first logic');
   set('.hero-link', 'Back to library');
