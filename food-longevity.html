@@ -4,26 +4,27 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LONGEVA — Nutrición de Longevidad</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#081019; --surface:#101a28; --surface2:#162234; --border:#233852;
-  --text:#ebf4ff; --muted:#9bb0ca; --accent:#6be0b7; --accent2:#7ac8ff; --gold:#f0c784;
+  --bg:#05070c; --surface:#0e141f; --surface2:#121b29; --border:#223147;
+  --text:#edf3ff; --muted:#90a5c2; --accent:#6affd9; --accent2:#52b8ff; --gold:#f0c784;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{
-  font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
-  background:radial-gradient(circle at top right,#12283d 0%,#081019 50%);
+  font-family:'Instrument Sans',sans-serif;
+  background:radial-gradient(circle at top right,#132235 0%,#05070c 50%);
   color:var(--text); min-height:100vh;
 }
 .wrap{max-width:1080px;margin:0 auto;padding:24px 16px 70px}
 .top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:22px}
-.brand{font-size:14px;letter-spacing:.14em;color:var(--accent)}
+.brand{font-size:14px;letter-spacing:.14em;color:var(--accent);font-family:'DM Serif Display',serif}
 .topnav{display:flex;gap:8px;flex-wrap:wrap}
-.topnav a{font-size:11px;text-decoration:none;color:var(--muted);padding:7px 12px;border-radius:999px;border:1px solid var(--border);background:rgba(255,255,255,.01)}
+.topnav a{font-size:11px;text-decoration:none;color:var(--muted);padding:7px 12px;border-radius:999px;border:1px solid var(--border);background:rgba(255,255,255,.01);font-family:'DM Mono',monospace;letter-spacing:.1em}
 .topnav a:hover{color:var(--text);border-color:var(--accent2)}
-.topnav a.active{color:var(--accent);border-color:var(--accent);background:rgba(107,224,183,.1)}
+.topnav a.active{color:#d1ff5a;border-color:rgba(209,255,90,.45);background:rgba(209,255,90,.08)}
 .hero{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
-.hero h1{font-size:34px;line-height:1.1;margin-bottom:8px}
+.hero h1{font-family:'DM Serif Display',serif;font-size:34px;line-height:1.1;margin-bottom:8px;font-weight:400}
 .hero p{font-size:14px;color:var(--muted);line-height:1.6;max-width:860px}
 .badge{display:inline-block;margin-top:12px;padding:6px 10px;border-radius:999px;border:1px solid rgba(240,199,132,.35);color:var(--gold);font-size:11px;background:rgba(240,199,132,.08)}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
