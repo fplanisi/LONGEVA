@@ -102,16 +102,17 @@ textarea { min-height:90px; resize:vertical; }
 .to-top.show{opacity:1;pointer-events:auto;transform:translateY(0)}
 @media(max-width:900px){
   .grid{grid-template-columns:1fr;}
+  body{padding-top:72px}
   .wrap{padding:0 12px 64px}
-  .site-header{position:-webkit-sticky;position:sticky;top:0;z-index:20;padding:14px 12px;margin:0 0 14px}
+  .site-header{position:fixed;top:0;left:0;right:0;z-index:40;padding:14px 12px;margin:0}
   .header-top{align-items:center;justify-content:space-between;flex-direction:row;gap:8px}
   .status-row{width:auto;justify-content:flex-end;margin-left:auto}
   .menu-toggle{display:inline-flex;position:relative;z-index:22}
   .mobile-nav-backdrop{display:block;position:fixed;inset:0;background:rgba(6,4,12,.54);backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .22s ease;z-index:19}
   body.menu-open .mobile-nav-backdrop{opacity:1;pointer-events:auto}
   body.menu-open{overflow:hidden}
-  .topnav-row{display:block;position:absolute;left:12px;right:12px;top:calc(100% - 2px);opacity:0;transform:translateY(-8px) scale(.985);pointer-events:none;transition:opacity .2s ease,transform .2s ease;z-index:22}
-  .topnav-row.open{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
+  .topnav-row{display:block;position:absolute;left:50%;width:min(460px,calc(100vw - 24px));top:calc(100% - 2px);opacity:0;transform:translate(-50%,-8px) scale(.985);pointer-events:none;transition:opacity .2s ease,transform .2s ease;z-index:22}
+  .topnav-row.open{opacity:1;transform:translate(-50%,0) scale(1);pointer-events:auto}
   .topnav{width:100%;display:grid;grid-template-columns:1fr;gap:6px;padding:10px;border:1px solid var(--border);border-radius:12px;background:rgba(8,6,16,.96);backdrop-filter:blur(10px);box-shadow:0 16px 34px rgba(0,0,0,.4)}
   .topnav a{white-space:normal;text-align:center;padding:10px 8px;font-size:10px;line-height:1.2}
   .badge{display:none}
@@ -560,7 +561,8 @@ function initHeaderCompact() {
       document.body.classList.remove('header-compact');
       return;
     }
-    document.body.classList.toggle('header-compact', window.scrollY > 56);
+    const y = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+    document.body.classList.toggle('header-compact', y > 56);
   };
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll);
