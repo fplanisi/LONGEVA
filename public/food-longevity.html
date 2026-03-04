@@ -8,25 +8,35 @@
 <style>
 :root{
   --bg:#05070c; --surface:#0e141f; --surface2:#121b29; --border:#223147;
-  --text:#edf3ff; --muted:#90a5c2; --accent:#6affd9; --accent2:#52b8ff; --gold:#f0c784;
+  --text:#edf3ff; --muted:#90a5c2; --dim:#4e6380; --accent:#6affd9; --accent2:#52b8ff; --accent3:#d1ff5a; --gold:#f0c784;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{
   font-family:'Instrument Sans',sans-serif;
-  background:radial-gradient(circle at top right,#132235 0%,#05070c 50%);
-  color:var(--text); min-height:100vh;
+  background:radial-gradient(circle at 15% -5%,#132235 0%,#05070c 45%);
+  color:var(--text); min-height:100vh; overflow-x:hidden;
 }
-.wrap{max-width:1080px;margin:0 auto;padding:24px 16px 70px}
-.site-header{position:relative;z-index:10;padding:14px 0 10px;display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(106,255,217,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(106,255,217,.04) 1px,transparent 1px);background-size:56px 56px;pointer-events:none;z-index:0;opacity:.7}
+body::after{content:'';position:fixed;inset:0;background:linear-gradient(to bottom,rgba(255,255,255,.02),rgba(255,255,255,0) 20%,rgba(106,255,217,.02) 60%,rgba(255,255,255,0));pointer-events:none;z-index:0}
+.orb{position:fixed;border-radius:50%;filter:blur(120px);pointer-events:none;z-index:0}
+.orb1{width:680px;height:680px;background:rgba(106,255,217,.09);top:-260px;right:-240px}
+.orb2{width:540px;height:540px;background:rgba(82,184,255,.08);bottom:-200px;left:-200px}
+
+.wrap{position:relative;z-index:10;max-width:1080px;margin:0 auto;padding:24px 16px 70px}
+.site-header{position:sticky;top:0;z-index:20;padding:14px 36px;display:flex;flex-direction:column;gap:8px;border-bottom:1px solid var(--border);background:rgba(5,7,12,.86);backdrop-filter:blur(10px);margin:0 -16px 18px}
 .header-top{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .brand-wrap{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
-.logo-name{font-family:'DM Serif Display',serif;font-size:26px;letter-spacing:.1em;color:var(--accent);text-shadow:0 0 30px rgba(106,255,217,.35)}
+.logo-name{font-family:'DM Serif Display',serif;font-size:26px;letter-spacing:.1em;color:var(--accent);text-shadow:0 0 30px rgba(106,255,217,.45)}
 .logo-tag{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:.16em}
 .status-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
-.status-chip{display:flex;align-items:center;gap:6px;padding:6px 11px;border-radius:100px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;background:rgba(106,255,217,.1);border:1px solid rgba(106,255,217,.3);color:var(--accent)}
+.badge{display:flex;align-items:center;gap:7px;padding:6px 11px;border-radius:100px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em}
+.badge-live{background:rgba(106,255,217,.1);border:1px solid rgba(106,255,217,.26);color:var(--accent)}
 .lang-switch{display:flex;gap:4px;align-items:center;padding:3px;border:1px solid var(--border);border-radius:999px;background:rgba(255,255,255,.02)}
 .lang-btn{border:none;background:transparent;color:var(--muted);font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.08em;padding:4px 7px;border-radius:999px;cursor:pointer}
-.lang-btn.active{color:var(--text);background:rgba(106,255,217,.14)}
+.lang-btn.active{color:var(--text);background:rgba(106,255,217,.12)}
+.dot{width:5px;height:5px;border-radius:50%;animation:pulse 2s infinite}
+.dot-green{background:var(--accent)}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(0,200,160,.4)}50%{opacity:.6;box-shadow:0 0 0 3px rgba(0,200,160,0)}}
 .topnav-row{width:100%}
 .topnav{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
 .topnav a{font-size:10px;text-decoration:none;color:var(--muted);padding:7px 13px;border-radius:999px;border:1px solid var(--border);background:rgba(255,255,255,.01);font-family:'DM Mono',monospace;letter-spacing:.1em}
@@ -35,10 +45,13 @@ body{
 .topnav a.nav-bio{border-color:rgba(159,123,255,.32);color:#c9bddf}
 .topnav a.nav-bio:hover{color:#f6dbff;border-color:rgba(159,123,255,.75);background:rgba(159,123,255,.14);box-shadow:0 0 0 1px rgba(159,123,255,.28) inset,0 0 14px rgba(159,123,255,.2)}
 .topnav a.nav-bio.active{color:#ffd6ee;border-color:rgba(255,122,199,.72);background:linear-gradient(135deg,rgba(159,123,255,.3),rgba(255,95,127,.24));box-shadow:0 0 0 1px rgba(255,122,199,.25) inset,0 0 18px rgba(255,95,127,.26)}
-.hero{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
-.hero h1{font-family:'DM Serif Display',serif;font-size:34px;line-height:1.1;margin-bottom:8px;font-weight:400}
-.hero p{font-size:14px;color:var(--muted);line-height:1.6;max-width:860px}
-.badge{display:inline-block;margin-top:12px;padding:6px 10px;border-radius:999px;border:1px solid rgba(240,199,132,.35);color:var(--gold);font-size:11px;background:rgba(240,199,132,.08)}
+.hero{position:relative;z-index:10;text-align:center;padding:48px 48px 28px;max-width:1320px;margin:0 auto 16px}
+.hero::before{content:'';position:absolute;inset:0 26px;background:linear-gradient(145deg,rgba(106,255,217,.06),rgba(82,184,255,.03));border:1px solid rgba(106,255,217,.12);border-radius:20px;z-index:-1}
+.hero-eye{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--dim);text-transform:uppercase;margin-bottom:14px}
+.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(34px,5vw,68px);line-height:1.06;margin-bottom:12px;letter-spacing:.01em}
+.hero h1 em{font-style:italic;color:var(--accent2);text-shadow:0 0 35px rgba(82,184,255,.25)}
+.hero-sub{font-size:14px;color:var(--muted);max-width:760px;margin:0 auto 18px;line-height:1.65;font-weight:300}
+.trust-line{margin:0 auto 0;max-width:760px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;color:#a9b8ce;border:1px solid var(--border);border-radius:999px;padding:7px 12px;display:inline-flex;gap:8px;align-items:center;background:rgba(255,255,255,.02)}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px}
 .label{font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
@@ -60,14 +73,17 @@ body{
 @media(max-width:860px){
   .grid,.opts{grid-template-columns:1fr}
   .wrap{padding:14px 12px 60px}
+  .site-header{padding:14px 12px;margin:0 0 14px}
   .header-top{align-items:flex-start;flex-direction:column;gap:8px}
   .status-row{width:100%;justify-content:flex-start}
   .topnav{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:6px}
   .topnav a{white-space:normal;text-align:center;padding:10px 8px;font-size:10px;line-height:1.2}
-  .hero{padding:18px}
-  .hero h1{font-size:30px;line-height:1.08}
-  .hero p{font-size:13px;line-height:1.55}
-  .badge{font-size:10px;padding:6px 9px}
+  .badge{display:none}
+  .hero{padding:22px 12px 14px}
+  .hero::before{inset:0}
+  .hero-eye{font-size:9px;margin-bottom:10px}
+  .hero h1{font-size:clamp(30px,9vw,42px);line-height:1.08}
+  .hero-sub{font-size:13px;line-height:1.58}
   .card{padding:16px}
   .label{font-size:10px}
   .opt{padding:12px;font-size:14px}
@@ -80,6 +96,8 @@ body{
 </style>
 </head>
 <body>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
 <div class="wrap">
   <header class="site-header">
     <div class="header-top">
@@ -88,8 +106,8 @@ body{
         <span class="logo-tag">v3.1 · Híbrido IA + Base curada</span>
       </div>
       <div class="status-row">
-        <div class="status-chip">Nutrición · Food-first (gratis)</div>
-        <div class="status-chip" id="clinical-chip">Marco clínico diseñado por médico</div>
+        <div class="badge badge-live"><div class="dot dot-green"></div>Nutrición · Food-first (gratis)</div>
+        <div class="badge badge-live" id="clinical-chip">Marco clínico diseñado por médico</div>
         <div class="lang-switch">
           <button class="lang-btn" id="lang-es" onclick="setPreferredLang('es')">ES</button>
           <button class="lang-btn" id="lang-en" onclick="setPreferredLang('en')">EN</button>
@@ -107,9 +125,10 @@ body{
   </header>
 
   <section class="hero">
-    <h1>Nutrición para longevidad<br>sin suplementos</h1>
-    <p>Recomendaciones de alimentos ricos en compuestos asociados a salud metabólica, función mitocondrial, inflamación baja y envejecimiento saludable. Enfoque práctico para quienes prefieren protocolo natural basado en comida real.</p>
-    <div class="badge">Sin cápsulas · Solo comida y hábitos</div>
+    <p class="hero-eye">Protocolo natural · Sin suplementos</p>
+    <h1>Nutrición de longevidad<br><em>solo con alimentos</em></h1>
+    <p class="hero-sub">Recomendaciones de alimentos ricos en compuestos asociados a salud metabólica, función mitocondrial e inflamación baja. Enfoque práctico para quienes prefieren comida real.</p>
+    <p class="trust-line">Sin cápsulas · Solo comida y hábitos sostenibles</p>
   </section>
 
   <div class="grid">
@@ -348,15 +367,16 @@ function applyStaticI18n() {
   if (nav[3]) nav[3].textContent = 'Nutrition';
   set('.logo-tag', 'v3.1 · Hybrid AI + Curated base');
   document.title = 'LONGEVAPP — Longevity Nutrition';
-  set('.status-chip', 'Nutrition · Food-first (free)');
-  const chips = document.querySelectorAll('.status-chip');
+  const chips = document.querySelectorAll('.badge-live');
+  if (chips[0]) chips[0].textContent = 'Nutrition · Food-first (free)';
   if (chips[1]) chips[1].textContent = 'Physician-designed clinical framework';
   set('#gen-btn', 'Generate food plan');
+  set('.hero-eye', 'Natural protocol · No supplements');
   const heroTitle = document.querySelector('.hero h1');
-  if (heroTitle) heroTitle.innerHTML = 'Longevity nutrition<br>without supplements';
-  const heroP = document.querySelector('.hero p');
-  if (heroP) heroP.textContent = 'Food recommendations rich in compounds associated with metabolic health, mitochondrial function, low inflammation, and healthy aging.';
-  set('.badge', 'No capsules · Food and habits only');
+  if (heroTitle) heroTitle.innerHTML = 'Longevity nutrition<br><em>with real food only</em>';
+  const heroP = document.querySelector('.hero-sub');
+  if (heroP) heroP.textContent = 'Food recommendations rich in compounds associated with metabolic health, mitochondrial function, and low inflammation. Practical for users who prefer real food.';
+  set('.trust-line', 'No capsules · Food and sustainable habits');
   const labels = document.querySelectorAll('.label');
   if (labels[0]) labels[0].textContent = '1) Main objective';
   if (labels[1]) labels[1].textContent = '2) Dietary style';
