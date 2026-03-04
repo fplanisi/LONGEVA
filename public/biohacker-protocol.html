@@ -7,20 +7,20 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg:#05070c; --surface:#0f1320; --surface2:#18162a; --border:#2e2a47;
-  --text:#edf3ff; --muted:#9b98bd; --dim:#665f8f; --accent:#7f7dff; --warn:#ff9f73; --danger:#ff5f7f; --accent2:#9f7bff; --accent3:#ff82cd;
+  --bg:#f7f4ff; --surface:rgba(255,255,255,.84); --surface2:rgba(250,246,255,.92); --border:#d8cff1;
+  --text:#1f1640; --muted:#5f5688; --dim:#7f72a8; --accent:#7f7dff; --warn:#ff9f73; --danger:#ff5f7f; --accent2:#9f7bff; --accent3:#ff82cd;
 }
 * { box-sizing:border-box; margin:0; padding:0; }
-html { background:#05070c; max-width:100%; overflow-x:hidden; overscroll-behavior-y:auto;overscroll-behavior-x:none; }
-body { background:radial-gradient(circle at top left,#221a3a 0%,#05070c 48%); color:var(--text); font-family:'Instrument Sans',sans-serif; min-height:100vh; max-width:100%; overflow-x:hidden; overscroll-behavior-y:auto;overscroll-behavior-x:none; }
-body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(159,123,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(159,123,255,.05) 1px,transparent 1px);background-size:56px 56px;pointer-events:none;z-index:0;opacity:.72}
-body::after{content:'';position:fixed;inset:0;background:linear-gradient(to bottom,rgba(255,255,255,.02),rgba(255,255,255,0) 20%,rgba(159,123,255,.04) 60%,rgba(255,255,255,0));pointer-events:none;z-index:0}
+html { background:#f7f4ff; max-width:100%; overflow-x:hidden; overscroll-behavior-y:auto;overscroll-behavior-x:none; }
+body { background:radial-gradient(circle at top left,#f1e9ff 0%,#f7f4ff 56%); color:var(--text); font-family:'Instrument Sans',sans-serif; min-height:100vh; max-width:100%; overflow-x:hidden; overscroll-behavior-y:auto;overscroll-behavior-x:none; }
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(159,123,255,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(159,123,255,.1) 1px,transparent 1px);background-size:56px 56px;pointer-events:none;z-index:0;opacity:.52}
+body::after{content:'';position:fixed;inset:0;background:linear-gradient(to bottom,rgba(255,255,255,.6),rgba(255,255,255,0) 20%,rgba(159,123,255,.1) 62%,rgba(255,255,255,0));pointer-events:none;z-index:0}
 .orb{position:fixed;border-radius:50%;filter:blur(120px);pointer-events:none;z-index:0}
 .orb1{width:660px;height:660px;background:rgba(159,123,255,.16);top:-280px;right:-240px}
 .orb2{width:540px;height:540px;background:rgba(255,95,127,.14);bottom:-220px;left:-220px}
 .wrap { position:relative;z-index:10;max-width:1320px; margin:0 auto; padding:0 16px 80px; }
 .bio-main{max-width:960px;margin:0 auto}
-.site-header{position:-webkit-sticky;position:sticky;top:0;z-index:20;padding:14px 36px;display:flex;flex-direction:column;gap:8px;border-bottom:1px solid var(--border);background:rgba(5,7,12,.86);backdrop-filter:blur(10px);margin:0 0 18px}
+.site-header{position:-webkit-sticky;position:sticky;top:0;z-index:20;padding:14px 36px;display:flex;flex-direction:column;gap:8px;border-bottom:1px solid var(--border);background:rgba(247,244,255,.92);backdrop-filter:blur(10px);margin:0 0 18px}
 .header-top{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .brand-wrap{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
 .logo-name{font-family:'DM Serif Display',serif;font-size:26px;letter-spacing:.1em;color:var(--accent);text-shadow:0 0 30px rgba(127,125,255,.42)}
@@ -97,7 +97,7 @@ textarea { min-height:90px; resize:vertical; }
 .legal-footer{position:relative;z-index:10;max-width:1320px;margin:18px auto 24px;padding:0 16px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.04em;color:var(--muted)}
 .legal-footer a{color:#d9cfff;text-decoration:none}
 .legal-footer a:hover{color:#fff}
-.to-top{position:fixed;right:16px;bottom:16px;width:42px;height:42px;border-radius:999px;border:1px solid var(--border);background:rgba(8,6,16,.9);color:#d9cfff;font-size:18px;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;pointer-events:none;transform:translateY(8px);transition:opacity .2s ease,transform .2s ease,border-color .2s ease;z-index:45}
+.to-top{position:fixed;right:16px;bottom:16px;width:42px;height:42px;border-radius:999px;border:1px solid var(--border);background:rgba(251,248,255,.95);color:#9f7bff;font-size:18px;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;pointer-events:none;transform:translateY(8px);transition:opacity .2s ease,transform .2s ease,border-color .2s ease;z-index:45}
 .to-top:hover{border-color:rgba(255,130,205,.8);color:#fff}
 .to-top.show{opacity:1;pointer-events:auto;transform:translateY(0)}
 @media(max-width:900px){
@@ -114,7 +114,7 @@ textarea { min-height:90px; resize:vertical; }
   body.menu-open{overflow:hidden}
   .topnav-row{display:block;position:absolute;left:50%;width:min(460px,calc(100vw - 24px));top:calc(100% - 2px);opacity:0;transform:translate(-50%,-8px) scale(.985);pointer-events:none;transition:opacity .2s ease,transform .2s ease;z-index:22}
   .topnav-row.open{opacity:1;transform:translate(-50%,0) scale(1);pointer-events:auto}
-  .topnav{width:100%;display:grid;grid-template-columns:1fr;gap:6px;padding:10px;border:1px solid var(--border);border-radius:12px;background:rgba(8,6,16,.96);backdrop-filter:blur(10px);box-shadow:0 16px 34px rgba(0,0,0,.4)}
+  .topnav{width:100%;display:grid;grid-template-columns:1fr;gap:6px;padding:10px;border:1px solid var(--border);border-radius:12px;background:rgba(251,248,255,.96);backdrop-filter:blur(10px);box-shadow:0 14px 30px rgba(88,62,160,.18)}
   .topnav a{white-space:normal;text-align:center;padding:10px 8px;font-size:10px;line-height:1.2}
   .badge{display:none}
   .hero{padding:22px 12px 14px}
