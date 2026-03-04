@@ -346,7 +346,8 @@ function applyStaticI18n() {
   document.title = 'LONGEVA — Longevity Nutrition';
   set('.status-chip', 'Nutrition · Food-first (free)');
   set('#gen-btn', 'Generate food plan');
-  set('.hero h1', 'Longevity nutrition<br>without supplements');
+  const heroTitle = document.querySelector('.hero h1');
+  if (heroTitle) heroTitle.innerHTML = 'Longevity nutrition<br>without supplements';
   const heroP = document.querySelector('.hero p');
   if (heroP) heroP.textContent = 'Food recommendations rich in compounds associated with metabolic health, mitochondrial function, low inflammation, and healthy aging.';
   set('.badge', 'No capsules · Food and habits only');

@@ -128,7 +128,8 @@ header {
   text-align: center;
   position: relative;
   overflow: hidden;
-  margin-bottom: 40px;
+  margin-bottom: 24px;
+  display: none;
 }
 #email-gate::before {
   content: '';
@@ -161,7 +162,7 @@ header {
 
 
 /* ── WIZARD ── */
-#wizard { display: none; }
+#wizard { display: block; }
 
 /* PROGRESS */
 .progress-wrap { margin-bottom: 48px; }
@@ -938,10 +939,10 @@ async function startCheckout() {
   const email = document.getElementById('user-email').value.trim();
   if (!email || !email.includes('@')) {
     document.getElementById('user-email').style.borderColor = 'var(--red)';
-    setGateMsg('Ingresa un email válido.', 'error');
+    setGateMsg(tr('Ingresa un email válido.', 'Enter a valid email.'), 'error');
     return;
   }
-  setGateMsg('Creando sesión de pago...', 'ok');
+  setGateMsg(tr('Creando sesión de pago...', 'Creating payment session...'), 'ok');
   trackEvent('checkout_start_click', { source: 'stack_builder', has_email: true });
   const btn = document.getElementById('gate-btn');
   btn.disabled = true;
@@ -950,19 +951,19 @@ async function startCheckout() {
     const res = await fetch('/api/create-checkout-session', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email }),
+      body: JSON.stringify({ email, return_to: '/stack-builder.html' }),
     });
     const data = await res.json();
-    if (!res.ok || !data.url) throw new Error(data.error || 'No se pudo crear el checkout');
+    if (!res.ok || !data.url) throw new Error(data.error || tr('No se pudo crear el checkout', 'Could not create checkout'));
     localStorage.setItem('longeva_email', email);
     try {
       const checkoutUrl = new URL(data.url);
       window.location.href = checkoutUrl.toString();
     } catch (_e) {
-      throw new Error(`URL de checkout inválida: ${data.url}`);
+      throw new Error(tr(`URL de checkout inválida: ${data.url}`, `Invalid checkout URL: ${data.url}`));
     }
   } catch (err) {
-    setGateMsg(`Error: ${err.message}`, 'error');
+    setGateMsg(`${tr('Error', 'Error')}: ${err.message}`, 'error');
     btn.disabled = false;
   }
 }
@@ -1085,6 +1086,7 @@ function applyWizardStateToUI() {
 async function initAccess() {
   applyStaticI18n();
   trackEvent('stack_page_view', { path: location.pathname });
+  initWizardUI();
   try {
     const bypassRes = await fetch('/api/checkout-status');
     const bypassData = await bypassRes.json();
@@ -1106,34 +1108,38 @@ async function initAccess() {
     state.email = savedEmail;
   }
   if (canceled) {
-    setGateMsg('Pago cancelado. Puedes intentarlo de nuevo cuando quieras.', 'error');
+    setGateMsg(tr('Pago cancelado. Puedes intentarlo de nuevo cuando quieras.', 'Payment canceled. You can try again anytime.'), 'error');
     return;
   }
   if (!sessionId || paidFlag !== '1' && !localStorage.getItem('longeva_paid_session')) {
     return;
   }
 
-  setGateMsg('Verificando pago...', 'ok');
+  setGateMsg(tr('Verificando pago...', 'Verifying payment...'), 'ok');
   try {
     const res = await fetch(`/api/checkout-status?session_id=${encodeURIComponent(sessionId)}`);
     const data = await res.json();
-    if (!res.ok || !data.paid) throw new Error(data.error || 'Pago no confirmado');
+    if (!res.ok || !data.paid) throw new Error(data.error || tr('Pago no confirmado', 'Payment not confirmed'));
     state.paidSessionId = sessionId;
     state.email = data.email || state.email;
     localStorage.setItem('longeva_paid_session', sessionId);
     if (state.email) localStorage.setItem('longeva_email', state.email);
     unlockWizard();
   } catch (err) {
-    setGateMsg(`No pudimos validar tu pago: ${err.message}`, 'error');
+    setGateMsg(`${tr('No pudimos validar tu pago', 'Could not validate your payment')}: ${err.message}`, 'error');
   }
+}
+
+function initWizardUI() {
+  document.getElementById('wizard').style.display = 'block';
+  loadWizardState();
+  applyWizardStateToUI();
 }
 
 function unlockWizard() {
   document.body.classList.add('paid-mode');
   document.getElementById('email-gate').style.display = 'none';
-  document.getElementById('wizard').style.display = 'block';
-  loadWizardState();
-  applyWizardStateToUI();
+  document.getElementById('gate-btn').disabled = false;
   trackEvent('checkout_verified', { bypass: state.paidSessionId === 'dev_bypass' });
 }
 
@@ -1296,7 +1302,13 @@ function buildProfilePayload(budgetLabel) {
 // ── GENERATE ──
 async function generateStack() {
   if (!state.paidSessionId) {
-    alert(tr('Necesitas un pago validado para generar el stack.', 'You need a validated payment session to generate the stack.'));
+    const gate = document.getElementById('email-gate');
+    gate.style.display = 'block';
+    setGateMsg(
+      tr('Solo falta el pago para generar tu stack. Tus datos ya quedaron cargados.', 'Payment is required before generation. Your profile data is already saved.'),
+      'ok'
+    );
+    gate.scrollIntoView({ behavior: 'smooth', block: 'start' });
     return;
   }
   if (!safetyConfirmed) {
