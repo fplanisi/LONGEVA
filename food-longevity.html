@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LONGEVA — Nutrición de Longevidad</title>
+<style>
+:root{
+  --bg:#081019; --surface:#101a28; --surface2:#162234; --border:#233852;
+  --text:#ebf4ff; --muted:#9bb0ca; --accent:#6be0b7; --accent2:#7ac8ff; --gold:#f0c784;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  background:radial-gradient(circle at top right,#12283d 0%,#081019 50%);
+  color:var(--text); min-height:100vh;
+}
+.wrap{max-width:1080px;margin:0 auto;padding:24px 16px 70px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:22px}
+.brand{font-size:14px;letter-spacing:.14em;color:var(--accent)}
+.topnav{display:flex;gap:8px;flex-wrap:wrap}
+.topnav a{font-size:11px;text-decoration:none;color:var(--muted);padding:7px 12px;border-radius:999px;border:1px solid var(--border);background:rgba(255,255,255,.01)}
+.topnav a:hover{color:var(--text);border-color:var(--accent2)}
+.topnav a.active{color:var(--accent);border-color:var(--accent);background:rgba(107,224,183,.1)}
+.hero{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+.hero h1{font-size:34px;line-height:1.1;margin-bottom:8px}
+.hero p{font-size:14px;color:var(--muted);line-height:1.6;max-width:860px}
+.badge{display:inline-block;margin-top:12px;padding:6px 10px;border-radius:999px;border:1px solid rgba(240,199,132,.35);color:var(--gold);font-size:11px;background:rgba(240,199,132,.08)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px}
+.label{font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.opt{border:1px solid var(--border);background:var(--surface2);color:var(--text);padding:11px;border-radius:10px;cursor:pointer;font-size:13px}
+.opt.active{border-color:var(--accent);background:rgba(107,224,183,.09)}
+.btn{border:none;border-radius:10px;padding:11px 16px;font-weight:650;cursor:pointer}
+.btn-main{background:var(--accent);color:#03241a}
+.result{display:none}
+.plan{margin-top:10px;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.plan-head{background:var(--surface2);padding:10px 12px;border-bottom:1px solid var(--border);font-weight:600}
+.plan-body{padding:12px}
+.food{padding:10px;border:1px solid var(--border);border-radius:10px;margin-bottom:8px}
+.food:last-child{margin-bottom:0}
+.food h4{font-size:14px;margin-bottom:4px}
+.food p{font-size:12px;color:var(--muted);line-height:1.45}
+.pill{display:inline-block;padding:3px 8px;border-radius:999px;font-size:10px;border:1px solid var(--border);color:var(--muted);margin:6px 6px 0 0}
+.note{margin-top:12px;font-size:12px;color:var(--muted);line-height:1.5}
+@media(max-width:860px){ .grid,.opts{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="brand">LONGEVA · FOOD-FIRST</div>
+    <nav class="topnav">
+      <a href="/index.html">Biblioteca</a>
+      <a href="/stack-builder.html">Stack Builder</a>
+      <a href="/biohacker-protocol.html">Biohacker</a>
+      <a href="/food-longevity.html" class="active">Nutrición</a>
+    </nav>
+  </div>
+
+  <section class="hero">
+    <h1>Nutrición para longevidad<br>sin suplementos</h1>
+    <p>Recomendaciones de alimentos ricos en compuestos asociados a salud metabólica, función mitocondrial, inflamación baja y envejecimiento saludable. Enfoque práctico para quienes prefieren protocolo natural basado en comida real.</p>
+    <div class="badge">Sin cápsulas · Solo comida y hábitos</div>
+  </section>
+
+  <div class="grid">
+    <section class="card">
+      <div class="label">1) Objetivo principal</div>
+      <div class="opts" id="goal-grid">
+        <button class="opt active" data-goal="longevity">Longevidad general</button>
+        <button class="opt" data-goal="metabolic">Salud metabólica</button>
+        <button class="opt" data-goal="cognitive">Salud cognitiva</button>
+        <button class="opt" data-goal="muscle">Músculo y rendimiento</button>
+        <button class="opt" data-goal="cardio">Cardiovascular</button>
+        <button class="opt" data-goal="skin">Piel y tejido conectivo</button>
+      </div>
+
+      <div class="label" style="margin-top:14px;">2) Estilo alimentario</div>
+      <div class="opts" id="style-grid">
+        <button class="opt active" data-style="omnivore">Omnívoro</button>
+        <button class="opt" data-style="vegetarian">Vegetariano</button>
+        <button class="opt" data-style="vegan">Vegano</button>
+      </div>
+
+      <div style="margin-top:14px;">
+        <button id="gen-btn" class="btn btn-main">Generar plan de alimentos</button>
+      </div>
+      <p class="note">Este módulo prioriza fuentes naturales de: polifenoles, omega-3, fibra prebiótica, compuestos azufrados, carotenoides, colina y proteínas de alta calidad.</p>
+    </section>
+
+    <section id="result" class="card result"></section>
+  </div>
+</div>
+
+<script>
+const state = { goal: 'longevity', style: 'omnivore' };
+
+const plans = {
+  longevity: {
+    title: 'Base antiinflamatoria y pro-longevidad',
+    nutrients: ['Polifenoles', 'Fibra prebiótica', 'Omega-3', 'Compuestos sulfurados'],
+    foods: [
+      { name: 'Frutos rojos + cacao puro', why: 'Antocianinas y flavanoles asociados a menor inflamación y mejor función vascular.' },
+      { name: 'Aceite de oliva extra virgen', why: 'Oleuropeína e hidroxitirosol con perfil cardiometabólico favorable.' },
+      { name: 'Crucíferas (brócoli, coliflor, rúcula)', why: 'Sulforafano y glucosinolatos vinculados a defensa antioxidante endógena.' },
+      { name: 'Legumbres + avena', why: 'Fibra fermentable para microbiota y producción de ácidos grasos de cadena corta.' },
+    ],
+  },
+  metabolic: {
+    title: 'Estabilidad glucémica y sensibilidad a insulina',
+    nutrients: ['Fibra soluble', 'Magnesio dietario', 'Polifenoles', 'Proteína saciante'],
+    foods: [
+      { name: 'Vinagre + ensalada antes de comidas', why: 'Estrategia alimentaria para reducir pico glucémico postprandial.' },
+      { name: 'Legumbres, lentejas y garbanzos', why: 'Carga glucémica moderada y alto aporte de fibra/proteína.' },
+      { name: 'Canela + nueces', why: 'Mejor adherencia y control del apetito en planes de recomposición.' },
+      { name: 'Pescado azul o tofu/tempeh', why: 'Proteína de calidad para preservar masa magra y salud metabólica.' },
+    ],
+  },
+  cognitive: {
+    title: 'Neuroprotección y rendimiento cognitivo',
+    nutrients: ['Omega-3 DHA/EPA', 'Colina', 'Polifenoles neuroactivos', 'Carotenoides'],
+    foods: [
+      { name: 'Sardina/salmón o algas + nuez', why: 'Aporte lipídico estructural relevante para membranas neuronales.' },
+      { name: 'Huevos (o soja/lecitina en vegano)', why: 'Colina dietaria asociada a función cognitiva y neurotransmisión.' },
+      { name: 'Té verde + frutos rojos', why: 'Catequinas y antocianinas con soporte vascular y antioxidante cerebral.' },
+      { name: 'Verduras de hoja + oliva', why: 'Luteína y matriz lipídica favorable para absorción.' },
+    ],
+  },
+  muscle: {
+    title: 'Músculo, recuperación y envejecimiento activo',
+    nutrients: ['Proteína de alta calidad', 'Leucina', 'Omega-3', 'Potasio y magnesio'],
+    foods: [
+      { name: 'Yogur griego/kéfir o tofu firme', why: 'Proteína concentrada útil para llegar al umbral de síntesis muscular.' },
+      { name: 'Huevos + papa/arroz integral', why: 'Combinación práctica para rendimiento y recuperación post-entreno.' },
+      { name: 'Pescado azul o chía/linaza + nueces', why: 'Perfil antiinflamatorio y soporte de recuperación.' },
+      { name: 'Frutas ricas en potasio', why: 'Soporte electrolítico y función muscular.' },
+    ],
+  },
+  cardio: {
+    title: 'Perfil lipídico y salud vascular',
+    nutrients: ['Omega-3', 'Polifenoles', 'Potasio', 'Fibra soluble'],
+    foods: [
+      { name: 'Avena + frutos secos', why: 'Fibra soluble y grasas insaturadas asociadas a mejor perfil LDL/no-HDL.' },
+      { name: 'Aceite de oliva + tomate + ajo', why: 'Patrón mediterráneo con evidencia cardioprotectora.' },
+      { name: 'Legumbres 4-5x semana', why: 'Mejora de marcadores cardiometabólicos en patrones sostenidos.' },
+      { name: 'Pescado azul 2-3x semana', why: 'Aporte de EPA/DHA dietario para salud vascular.' },
+    ],
+  },
+  skin: {
+    title: 'Piel, colágeno y fotoprotección nutricional',
+    nutrients: ['Vitamina C dietaria', 'Carotenoides', 'Proteína', 'Grasas monoinsaturadas'],
+    foods: [
+      { name: 'Cítricos, kiwi y pimiento', why: 'Sustrato para síntesis de colágeno endógeno.' },
+      { name: 'Tomate cocido + oliva', why: 'Luteína/licopeno con mejor biodisponibilidad en presencia de grasa.' },
+      { name: 'Caldo de huesos o legumbres + soja', why: 'Aporte de aminoácidos estructurales según preferencia alimentaria.' },
+      { name: 'Semillas y frutos secos', why: 'Vitamina E y grasas protectoras de barrera cutánea.' },
+    ],
+  },
+};
+
+const veganSwaps = [
+  'Swap pescado azul por microalgas (DHA/EPA) + chía/linaza.',
+  'Swap yogur/huevos por tofu/tempeh/soja texturizada.',
+  'Usar legumbres + cereal integral para proteína completa diaria.',
+];
+
+const vegetarianSwaps = [
+  'Mantener huevos y lácteos fermentados como base proteica.',
+  'Reforzar omega-3 con chía/linaza y nuez.',
+  'Aumentar variedad de legumbres para fibra prebiótica.',
+];
+
+document.getElementById('goal-grid').addEventListener('click', (e) => {
+  const b = e.target.closest('[data-goal]');
+  if (!b) return;
+  state.goal = b.dataset.goal;
+  document.querySelectorAll('#goal-grid .opt').forEach(x => x.classList.remove('active'));
+  b.classList.add('active');
+});
+
+document.getElementById('style-grid').addEventListener('click', (e) => {
+  const b = e.target.closest('[data-style]');
+  if (!b) return;
+  state.style = b.dataset.style;
+  document.querySelectorAll('#style-grid .opt').forEach(x => x.classList.remove('active'));
+  b.classList.add('active');
+});
+
+document.getElementById('gen-btn').addEventListener('click', () => {
+  const p = plans[state.goal];
+  const out = document.getElementById('result');
+
+  let html = `<div class="label">Plan recomendado</div>`;
+  html += `<h3 style="font-size:22px;margin-bottom:6px;">${p.title}</h3>`;
+  html += `<div>${p.nutrients.map(n => `<span class="pill">${n}</span>`).join('')}</div>`;
+  html += `<div class="plan"><div class="plan-head">Alimentos clave para esta semana</div><div class="plan-body">`;
+  p.foods.forEach(f => {
+    html += `<div class="food"><h4>${f.name}</h4><p>${f.why}</p></div>`;
+  });
+  html += `</div></div>`;
+
+  if (state.style === 'vegan' || state.style === 'vegetarian') {
+    const swaps = state.style === 'vegan' ? veganSwaps : vegetarianSwaps;
+    html += `<div class="plan"><div class="plan-head">Ajustes para ${state.style === 'vegan' ? 'vegano' : 'vegetariano'}</div><div class="plan-body">`;
+    swaps.forEach(s => { html += `<div class="food"><p>${s}</p></div>`; });
+    html += `</div></div>`;
+  }
+
+  html += `<p class="note">Sugerencia práctica: arma 2-3 comidas base repetibles por semana para adherencia. Si querés personalización completa con dosis/ciclos, usá Stack Builder.</p>`;
+  out.innerHTML = html;
+  out.style.display = 'block';
+});
+</script>
+</body>
+</html>
