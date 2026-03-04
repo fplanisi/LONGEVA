@@ -130,6 +130,16 @@ Responde ÚNICAMENTE con un JSON válido siguiendo exactamente este esquema (sin
   "summary": "2-3 frases personalizadas sobre este perfil específico y por qué este stack es óptimo",
   "estimated_cost": 120,
   "monthly_plan_note": "breve instrucción para sostener adherencia durante 30 días",
+  "diet_extras": ["alimento extra 1", "alimento extra 2"],
+  "weekly_food_plan": {
+    "lunes": {"desayuno":[],"almuerzo":[],"merienda":[],"cena":[]},
+    "martes": {"desayuno":[],"almuerzo":[],"merienda":[],"cena":[]},
+    "miercoles": {"desayuno":[],"almuerzo":[],"merienda":[],"cena":[]},
+    "jueves": {"desayuno":[],"almuerzo":[],"merienda":[],"cena":[]},
+    "viernes": {"desayuno":[],"almuerzo":[],"merienda":[],"cena":[]},
+    "sabado": {"desayuno":[],"almuerzo":[],"merienda":[],"cena":[]},
+    "domingo": {"desayuno":[],"almuerzo":[],"merienda":[],"cena":[]}
+  },
   "morning": [{"name":"", "full":"", "priority":"core", "why":"", "dose":"", "synergy":"", "estimated_price":20, "evidence":"★★★★☆"}],
   "afternoon": [],
   "night": [],
@@ -147,6 +157,8 @@ Reglas:
 - Si la preferencia es "Mixto", prioriza naturales y usa sintéticos solo si aportan ventaja fuerte
 - Si la preferencia es "Solo alimentos", NO incluyas suplementos. Usa alimentos concretos por franja horaria y en "dose" pon porciones (ej: "150 g", "1 taza", "2 huevos").
 - Si la preferencia es "Solo alimentos", el campo "full" debe describir el alimento/fuente nutricional y "estimated_price" debe ser costo mensual estimado de ese alimento.
+- Si la preferencia es "Solo alimentos", DEBES completar "weekly_food_plan" con 7 días distintos y al menos 4 comidas por día (desayuno, almuerzo, merienda, cena). En este modo, "diet_extras" puede quedar vacío.
+- Si la preferencia es "Mixto" o "Incluye sintéticos" o "Solo naturales", NO hagas menú semanal detallado. En esos modos "weekly_food_plan" debe ser {} y debes completar "diet_extras" con 5-10 alimentos para sumar como extra (sin desplazar el foco en suplementos).
 - Distribuye por farmacocinética y adherencia real de 30 días
 - Responde solo con el JSON.`;
 }

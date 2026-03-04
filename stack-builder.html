@@ -396,6 +396,67 @@ input[type=range]::-webkit-slider-thumb {
 }
 .monthly-col h4 { font-size: 12px; margin-bottom: 5px; font-weight: 600; }
 .monthly-col p { font-size: 11px; color: var(--muted); line-height: 1.4; }
+.weekly-food-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.day-card {
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  padding: 11px 12px;
+  background: rgba(255,255,255,.01);
+}
+.day-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .1em;
+  color: var(--accent2);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.day-meal {
+  margin-bottom: 7px;
+}
+.day-meal:last-child { margin-bottom: 0; }
+.day-meal b {
+  font-size: 11px;
+  color: var(--text);
+}
+.day-meal p {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.4;
+  margin-top: 2px;
+}
+.diet-extras-card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px 20px;
+  margin-bottom: 20px;
+}
+.diet-extras-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .1em;
+  color: var(--accent2);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.diet-extras-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+.diet-extras-item {
+  padding: 4px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--border2);
+  font-size: 11px;
+  color: var(--muted);
+}
 
 /* WARNINGS */
 .warnings-card {
@@ -446,6 +507,7 @@ input[type=range]::-webkit-slider-thumb {
   #email-gate { padding: 32px 22px; }
   .mol-item { flex-wrap: wrap; }
   .monthly-grid { grid-template-columns: 1fr; }
+  .weekly-food-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -965,6 +1027,11 @@ function renderStack(stack, budgetLabel) {
 
   const pct = Math.min(100, Math.round((stack.estimated_cost / state.budget) * 100));
   const costClass = pct > 90 ? 'warn' : 'ok';
+  const isFoodOnly = state.sourcePreference === 'food_only';
+  const weekly = stack.weekly_food_plan && typeof stack.weekly_food_plan === 'object' ? stack.weekly_food_plan : {};
+  const weekDays = ['lunes','martes','miercoles','jueves','viernes','sabado','domingo'];
+  const hasWeeklyPlan = isFoodOnly && weekDays.every(d => weekly[d] && typeof weekly[d] === 'object');
+  const dietExtras = Array.isArray(stack.diet_extras) ? stack.diet_extras.filter(Boolean) : [];
 
   const sections = [
     { key: 'morning', icon: '🌅', label: 'Mañana', sub: 'En ayunas o con desayuno', cls: 'time-morning' },
@@ -992,52 +1059,84 @@ function renderStack(stack, budgetLabel) {
 
   html += `<div class="monthly-card">
     <div class="monthly-title">Plan mensual visual · 30 días</div>
-    <div style="font-size:12px;color:var(--muted);margin-bottom:12px">${stack.monthly_plan_note || 'Sostén este patrón cada día durante 4 semanas y reevalúa tolerancia al día 30.'}</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:12px">${stack.monthly_plan_note || (isFoodOnly ? 'Rota este menú semanal durante 4 semanas y ajusta por tolerancia y adherencia.' : 'Sostén este patrón cada día durante 4 semanas y reevalúa tolerancia al día 30.')}</div>
     <div class="monthly-grid">
-      <div class="monthly-col"><h4>🌅 Mañana</h4><p>${(stack.morning || []).length} moléculas · al despertar o desayuno</p></div>
-      <div class="monthly-col"><h4>☀️ Tarde</h4><p>${(stack.afternoon || []).length} moléculas · con comida principal</p></div>
-      <div class="monthly-col"><h4>🌙 Noche</h4><p>${(stack.night || []).length} moléculas · antes de dormir</p></div>
+      <div class="monthly-col"><h4>🌅 Mañana</h4><p>${(stack.morning || []).length} ${isFoodOnly ? 'items/alimentos' : 'moléculas'} · al despertar o desayuno</p></div>
+      <div class="monthly-col"><h4>☀️ Tarde</h4><p>${(stack.afternoon || []).length} ${isFoodOnly ? 'items/alimentos' : 'moléculas'} · con comida principal</p></div>
+      <div class="monthly-col"><h4>🌙 Noche</h4><p>${(stack.night || []).length} ${isFoodOnly ? 'items/alimentos' : 'moléculas'} · antes de dormir</p></div>
     </div>
   </div>`;
 
-  // Time blocks
-  html += '<div class="time-blocks">';
-  sections.forEach(sec => {
-    const mols = stack[sec.key] || [];
-    if (!mols.length) return;
-    html += `<div class="time-block ${sec.cls}">
-      <div class="time-header">
-        <div class="time-icon">${sec.icon}</div>
-        <div class="time-title">${sec.label}</div>
-        <div class="time-subtitle">${sec.sub} · ${mols.length} item${mols.length>1?'s':''}</div>
+  if (!isFoodOnly && dietExtras.length) {
+    html += `<div class="diet-extras-card">
+      <div class="diet-extras-title">🥗 Alimentos extra para potenciar el stack</div>
+      <div class="diet-extras-list">
+        ${dietExtras.map(x => `<span class="diet-extras-item">${x}</span>`).join('')}
       </div>
-      <div class="mol-items">`;
-    mols.forEach(m => {
-      const rankCls = m.priority === 'core' ? 'rank-core' : m.priority === 'support' ? 'rank-support' : 'rank-optional';
-      const rankLbl = m.priority === 'core' ? 'CORE' : m.priority === 'support' ? 'SUPP' : 'OPC';
-      html += `<div class="mol-item">
-        <div class="mol-rank ${rankCls}">${rankLbl}</div>
-        <div class="mol-info">
-          <div class="mol-name-row">
-            <span class="mol-name">${m.name}</span>
-            <span class="mol-full">${m.full}</span>
-          </div>
-          <div class="mol-why">${m.why}</div>
-          <div class="mol-tags-row">
-            <span class="mol-tag tag-dose">⚖ ${m.dose}</span>
-            ${m.synergy ? `<span class="mol-tag tag-synergy">⚡ ${m.synergy}</span>` : ''}
-            <span class="mol-tag tag-evidence">${m.evidence}</span>
-          </div>
-        </div>
-        <div class="mol-price">
-          <span class="mol-price-n">~$${m.estimated_price}</span>
-          /mes
-        </div>
+    </div>`;
+  }
+
+  if (hasWeeklyPlan) {
+    html += `<div class="monthly-card">
+      <div class="monthly-title">Menú semanal · nutrición de longevidad</div>
+      <div class="weekly-food-grid">`;
+    weekDays.forEach((d) => {
+      const day = weekly[d] || {};
+      const mealRow = (k, label) => {
+        const vals = Array.isArray(day[k]) ? day[k] : [];
+        return `<div class="day-meal"><b>${label}</b><p>${vals.length ? vals.join(' · ') : 'Sin definir'}</p></div>`;
+      };
+      html += `<div class="day-card">
+        <div class="day-name">${d}</div>
+        ${mealRow('desayuno','Desayuno')}
+        ${mealRow('almuerzo','Almuerzo')}
+        ${mealRow('merienda','Merienda')}
+        ${mealRow('cena','Cena')}
       </div>`;
     });
     html += `</div></div>`;
-  });
-  html += '</div>';
+  }
+
+  // Time blocks
+  if (!hasWeeklyPlan) {
+    html += '<div class="time-blocks">';
+    sections.forEach(sec => {
+      const mols = stack[sec.key] || [];
+      if (!mols.length) return;
+      html += `<div class="time-block ${sec.cls}">
+        <div class="time-header">
+          <div class="time-icon">${sec.icon}</div>
+          <div class="time-title">${sec.label}</div>
+          <div class="time-subtitle">${sec.sub} · ${mols.length} item${mols.length>1?'s':''}</div>
+        </div>
+        <div class="mol-items">`;
+      mols.forEach(m => {
+        const rankCls = m.priority === 'core' ? 'rank-core' : m.priority === 'support' ? 'rank-support' : 'rank-optional';
+        const rankLbl = m.priority === 'core' ? 'CORE' : m.priority === 'support' ? 'SUPP' : 'OPC';
+        html += `<div class="mol-item">
+          <div class="mol-rank ${rankCls}">${rankLbl}</div>
+          <div class="mol-info">
+            <div class="mol-name-row">
+              <span class="mol-name">${m.name}</span>
+              <span class="mol-full">${m.full}</span>
+            </div>
+            <div class="mol-why">${m.why}</div>
+            <div class="mol-tags-row">
+              <span class="mol-tag tag-dose">⚖ ${m.dose}</span>
+              ${m.synergy ? `<span class="mol-tag tag-synergy">⚡ ${m.synergy}</span>` : ''}
+              <span class="mol-tag tag-evidence">${m.evidence}</span>
+            </div>
+          </div>
+          <div class="mol-price">
+            <span class="mol-price-n">~$${m.estimated_price}</span>
+            /mes
+          </div>
+        </div>`;
+      });
+      html += `</div></div>`;
+    });
+    html += '</div>';
+  }
 
   // Warnings
   if (stack.warnings?.length) {
