@@ -8,16 +8,28 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Email válido requerido' });
   }
 
-  const paymentLink = process.env.STRIPE_PAYMENT_LINK;
-  if (paymentLink) {
-    const url = `${paymentLink}${paymentLink.includes('?') ? '&' : '?'}prefilled_email=${encodeURIComponent(email)}`;
-    return res.status(200).json({ url, mode: 'payment_link' });
-  }
-
   const stripeKey = process.env.STRIPE_SECRET_KEY;
   const stripePriceId = process.env.STRIPE_PRICE_ID;
-  if (!stripeKey || !stripePriceId) {
-    return res.status(500).json({ error: 'Falta configurar STRIPE_SECRET_KEY o STRIPE_PRICE_ID' });
+  const rawPaymentLink = String(process.env.STRIPE_PAYMENT_LINK || '').trim();
+
+  // Prioridad: Checkout Session dinámica con Price ID. Esto evita problemas de enlaces mal formados.
+  if (!stripeKey) {
+    return res.status(500).json({ error: 'Falta configurar STRIPE_SECRET_KEY' });
+  }
+
+  if (!stripePriceId && rawPaymentLink) {
+    try {
+      const base = new URL(rawPaymentLink);
+      const url = new URL(base.toString());
+      url.searchParams.set('prefilled_email', email);
+      return res.status(200).json({ url: url.toString(), mode: 'payment_link' });
+    } catch (_e) {
+      return res.status(500).json({ error: 'STRIPE_PAYMENT_LINK inválido. Usa URL completa https://...' });
+    }
+  }
+
+  if (!stripePriceId) {
+    return res.status(500).json({ error: 'Falta STRIPE_PRICE_ID (o define STRIPE_PAYMENT_LINK válido)' });
   }
 
   try {
