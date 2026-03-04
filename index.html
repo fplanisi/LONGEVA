@@ -54,22 +54,26 @@
 
   .main{position:relative;z-index:10;max-width:1320px;margin:0 auto;padding:0 40px 64px}
   .quick-modules{display:grid;grid-template-columns:repeat(2,minmax(260px,1fr));gap:12px;max-width:980px;margin:8px auto 0}
-  .qmod{border:1px solid var(--border);background:rgba(255,255,255,.015);border-radius:12px;padding:13px 14px;text-decoration:none;color:var(--text);text-align:left;transition:.2s}
+  .qmod{position:relative;border:1px solid var(--border);background:rgba(255,255,255,.015);border-radius:12px;padding:14px 14px 13px;text-decoration:none;color:var(--text);text-align:left;transition:.2s}
   .qmod:hover{border-color:var(--accent2);transform:translateY(-1px)}
-  .qmod b{display:block;font-size:13px;margin-bottom:4px}
+  .qmod b{display:block;font-size:14px;margin-bottom:4px}
   .qmod span{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;line-height:1.35}
+  .qmod-tag{position:absolute;right:10px;top:10px;padding:2px 7px;border-radius:999px;border:1px solid var(--border);font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.08em;color:var(--muted);background:rgba(255,255,255,.04)}
   .qmod-library{border-color:rgba(209,255,90,.55);background:linear-gradient(140deg,rgba(209,255,90,.14),rgba(106,255,217,.09));box-shadow:0 0 0 1px rgba(209,255,90,.22) inset,0 0 14px rgba(209,255,90,.12)}
   .qmod-library b{color:var(--accent3)}
+  .qmod-library .qmod-tag{border-color:rgba(209,255,90,.45);color:var(--accent3);background:rgba(209,255,90,.12)}
   .qmod-library:hover{border-color:rgba(209,255,90,.9);box-shadow:0 0 0 1px rgba(209,255,90,.3) inset,0 0 22px rgba(209,255,90,.24)}
-  .qmod-primary{border-color:rgba(106,255,217,.55);background:linear-gradient(140deg,rgba(106,255,217,.14),rgba(82,184,255,.1));box-shadow:0 0 0 1px rgba(106,255,217,.22) inset,0 0 14px rgba(106,255,217,.14)}
+  .qmod-primary{border-color:rgba(106,255,217,.85);background:linear-gradient(140deg,rgba(106,255,217,.22),rgba(82,184,255,.16));box-shadow:0 0 0 1px rgba(106,255,217,.35) inset,0 0 28px rgba(106,255,217,.24)}
   .qmod-primary b{color:var(--accent)}
-  .qmod-primary:hover{border-color:rgba(106,255,217,.9);box-shadow:0 0 0 1px rgba(106,255,217,.3) inset,0 0 22px rgba(106,255,217,.24)}
+  .qmod-primary .qmod-tag{border-color:rgba(106,255,217,.6);color:var(--accent);background:rgba(106,255,217,.14)}
+  .qmod-primary:hover{border-color:rgba(106,255,217,1);box-shadow:0 0 0 1px rgba(106,255,217,.42) inset,0 0 34px rgba(106,255,217,.34)}
   .qmod-nutri{border-color:rgba(82,184,255,.42);background:linear-gradient(140deg,rgba(82,184,255,.12),rgba(106,255,217,.06));box-shadow:0 0 0 1px rgba(82,184,255,.18) inset}
   .qmod-nutri b{color:#9ed0ff}
+  .qmod-nutri .qmod-tag{border-color:rgba(82,184,255,.5);color:#9ed0ff;background:rgba(82,184,255,.12)}
   .qmod-nutri:hover{border-color:rgba(82,184,255,.86);box-shadow:0 0 0 1px rgba(82,184,255,.28) inset,0 0 18px rgba(82,184,255,.18)}
   .qmod-bio{border-color:rgba(159,123,255,.55);background:linear-gradient(130deg,rgba(159,123,255,.16),rgba(255,95,127,.12));box-shadow:0 0 22px rgba(159,123,255,.2)}
   .qmod-bio b{color:#f4d8ff}
-  .qmod-bio::after{content:'ADVANCED';display:inline-block;margin-top:6px;padding:2px 7px;border-radius:999px;border:1px solid rgba(255,180,220,.55);font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.08em;color:#ffd4ea;background:rgba(255,120,190,.1)}
+  .qmod-bio .qmod-tag{border-color:rgba(255,180,220,.55);color:#ffd4ea;background:rgba(255,120,190,.1)}
   .qmod-bio{animation:bioPulse 2.4s ease-in-out infinite}
   @keyframes bioPulse{0%,100%{box-shadow:0 0 16px rgba(159,123,255,.18)}50%{box-shadow:0 0 30px rgba(255,95,127,.32)}}
 
@@ -149,18 +153,22 @@
 <main class="main">
   <section class="quick-modules">
     <a class="qmod qmod-library" href="/library.html">
+      <i class="qmod-tag" id="tag-lib">CURATED</i>
       <b id="m1-title">Biblioteca</b>
       <span id="m1-copy">Explora moléculas por categoría, evidencia y mecanismo de acción.</span>
     </a>
     <a class="qmod qmod-primary" href="/stack-builder.html">
+      <i class="qmod-tag" id="tag-plan">FLAGSHIP</i>
       <b id="m2-title">Plan Personalizado</b>
       <span id="m2-copy">Stack mensual con dosis, horarios, seguridad y reemplazos.</span>
     </a>
     <a class="qmod qmod-bio" href="/biohacker-protocol.html">
+      <i class="qmod-tag" id="tag-bio">ADVANCED</i>
       <b id="m3-title">Biohacker Lab</b>
       <span id="m3-copy">Módulo avanzado y experimental para usuarios expertos.</span>
     </a>
     <a class="qmod qmod-nutri" href="/food-longevity.html">
+      <i class="qmod-tag" id="tag-nutri">FREE</i>
       <b id="m4-title">Nutrición</b>
       <span id="m4-copy">Plan alimentario de longevidad sin suplementos.</span>
     </a>
@@ -190,12 +198,16 @@ function applyCopy(){
 
   document.getElementById('m1-title').textContent = tr('Biblioteca','Library');
   document.getElementById('m1-copy').textContent = tr('Explora moléculas por categoría, evidencia y mecanismo de acción.','Explore molecules by category, evidence, and mechanism of action.');
+  document.getElementById('tag-lib').textContent = tr('CURADA', 'CURATED');
   document.getElementById('m2-title').textContent = tr('Plan Personalizado','Personalized Plan');
   document.getElementById('m2-copy').textContent = tr('Stack mensual con dosis, horarios, seguridad y reemplazos.','Monthly stack with doses, timing, safety, and replacements.');
+  document.getElementById('tag-plan').textContent = tr('PRINCIPAL', 'FLAGSHIP');
   document.getElementById('m3-title').textContent = tr('Biohacker Lab','Biohacker Lab');
   document.getElementById('m3-copy').textContent = tr('Módulo avanzado y experimental para usuarios expertos.','Advanced and experimental module for expert users.');
+  document.getElementById('tag-bio').textContent = tr('AVANZADO', 'ADVANCED');
   document.getElementById('m4-title').textContent = tr('Nutrición','Nutrition');
   document.getElementById('m4-copy').textContent = tr('Plan alimentario de longevidad sin suplementos.','Food-based longevity plan without supplements.');
+  document.getElementById('tag-nutri').textContent = tr('GRATIS', 'FREE');
 
   const nav = document.querySelectorAll('.topnav a');
   if (nav[0]) nav[0].textContent = tr('Inicio','Home');

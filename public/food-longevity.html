@@ -61,7 +61,7 @@ body::after{content:'';position:fixed;inset:0;background:linear-gradient(to bott
 .hero h1 em{font-style:italic;color:var(--accent2);text-shadow:0 0 35px rgba(82,184,255,.25)}
 .hero-sub{font-size:14px;color:var(--muted);max-width:760px;margin:0 auto 18px;line-height:1.65;font-weight:300}
 .trust-line{margin:0 auto 0;max-width:760px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;color:#a9b8ce;border:1px solid var(--border);border-radius:999px;padding:7px 12px;display:inline-flex;gap:8px;align-items:center;background:rgba(255,255,255,.02)}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid{display:grid;grid-template-columns:1fr;gap:12px}
 .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px}
 .label{font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
 .opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
@@ -88,10 +88,18 @@ body::after{content:'';position:fixed;inset:0;background:linear-gradient(to bott
 .result-modal{position:fixed;inset:0;z-index:80;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(4,8,14,.78);backdrop-filter:blur(6px)}
 .result-modal.open{display:flex}
 .result-modal-card{width:min(920px,100%);max-height:min(88vh,880px);overflow:auto;background:linear-gradient(155deg,var(--surface2),var(--surface));border:1px solid rgba(82,184,255,.3);border-radius:16px;padding:18px;box-shadow:0 24px 54px rgba(0,0,0,.45)}
-.result-modal-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--border)}
-.result-modal-title{font-family:'DM Serif Display',serif;font-size:28px;line-height:1;color:var(--text)}
+.result-modal-head{position:relative;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.result-modal-title{font-family:'DM Serif Display',serif;font-size:28px;line-height:1;color:var(--text);text-align:center;width:100%}
 .result-close{appearance:none;border:1px solid var(--border);background:rgba(255,255,255,.02);color:var(--muted);width:34px;height:34px;border-radius:9px;font-size:20px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.result-close{position:absolute;right:0;top:50%;transform:translateY(-50%)}
 .result-close:hover{border-color:var(--accent2);color:#fff}
+.result-modal-card .label,
+.result-modal-card h3,
+.result-modal-card .plan-head,
+.result-modal-card .food h4,
+.result-modal-card .food p,
+.result-modal-card .note{text-align:center}
+.result-modal-card .pill-wrap{display:flex;justify-content:center;flex-wrap:wrap}
 @media(max-width:900px){
   .grid,.opts{grid-template-columns:1fr}
   body{padding-top:56px}
@@ -391,7 +399,7 @@ document.getElementById('gen-btn').addEventListener('click', () => {
 
   let html = `<div class="label">${tr('Plan recomendado', 'Recommended plan')}</div>`;
   html += `<h3 style="font-size:22px;margin-bottom:6px;">${p.title}</h3>`;
-  html += `<div>${p.nutrients.map(n => `<span class="pill">${n}</span>`).join('')}</div>`;
+  html += `<div class="pill-wrap">${p.nutrients.map(n => `<span class="pill">${n}</span>`).join('')}</div>`;
   html += `<div class="plan"><div class="plan-head">${tr('Alimentos clave para esta semana', 'Key foods for this week')}</div><div class="plan-body">`;
   p.foods.forEach(f => {
     html += `<div class="food"><h4>${f.name}</h4><p>${f.why}</p></div>`;
