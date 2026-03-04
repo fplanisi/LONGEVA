@@ -452,7 +452,14 @@ function render() {
     ms.forEach((m, i) => {
       const tc = m.type === 'natural' ? 'tn' : 'ts';
       const tl = m.type === 'natural' ? '🌿' : '⚗️';
-      h += `<div class="card" style="animation-delay:${i * .035}s" onclick="askMol(${JSON.stringify(m.name)},${JSON.stringify(m.full_name)},${JSON.stringify(m.pathways||[])},${JSON.stringify(m.category)},${m.study_count||0})">
+      const encoded = encodeURIComponent(JSON.stringify({
+        name: m.name || '',
+        full_name: m.full_name || m.name || '',
+        pathways: m.pathways || [],
+        category: m.category || '',
+        study_count: m.study_count || 0,
+      }));
+      h += `<div class="card js-mol-card" data-mol="${encoded}" style="animation-delay:${i * .035}s">
         <div class="card-top"><div class="mol-n">${m.name}</div><div class="tb ${tc}">${tl} ${m.type==='natural'?'Natural':'Sintética'}</div></div>
         <div class="card-desc">${m.description||''}</div>
         <div class="chips">${(m.pathways||[]).map(p=>`<span class="chip">${p}</span>`).join('')}</div>
@@ -462,6 +469,25 @@ function render() {
     h += `</div></div>`;
   });
   document.getElementById('mols').innerHTML = h;
+  bindMoleculeCards();
+}
+
+function bindMoleculeCards() {
+  document.querySelectorAll('.js-mol-card').forEach((card) => {
+    card.addEventListener('click', async () => {
+      try {
+        const raw = card.getAttribute('data-mol') || '';
+        const payload = JSON.parse(decodeURIComponent(raw));
+        await askMol(
+          payload.name,
+          payload.full_name,
+          payload.pathways || [],
+          payload.category || '',
+          payload.study_count || 0
+        );
+      } catch (_e) {}
+    });
+  });
 }
 
 // ─────────────────────────────────────────────
