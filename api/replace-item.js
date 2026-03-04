@@ -111,7 +111,8 @@ async function callGroq(profile, currentItem, existingItems, reason, slot) {
 }
 
 function getSystemPrompt() {
-  return `Eres experto en longevidad y formulación de stacks personalizados.
+  return `You are an expert in longevity and personalized stack design.
+If profile.lang starts with "en", write JSON values in English; otherwise write in Spanish.
 Responde SOLO JSON válido, sin markdown.
 Debes proponer un reemplazo funcionalmente equivalente, dentro del presupuesto, y con mejor disponibilidad comercial global.
 Si el usuario pidió solo alimentos, mantén formato de alimento/porciones y no uses suplementos.`;

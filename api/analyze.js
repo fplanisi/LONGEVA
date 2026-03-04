@@ -11,7 +11,7 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const { molecule, full_name, pathways, category, study_count, mode } = req.body;
+  const { molecule, full_name, pathways, category, study_count, mode, lang } = req.body;
 
   if (!molecule) return res.status(400).json({ error: 'molecule field required' });
 
@@ -23,11 +23,11 @@ export default async function handler(req, res) {
   try {
     let result;
     if (provider === 'anthropic') {
-      result = await callAnthropic(molecule, full_name, pathways, category, study_count, mode);
+      result = await callAnthropic(molecule, full_name, pathways, category, study_count, mode, lang);
     } else if (provider === 'openai') {
-      result = await callOpenAI(molecule, full_name, pathways, category, study_count, mode);
+      result = await callOpenAI(molecule, full_name, pathways, category, study_count, mode, lang);
     } else {
-      result = await callGroq(molecule, full_name, pathways, category, study_count, mode);
+      result = await callGroq(molecule, full_name, pathways, category, study_count, mode, lang);
     }
     return res.status(200).json({ text: result, provider });
   } catch (error) {
@@ -39,7 +39,7 @@ export default async function handler(req, res) {
 // ─────────────────────────────────────────────
 // OPENAI — Recomendado para producción general
 // ─────────────────────────────────────────────
-async function callOpenAI(molecule, fullName, pathways, category, studyCount, mode) {
+async function callOpenAI(molecule, fullName, pathways, category, studyCount, mode, lang) {
   const isSearch = mode === 'latest';
   const model = process.env.OPENAI_MODEL_LIBRARY || process.env.OPENAI_MODEL_ANALYZE || process.env.OPENAI_MODEL || 'gpt-4.1-mini';
   const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -53,7 +53,7 @@ async function callOpenAI(molecule, fullName, pathways, category, studyCount, mo
       max_tokens: 1800,
       temperature: 0.3,
       messages: [
-        { role: 'system', content: getSystemPrompt(false) },
+        { role: 'system', content: getSystemPrompt(false, lang) },
         { role: 'user', content: buildUserPrompt(molecule, fullName, pathways, category, studyCount, isSearch) },
       ],
     }),
@@ -67,13 +67,13 @@ async function callOpenAI(molecule, fullName, pathways, category, studyCount, mo
 // ─────────────────────────────────────────────
 // ANTHROPIC — Producción con web search real
 // ─────────────────────────────────────────────
-async function callAnthropic(molecule, fullName, pathways, category, studyCount, mode) {
+async function callAnthropic(molecule, fullName, pathways, category, studyCount, mode, lang) {
   const isSearch = mode === 'latest'; // busca papers recientes vs explicación base
 
   const body = {
     model: 'claude-sonnet-4-20250514',
     max_tokens: 1800,
-    system: getSystemPrompt(isSearch),
+    system: getSystemPrompt(isSearch, lang),
     messages: [{ role: 'user', content: buildUserPrompt(molecule, fullName, pathways, category, studyCount, isSearch) }],
   };
 
@@ -109,7 +109,7 @@ async function callAnthropic(molecule, fullName, pathways, category, studyCount,
 // ─────────────────────────────────────────────
 // GROQ — Testing gratuito (sin web search)
 // ─────────────────────────────────────────────
-async function callGroq(molecule, fullName, pathways, category, studyCount) {
+async function callGroq(molecule, fullName, pathways, category, studyCount, mode, lang) {
   const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
     method: 'POST',
     headers: {
@@ -121,7 +121,7 @@ async function callGroq(molecule, fullName, pathways, category, studyCount) {
       max_tokens: 1800,
       temperature: 0.3,
       messages: [
-        { role: 'system', content: getSystemPrompt(false) },
+        { role: 'system', content: getSystemPrompt(false, lang) },
         { role: 'user', content: buildUserPrompt(molecule, fullName, pathways, category, studyCount, false) },
       ],
     }),
@@ -139,10 +139,30 @@ async function callGroq(molecule, fullName, pathways, category, studyCount) {
 // ─────────────────────────────────────────────
 // PROMPTS
 // ─────────────────────────────────────────────
-function getSystemPrompt(withSearch) {
+function getSystemPrompt(withSearch, lang) {
+  const isEn = String(lang || '').toLowerCase().startsWith('en');
   const searchNote = withSearch
-    ? 'Tienes acceso a búsqueda web. BUSCA estudios recientes en PubMed, bioRxiv, Nature Aging y Cell Metabolism publicados en 2025-2026 antes de responder.'
-    : 'Responde con el conocimiento científico más riguroso disponible sobre geroscience y longevidad.';
+    ? (isEn
+      ? 'You have web search access. Search for recent studies in PubMed, bioRxiv, Nature Aging, and Cell Metabolism from 2025-2026 before answering.'
+      : 'Tienes acceso a búsqueda web. BUSCA estudios recientes en PubMed, bioRxiv, Nature Aging y Cell Metabolism publicados en 2025-2026 antes de responder.')
+    : (isEn
+      ? 'Respond with the most rigorous scientific knowledge available on geroscience and longevity.'
+      : 'Responde con el conocimiento científico más riguroso disponible sobre geroscience y longevidad.');
+
+  if (isEn) {
+    return `You are a world-class expert in geroscience, aging biology, and longevity medicine. ${searchNote}
+
+Always respond in English. Structure your answer with these markdown sections:
+### Description and classification
+### Mechanism of action in longevity
+### Scientific evidence
+### Dose and protocol
+### Synergies with other molecules
+### Limitations and controversies
+### Current status ${withSearch ? '(include 2025-2026 findings if available)' : '(2025-2026)'}
+
+Use **bold** for key terms. If evidence is weak, state it clearly. Keep it technical but readable.`;
+  }
 
   return `Eres el máximo experto mundial en geroscience, biología del envejecimiento y medicina de longevidad. ${searchNote}
 

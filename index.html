@@ -319,6 +319,10 @@ const CONFIG = {
   // En GitHub Pages: URL raw de GitHub
   DB_URL: '/data/molecules.json',
 };
+const USER_LANG = String(navigator.language || 'es').toLowerCase().startsWith('en') ? 'en' : 'es';
+const IS_EN = USER_LANG === 'en';
+document.documentElement.lang = USER_LANG;
+const tr = (es, en) => (IS_EN ? en : es);
 
 let DB = null;
 let curFilter = 'all';
@@ -329,6 +333,7 @@ let aiMode = 'base'; // 'base' | 'latest'
 // INIT — Carga la base de datos al arrancar
 // ─────────────────────────────────────────────
 async function init() {
+  applyStaticI18n();
   try {
     const res = await fetch(CONFIG.DB_URL);
     if (!res.ok) throw new Error('No se pudo cargar la base de datos');
@@ -343,8 +348,35 @@ async function init() {
     render();
     checkProvider();
   } catch (e) {
-    document.getElementById('mols').innerHTML = `<div class="err">⚠ Error cargando base de datos: ${e.message}</div>`;
+    document.getElementById('mols').innerHTML = `<div class="err">⚠ ${tr('Error cargando base de datos', 'Error loading database')}: ${e.message}</div>`;
   }
+}
+
+function applyStaticI18n() {
+  if (!IS_EN) return;
+  const set = (sel, text) => { const el = document.querySelector(sel); if (el) el.textContent = text; };
+  set('.logo-tag', 'v3.1 · Hybrid AI + Curated base');
+  const badges = document.querySelectorAll('.badge-live');
+  if (badges[0]) badges[0].childNodes[1].nodeValue = ' Scientific base active';
+  set('.hero-eye', 'Personalized decisions · Time savings · 30-day follow-up');
+  set('.hero-sub', 'Not a wiki: decide what to take/eat by profile, budget, and local availability, with replacements over 30 days.');
+  const steps = document.querySelectorAll('.flow-step');
+  if (steps[0]) steps[0].innerHTML = '<b>1.</b> 2-minute diagnosis';
+  if (steps[1]) steps[1].innerHTML = '<b>2.</b> Monthly action plan';
+  if (steps[2]) steps[2].innerHTML = '<b>3.</b> Follow-up and replacements';
+  const nav = document.querySelectorAll('.topnav a');
+  if (nav[0]) nav[0].textContent = 'Library';
+  if (nav[1]) nav[1].textContent = 'Stack Builder';
+  if (nav[2]) nav[2].textContent = 'Biohacker';
+  if (nav[3]) nav[3].textContent = 'Nutrition';
+  const qmods = document.querySelectorAll('.qmod');
+  if (qmods[0]) qmods[0].querySelector('span').textContent = 'Personalized plan + version history + replacements';
+  if (qmods[1]) qmods[1].querySelector('span').textContent = 'Experimental module for advanced users';
+  if (qmods[2]) qmods[2].querySelector('span').textContent = 'Food-first approach, no supplements';
+  const si = document.getElementById('si');
+  if (si) si.placeholder = 'Search molecule or ask about any compound...';
+  const sbtn = document.getElementById('sbtn');
+  if (sbtn) sbtn.textContent = 'Analyze →';
 }
 
 // ─────────────────────────────────────────────
@@ -374,7 +406,7 @@ async function checkProvider() {
       name.textContent = prov;
     }
   } catch {
-    document.getElementById('provider-name').textContent = 'API no detectada';
+    document.getElementById('provider-name').textContent = tr('API no detectada', 'API not detected');
   }
 }
 
@@ -392,10 +424,9 @@ function setMode(m, btn) {
   aiMode = m;
   document.querySelectorAll('.mode-btn').forEach(x => x.classList.remove('active'));
   btn.classList.add('active');
-  const hint = m === 'latest' ? '🔍 Busca papers recientes 2025-2026 (requiere modo Anthropic en servidor)' : '📚 Análisis con base curada local';
   document.getElementById('si').placeholder = m === 'latest'
-    ? 'Buscar novedades: Taurina 2024, nuevas senolíticas, NAD+ estudios recientes...'
-    : 'Buscar molécula o preguntar sobre cualquier compuesto...';
+    ? tr('Buscar novedades: Taurina 2024, nuevas senolíticas, NAD+ estudios recientes...', 'Search updates: Taurine 2024, new senolytics, recent NAD+ studies...')
+    : tr('Buscar molécula o preguntar sobre cualquier compuesto...', 'Search molecule or ask about any compound...');
 }
 
 function getFiltered() {
@@ -440,7 +471,7 @@ function render() {
   const fl = getFiltered();
   document.getElementById('cnt').textContent = fl.length;
   if (!fl.length) {
-    document.getElementById('mols').innerHTML = '<div class="nores">Sin resultados. Usa el botón "Analizar →" para consultar con IA cualquier compuesto.</div>';
+    document.getElementById('mols').innerHTML = `<div class="nores">${tr('Sin resultados. Usa el botón "Analizar →" para consultar con IA cualquier compuesto.', 'No results. Use "Analyze →" to query AI about any compound.')}</div>`;
     return;
   }
   const cats = {};
@@ -500,7 +531,7 @@ async function askMol(name, fullName, pathways, category, studyCount) {
   const panel = document.getElementById('ai-panel');
   const area = document.getElementById('ai-area');
   panel.style.display = 'block';
-  area.innerHTML = `<div class="loading"><div class="spin"></div>Analizando <strong style="color:var(--accent)">${name}</strong>...</div>`;
+  area.innerHTML = `<div class="loading"><div class="spin"></div>${tr('Analizando', 'Analyzing')} <strong style="color:var(--accent)">${name}</strong>...</div>`;
   panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
   await searchIA(name, fullName, pathways, category, studyCount);
 }
@@ -519,7 +550,7 @@ async function searchIA(forceName, forceFull, forcePaths, forceCat, forceStudies
   panel.style.display = 'block';
 
   const isLatest = aiMode === 'latest';
-  area.innerHTML = `<div class="loading"><div class="spin ${isLatest?'spin-blue':''}"></div>${isLatest ? `Buscando novedades 2025-2026 sobre <strong style="color:var(--accent2)">${q}</strong>...` : `Analizando <strong style="color:var(--accent)">${q}</strong>...`}</div>`;
+  area.innerHTML = `<div class="loading"><div class="spin ${isLatest?'spin-blue':''}"></div>${isLatest ? `${tr('Buscando novedades 2025-2026 sobre', 'Searching 2025-2026 updates for')} <strong style="color:var(--accent2)">${q}</strong>...` : `${tr('Analizando', 'Analyzing')} <strong style="color:var(--accent)">${q}</strong>...`}</div>`;
 
   if (!forceName) panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
@@ -547,6 +578,7 @@ async function searchIA(forceName, forceFull, forcePaths, forceCat, forceStudies
         category: mol.category,
         study_count: mol.study_count,
         mode: isLatest ? 'latest' : 'base',
+        lang: USER_LANG,
       }),
     });
 
@@ -557,7 +589,7 @@ async function searchIA(forceName, forceFull, forcePaths, forceCat, forceStudies
       <div class="ai-head">
         <div class="ai-mol-name">${mol.full_name || q}</div>
         <div class="ai-head-right">
-          ${!isLatest ? `<button class="cbtn latest-btn" onclick="setModeAndSearch('${mol.name.replace(/'/g,"\\'")}')">🔍 Ver novedades</button>` : ''}
+          ${!isLatest ? `<button class="cbtn latest-btn" onclick="setModeAndSearch('${mol.name.replace(/'/g,"\\'")}')">🔍 ${tr('Ver novedades', 'See updates')}</button>` : ''}
           <button class="cbtn" onclick="document.getElementById('ai-panel').style.display='none'">✕</button>
         </div>
       </div>
@@ -567,7 +599,7 @@ async function searchIA(forceName, forceFull, forcePaths, forceCat, forceStudies
         ${mol.category?`<span class="at tp">${mol.category}</span>`:''}
         ${(mol.pathways||[]).slice(0,4).map(p=>`<span class="at tp">${p}</span>`).join('')}
         ${mol.evidence_rating&&mol.evidence_rating!=='N/A'?`<span class="at te">Evidencia ${mol.evidence_rating}</span>`:''}
-        ${isLatest?'<span class="at" style="background:rgba(0,152,255,.1);border:1px solid rgba(0,152,255,.25);color:var(--accent2)">🔍 Búsqueda web</span>':''}
+        ${isLatest?`<span class="at" style="background:rgba(0,152,255,.1);border:1px solid rgba(0,152,255,.25);color:var(--accent2)">🔍 ${tr('Búsqueda web', 'Web search')}</span>`:''}
       </div>
       <div class="ai-body">${fmt(data.text || '')}</div>
       <div class="ai-provider-note">Análisis generado con ${
@@ -581,7 +613,7 @@ async function searchIA(forceName, forceFull, forcePaths, forceCat, forceStudies
       }</div>`;
 
   } catch (e) {
-    area.innerHTML = `<div class="err">⚠ Error al conectar con el backend. ¿Está ejecutándose el servidor? (${e.message})</div>`;
+    area.innerHTML = `<div class="err">⚠ ${tr('Error al conectar con el backend. ¿Está ejecutándose el servidor?', 'Error connecting to backend. Is the server running?')} (${e.message})</div>`;
   }
 }
 
@@ -599,7 +631,7 @@ async function discoverNew() {
   const panel = document.getElementById('discover-panel');
   const content = document.getElementById('discover-content');
   panel.style.display = 'block';
-  content.innerHTML = `<div class="loading"><div class="spin spin-blue"></div>Buscando últimos descubrimientos en PubMed, Nature Aging, bioRxiv...</div>`;
+  content.innerHTML = `<div class="loading"><div class="spin spin-blue"></div>${tr('Buscando últimos descubrimientos en PubMed, Nature Aging, bioRxiv...', 'Searching latest discoveries in PubMed, Nature Aging, bioRxiv...')}</div>`;
   panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
   try {
@@ -615,7 +647,7 @@ async function discoverNew() {
       content.innerHTML = fmt(data.text || '');
     }
   } catch (e) {
-    content.innerHTML = `<div class="err">⚠ Error: ${e.message}</div>`;
+    content.innerHTML = `<div class="err">⚠ ${tr('Error', 'Error')}: ${e.message}</div>`;
   }
 }
 

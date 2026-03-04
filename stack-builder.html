@@ -918,6 +918,10 @@ const state = {
   lastStack: null,
   lastBudgetLabel: ''
 };
+const USER_LANG = String(navigator.language || 'es').toLowerCase().startsWith('en') ? 'en' : 'es';
+const IS_EN = USER_LANG === 'en';
+const tr = (es, en) => (IS_EN ? en : es);
+document.documentElement.lang = USER_LANG;
 const WIZARD_STATE_KEY = 'longeva_wizard_state_v1';
 const STACK_HISTORY_KEY = 'longeva_stack_history_v1';
 let safetyConfirmed = false;
@@ -1072,6 +1076,7 @@ function applyWizardStateToUI() {
 }
 
 async function initAccess() {
+  applyStaticI18n();
   trackEvent('stack_page_view', { path: location.pathname });
   try {
     const bypassRes = await fetch('/api/checkout-status');
@@ -1274,6 +1279,7 @@ function buildProfilePayload(budgetLabel) {
     budget_label: budgetLabel,
     source_preference: state.sourcePreference,
     country: state.country,
+    lang: USER_LANG,
     conditions: state.conditions,
     conditions_label: condStr,
     current_protocol: state.currentProtocol,
@@ -1283,7 +1289,7 @@ function buildProfilePayload(budgetLabel) {
 // ── GENERATE ──
 async function generateStack() {
   if (!state.paidSessionId) {
-    alert('Necesitas un pago validado para generar el stack.');
+    alert(tr('Necesitas un pago validado para generar el stack.', 'You need a validated payment session to generate the stack.'));
     return;
   }
   if (!safetyConfirmed) {
@@ -1580,7 +1586,7 @@ async function replaceItem(slot, index) {
 
 function downloadExecutivePDF() {
   if (!state.lastStack) {
-    alert('Primero genera un stack.');
+    alert(tr('Primero genera un stack.', 'Generate a stack first.'));
     return;
   }
   const stack = state.lastStack;
@@ -1620,7 +1626,7 @@ function downloadExecutivePDF() {
   </body></html>`;
   const w = window.open('', '_blank', 'noopener,noreferrer');
   if (!w) {
-    alert('Tu navegador bloqueó la ventana de impresión. Habilita popups para LONGEVA.');
+    alert(tr('Tu navegador bloqueó la ventana de impresión. Habilita popups para LONGEVA.', 'Your browser blocked the print window. Enable popups for LONGEVA.'));
     return;
   }
   w.document.open();
@@ -1707,6 +1713,26 @@ function loadStackVersion(index) {
   state.lastBudgetLabel = selected.budgetLabel || state.lastBudgetLabel || '';
   renderStack(selected.stack, state.lastBudgetLabel);
   trackEvent('stack_version_loaded', { index });
+}
+
+function applyStaticI18n() {
+  if (!IS_EN) return;
+  const set = (sel, txt) => { const el = document.querySelector(sel); if (el) el.textContent = txt; };
+  const nav = document.querySelectorAll('.topnav a');
+  if (nav[0]) nav[0].textContent = 'Library';
+  if (nav[1]) nav[1].textContent = 'Stack Builder';
+  if (nav[2]) nav[2].textContent = 'Biohacker';
+  if (nav[3]) nav[3].textContent = 'Nutrition';
+  set('.logo-tag', 'v3.1 · Hybrid AI + Curated base');
+  set('.hero-kicker', 'Scientific personalization');
+  set('.hero-sub', '120+ validated molecules. AI designs your optimal stack with doses, timing, and synergies.');
+  set('.gate-title', 'Unlock your Stack Builder');
+  const gateSub = document.querySelector('.gate-sub');
+  if (gateSub) gateSub.textContent = 'Enter your email and continue to secure checkout to generate your personalized monthly protocol.';
+  const gateBtn = document.getElementById('gate-btn');
+  if (gateBtn) gateBtn.textContent = 'Continue to checkout →';
+  const email = document.getElementById('user-email');
+  if (email) email.placeholder = 'you@email.com';
 }
 
 initAccess();

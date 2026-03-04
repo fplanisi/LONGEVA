@@ -132,6 +132,9 @@ body{
 
 <script>
 const state = { goal: 'longevity', style: 'omnivore' };
+const USER_LANG = String(navigator.language || 'es').toLowerCase().startsWith('en') ? 'en' : 'es';
+const IS_EN = USER_LANG === 'en';
+document.documentElement.lang = USER_LANG;
 
 const plans = {
   longevity: {
@@ -248,6 +251,21 @@ document.getElementById('gen-btn').addEventListener('click', () => {
   out.innerHTML = html;
   out.style.display = 'block';
 });
+
+function applyStaticI18n() {
+  if (!IS_EN) return;
+  const set = (sel, txt) => { const el = document.querySelector(sel); if (el) el.textContent = txt; };
+  const nav = document.querySelectorAll('.topnav a');
+  if (nav[0]) nav[0].textContent = 'Library';
+  if (nav[1]) nav[1].textContent = 'Stack Builder';
+  if (nav[2]) nav[2].textContent = 'Biohacker';
+  if (nav[3]) nav[3].textContent = 'Nutrition';
+  set('.logo-tag', 'v3.1 · Hybrid AI + Curated base');
+  set('.status-chip', 'Nutrition · Food-first (free)');
+  set('#gen-btn', 'Generate food plan');
+}
+
+applyStaticI18n();
 </script>
 </body>
 </html>

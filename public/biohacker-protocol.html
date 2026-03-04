@@ -173,6 +173,9 @@ textarea { min-height:90px; resize:vertical; }
 
 <script>
 const state = { sessionId: '', objective: 'muscle', experience: 'intermediate' };
+const USER_LANG = String(navigator.language || 'es').toLowerCase().startsWith('en') ? 'en' : 'es';
+const IS_EN = USER_LANG === 'en';
+document.documentElement.lang = USER_LANG;
 
 const payBtn = document.getElementById('pay-btn');
 const payMsg = document.getElementById('pay-msg');
@@ -274,6 +277,7 @@ async function generateProtocol() {
   const profile = {
     objective: state.objective,
     experience: state.experience,
+    lang: USER_LANG,
     contraindications: document.getElementById('contra').value.trim() || 'Ninguna',
     current_stack: document.getElementById('current').value.trim() || 'No reportado',
     budget_label: 'Premium',
@@ -363,6 +367,25 @@ function escapeHtml(s) {
     .replaceAll("'", '&#039;');
 }
 
+function applyStaticI18n() {
+  if (!IS_EN) return;
+  const set = (sel, txt) => { const el = document.querySelector(sel); if (el) el.textContent = txt; };
+  const nav = document.querySelectorAll('.topnav a');
+  if (nav[0]) nav[0].textContent = 'Library';
+  if (nav[1]) nav[1].textContent = 'Stack Builder';
+  if (nav[2]) nav[2].textContent = 'Biohacker';
+  if (nav[3]) nav[3].textContent = 'Nutrition';
+  set('.logo-tag', 'v3.1 · Hybrid AI + Curated base');
+  set('.status-chip', 'Biohacker Lab · Experimental');
+  set('.hero-kicker', 'Biohacker Lab · Advanced level');
+  set('.hero h1', 'Experimental Peptide Protocol');
+  const heroP = document.querySelector('.hero p');
+  if (heroP) heroP.textContent = 'Not a wellness routine. This is aggressive optimization for advanced users, with phases, monitoring, and clinical red flags.';
+  const alert = document.querySelector('.alert');
+  if (alert) alert.textContent = 'Experts only. Not medical advice. Real risk of interactions and adverse effects.';
+}
+
+applyStaticI18n();
 init();
 </script>
 </body>

@@ -55,6 +55,7 @@ async function verifyPaidSession(sessionId) {
 }
 
 async function callAnthropic(profile) {
+  const isEn = String(profile?.lang || '').toLowerCase().startsWith('en');
   const response = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: {
@@ -65,7 +66,7 @@ async function callAnthropic(profile) {
     body: JSON.stringify({
       model: 'claude-sonnet-4-20250514',
       max_tokens: 2600,
-      system: getSystemPrompt(),
+      system: getSystemPrompt(isEn),
       messages: [{ role: 'user', content: buildPrompt(profile) }],
     }),
   });
@@ -76,6 +77,7 @@ async function callAnthropic(profile) {
 }
 
 async function callGroq(profile) {
+  const isEn = String(profile?.lang || '').toLowerCase().startsWith('en');
   const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
     method: 'POST',
     headers: {
@@ -87,7 +89,7 @@ async function callGroq(profile) {
       max_tokens: 2600,
       temperature: 0.2,
       messages: [
-        { role: 'system', content: getSystemPrompt() },
+        { role: 'system', content: getSystemPrompt(isEn) },
         { role: 'user', content: buildPrompt(profile) },
       ],
     }),
@@ -99,6 +101,7 @@ async function callGroq(profile) {
 }
 
 async function callOpenAI(profile) {
+  const isEn = String(profile?.lang || '').toLowerCase().startsWith('en');
   const model = process.env.OPENAI_MODEL_STACK || process.env.OPENAI_MODEL || 'gpt-4.1';
   const response = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
@@ -111,7 +114,7 @@ async function callOpenAI(profile) {
       max_tokens: 2600,
       temperature: 0.2,
       messages: [
-        { role: 'system', content: getSystemPrompt() },
+        { role: 'system', content: getSystemPrompt(isEn) },
         { role: 'user', content: buildPrompt(profile) },
       ],
     }),
@@ -122,7 +125,15 @@ async function callOpenAI(profile) {
   return data.choices?.[0]?.message?.content || '';
 }
 
-function getSystemPrompt() {
+function getSystemPrompt(isEn = false) {
+  if (isEn) {
+    return `You are an expert in geroscience and personalized longevity medicine.
+Return only valid JSON, no markdown or extra text.
+Your output must follow the exact schema requested by the user.
+Use a technical, cautious tone grounded in human evidence whenever available.
+Include safety warnings for medication, pregnancy, or comorbidities.
+Write JSON text values in English.`;
+  }
   return `Eres experto en geroscience y medicina de longevidad personalizada.
 Responde solo JSON válido, sin markdown ni texto adicional.
 Tu salida debe seguir exactamente el esquema pedido por el usuario.
