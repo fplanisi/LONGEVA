@@ -28,10 +28,13 @@ body{
 .lang-btn{border:none;background:transparent;color:var(--muted);font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.08em;padding:4px 7px;border-radius:999px;cursor:pointer}
 .lang-btn.active{color:var(--text);background:rgba(106,255,217,.14)}
 .topnav-row{width:100%}
-.topnav{display:flex;gap:7px;flex-wrap:wrap}
+.topnav{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
 .topnav a{font-size:10px;text-decoration:none;color:var(--muted);padding:7px 13px;border-radius:999px;border:1px solid var(--border);background:rgba(255,255,255,.01);font-family:'DM Mono',monospace;letter-spacing:.1em}
 .topnav a:hover{color:var(--text);border-color:var(--accent2);box-shadow:0 0 0 1px rgba(82,184,255,.18) inset}
 .topnav a.active{color:#d1ff5a;border-color:rgba(209,255,90,.45);background:rgba(209,255,90,.08)}
+.topnav a.nav-bio{border-color:rgba(159,123,255,.32);color:#c9bddf}
+.topnav a.nav-bio:hover{color:#f6dbff;border-color:rgba(159,123,255,.75);background:rgba(159,123,255,.14);box-shadow:0 0 0 1px rgba(159,123,255,.28) inset,0 0 14px rgba(159,123,255,.2)}
+.topnav a.nav-bio.active{color:#ffd6ee;border-color:rgba(255,122,199,.72);background:linear-gradient(135deg,rgba(159,123,255,.3),rgba(255,95,127,.24));box-shadow:0 0 0 1px rgba(255,122,199,.25) inset,0 0 18px rgba(255,95,127,.26)}
 .hero{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
 .hero h1{font-family:'DM Serif Display',serif;font-size:34px;line-height:1.1;margin-bottom:8px;font-weight:400}
 .hero p{font-size:14px;color:var(--muted);line-height:1.6;max-width:860px}
@@ -97,7 +100,7 @@ body{
     <nav class="topnav">
       <a href="/index.html">Biblioteca</a>
       <a href="/stack-builder.html">Plan Personalizado</a>
-      <a href="/biohacker-protocol.html">Biohacker</a>
+      <a href="/biohacker-protocol.html" class="nav-bio">Biohacker</a>
       <a href="/food-longevity.html" class="active">Nutrición</a>
     </nav>
     </div>

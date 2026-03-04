@@ -79,8 +79,7 @@ header {
 }
 .header-top { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .brand-wrap { display: flex; align-items: baseline; gap: 9px; flex-wrap: wrap; }
-.logo { font-family: 'DM Serif Display', serif; font-size: 22px; font-weight: 400; letter-spacing: .12em; color: var(--accent); text-shadow: 0 0 30px rgba(106,255,217,.35); }
-.logo span { font-style: italic; }
+.logo { font-family: 'DM Serif Display', serif; font-size: 26px; font-weight: 400; letter-spacing: .1em; color: var(--accent); text-shadow: 0 0 30px rgba(106,255,217,.35); }
 .logo-tag { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--muted); letter-spacing: .16em; }
 .hbadge { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: .1em; border: 1px solid var(--border2); padding: 5px 12px; border-radius: 100px; }
 .status-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
@@ -96,6 +95,9 @@ header {
 }
 .topnav a:hover { color: var(--text); border-color: var(--accent2); box-shadow: 0 0 0 1px rgba(82,184,255,.18) inset; }
 .topnav a.active { color: var(--accent3); border-color: rgba(209,255,90,.45); background: rgba(209,255,90,.08); }
+.topnav a.nav-bio { border-color: rgba(159,123,255,.32); color: #c9bddf; }
+.topnav a.nav-bio:hover { color: #f6dbff; border-color: rgba(159,123,255,.75); background: rgba(159,123,255,.14); box-shadow: 0 0 0 1px rgba(159,123,255,.28) inset, 0 0 14px rgba(159,123,255,.2); }
+.topnav a.nav-bio.active { color: #ffd6ee; border-color: rgba(255,122,199,.72); background: linear-gradient(135deg,rgba(159,123,255,.3),rgba(255,95,127,.24)); box-shadow: 0 0 0 1px rgba(255,122,199,.25) inset, 0 0 18px rgba(255,95,127,.26); }
 
 /* ── MAIN WRAPPER ── */
 .wrapper { position: relative; z-index: 10; max-width: 860px; margin: 0 auto; padding: 0 24px 100px; }
@@ -619,7 +621,7 @@ input[type=range]::-webkit-slider-thumb {
 <header>
   <div class="header-top">
     <div class="brand-wrap">
-      <div class="logo">LONG<span>EVA</span></div>
+      <div class="logo">LONGEVAPP</div>
       <span class="logo-tag">v3.1 · Híbrido IA + Base curada</span>
     </div>
     <div class="status-row">
@@ -634,7 +636,7 @@ input[type=range]::-webkit-slider-thumb {
     <nav class="topnav">
       <a href="/index.html">Biblioteca</a>
       <a href="/stack-builder.html" class="active">Plan Personalizado</a>
-      <a href="/biohacker-protocol.html">Biohacker</a>
+      <a href="/biohacker-protocol.html" class="nav-bio">Biohacker</a>
       <a href="/food-longevity.html">Nutrición</a>
     </nav>
   </div>

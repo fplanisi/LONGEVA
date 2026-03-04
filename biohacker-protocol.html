@@ -16,7 +16,7 @@ body { background:radial-gradient(circle at top left,#221a3a 0%,#05070c 48%); co
 .site-header{position:relative;z-index:10;padding:14px 0 10px;display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
 .header-top{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .brand-wrap{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
-.logo-name{font-family:'DM Serif Display',serif;font-size:26px;letter-spacing:.1em;color:var(--accent);text-shadow:0 0 30px rgba(106,255,217,.35)}
+.logo-name{font-family:'DM Serif Display',serif;font-size:26px;letter-spacing:.1em;color:var(--accent);text-shadow:0 0 30px rgba(127,125,255,.42)}
 .logo-tag{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:.16em}
 .status-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
 .status-chip{display:flex;align-items:center;gap:6px;padding:6px 11px;border-radius:100px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;background:rgba(159,123,255,.1);border:1px solid rgba(159,123,255,.34);color:#c7b6ff}
@@ -28,6 +28,9 @@ body { background:radial-gradient(circle at top left,#221a3a 0%,#05070c 48%); co
 .topnav a { color:var(--muted); text-decoration:none; font-size:10px; border:1px solid var(--border); padding:7px 13px; border-radius:999px; font-family:'DM Mono',monospace; letter-spacing:.1em; background:rgba(255,255,255,.01); }
 .topnav a:hover { color:var(--text); border-color:var(--accent2); box-shadow:0 0 0 1px rgba(82,184,255,.18) inset; }
 .topnav a.active { color:#d1ff5a; border-color:rgba(209,255,90,.45); background:rgba(209,255,90,.08); }
+.topnav a.nav-bio{border-color:rgba(159,123,255,.54);color:#e2d5ff;background:rgba(159,123,255,.14)}
+.topnav a.nav-bio:hover{color:#ffe0f5;border-color:rgba(255,130,205,.78);background:linear-gradient(135deg,rgba(159,123,255,.34),rgba(255,95,127,.25));box-shadow:0 0 0 1px rgba(255,130,205,.3) inset,0 0 16px rgba(159,123,255,.28)}
+.topnav a.nav-bio.active{color:#ffe0f5;border-color:rgba(255,130,205,.84);background:linear-gradient(135deg,rgba(159,123,255,.38),rgba(255,95,127,.32));box-shadow:0 0 0 1px rgba(255,130,205,.34) inset,0 0 20px rgba(159,123,255,.35)}
 .hero { background:linear-gradient(135deg,rgba(159,123,255,.14),rgba(255,95,127,.08),var(--surface)); border:1px solid var(--border); border-radius:16px; padding:26px; margin-bottom:18px; position:relative; overflow:hidden; }
 .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 85% 10%,rgba(255,95,127,.12),transparent 45%);pointer-events:none}
 .hero-kicker{display:inline-flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;color:#d7c8ff;text-transform:uppercase;border:1px solid rgba(159,123,255,.4);border-radius:999px;padding:5px 10px;margin-bottom:10px;background:rgba(159,123,255,.08)}
@@ -115,7 +118,7 @@ textarea { min-height:90px; resize:vertical; }
     <nav class="topnav">
       <a href="/index.html">Biblioteca</a>
       <a href="/stack-builder.html">Plan Personalizado</a>
-      <a href="/biohacker-protocol.html" class="active">Biohacker</a>
+      <a href="/biohacker-protocol.html" class="nav-bio active">Biohacker</a>
       <a href="/food-longevity.html">Nutrición</a>
     </nav>
     </div>
