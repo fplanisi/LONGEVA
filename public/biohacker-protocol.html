@@ -66,8 +66,17 @@ html[data-theme="light"] .topnav a.nav-bio:hover{border-color:rgba(160,50,50,.6)
 .hero-kicker{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--dim);text-transform:uppercase;margin-bottom:14px}
 .hero h1{font-family:'DM Serif Display',serif;font-size:clamp(34px,5vw,68px);line-height:1.06;margin-bottom:12px;letter-spacing:.01em}
 .hero h1 em{font-style:italic;color:#be4646}
-.hero p{color:var(--muted);line-height:1.65;font-size:14px;max-width:760px;margin:0 auto}
-.hero-list{margin-top:12px;display:grid;gap:6px}
+  .hero p{color:var(--muted);line-height:1.65;font-size:14px;max-width:760px;margin:0 auto}
+  .terminal-status{
+    font-family:'DM Mono',monospace;
+    font-size:.62rem;
+    letter-spacing:.12em;
+    color:var(--dim);
+    margin:0 auto 10px;
+    max-width:780px;
+    text-transform:uppercase;
+  }
+  .hero-list{margin-top:12px;display:grid;gap:6px}
 .hero-list div{font-size:12px;color:var(--muted)}
 .hero-list b{color:#be4646}
 html[data-theme="light"] .hero h1 em{color:#964848}
@@ -263,6 +272,82 @@ html[data-theme="light"] .hero-list b{color:#964848}
   .to-top{position:fixed;right:16px;bottom:16px;width:42px;height:42px;border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--accent);font-size:18px;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;pointer-events:none;transform:translateY(8px);transition:opacity .2s ease,transform .2s ease,border-color .2s ease;z-index:45}
   .to-top:hover{border-color:var(--accent2);color:var(--text)}
   .to-top.show{opacity:1;pointer-events:auto;transform:translateY(0)}
+  .protocol-catalog{
+    margin:0 auto 16px;
+    max-width:960px;
+    border:1px solid rgba(190,60,60,.24);
+    border-radius:8px;
+    background:linear-gradient(165deg,rgba(15,10,10,.35),rgba(40,5,5,.1));
+    padding:14px;
+  }
+  .catalog-head{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+    padding-bottom:10px;border-bottom:1px solid rgba(190,60,60,.16);margin-bottom:12px;
+  }
+  .catalog-title{
+    font-family:'DM Mono',monospace;
+    font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:#ff8e8e;
+  }
+  .catalog-sub{
+    font-size:12px;color:var(--muted);
+  }
+  .catalog-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .protocol-item{
+    border:1px solid var(--border);
+    background:rgba(255,255,255,.01);
+    border-radius:6px;
+    padding:12px;
+    cursor:pointer;
+    transition:.18s;
+  }
+  .protocol-item:hover{border-color:rgba(190,60,60,.5);background:rgba(160,40,40,.06);transform:translateY(-1px)}
+  .protocol-header{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+  .badge-peptide{
+    background: rgba(200, 88, 88, 0.15);
+    color: #ff8e8e;
+    border: 1px solid var(--accent);
+    padding: 2px 6px;
+    font-size: 0.6rem;
+    font-family: 'DM Mono', monospace;
+    border-radius: 3px;
+    margin-right: 8px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+  }
+  .protocol-item h3{font-size:14px;margin:0 0 6px;color:var(--text)}
+  .protocol-item p{font-size:12px;line-height:1.45;color:var(--muted);margin:0}
+  .strict-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .strict-item{
+    border:1px solid rgba(190,60,60,.22);
+    background:rgba(150,30,30,.06);
+    border-radius:4px;
+    padding:9px 10px;
+    font-size:11px;
+    color:var(--muted);
+    font-family:'DM Mono',monospace;
+    line-height:1.4;
+  }
+  .strict-title{
+    margin-top:16px;margin-bottom:8px;
+    font-family:'DM Mono',monospace;
+    font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--danger);
+  }
+  .risk-select{
+    width:100%;border:1px solid var(--border);border-radius:4px;background:var(--surface2);
+    color:var(--text);padding:10px 11px;font-size:13px;font-family:'Instrument Sans',sans-serif;
+  }
+  #catalog-modal{position:fixed;inset:0;z-index:82;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(2,4,8,.84);backdrop-filter:blur(7px)}
+  #catalog-modal.open{display:flex}
+  #catalog-modal-card{
+    width:min(780px,100%);max-height:min(88vh,880px);overflow:auto;background:var(--bg);
+    border:1px solid rgba(190,60,60,.3);border-radius:6px;padding:18px;
+  }
+  .catalog-modal-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;border-bottom:1px solid rgba(190,60,60,.2);padding-bottom:10px;margin-bottom:10px}
+  .catalog-modal-head h3{font-size:24px}
+  .catalog-modal-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+  .catalog-modal-body p{font-size:13px;color:var(--muted);line-height:1.6;margin:0 0 10px}
+  .catalog-nature{border:1px solid rgba(190,60,60,.25);background:rgba(160,40,40,.07);padding:10px;border-radius:4px;font-size:12px;color:var(--text)}
+  .catalog-use{margin-top:12px;display:flex;justify-content:flex-end}
 
   /* Result card: classified dossier */
   #result {
@@ -381,6 +466,7 @@ html[data-theme="light"] .hero-list b{color:#964848}
 
   @media(max-width:900px){
   .grid{grid-template-columns:1fr;}
+  .catalog-grid,.strict-grid{grid-template-columns:1fr}
   body{padding-top:56px}
   .wrap{padding:0 12px 64px}
   .site-header{position:fixed;top:0;left:0;right:0;z-index:40;padding:8px 12px;margin:0}
@@ -523,13 +609,22 @@ html[data-theme="light"] .hero-list b{color:#964848}
 
 <div class="wrap">
   <section class="hero hero-area">
-    <div class="eyebrow-warn" id="hero-eyebrow">Nivel de Acceso: Experimental</div>
+    <div class="terminal-status" id="terminal-status">STATUS: <span style="color: var(--accent)">PEPTIDE_SYNTHESIS_ACTIVE</span> // AUTH_LEVEL: 05</div>
+    <div class="eyebrow-warn" id="hero-eyebrow">Ingeniería Molecular</div>
     <h1 class="disruptive-title" id="hero-title">Biohacker Lab</h1>
-    <p id="hero-sub">Exploración de frontera en optimización humana. Reprogramación celular, moléculas off-label y protocolos de alta intensidad.</p>
+    <p id="hero-sub">Exploración de frontera en <strong>terapias con péptidos</strong>, bioreguladores y moléculas off-label. Protocolos diseñados para la reparación tisular, optimización hormonal y reprogramación celular activa.</p>
     <p id="hero-riskline" class="danger-trust-line">Solo para usuarios avanzados: proceda bajo su propia responsabilidad biológica.</p>
   </section>
 
   <div class="bio-main">
+  <div class="protocol-catalog" id="protocol-catalog">
+    <div class="catalog-head">
+      <div class="catalog-title" id="catalog-title">Índice Clasificado de Protocolos Peptídicos</div>
+      <div class="catalog-sub" id="catalog-sub">Selecciona un expediente para revisar naturaleza del compuesto y foco terapéutico.</div>
+    </div>
+    <div class="catalog-grid" id="protocol-catalog-grid"></div>
+  </div>
+
   <div id="paywall" class="card">
     <label class="label">Acceso premium (mismo paywall)</label>
     <div class="row">
@@ -562,10 +657,57 @@ html[data-theme="light"] .hero-list b{color:#964848}
     <label class="label" style="margin-top:16px;">Protocolo actual (suplementos/peptidos)</label>
     <textarea id="current" placeholder="Ej: Creatina 5g, omega 3, no peptidos aun..."></textarea>
 
+    <div class="strict-title" id="strict-title">Cuestionario de seguridad avanzada</div>
+    <div class="strict-grid">
+      <div class="strict-item">
+        <label class="label" style="margin-top:0;margin-bottom:6px;" id="risk-label">Tolerancia al riesgo</label>
+        <select id="risk-select" class="risk-select">
+          <option value="moderate">Moderada</option>
+          <option value="high">Alta</option>
+          <option value="extreme">Extrema</option>
+        </select>
+      </div>
+      <div class="strict-item">
+        <label class="label" style="margin-top:0;margin-bottom:6px;" id="sterile-label">Experiencia en manejo estéril</label>
+        <select id="sterile-select" class="risk-select">
+          <option value="none">Ninguna</option>
+          <option value="basic">Básica</option>
+          <option value="advanced">Avanzada</option>
+        </select>
+      </div>
+      <div class="strict-item">
+        <label class="label" style="margin-top:0;margin-bottom:6px;" id="labs-label">Laboratorios recientes (90 días)</label>
+        <select id="labs-select" class="risk-select">
+          <option value="no">No</option>
+          <option value="yes">Sí</option>
+        </select>
+      </div>
+      <div class="strict-item">
+        <label class="label" style="margin-top:0;margin-bottom:6px;" id="supervision-label">Supervisión médica disponible</label>
+        <select id="supervision-select" class="risk-select">
+          <option value="none">No</option>
+          <option value="remote">Remota</option>
+          <option value="direct">Directa</option>
+        </select>
+      </div>
+    </div>
+
     <div class="row">
       <div class="check">
         <input id="expert-check" type="checkbox">
         <label for="expert-check">Confirmo que entiendo que este modulo es experimental y requiere supervision profesional.</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="check">
+        <input id="monitor-check" type="checkbox">
+        <label for="monitor-check" id="monitor-label">Confirmo que haré monitoreo clínico y biomarcadores durante el protocolo.</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="check">
+        <input id="consent-check" type="checkbox">
+        <label for="consent-check" id="consent-label">Acepto que este módulo es para fines educativos avanzados y no sustituye práctica médica.</label>
       </div>
     </div>
     <div class="row">
@@ -577,6 +719,27 @@ html[data-theme="light"] .hero-list b{color:#964848}
   <div id="result" class="card"></div>
   </div>
 </div>
+<div id="catalog-modal" aria-hidden="true">
+  <div id="catalog-modal-card" role="dialog" aria-modal="true" aria-labelledby="catalog-modal-title">
+    <div class="catalog-modal-head">
+      <div>
+        <div class="catalog-modal-meta">
+          <span class="badge-peptide" id="catalog-modal-kind">PÉPTIDO</span>
+          <span class="protocol-id" id="catalog-modal-id">#BPC-157</span>
+        </div>
+        <h3 class="serif" id="catalog-modal-title" style="margin-top:6px;">Protocolo</h3>
+      </div>
+      <button class="cbtn" type="button" id="catalog-close">✕</button>
+    </div>
+    <div class="catalog-modal-body">
+      <p id="catalog-modal-desc"></p>
+      <div class="catalog-nature" id="catalog-modal-nature"></div>
+      <div class="catalog-use">
+        <button class="btn btn-main" type="button" id="catalog-use-btn">Usar como base en el cuestionario</button>
+      </div>
+    </div>
+  </div>
+</div>
 <footer class="legal-footer">
   <span id="footer-disclaimer">© 2026 LONGEVAPP · Desarrollo médico · Eficacia, seguridad y adherencia · Módulo experimental. No reemplaza evaluación médica profesional.</span>
   <span id="footer-links"><a href="/terms.html">Términos</a> · <a href="/privacy.html">Privacidad</a></span>
@@ -584,7 +747,15 @@ html[data-theme="light"] .hero-list b{color:#964848}
 <button class="to-top" id="to-top" type="button" aria-label="Volver arriba">↑</button>
 
 <script>
-const state = { sessionId: '', objective: 'muscle', experience: 'intermediate' };
+const state = {
+  sessionId: '',
+  objective: 'muscle',
+  experience: 'intermediate',
+  risk: 'moderate',
+  sterile: 'none',
+  labs: 'no',
+  supervision: 'none'
+};
 const THEME_KEY = 'longeva_theme';
 const USER_LANG = getPreferredLang();
 const IS_EN = USER_LANG === 'en';
@@ -597,6 +768,8 @@ const payMsg = document.getElementById('pay-msg');
 const genBtn = document.getElementById('gen-btn');
 const formMsg = document.getElementById('form-msg');
 const expertCheck = document.getElementById('expert-check');
+const monitorCheck = document.getElementById('monitor-check');
+const consentCheck = document.getElementById('consent-check');
 
 document.getElementById('objective-grid').addEventListener('click', (e) => {
   const btn = e.target.closest('.opt');
@@ -614,12 +787,120 @@ document.getElementById('exp-grid').addEventListener('click', (e) => {
   btn.classList.add('active');
 });
 
-expertCheck.addEventListener('change', () => {
-  genBtn.disabled = !expertCheck.checked;
-});
+document.getElementById('risk-select')?.addEventListener('change', (e) => { state.risk = e.target.value; updateGenerateEnabled(); });
+document.getElementById('sterile-select')?.addEventListener('change', (e) => { state.sterile = e.target.value; updateGenerateEnabled(); });
+document.getElementById('labs-select')?.addEventListener('change', (e) => { state.labs = e.target.value; updateGenerateEnabled(); });
+document.getElementById('supervision-select')?.addEventListener('change', (e) => { state.supervision = e.target.value; updateGenerateEnabled(); });
+expertCheck.addEventListener('change', updateGenerateEnabled);
+monitorCheck.addEventListener('change', updateGenerateEnabled);
+consentCheck.addEventListener('change', updateGenerateEnabled);
 
 payBtn.addEventListener('click', startCheckout);
 genBtn.addEventListener('click', generateProtocol);
+document.getElementById('catalog-close')?.addEventListener('click', closeCatalogModal);
+
+const peptideCatalog = [
+  {
+    id: '#BPC-157',
+    objective: 'recovery',
+    title: 'Protocolo de Recuperación Sistémica',
+    desc: 'Regeneración acelerada de tejido blando y optimización del tracto gastrointestinal.',
+    nature_es: 'Naturaleza del Compuesto: Cadena corta de aminoácidos (Péptido) sintetizada para la señalización celular específica.',
+    nature_en: 'Compound Nature: Short amino-acid chain (Peptide) synthesized for targeted cellular signaling.'
+  },
+  {
+    id: '#CJC-1295_IPA',
+    objective: 'muscle',
+    title: 'Eje GH/IGF de Alto Rendimiento',
+    desc: 'Soporte para composición corporal, recuperación y calidad del descanso profundo.',
+    nature_es: 'Naturaleza del Compuesto: Péptidos secretagogos que modulan pulsos de hormona de crecimiento.',
+    nature_en: 'Compound Nature: Secretagogue peptides that modulate growth-hormone pulsatility.'
+  },
+  {
+    id: '#AOD-9604',
+    objective: 'fat_loss',
+    title: 'Protocolo Lipolítico Metabólico',
+    desc: 'Optimización de movilización grasa con enfoque en preservación de masa magra.',
+    nature_es: 'Naturaleza del Compuesto: Fragmento peptídico bioactivo orientado a señalización metabólica.',
+    nature_en: 'Compound Nature: Bioactive peptide fragment targeting metabolic signaling.'
+  },
+  {
+    id: '#GHK-Cu',
+    objective: 'skin',
+    title: 'Regeneración Cutánea y Tejido Conectivo',
+    desc: 'Reparación dérmica, soporte de colágeno y calidad de cicatrización.',
+    nature_es: 'Naturaleza del Compuesto: Tripéptido complejo con cobre para modulación reparativa tisular.',
+    nature_en: 'Compound Nature: Copper-complexed tripeptide for tissue-repair modulation.'
+  }
+];
+
+function updateGenerateEnabled() {
+  const strictReady =
+    expertCheck.checked &&
+    monitorCheck.checked &&
+    consentCheck.checked &&
+    state.supervision !== 'none' &&
+    state.sterile !== 'none' &&
+    state.labs === 'yes';
+  genBtn.disabled = !strictReady;
+}
+
+function renderCatalog() {
+  const grid = document.getElementById('protocol-catalog-grid');
+  if (!grid) return;
+  grid.innerHTML = peptideCatalog.map((item, idx) => `
+    <div class="protocol-item" onclick="openCatalogModal(${idx})">
+      <div class="protocol-header">
+        <span class="badge-peptide">${tr('PÉPTIDO', 'PEPTIDE')}</span>
+        <span class="protocol-id mono">${item.id}</span>
+      </div>
+      <h3>${escapeHtml(item.title)}</h3>
+      <p>${escapeHtml(item.desc)}</p>
+      <div class="risk-indicator" style="margin-top:8px;">
+        <span class="risk-dot"></span> ${tr('RIESGO: ELEVADO / EXPERIMENTAL', 'RISK: HIGH / EXPERIMENTAL')}
+      </div>
+    </div>
+  `).join('');
+}
+
+function openCatalogModal(index) {
+  const item = peptideCatalog[index];
+  if (!item) return;
+  document.getElementById('catalog-modal-id').textContent = item.id;
+  document.getElementById('catalog-modal-title').textContent = item.title;
+  document.getElementById('catalog-modal-desc').textContent = item.desc;
+  document.getElementById('catalog-modal-nature').textContent = tr(item.nature_es, item.nature_en);
+  const useBtn = document.getElementById('catalog-use-btn');
+  if (useBtn) {
+    useBtn.onclick = () => {
+      applyCatalogObjective(item.objective);
+      closeCatalogModal();
+      document.getElementById('paywall')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+  }
+  const modal = document.getElementById('catalog-modal');
+  modal?.classList.add('open');
+  modal?.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeCatalogModal() {
+  const modal = document.getElementById('catalog-modal');
+  modal?.classList.remove('open');
+  modal?.setAttribute('aria-hidden', 'true');
+  if (!document.getElementById('bio-result-modal')?.classList.contains('open')) {
+    document.body.style.overflow = '';
+  }
+}
+
+function applyCatalogObjective(objective) {
+  const map = { muscle: 'muscle', fat_loss: 'fat_loss', longevity: 'longevity', skin: 'skin', recovery: 'recovery' };
+  const target = map[objective] || 'longevity';
+  state.objective = target;
+  document.querySelectorAll('#objective-grid .opt').forEach((b) => b.classList.remove('active'));
+  const btn = document.querySelector(`#objective-grid .opt[data-value="${target}"]`);
+  if (btn) btn.classList.add('active');
+}
 
 async function startCheckout() {
   const email = document.getElementById('email').value.trim();
@@ -692,6 +973,15 @@ async function generateProtocol() {
   const profile = {
     objective: state.objective,
     experience: state.experience,
+    risk_tolerance: state.risk,
+    sterile_handling_level: state.sterile,
+    recent_labs_90d: state.labs,
+    medical_supervision: state.supervision,
+    strict_checks: {
+      understands_experimental_risk: expertCheck.checked,
+      commits_monitoring: monitorCheck.checked,
+      explicit_consent: consentCheck.checked
+    },
     lang: USER_LANG,
     contraindications: document.getElementById('contra').value.trim() || tr('Ninguna', 'None'),
     current_stack: document.getElementById('current').value.trim() || tr('No reportado', 'Not reported'),
@@ -737,9 +1027,17 @@ function renderResult(p) {
       <div class="phase-body">`;
     (ph.items || []).forEach((it, idx) => {
       const protoId = `#${phasePrefix}-${String(700 + idx * 11 + 72).padStart(3, '0')}`;
+      const natureDefault = tr(
+        'Naturaleza del Compuesto: Cadena corta de aminoácidos (Péptido) sintetizada para la señalización celular específica.',
+        'Compound Nature: Short amino-acid chain (Peptide) synthesized for targeted cellular signaling.'
+      );
       html += `<div class="item">
-        <h4>${escapeHtml(it.peptide || tr('Peptido', 'Peptide'))}</h4>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px;">
+          <span class="badge-peptide">${tr('PÉPTIDO', 'PEPTIDE')}</span>
+          <h4 style="margin:0;">${escapeHtml(it.peptide || tr('Peptido', 'Peptide'))}</h4>
+        </div>
         <p>${escapeHtml(it.reason || '')}</p>
+        <p class="catalog-nature" style="margin:0 0 8px;">${escapeHtml(it.compound_nature || natureDefault)}</p>
         <div class="tags">
           <span class="tag">${escapeHtml(it.dose || '-')}</span>
           <span class="tag">${escapeHtml(it.frequency || '-')}</span>
@@ -815,11 +1113,15 @@ function applyStaticI18n() {
   const chips = document.querySelectorAll('.badge-live');
   if (chips[0]) chips[0].textContent = 'Biohacker Lab · Experimental';
   if (chips[1]) chips[1].textContent = 'Physician-designed clinical framework';
-  set('#hero-eyebrow', 'Access Level: Experimental');
+  set('#terminal-status', 'STATUS: PEPTIDE_SYNTHESIS_ACTIVE // AUTH_LEVEL: 05');
+  set('#hero-eyebrow', 'Molecular Engineering');
   set('#hero-title', 'Biohacker Lab');
   const heroSub = document.getElementById('hero-sub');
-  if (heroSub) heroSub.textContent = 'Frontier exploration in human optimization. Cellular reprogramming, off-label molecules, and high-intensity protocols.';
+  if (heroSub) heroSub.innerHTML = 'Frontier exploration in <strong>peptide therapies</strong>, bioregulators, and off-label molecules. Protocols designed for tissue repair, hormonal optimization, and active cellular reprogramming.';
   set('#hero-riskline', 'For advanced users only: proceed under your own biological responsibility.');
+  set('#catalog-title', 'Classified Peptide Protocol Index');
+  set('#catalog-sub', 'Select a dossier to review compound nature and therapeutic focus.');
+  set('#catalog-use-btn', 'Use as baseline in questionnaire');
   set('#paywall .label', 'Premium access (same paywall)');
   const email = document.getElementById('email');
   if (email) email.placeholder = 'you@email.com';
@@ -830,6 +1132,19 @@ function applyStaticI18n() {
   set('#form .label:nth-of-type(2)', 'Experience level');
   set('#form .label:nth-of-type(3)', 'Current conditions / medication');
   set('#form .label:nth-of-type(4)', 'Current protocol (supplements/peptides)');
+  set('#strict-title', 'Advanced safety questionnaire');
+  set('#risk-label', 'Risk tolerance');
+  set('#sterile-label', 'Sterile handling experience');
+  set('#labs-label', 'Recent labs (90 days)');
+  set('#supervision-label', 'Medical supervision available');
+  const riskSelect = document.getElementById('risk-select');
+  if (riskSelect) riskSelect.innerHTML = '<option value="moderate">Moderate</option><option value="high">High</option><option value="extreme">Extreme</option>';
+  const sterileSelect = document.getElementById('sterile-select');
+  if (sterileSelect) sterileSelect.innerHTML = '<option value="none">None</option><option value="basic">Basic</option><option value="advanced">Advanced</option>';
+  const labsSelect = document.getElementById('labs-select');
+  if (labsSelect) labsSelect.innerHTML = '<option value="no">No</option><option value="yes">Yes</option>';
+  const supervisionSelect = document.getElementById('supervision-select');
+  if (supervisionSelect) supervisionSelect.innerHTML = '<option value="none">No</option><option value="remote">Remote</option><option value="direct">Direct</option>';
   const contra = document.getElementById('contra');
   if (contra) contra.placeholder = 'E.g. hypertension, anticoagulants, oncological history...';
   const current = document.getElementById('current');
@@ -845,6 +1160,8 @@ function applyStaticI18n() {
   if (exp[1]) exp[1].textContent = 'Advanced';
   const check = document.querySelector('.check label');
   if (check) check.textContent = 'I confirm that I understand this module is experimental and requires professional supervision.';
+  set('#monitor-label', 'I confirm I will perform clinical and biomarker monitoring during the protocol.');
+  set('#consent-label', 'I accept this module is for advanced educational use and does not replace medical practice.');
   set('#gen-btn', 'Generate experimental protocol');
   set('#footer-disclaimer', '© 2026 LONGEVAPP · Physician-developed · Efficacy, safety & adherence · Experimental module. Does not replace professional medical evaluation.');
   const footerLinks = document.getElementById('footer-links');
@@ -949,11 +1266,25 @@ function initBioModal() {
   });
 }
 
+function initCatalogModal() {
+  const modal = document.getElementById('catalog-modal');
+  if (!modal) return;
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeCatalogModal();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.classList.contains('open')) closeCatalogModal();
+  });
+}
+
 applyTheme(getPreferredTheme());
 applyStaticI18n();
 initMobileMenu();
 initToTop();
 initBioModal();
+initCatalogModal();
+renderCatalog();
+updateGenerateEnabled();
 init();
 </script>
 
