@@ -682,9 +682,10 @@ html[data-theme="light"] .hero-list b{color:#964848}
         <div class="step-dot active" id="bsd1">1</div><div class="step-line" id="bsl1"></div>
         <div class="step-dot" id="bsd2">2</div><div class="step-line" id="bsl2"></div>
         <div class="step-dot" id="bsd3">3</div><div class="step-line" id="bsl3"></div>
-        <div class="step-dot" id="bsd4">4</div>
+        <div class="step-dot" id="bsd4">4</div><div class="step-line" id="bsl4"></div>
+        <div class="step-dot" id="bsd5">5</div>
       </div>
-      <div class="progress-label" id="bio-prog-label">Paso 1 de 4 — Biometría y marcadores</div>
+      <div class="progress-label" id="bio-prog-label">Paso 1 de 5 — Biometría y marcadores</div>
     </div>
 
     <div class="step-card" id="bstep1">
@@ -771,10 +772,6 @@ html[data-theme="light"] .hero-list b{color:#964848}
           </select>
         </div>
       </div>
-      <label class="label" style="margin-top:16px;">Condiciones / medicación actual</label>
-      <textarea id="contra" placeholder="Ej: hipertension, anticoagulantes, antecedente oncologico..."></textarea>
-      <label class="label" style="margin-top:16px;">Protocolo actual (suplementos/peptidos)</label>
-      <textarea id="current" placeholder="Ej: Creatina 5g, omega 3, no peptidos aun..."></textarea>
       <div class="step-nav">
         <button class="btn-ghost" type="button" onclick="goBioStep(2)">← Volver</button>
         <button class="btn btn-main" type="button" id="bio-next3" onclick="goBioStep(4)">Siguiente →</button>
@@ -783,8 +780,22 @@ html[data-theme="light"] .hero-list b{color:#964848}
 
     <div class="step-card" id="bstep4" style="display:none;">
       <div class="step-num">Paso 4</div>
-      <h3 class="step-q" id="bio-step4-title">Aceptación y desbloqueo</h3>
-      <p class="step-hint" id="bio-step4-hint">Confirmaciones obligatorias antes de generar protocolo.</p>
+      <h3 class="step-q" id="bio-step4-title">Contexto clínico actual</h3>
+      <p class="step-hint" id="bio-step4-hint">Información útil para reducir interacciones y duplicaciones.</p>
+      <label class="label" style="margin-top:8px;">Condiciones / medicación actual</label>
+      <textarea id="contra" placeholder="Ej: hipertension, anticoagulantes, antecedente oncologico..."></textarea>
+      <label class="label" style="margin-top:16px;">Protocolo actual (suplementos/peptidos)</label>
+      <textarea id="current" placeholder="Ej: Creatina 5g, omega 3, no peptidos aun..."></textarea>
+      <div class="step-nav">
+        <button class="btn-ghost" type="button" onclick="goBioStep(3)">← Volver</button>
+        <button class="btn btn-main" type="button" id="bio-next4" onclick="goBioStep(5)">Siguiente →</button>
+      </div>
+    </div>
+
+    <div class="step-card" id="bstep5" style="display:none;">
+      <div class="step-num">Paso 5</div>
+      <h3 class="step-q" id="bio-step5-title">Aceptación y desbloqueo</h3>
+      <p class="step-hint" id="bio-step5-hint">Confirmaciones obligatorias antes de generar protocolo.</p>
       <div class="row">
         <div class="check">
           <input id="expert-check" type="checkbox">
@@ -804,7 +815,7 @@ html[data-theme="light"] .hero-list b{color:#964848}
         </div>
       </div>
       <div class="step-nav">
-        <button class="btn-ghost" type="button" onclick="goBioStep(3)">← Volver</button>
+        <button class="btn-ghost" type="button" onclick="goBioStep(4)">← Volver</button>
         <button id="gen-btn" class="btn btn-main" disabled>Generar Protocolo Experimental</button>
       </div>
       <div class="msg" id="form-msg"></div>
@@ -913,7 +924,7 @@ function updateGenerateEnabled() {
 }
 
 function goBioStep(n) {
-  const total = 4;
+  const total = 5;
   const target = Math.min(Math.max(n, 1), total);
   for (let i = 1; i <= total; i++) {
     const s = document.getElementById(`bstep${i}`);
@@ -930,10 +941,10 @@ function goBioStep(n) {
   }
   currentBioStep = target;
   const labels = IS_EN
-    ? ['Biometrics and markers', 'Engineering goal', 'Technical capacity', 'Consent and unlock']
-    : ['Biometría y marcadores', 'Objetivo de ingeniería', 'Capacidad técnica', 'Aceptación y desbloqueo'];
+    ? ['Biometrics and markers', 'Engineering goal', 'Technical capacity', 'Clinical context', 'Consent and unlock']
+    : ['Biometría y marcadores', 'Objetivo de ingeniería', 'Capacidad técnica', 'Contexto clínico', 'Aceptación y desbloqueo'];
   const lbl = document.getElementById('bio-prog-label');
-  if (lbl) lbl.textContent = IS_EN ? `Step ${target} of 4 — ${labels[target-1]}` : `Paso ${target} de 4 — ${labels[target-1]}`;
+  if (lbl) lbl.textContent = IS_EN ? `Step ${target} of 5 — ${labels[target-1]}` : `Paso ${target} de 5 — ${labels[target-1]}`;
   document.getElementById(`bstep${target}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
@@ -1291,18 +1302,21 @@ function applyStaticI18n() {
   set('#form .label:nth-of-type(2)', 'Experience level');
   set('#form .label:nth-of-type(3)', 'Current conditions / medication');
   set('#form .label:nth-of-type(4)', 'Current protocol (supplements/peptides)');
-  set('#bio-prog-label', 'Step 1 of 4 — Biometrics and markers');
+  set('#bio-prog-label', 'Step 1 of 5 — Biometrics and markers');
   set('#bio-step1-title', 'Biometrics and markers');
   set('#bio-step1-hint', 'Minimum clinical filter for peptide protocols.');
   set('#bio-step2-title', 'Engineering goal');
   set('#bio-step2-hint', 'Select one main priority to avoid diffuse protocols.');
   set('#bio-step3-title', 'Technical capacity');
   set('#bio-step3-hint', 'We validate minimum logistics for safe handling.');
-  set('#bio-step4-title', 'Consent and unlock');
-  set('#bio-step4-hint', 'Mandatory confirmations before protocol generation.');
+  set('#bio-step4-title', 'Clinical context');
+  set('#bio-step4-hint', 'Useful info to reduce interactions and duplications.');
+  set('#bio-step5-title', 'Consent and unlock');
+  set('#bio-step5-hint', 'Mandatory confirmations before protocol generation.');
   set('#bio-next1', 'Next →');
   set('#bio-next2', 'Next →');
   set('#bio-next3', 'Next →');
+  set('#bio-next4', 'Next →');
   set('#strict-title', 'Peptide technical questionnaire');
   set('#labs-label', 'Recent bloodwork (last 6 months)');
   set('#onc-label', 'Personal/family direct oncological history');
