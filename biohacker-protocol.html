@@ -653,7 +653,7 @@ html[data-theme="light"] .hero-list b{color:#964848}
     </div>
   </div>
 
-  <div id="paywall" class="card">
+  <div id="paywall" class="card" style="display:none;">
     <label class="label">Acceso premium (mismo paywall)</label>
     <div class="row">
       <input id="email" type="text" placeholder="tu@email.com" />
@@ -663,7 +663,7 @@ html[data-theme="light"] .hero-list b{color:#964848}
     <div class="msg" id="pay-msg"></div>
   </div>
 
-  <div id="form" class="card" style="display:none;">
+  <div id="form" class="card">
     <label class="label">Objetivo principal</label>
     <div class="grid" id="objective-grid">
       <button class="opt" data-value="recovery">Reparación tisular</button>
@@ -802,6 +802,8 @@ const USER_LANG = getPreferredLang();
 const IS_EN = USER_LANG === 'en';
 const tr = (es, en) => (IS_EN ? en : es);
 const BIO_SESSION_KEY = 'longeva_paid_session_biohacker';
+const BIO_DRAFT_KEY = 'longeva_biohacker_draft';
+const BIO_AUTORUN_KEY = 'longeva_biohacker_autorun';
 document.documentElement.lang = USER_LANG;
 
 const payBtn = document.getElementById('pay-btn');
@@ -854,6 +856,60 @@ function updateGenerateEnabled() {
   genBtn.disabled = !strictReady;
 }
 
+function saveDraftProfile() {
+  const draft = {
+    objective: state.objective,
+    experience: state.experience,
+    labs: state.labs,
+    onc_history: state.onc_history,
+    autoimmune: state.autoimmune,
+    reconstitution: state.reconstitution,
+    refrigeration: state.refrigeration,
+    subcutaneous: state.subcutaneous,
+    contra: document.getElementById('contra')?.value || '',
+    current: document.getElementById('current')?.value || '',
+    expert: !!expertCheck.checked,
+    monitor: !!monitorCheck.checked,
+    consent: !!consentCheck.checked,
+  };
+  localStorage.setItem(BIO_DRAFT_KEY, JSON.stringify(draft));
+}
+
+function loadDraftProfile() {
+  try {
+    const raw = localStorage.getItem(BIO_DRAFT_KEY);
+    if (!raw) return;
+    const d = JSON.parse(raw);
+    state.objective = d.objective || state.objective;
+    state.experience = d.experience || state.experience;
+    state.labs = d.labs || state.labs;
+    state.onc_history = d.onc_history || state.onc_history;
+    state.autoimmune = d.autoimmune || state.autoimmune;
+    state.reconstitution = d.reconstitution || state.reconstitution;
+    state.refrigeration = d.refrigeration || state.refrigeration;
+    state.subcutaneous = d.subcutaneous || state.subcutaneous;
+    if (document.getElementById('contra')) document.getElementById('contra').value = d.contra || '';
+    if (document.getElementById('current')) document.getElementById('current').value = d.current || '';
+    expertCheck.checked = !!d.expert;
+    monitorCheck.checked = !!d.monitor;
+    consentCheck.checked = !!d.consent;
+    const setSelect = (id, val) => {
+      const el = document.getElementById(id);
+      if (el && val !== undefined) el.value = val;
+    };
+    setSelect('labs-select', state.labs);
+    setSelect('onc-select', state.onc_history);
+    setSelect('autoimmune-select', state.autoimmune);
+    setSelect('reconstitution-select', state.reconstitution);
+    setSelect('fridge-select', state.refrigeration);
+    setSelect('subq-select', state.subcutaneous);
+    document.querySelectorAll('#objective-grid .opt').forEach((b) => b.classList.remove('active'));
+    document.querySelector(`#objective-grid .opt[data-value="${state.objective}"]`)?.classList.add('active');
+    document.querySelectorAll('#exp-grid .opt').forEach((b) => b.classList.remove('active'));
+    document.querySelector(`#exp-grid .opt[data-value="${state.experience}"]`)?.classList.add('active');
+  } catch (_e) {}
+}
+
 function openAlertOne() {
   document.getElementById('alert-modal-1')?.classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -886,6 +942,7 @@ function acceptRiskAndStart() {
 }
 
 async function startCheckout() {
+  saveDraftProfile();
   const email = document.getElementById('email').value.trim();
   if (!email || !email.includes('@')) {
     payMsg.textContent = tr('Ingresa un email valido.', 'Enter a valid email.');
@@ -911,6 +968,11 @@ async function startCheckout() {
 }
 
 async function init() {
+  document.getElementById('form').style.display = 'block';
+  document.getElementById('paywall').style.display = 'none';
+  loadDraftProfile();
+  updateGenerateEnabled();
+
   try {
     const bypassRes = await fetch('/api/checkout-status');
     const bypassData = await bypassRes.json();
@@ -918,6 +980,10 @@ async function init() {
       state.sessionId = 'dev_bypass';
       document.getElementById('paywall').style.display = 'none';
       document.getElementById('form').style.display = 'block';
+      if (localStorage.getItem(BIO_AUTORUN_KEY) === '1' && !genBtn.disabled) {
+        localStorage.removeItem(BIO_AUTORUN_KEY);
+        setTimeout(() => generateProtocol(), 80);
+      }
       return;
     }
   } catch (_e) {}
@@ -940,6 +1006,12 @@ async function init() {
     localStorage.setItem(BIO_SESSION_KEY, sessionId);
     document.getElementById('paywall').style.display = 'none';
     document.getElementById('form').style.display = 'block';
+    loadDraftProfile();
+    updateGenerateEnabled();
+    if (localStorage.getItem(BIO_AUTORUN_KEY) === '1' && !genBtn.disabled) {
+      localStorage.removeItem(BIO_AUTORUN_KEY);
+      setTimeout(() => generateProtocol(), 80);
+    }
   } catch (err) {
     payMsg.textContent = `${tr('No pudimos validar tu pago', 'Could not validate your payment')}: ${err.message}`;
   }
@@ -947,7 +1019,11 @@ async function init() {
 
 async function generateProtocol() {
   if (!state.sessionId) {
-    formMsg.textContent = tr('Sesion de pago no encontrada.', 'Payment session not found.');
+    saveDraftProfile();
+    localStorage.setItem(BIO_AUTORUN_KEY, '1');
+    document.getElementById('paywall').style.display = 'block';
+    formMsg.textContent = tr('Último paso: completa checkout para desbloquear el protocolo.', 'Last step: complete checkout to unlock the protocol.');
+    document.getElementById('paywall')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     return;
   }
   formMsg.textContent = tr('Generando protocolo...', 'Generating protocol...');
