@@ -298,8 +298,9 @@ html[data-theme="light"] .hero-list b{color:#964848}
     border-radius:6px;padding:12px;
   }
   .peptide-brief strong{color:#ffb3b3}
-  .catalog-actions{display:flex;justify-content:flex-end;margin-top:10px}
-  .init-quiz-btn{min-width:240px}
+  .catalog-actions{display:flex;justify-content:center;margin-top:16px}
+  .init-quiz-btn{min-width:280px;font-family:'DM Mono',monospace;letter-spacing:.1em;font-size:11px;padding:13px 28px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
   .catalog-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   .protocol-item{
     border:1px solid var(--border);
@@ -915,6 +916,131 @@ html[data-theme="light"] .hero-list b{color:#964848}
     .alert-row{padding:0 14px 16px}
     .alert-footer-code{padding:0 14px 10px}
     .alert-divider{margin:0 14px}
+    .grid{grid-template-columns:1fr}
+  }
+
+  /* ══════════════════════════════════════════════════
+     RESULT MODAL CONTENT CLASSES
+  ══════════════════════════════════════════════════ */
+
+  .result-dossier-head {
+    padding:16px 0 18px;
+    border-bottom:1px solid rgba(180,50,50,.18);
+    margin-bottom:16px;
+  }
+  .result-dossier-meta {
+    display:flex;gap:14px;align-items:center;
+    font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.14em;
+    color:var(--dim);margin-bottom:10px;
+  }
+  html[data-theme="light"] .result-dossier-meta { color:var(--muted); }
+  .result-dossier-id { color:rgba(200,80,80,.6);letter-spacing:.18em; }
+  html[data-theme="light"] .result-dossier-id { color:rgba(140,40,40,.7); }
+  .result-dossier-title {
+    font-family:'DM Serif Display',serif;font-size:28px;
+    letter-spacing:-.02em;line-height:1.1;margin-bottom:8px;color:var(--text);
+  }
+  html[data-theme="light"] .result-dossier-title { color:#152030; }
+  .result-dossier-summary {
+    font-size:14px;line-height:1.65;color:var(--tx2);max-width:780px;margin-bottom:14px;
+  }
+  html[data-theme="light"] .result-dossier-summary { color:#334860; }
+
+  .result-dossier-pills { display:flex;gap:8px;flex-wrap:wrap; }
+  .result-pill {
+    display:inline-flex;align-items:center;gap:6px;
+    padding:5px 11px;border-radius:2px;
+    font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.06em;
+    border:1px solid var(--border2);color:var(--text);background:rgba(255,255,255,.02);
+  }
+  html[data-theme="light"] .result-pill { background:#f6f8fb;border-color:var(--border2);color:#152030; }
+  .result-pill-label { color:var(--muted);font-size:9px;letter-spacing:.1em;text-transform:uppercase; }
+  html[data-theme="light"] .result-pill-label { color:#5E7488; }
+  .result-pill--risk { border-color:rgba(180,50,50,.3);background:rgba(160,40,40,.07); }
+  html[data-theme="light"] .result-pill--risk { background:rgba(160,40,40,.05);border-color:rgba(160,40,40,.22); }
+  .result-pill--alto { color:var(--danger)!important; }
+  .result-pill--medio { color:var(--warn)!important; }
+  .result-pill--bajo { color:var(--accent3)!important; }
+  html[data-theme="light"] .result-pill--alto { color:#a83838!important; }
+  html[data-theme="light"] .result-pill--medio { color:#8c6828!important; }
+  html[data-theme="light"] .result-pill--bajo { color:#3a7865!important; }
+
+  .item-name-row { display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px; }
+  .item-name { margin:0;font-size:15px;color:var(--text); }
+  html[data-theme="light"] .item-name { color:#152030; }
+  .item-reason { font-size:12px;color:var(--tx2);line-height:1.5;margin-bottom:7px; }
+  html[data-theme="light"] .item-reason { color:#334860; }
+  .item-nature {
+    font-size:11px;font-family:'DM Mono',monospace;line-height:1.5;
+    color:var(--muted);margin-bottom:8px;padding:7px 10px;border-radius:3px;
+    border:1px solid var(--border);background:rgba(255,255,255,.015);letter-spacing:.01em;
+  }
+  html[data-theme="light"] .item-nature { color:#5E7488;background:#f6f8fb;border-color:var(--border); }
+
+  html[data-theme="light"] .badge-peptide { background:rgba(160,40,40,.1);color:#a83838;border-color:rgba(160,40,40,.4); }
+  .phase-duration { font-size:11px;color:var(--muted); }
+  html[data-theme="light"] .phase-duration { color:#5E7488; }
+  html[data-theme="light"] .tag { color:#334860;border-color:var(--border2);background:#f0f3f8; }
+  html[data-theme="light"] .protocol-id { color:#5E7488; }
+  html[data-theme="light"] .risk-indicator { color:#a83838; }
+
+  .result-clinical-section {
+    margin-top:14px;border:1px solid var(--border);border-radius:3px;overflow:hidden;
+  }
+  html[data-theme="light"] .result-clinical-section { border-color:var(--border2);background:#fff; }
+  .result-section-head {
+    display:flex;align-items:center;gap:8px;padding:9px 13px;
+    font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+    border-bottom:1px solid var(--border);
+  }
+  html[data-theme="light"] .result-section-head { border-color:var(--border2); }
+  .result-section-head--monitor {
+    color:var(--accent3);background:rgba(85,176,154,.06);border-bottom-color:rgba(85,176,154,.15);
+  }
+  html[data-theme="light"] .result-section-head--monitor { color:#3a7865;background:rgba(58,120,101,.05);border-bottom-color:rgba(58,120,101,.15); }
+  .result-section-head--contra {
+    color:var(--warn);background:rgba(184,146,74,.06);border-bottom-color:rgba(184,146,74,.15);
+  }
+  html[data-theme="light"] .result-section-head--contra { color:#8c6828;background:rgba(140,104,40,.05);border-bottom-color:rgba(140,104,40,.15); }
+  .result-section-icon { font-size:12px;opacity:.8; }
+  .result-clinical-list {
+    margin:0;padding:10px 14px 10px 28px;
+    color:var(--tx2);font-size:12px;line-height:1.7;display:flex;flex-direction:column;gap:2px;
+  }
+  html[data-theme="light"] .result-clinical-list { color:#334860; }
+
+  .result-redflags { margin-top:14px; }
+  .result-redflag-head {
+    display:flex;align-items:center;gap:8px;
+    font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.14em;
+    color:var(--danger);margin-bottom:8px;
+  }
+  html[data-theme="light"] .result-redflag-head { color:#a83838; }
+  .result-redflag-list { margin:0 0 0 18px;color:var(--tx2);font-size:12px;line-height:1.7; }
+  html[data-theme="light"] .result-redflag-list { color:#334860; }
+
+  .result-disclaimer-block {
+    margin-top:14px;border:1px solid var(--border);border-radius:3px;padding:11px 14px;background:rgba(255,255,255,.01);
+  }
+  html[data-theme="light"] .result-disclaimer-block { background:#f6f8fb;border-color:var(--border2); }
+  .result-disclaimer-label {
+    font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.22em;color:var(--dim);margin-bottom:6px;
+  }
+  html[data-theme="light"] .result-disclaimer-label { color:#94A8BC; }
+  .result-disclaimer-text { font-size:12px;color:var(--muted);line-height:1.6; }
+  html[data-theme="light"] .result-disclaimer-text { color:#5E7488; }
+
+  .result-usage-warn { margin-top:10px; }
+  .result-usage-title { font-size:12px;display:block;margin-bottom:7px;color:var(--danger); }
+  html[data-theme="light"] .result-usage-title { color:#a83838; }
+  .result-usage-list { margin:0 0 0 18px;color:var(--tx2);font-size:12px;line-height:1.7; }
+  html[data-theme="light"] .result-usage-list { color:#334860; }
+
+  html[data-theme="light"] .danger-box {
+    background:rgba(160,40,40,.04)!important;
+    border-color:rgba(160,40,40,.2)!important;
+    border-left-color:rgba(160,40,40,.4)!important;
+    color:#152030;
   }
 
 </style>
@@ -1784,39 +1910,52 @@ async function generateProtocol() {
 }
 
 function renderResult(p) {
-  // use modal
   const out = document.getElementById('bio-modal-content');
   const riskRaw = String(p.risk_level || 'medio').toLowerCase();
   const risk = riskRaw === 'high' ? 'alto' : riskRaw === 'medium' ? 'medio' : riskRaw === 'low' ? 'bajo' : riskRaw;
-  const riskLabel = riskRaw === 'high' ? 'high' : riskRaw === 'medium' ? 'medium' : riskRaw === 'low' ? 'low' : riskRaw;
-  let html = `
-    <h2 style="font-size:24px;margin-bottom:8px;">${tr('Protocolo Experimental', 'Experimental Protocol')}</h2>
-    <p style="color:var(--muted);font-size:13px;line-height:1.5;margin-bottom:10px;">${escapeHtml(p.summary || '')}</p>
-    <div class="pill">${tr('Costo estimado', 'Estimated cost')}: $${Number(p.estimated_monthly_cost || 0)}</div>
-    <div class="pill risk ${risk}">${tr('Riesgo', 'Risk')} ${escapeHtml(IS_EN ? riskLabel : risk)}</div>
-  `;
+  const riskLabel = IS_EN ? (riskRaw === 'high' ? 'high' : riskRaw === 'medium' ? 'medium' : 'low') : risk;
 
+  // ── DOSSIER HEADER ──────────────────────────────────────
+  let html = `
+    <div class="result-dossier-head">
+      <div class="result-dossier-meta">
+        <span class="result-dossier-id">EXP-${Date.now().toString(36).toUpperCase().slice(-6)}</span>
+        <span class="result-dossier-date">${new Date().toLocaleDateString(IS_EN ? 'en-US' : 'es-AR', {year:'numeric',month:'short',day:'numeric'})}</span>
+      </div>
+      <h2 class="result-dossier-title">${tr('Protocolo Experimental', 'Experimental Protocol')}</h2>
+      <p class="result-dossier-summary">${escapeHtml(p.summary || '')}</p>
+      <div class="result-dossier-pills">
+        <span class="result-pill result-pill--neutral"><span class="result-pill-label">${tr('Costo estimado', 'Est. cost')}</span> $${Number(p.estimated_monthly_cost || 0)}/${tr('mes','mo')}</span>
+        <span class="result-pill result-pill--risk result-pill--${risk}"><span class="result-pill-label">${tr('Riesgo','Risk')}</span> ${escapeHtml(riskLabel).toUpperCase()}</span>
+        <span class="result-pill result-pill--neutral"><span class="result-pill-label">${tr('Objetivo','Goal')}</span> ${escapeHtml(tr(
+          state.objective==='recovery'?'Reparación tisular':state.objective==='cognitive'?'Cognitivo':state.objective==='longevity'?'Longevidad':'Composición corporal',
+          state.objective==='recovery'?'Tissue repair':state.objective==='cognitive'?'Cognitive':state.objective==='longevity'?'Longevity':'Body composition'
+        ))}</span>
+      </div>
+    </div>`;
+
+  // ── PROTOCOL PHASES ──────────────────────────────────────
   (p.protocol_phases || []).forEach((ph) => {
     const phasePrefix = String(ph.phase || 'PH').replace(/[^A-Za-z0-9]/g, '').slice(0,3).toUpperCase() || 'BHK';
     html += `<div class="phase">
       <div class="phase-head">
         <strong>${escapeHtml(ph.phase || tr('Fase', 'Phase'))}</strong>
-        <span style="font-size:12px;color:var(--muted);">${escapeHtml(ph.duration_weeks || '?')} ${tr('semanas', 'weeks')}</span>
+        <span class="phase-duration">${escapeHtml(ph.duration_weeks || '?')} ${tr('semanas', 'weeks')}</span>
       </div>
       <div class="phase-body">`;
     (ph.items || []).forEach((it, idx) => {
       const protoId = `#${phasePrefix}-${String(700 + idx * 11 + 72).padStart(3, '0')}`;
       const natureDefault = tr(
-        'Naturaleza del Compuesto: Cadena corta de aminoácidos (Péptido) sintetizada para la señalización celular específica.',
-        'Compound Nature: Short amino-acid chain (Peptide) synthesized for targeted cellular signaling.'
+        'Cadena corta de aminoácidos sintetizada para señalización celular específica.',
+        'Short amino-acid chain synthesized for targeted cellular signaling.'
       );
       html += `<div class="item">
-        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px;">
+        <div class="item-name-row">
           <span class="badge-peptide">${tr('PÉPTIDO', 'PEPTIDE')}</span>
-          <h4 style="margin:0;">${escapeHtml(it.peptide || tr('Peptido', 'Peptide'))}</h4>
+          <h4 class="item-name">${escapeHtml(it.peptide || tr('Peptido', 'Peptide'))}</h4>
         </div>
-        <p>${escapeHtml(it.reason || '')}</p>
-        <p class="catalog-nature" style="margin:0 0 8px;">${escapeHtml(it.compound_nature || natureDefault)}</p>
+        <p class="item-reason">${escapeHtml(it.reason || '')}</p>
+        <p class="item-nature">${escapeHtml(it.compound_nature || natureDefault)}</p>
         <div class="tags">
           <span class="tag">${escapeHtml(it.dose || '-')}</span>
           <span class="tag">${escapeHtml(it.frequency || '-')}</span>
@@ -1834,37 +1973,44 @@ function renderResult(p) {
     html += `</div></div>`;
   });
 
+  // ── CLINICAL SECTIONS ────────────────────────────────────
   const list = (arr) => (arr || []).map(x => `<li>${escapeHtml(x)}</li>`).join('');
+
   html += `
-    <div style="margin-top:14px;">
-      <h3 style="font-size:15px;margin-bottom:6px;">${tr('Monitoreo recomendado', 'Recommended monitoring')}</h3>
-      <ul style="margin-left:18px;color:var(--muted);font-size:13px;line-height:1.5;">${list(p.monitoring)}</ul>
+    <div class="result-clinical-section">
+      <div class="result-section-head result-section-head--monitor">
+        <span class="result-section-icon">◎</span>
+        <span>${tr('Monitoreo recomendado', 'Recommended monitoring')}</span>
+      </div>
+      <ul class="result-clinical-list">${list(p.monitoring)}</ul>
     </div>
-    <div style="margin-top:10px;">
-      <h3 style="font-size:15px;margin-bottom:6px;">${tr('Contraindicaciones', 'Contraindications')}</h3>
-      <ul style="margin-left:18px;color:var(--muted);font-size:13px;line-height:1.5;">${list(p.contraindications)}</ul>
+    <div class="result-clinical-section">
+      <div class="result-section-head result-section-head--contra">
+        <span class="result-section-icon">⊘</span>
+        <span>${tr('Contraindicaciones', 'Contraindications')}</span>
+      </div>
+      <ul class="result-clinical-list">${list(p.contraindications)}</ul>
     </div>
-    <div class="danger-box">
-      <strong>${tr('Red flags', 'Red flags')}:</strong>
-      <ul style="margin:6px 0 0 18px;">${list(p.red_flags)}</ul>
+    <div class="danger-box result-redflags">
+      <div class="result-redflag-head"><span class="risk-dot"></span>${tr('RED FLAGS — detener protocolo si:', 'RED FLAGS — stop protocol if:')}</div>
+      <ul class="result-redflag-list">${list(p.red_flags)}</ul>
     </div>
-    <div class="danger-box" style="margin-top:10px;">
-      ${escapeHtml(p.disclaimer || tr('Modulo experimental para expertos. Requiere supervision medica.', 'Experimental module for advanced users. Requires medical supervision.'))}
+    <div class="result-disclaimer-block">
+      <div class="result-disclaimer-label">${tr('AVISO LEGAL', 'LEGAL NOTICE')}</div>
+      <p class="result-disclaimer-text">${escapeHtml(p.disclaimer || tr('Módulo experimental para expertos. Requiere supervisión médica.', 'Experimental module for advanced users. Requires medical supervision.'))}</p>
     </div>
-    <div class="danger-box" style="margin-top:10px;">
-      <strong>${tr('Advertencia de uso (péptidos):', 'Usage warning (peptides):')}</strong>
-      <ul style="margin:8px 0 0 18px;line-height:1.5;">
-        <li>${tr('No son suplementos nutricionales estándar; son bioreguladores de señalización.', 'These are not standard nutritional supplements; they are signaling bioregulators.')}</li>
+    <div class="danger-box result-usage-warn">
+      <strong class="result-usage-title">${tr('Advertencia de uso — péptidos:', 'Usage warning — peptides:')}</strong>
+      <ul class="result-usage-list">
+        <li>${tr('No son suplementos nutricionales estándar; son bioreguladores de señalización celular.', 'These are not standard nutritional supplements; they are cellular signaling bioregulators.')}</li>
         <li>${tr('La mayoría requiere reconstitución y administración subcutánea para preservar biodisponibilidad.', 'Most require reconstitution and subcutaneous administration to preserve bioavailability.')}</li>
-        <li>${tr('Tras reconstituirse, deben mantenerse refrigerados entre 2°C y 8°C.', 'After reconstitution, they should be refrigerated between 2°C and 8°C.')}</li>
+        <li>${tr('Tras reconstituirse, mantener refrigerados entre 2°C y 8°C. Vida útil: ~28 días.', 'After reconstitution, refrigerate between 2°C and 8°C. Shelf life: ~28 days.')}</li>
         <li>${tr('Se recomienda seguimiento con analíticas y biomarcadores durante el protocolo.', 'Clinical labs and biomarker follow-up are recommended throughout the protocol.')}</li>
       </ul>
-    </div>
-  `;
+    </div>`;
 
   if (out) out.innerHTML = html;
   document.getElementById('form').style.display = 'none';
-  // Open result modal
   const bioModal = document.getElementById('bio-result-modal');
   if (bioModal) {
     bioModal.classList.add('open');
