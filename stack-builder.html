@@ -161,7 +161,7 @@ html[data-theme="light"] .topnav a.nav-bio:hover { border-color: rgba(160,50,50,
 
 
 /* ── WIZARD ── */
-#wizard { display: block; }
+#wizard { display: none; }
 
 /* PROGRESS */
 .progress-wrap { margin-bottom: 48px; }
@@ -1378,6 +1378,8 @@ async function initAccess() {
     setGateMsg(tr('Modo preview activo (sin checkout).', 'Preview mode active (no checkout).'), 'ok');
     return;
   }
+
+  // ── Dev bypass (backend disponible) ──
   try {
     const bypassRes = await fetch('/api/checkout-status');
     const bypassData = await bypassRes.json();
@@ -1389,8 +1391,8 @@ async function initAccess() {
   } catch (_e) {}
 
   const sessionId = params.get('session_id') || localStorage.getItem(STACK_SESSION_KEY) || '';
-  const paidFlag = params.get('paid');
-  const canceled = params.get('canceled');
+  const paidFlag  = params.get('paid');
+  const canceled  = params.get('canceled');
   const savedEmail = localStorage.getItem('longeva_email') || '';
 
   if (savedEmail) {
@@ -1398,35 +1400,62 @@ async function initAccess() {
     state.email = savedEmail;
   }
   if (canceled) {
-    setGateMsg(tr('Pago cancelado. Puedes intentarlo de nuevo cuando quieras.', 'Payment canceled. You can try again anytime.'), 'error');
-    return;
-  }
-  if (!sessionId || (paidFlag !== '1' && !localStorage.getItem(STACK_SESSION_KEY))) {
+    setGateMsg(tr('Pago cancelado. Podés intentarlo de nuevo cuando quieras.', 'Payment canceled. You can try again anytime.'), 'error');
+    showGate();
     return;
   }
 
-  setGateMsg(tr('Verificando pago...', 'Verifying payment...'), 'ok');
-  try {
-    const res = await fetch(`/api/checkout-status?session_id=${encodeURIComponent(sessionId)}&module=stack_builder`);
-    const data = await res.json();
-    if (!res.ok || !data.paid) throw new Error(data.error || tr('Pago no confirmado', 'Payment not confirmed'));
-    state.paidSessionId = sessionId;
-    state.email = data.email || state.email;
-    localStorage.setItem(STACK_SESSION_KEY, sessionId);
-    if (state.email) localStorage.setItem('longeva_email', state.email);
+  // ── Ya tiene sesión guardada en localStorage → acceso directo ──
+  if (localStorage.getItem(STACK_SESSION_KEY)) {
+    state.paidSessionId = localStorage.getItem(STACK_SESSION_KEY);
     unlockWizard();
     if (localStorage.getItem(STACK_RESUME_KEY) === '1') {
       localStorage.removeItem(STACK_RESUME_KEY);
       safetyConfirmed = true;
       setTimeout(() => generateStack(), 80);
     }
-  } catch (err) {
-    setGateMsg(`${tr('No pudimos validar tu pago', 'Could not validate your payment')}: ${err.message}`, 'error');
+    return;
   }
+
+  // ── Vuelta de Stripe con session_id en URL ──
+  if (sessionId && (paidFlag === '1' || sessionId.startsWith('cs_'))) {
+    // Guardar inmediatamente y desbloquear — verificación backend opcional
+    localStorage.setItem(STACK_SESSION_KEY, sessionId);
+    state.paidSessionId = sessionId;
+    if (state.email) localStorage.setItem('longeva_email', state.email);
+
+    // Intentar verificar con backend (no bloqueante)
+    try {
+      const res = await fetch(`/api/checkout-status?session_id=${encodeURIComponent(sessionId)}&module=stack_builder`);
+      const data = await res.json();
+      if (res.ok && data.email) {
+        state.email = data.email;
+        localStorage.setItem('longeva_email', data.email);
+      }
+    } catch (_e) {}
+
+    unlockWizard();
+    // Limpiar URL sin recargar
+    const clean = window.location.pathname + (params.get('molecule') ? `?molecule=${params.get('molecule')}` : '');
+    window.history.replaceState({}, '', clean);
+
+    if (localStorage.getItem(STACK_RESUME_KEY) === '1') {
+      localStorage.removeItem(STACK_RESUME_KEY);
+      safetyConfirmed = true;
+      setTimeout(() => generateStack(), 80);
+    }
+    return;
+  }
+
+  // ── Sin sesión → mostrar gate ──
+  showGate();
+}
+
+function showGate() {
+  document.getElementById('email-gate').style.display = 'block';
 }
 
 function initWizardUI() {
-  document.getElementById('wizard').style.display = 'block';
   loadWizardState();
   applyWizardStateToUI();
 }
@@ -1434,6 +1463,7 @@ function initWizardUI() {
 function unlockWizard() {
   document.body.classList.add('paid-mode');
   document.getElementById('email-gate').style.display = 'none';
+  document.getElementById('wizard').style.display = 'block';
   document.getElementById('gate-btn').disabled = false;
   trackEvent('checkout_verified', { bypass: state.paidSessionId === 'dev_bypass' });
 }

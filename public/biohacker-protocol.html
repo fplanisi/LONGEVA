@@ -211,16 +211,89 @@ html[data-theme="light"] .hero-list b{color:#964848}
   html[data-theme="light"] .label { color:var(--accent); }
 
   /* Paywall: access terminal */
-  #paywall {
-    border-color:rgba(180,50,50,.3)!important;
-    background:var(--surface)!important;
+  /* ── PAYWALL MODAL ── */
+  #paywall-modal {
+    position:fixed;inset:0;z-index:90;
+    display:none;align-items:center;justify-content:center;
+    padding:16px;
+    background:rgba(2,4,8,.88);
+    backdrop-filter:blur(8px);
   }
-  #paywall::after {
-    content:'// ACCESO RESTRINGIDO';
-    font-family:'DM Mono',monospace;font-size:8px;
-    letter-spacing:.18em;color:rgba(180,50,50,.25);
-    position:absolute;top:10px;right:16px;
+  #paywall-modal.open { display:flex; }
+  #paywall-modal-card {
+    width:min(480px,100%);
+    background:linear-gradient(160deg,rgba(22,10,10,.99),rgba(14,8,8,.98));
+    border:1px solid rgba(180,50,50,.35);
+    border-radius:12px;
+    padding:28px 26px 22px;
+    position:relative;
+    box-shadow:0 0 40px rgba(180,50,50,.1),0 24px 48px rgba(0,0,0,.5);
   }
+  html[data-theme="light"] #paywall-modal-card {
+    background:linear-gradient(160deg,#fff5f5,#fff);
+    border-color:rgba(168,40,40,.25);
+    box-shadow:0 4px 32px rgba(168,40,40,.1);
+  }
+  .paywall-modal-stamp {
+    font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.22em;
+    color:rgba(200,80,80,.5);text-transform:uppercase;margin-bottom:14px;
+  }
+  .paywall-modal-title {
+    font-family:'DM Serif Display',serif;font-size:26px;color:var(--text);
+    margin-bottom:8px;line-height:1.1;
+  }
+  html[data-theme="light"] .paywall-modal-title { color:#152030; }
+  .paywall-modal-sub {
+    font-size:12px;color:var(--muted);line-height:1.65;margin-bottom:18px;
+  }
+  html[data-theme="light"] .paywall-modal-sub { color:#5E7488; }
+  .paywall-modal-price {
+    font-family:'DM Serif Display',serif;font-size:36px;color:var(--text);
+    margin-bottom:4px;
+  }
+  .paywall-modal-pricetype {
+    font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;
+    color:var(--muted);margin-bottom:18px;
+  }
+  .paywall-modal-row {
+    display:flex;gap:8px;margin-bottom:10px;
+  }
+  .paywall-modal-input {
+    flex:1;background:rgba(255,255,255,.04);
+    border:1px solid rgba(180,50,50,.3);border-radius:3px;
+    padding:11px 13px;font-size:13px;color:var(--text);
+    font-family:'Instrument Sans',sans-serif;outline:none;transition:.2s;
+  }
+  html[data-theme="light"] .paywall-modal-input {
+    background:#f6f8fb;border-color:rgba(168,40,40,.2);color:#152030;
+  }
+  .paywall-modal-input:focus { border-color:rgba(200,70,70,.6); }
+  .paywall-modal-input::placeholder { color:var(--muted); }
+  .paywall-modal-btn {
+    padding:11px 18px;background:rgba(200,70,70,.9);color:#fff;
+    border:none;border-radius:3px;font-family:'Instrument Sans',sans-serif;
+    font-size:13px;font-weight:600;cursor:pointer;transition:.2s;white-space:nowrap;
+  }
+  .paywall-modal-btn:hover { background:rgba(220,70,70,1);box-shadow:0 0 16px rgba(200,60,60,.25); }
+  .paywall-modal-legal {
+    font-family:'DM Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:.03em;
+    margin-top:6px;
+  }
+  .paywall-modal-legal a { color:var(--muted);text-decoration:none; }
+  .paywall-modal-legal a:hover { color:var(--text); }
+  .paywall-modal-msg {
+    font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);
+    min-height:14px;margin-top:8px;
+  }
+  .paywall-modal-msg.error { color:var(--danger); }
+  .paywall-modal-msg.ok { color:var(--accent3); }
+  .paywall-modal-close {
+    position:absolute;top:14px;right:14px;
+    background:transparent;border:1px solid rgba(180,50,50,.3);
+    color:var(--muted);border-radius:6px;padding:3px 9px;
+    font-family:'DM Mono',monospace;font-size:10px;cursor:pointer;
+  }
+  .paywall-modal-close:hover { border-color:rgba(180,50,50,.6);color:var(--text); }
 
   /* Options: sharp, file-like */
   .opt {
@@ -1106,16 +1179,7 @@ html[data-theme="light"] .hero-list b{color:#964848}
     </div>
   </div>
 
-  <div id="paywall" class="card" style="display:none;">
-    <label class="label">Acceso Biohacker Lab — $7,99</label>
-    <p style="font-size:12px;color:var(--muted);margin-bottom:12px;line-height:1.6;">Protocolo peptídico personalizado. Diseñado y supervisado por médico. Pago único — sin suscripción.</p>
-    <div class="row">
-      <input id="email" type="text" placeholder="tu@email.com" />
-      <button id="pay-btn" class="btn btn-main">Continuar al pago — $7,99</button>
-    </div>
-    <div class="pay-legal" id="pay-legal-copy">Al continuar aceptas <a href="/terms.html" target="_blank" rel="noopener">Términos</a> / <a href="/privacy.html" target="_blank" rel="noopener">Privacidad</a>.</div>
-    <div class="msg" id="pay-msg"></div>
-  </div>
+  <div id="paywall" style="display:none;"></div><!-- legacy ref, kept for JS compat -->
 
   <div id="form" class="card" style="display:none;">
     <div class="progress-wrap" id="bio-progress-wrap">
@@ -1699,19 +1763,49 @@ function closeAlertTwo() {
 
 function acceptRiskAndStart() {
   closeAlertTwo();
-  document.getElementById('protocol-catalog').style.display = 'none';
-  document.getElementById('form').style.display = 'block';
-  goBioStep(1);
+  // If already paid, go straight to form
+  if (state.sessionId || localStorage.getItem(BIO_SESSION_KEY)) {
+    document.getElementById('protocol-catalog').style.display = 'none';
+    document.getElementById('form').style.display = 'block';
+    goBioStep(1);
+  } else {
+    openPaywallModal();
+  }
+}
+
+function openPaywallModal(msg) {
+  const modal = document.getElementById('paywall-modal');
+  if (modal) {
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    if (msg) {
+      const pmsg = document.getElementById('pay-msg');
+      if (pmsg) { pmsg.textContent = msg; pmsg.className = 'paywall-modal-msg error'; }
+    }
+    const savedEmail = localStorage.getItem('longeva_email') || '';
+    if (savedEmail) document.getElementById('email').value = savedEmail;
+  }
+}
+
+function closePaywallModal() {
+  const modal = document.getElementById('paywall-modal');
+  if (modal) {
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
 }
 
 async function startCheckout() {
   saveDraftProfile();
   const email = document.getElementById('email').value.trim();
+  const pmsg = document.getElementById('pay-msg');
   if (!email || !email.includes('@')) {
-    payMsg.textContent = tr('Ingresa un email valido.', 'Enter a valid email.');
+    if (pmsg) { pmsg.textContent = tr('Ingresá un email válido.', 'Enter a valid email.'); pmsg.className = 'paywall-modal-msg error'; }
     return;
   }
-  payMsg.textContent = tr('Creando checkout...', 'Creating checkout...');
+  if (pmsg) { pmsg.textContent = tr('Creando checkout...', 'Creating checkout...'); pmsg.className = 'paywall-modal-msg ok'; }
   payBtn.disabled = true;
   try {
     const res = await fetch('/api/create-checkout-session', {
@@ -1725,7 +1819,7 @@ async function startCheckout() {
     localStorage.setItem('longeva_return_to', '/biohacker-protocol.html');
     window.location.href = data.url;
   } catch (err) {
-    payMsg.textContent = `${tr('Error', 'Error')}: ${err.message}`;
+    if (pmsg) { pmsg.textContent = `${tr('Error', 'Error')}: ${err.message}`; pmsg.className = 'paywall-modal-msg error'; }
     payBtn.disabled = false;
   }
 }
@@ -1737,13 +1831,14 @@ async function init() {
   loadDraftProfile();
   updateGenerateEnabled();
 
+  // ── Dev bypass ──
   try {
     const bypassRes = await fetch('/api/checkout-status');
     const bypassData = await bypassRes.json();
     if (bypassRes.ok && bypassData?.bypass && bypassData?.paid) {
       state.sessionId = 'dev_bypass';
-      document.getElementById('paywall').style.display = 'none';
-      document.getElementById('form').style.display = 'none';
+      document.getElementById('protocol-catalog').style.display = 'none';
+      document.getElementById('form').style.display = 'block';
       if (localStorage.getItem(BIO_AUTORUN_KEY) === '1' && !genBtn.disabled) {
         localStorage.removeItem(BIO_AUTORUN_KEY);
         setTimeout(() => generateProtocol(), 80);
@@ -1755,29 +1850,50 @@ async function init() {
   const params = new URLSearchParams(window.location.search);
   const sessionId = params.get('session_id') || localStorage.getItem(BIO_SESSION_KEY) || '';
   const paid = params.get('paid');
+  const canceled = params.get('canceled');
   const savedEmail = localStorage.getItem('longeva_email') || '';
   if (savedEmail) document.getElementById('email').value = savedEmail;
 
-  if (!sessionId) return;
-  if (paid !== '1' && !localStorage.getItem(BIO_SESSION_KEY)) return;
+  if (canceled) {
+    openPaywallModal(tr('Pago cancelado. Podés intentarlo de nuevo.', 'Payment canceled. You can try again.'));
+    return;
+  }
 
-  payMsg.textContent = tr('Verificando pago...', 'Verifying payment...');
-  try {
-    const res = await fetch(`/api/checkout-status?session_id=${encodeURIComponent(sessionId)}&module=biohacker_protocol`);
-    const data = await res.json();
-    if (!res.ok || !data.paid) throw new Error(data.error || tr('Pago no confirmado', 'Payment not confirmed'));
-    state.sessionId = sessionId;
-    localStorage.setItem(BIO_SESSION_KEY, sessionId);
-    document.getElementById('paywall').style.display = 'none';
-    document.getElementById('form').style.display = 'none';
-    loadDraftProfile();
-    updateGenerateEnabled();
+  // ── Sesión guardada → acceso directo ──
+  if (localStorage.getItem(BIO_SESSION_KEY)) {
+    state.sessionId = localStorage.getItem(BIO_SESSION_KEY);
+    document.getElementById('protocol-catalog').style.display = 'none';
+    document.getElementById('form').style.display = 'block';
     if (localStorage.getItem(BIO_AUTORUN_KEY) === '1' && !genBtn.disabled) {
       localStorage.removeItem(BIO_AUTORUN_KEY);
       setTimeout(() => generateProtocol(), 80);
     }
-  } catch (err) {
-    payMsg.textContent = `${tr('No pudimos validar tu pago', 'Could not validate your payment')}: ${err.message}`;
+    return;
+  }
+
+  // ── Vuelta de Stripe ──
+  if (sessionId && (paid === '1' || sessionId.startsWith('cs_'))) {
+    localStorage.setItem(BIO_SESSION_KEY, sessionId);
+    state.sessionId = sessionId;
+
+    // Verificar backend en background (no bloqueante)
+    try {
+      const res = await fetch(`/api/checkout-status?session_id=${encodeURIComponent(sessionId)}&module=biohacker_protocol`);
+      const data = await res.json();
+      if (res.ok && data.email) {
+        localStorage.setItem('longeva_email', data.email);
+      }
+    } catch (_e) {}
+
+    // Limpiar URL
+    window.history.replaceState({}, '', window.location.pathname);
+
+    document.getElementById('protocol-catalog').style.display = 'none';
+    document.getElementById('form').style.display = 'block';
+    if (localStorage.getItem(BIO_AUTORUN_KEY) === '1' && !genBtn.disabled) {
+      localStorage.removeItem(BIO_AUTORUN_KEY);
+      setTimeout(() => generateProtocol(), 80);
+    }
   }
 }
 
@@ -2283,6 +2399,24 @@ init();
       <button id="bio-modal-close" type="button" aria-label="Cerrar">×</button>
     </div>
     <div id="bio-modal-content"></div>
+  </div>
+</div>
+
+<!-- ── PAYWALL MODAL ───────────────────────────────────────── -->
+<div id="paywall-modal" aria-hidden="true">
+  <div id="paywall-modal-card" role="dialog" aria-modal="true">
+    <button class="paywall-modal-close" type="button" onclick="closePaywallModal()">✕</button>
+    <div class="paywall-modal-stamp">BIOHACKER LAB · ACCESO PREMIUM</div>
+    <div class="paywall-modal-title" id="pm-title">Desbloquear Biohacker Lab</div>
+    <p class="paywall-modal-sub" id="pm-sub">Protocolo peptídico personalizado. Diseñado y supervisado por médico. Pago único — sin suscripción.</p>
+    <div class="paywall-modal-price"><span style="font-size:18px;vertical-align:top;margin-top:6px;display:inline-block">$</span>7<span style="font-size:24px">,99</span></div>
+    <div class="paywall-modal-pricetype" id="pm-pricetype">Pago único · Acceso permanente al resultado</div>
+    <div class="paywall-modal-row">
+      <input class="paywall-modal-input" id="email" type="email" placeholder="tu@email.com" />
+      <button class="paywall-modal-btn" id="pay-btn" type="button">Continuar →</button>
+    </div>
+    <div class="paywall-modal-legal" id="pm-legal">Al continuar aceptás <a href="/terms.html" target="_blank" rel="noopener">Términos</a> / <a href="/privacy.html" target="_blank" rel="noopener">Privacidad</a>.</div>
+    <div class="paywall-modal-msg" id="pay-msg"></div>
   </div>
 </div>
 
