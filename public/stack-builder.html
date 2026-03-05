@@ -109,7 +109,7 @@ html[data-theme="light"] .topnav a.nav-bio:hover { border-color: rgba(160,50,50,
   color: var(--text); text-decoration: none; font-size: 12px;
   background: rgba(255,255,255,.02);
 }
-.hero-link:hover { border-color: var(--accent3); color: var(--accent3); }
+.hero-link:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
 .hero-link.hero-link-bio{
   border-color:rgba(190,70,70,.45);
   color:#c09090;
@@ -291,7 +291,7 @@ input[type=range]::-webkit-slider-thumb {
 .btn-back { background: transparent; border: 1px solid var(--border2); color: var(--muted); border-radius: 0; padding: 11px 22px; font-family: 'Instrument Sans', sans-serif; font-size: 13px; cursor: pointer; transition: .2s; }
 .btn-back:hover { border-color: var(--muted); color: var(--text); }
 .btn-next { background: var(--accent); color: var(--on-accent); border: none; border-radius: 0; padding: 13px 32px; font-family: 'Instrument Sans', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; transition: .2s; }
-.btn-next:hover { background: #d8ff6a; transform: translateY(-1px); }
+.btn-next:hover { filter: brightness(1.06); transform: translateY(-1px); }
 .btn-next:disabled { opacity: .4; cursor: not-allowed; transform: none; }
 
 /* ── RESULTS ── */
@@ -601,7 +601,7 @@ input[type=range]::-webkit-slider-thumb {
 .actions-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 32px; }
 .action-btn { padding: 13px 26px; border-radius: 0; font-family: 'Instrument Sans', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; transition: .2s; }
 .action-primary { background: var(--accent); color: var(--on-accent); border: none; }
-.action-primary:hover { background: #d8ff6a; transform: translateY(-1px); }
+.action-primary:hover { filter: brightness(1.06); transform: translateY(-1px); }
 .action-secondary { background: transparent; border: 1px solid var(--border2); color: var(--muted); }
 .action-secondary:hover { border-color: var(--muted); color: var(--text); }
 
