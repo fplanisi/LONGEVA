@@ -1542,7 +1542,7 @@ expertCheck.addEventListener('change', updateGenerateEnabled);
 monitorCheck.addEventListener('change', updateGenerateEnabled);
 consentCheck.addEventListener('change', updateGenerateEnabled);
 
-payBtn.addEventListener('click', startCheckout);
+payBtn?.addEventListener('click', startCheckout);
 genBtn.addEventListener('click', generateProtocol);
 document.querySelector('#objective-grid .opt[data-value="recovery"]')?.classList.add('active');
 
@@ -1763,14 +1763,10 @@ function closeAlertTwo() {
 
 function acceptRiskAndStart() {
   closeAlertTwo();
-  // If already paid, go straight to form
-  if (state.sessionId || localStorage.getItem(BIO_SESSION_KEY)) {
-    document.getElementById('protocol-catalog').style.display = 'none';
-    document.getElementById('form').style.display = 'block';
-    goBioStep(1);
-  } else {
-    openPaywallModal();
-  }
+  // Always allow questionnaire first; payment happens at final generation step.
+  document.getElementById('protocol-catalog').style.display = 'none';
+  document.getElementById('form').style.display = 'block';
+  goBioStep(1);
 }
 
 function openPaywallModal(msg) {
@@ -1983,9 +1979,8 @@ async function generateProtocol() {
   if (!state.sessionId) {
     saveDraftProfile();
     localStorage.setItem(BIO_AUTORUN_KEY, '1');
-    document.getElementById('paywall').style.display = 'block';
     formMsg.textContent = tr('Último paso: completa checkout para desbloquear el protocolo.', 'Last step: complete checkout to unlock the protocol.');
-    document.getElementById('paywall')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    openPaywallModal(formMsg.textContent);
     return;
   }
   formMsg.textContent = tr('Generando protocolo...', 'Generating protocol...');
