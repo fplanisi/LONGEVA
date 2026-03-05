@@ -7,9 +7,9 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg:#0D1220; --bg2:#121828; --surface:#182030; --surface2:#1E2840; --border:#243045; --border2:#304060;
+  --bg:#080a0f; --bg2:#10131a; --surface:#0f141e; --surface2:#141a26; --border:#243045; --border2:#304060;
   --text:#D8E4F0; --tx2:#ACBFD4; --muted:#688098; --dim:#3C5068; --accent:#C85858; --warn:#B8924A; --danger:#C85858; --accent2:#9888C8; --accent3:#55B09A; --on-accent:#0D1220;
-  --accent-dim:rgba(200,88,88,.14);
+  --accent-dim:rgba(200,88,88,.05);
   --bg-glow:#13253a; --grid-line:rgba(216,228,240,.06); --header-bg:rgba(13,18,32,.88); --nav-panel-bg:rgba(24,32,48,.96); --overlay:linear-gradient(to bottom,rgba(255,255,255,.02),rgba(255,255,255,0) 20%,rgba(200,88,88,.12) 62%,rgba(255,255,255,0));
 }
 html[data-theme="light"]{
@@ -74,12 +74,27 @@ html[data-theme="light"] .hero h1 em{color:#964848}
 html[data-theme="light"] .hero-list b{color:#964848}
 .alert { margin:14px auto 0; max-width:760px; background:rgba(200,88,88,.12); border:1px solid rgba(200,88,88,.34); color:var(--text); font-size:13px; padding:12px 14px; border-radius:10px; }
 /* ══ ESTÉTICA DISRUPTIVA — BIOHACKER LAB ════════════════ */
-.hero-area{position:relative;background:radial-gradient(circle at top right,rgba(200,88,88,.08),transparent),var(--bg);overflow:hidden}
+.hero-area{
+  position:relative;
+  background:
+    linear-gradient(to bottom, rgba(8,10,15,.8), #080a0f),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  background-blend-mode:overlay;
+  opacity:.95;
+  overflow:hidden;
+  border-bottom:1px solid rgba(200,88,88,.2);
+}
 .hero-area::before{inset:0}
-.hero-area::after{content:"";position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(rgba(18,16,16,0) 50%,rgba(0,0,0,.1) 50%),linear-gradient(90deg,rgba(255,0,0,.03),rgba(0,255,0,.01),rgba(0,0,255,.03));background-size:100% 2px,3px 100%;pointer-events:none;z-index:1}
+.hero-area::after{display:none}
 .hero-area > *{position:relative;z-index:2}
-.eyebrow-warn{font-family:'DM Mono',monospace;color:var(--danger);border:1px solid var(--danger);padding:2px 8px;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;display:inline-block;margin-bottom:1rem;animation:pulse-border 2s infinite}
-@keyframes pulse-border{0%{opacity:.6}50%{opacity:1;box-shadow:0 0 10px rgba(200,88,88,.3)}100%{opacity:.6}}
+.terminal-status{font-family:'DM Mono',monospace;font-size:.6rem;color:#444;margin-bottom:10px}
+.eyebrow-warn{
+  font-family:'DM Mono',monospace;color:var(--accent);border:1px solid var(--accent);padding:4px 12px;font-size:.65rem;letter-spacing:.3em;text-transform:uppercase;display:inline-block;margin-bottom:1.5rem;background:rgba(200,88,88,.1);box-shadow:0 0 15px rgba(200,88,88,.1);animation:pulse-warn 2s ease-in-out infinite
+}
+@keyframes pulse-warn{
+  0%,100%{opacity:.8;box-shadow:0 0 5px rgba(200,88,88,.2)}
+  50%{opacity:1;box-shadow:0 0 20px rgba(200,88,88,.4)}
+}
 h1.disruptive-title{text-shadow:0 0 20px rgba(200,88,88,.2);letter-spacing:-.02em}
 .hero-area p strong{color:var(--text)}
 .danger-trust-line{margin:8px auto 0;max-width:680px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.06em;color:#e0b0b0;border:1px solid rgba(190,70,70,.7);border-radius:999px;padding:5px 10px;display:inline-flex;gap:6px;align-items:center;background:rgba(150,40,40,.14)}
@@ -113,6 +128,8 @@ textarea { min-height:90px; resize:vertical; }
 .item:last-child { margin-bottom:0; }
 .item h4 { font-size:14px; margin-bottom:6px; }
 .item p { font-size:12px; color:var(--muted); line-height:1.45; margin-bottom:6px; }
+.protocol-item{background:#0f141e;border:1px solid rgba(255,255,255,.05);border-left:3px solid var(--accent);transition:all .3s ease}
+.protocol-item:hover{background:#151b27;border-color:rgba(200,88,88,.4);transform:translateX(5px)}
 .protocol-meta{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px}
 .protocol-id{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--dim);letter-spacing:.08em}
 .risk-indicator{font-family:'DM Mono',monospace;font-size:.65rem;display:flex;align-items:center;gap:5px}
@@ -205,9 +222,10 @@ textarea { min-height:90px; resize:vertical; }
 
 <div class="wrap">
   <section class="hero hero-area">
-    <div class="eyebrow-warn" id="hero-eyebrow">Nivel de Acceso: Experimental</div>
-    <h1 class="disruptive-title" id="hero-title">Biohacker Lab</h1>
-    <p id="hero-sub">Exploración de frontera en optimización humana. Reprogramación celular, moléculas off-label y protocolos de alta intensidad.</p>
+    <div class="terminal-status" id="hero-status">STATUS: <span style="color: var(--accent)">ENCRYPTED_CONNECTION_ESTABLISHED</span> // AUTH_LEVEL: 05</div>
+    <div class="eyebrow-warn" id="hero-eyebrow">Zona Restringida</div>
+    <h1 class="serif disruptive-title" id="hero-title" style="font-size: 3.5rem; letter-spacing: -0.03em;">Biohacker Lab</h1>
+    <p id="hero-sub" style="max-width:600px; color: var(--tx2);">Protocolos de frontera y moléculas en fase experimental. Esta sección contiene terapias de alta intensidad que requieren supervisión técnica avanzada.</p>
     <p id="hero-riskline" class="danger-trust-line">Solo para usuarios avanzados: proceda bajo su propia responsabilidad biológica.</p>
   </section>
 
@@ -418,7 +436,7 @@ function renderResult(p) {
       <div class="phase-body">`;
     (ph.items || []).forEach((it, idx) => {
       const protoId = `#${phasePrefix}-${String(700 + idx * 11 + 72).padStart(3, '0')}`;
-      html += `<div class="item">
+      html += `<div class="item protocol-item">
         <h4>${escapeHtml(it.peptide || tr('Peptido', 'Peptide'))}</h4>
         <p>${escapeHtml(it.reason || '')}</p>
         <div class="tags">
@@ -489,10 +507,11 @@ function applyStaticI18n() {
   const chips = document.querySelectorAll('.badge-live');
   if (chips[0]) chips[0].textContent = 'Biohacker Lab · Experimental';
   if (chips[1]) chips[1].textContent = 'Physician-designed clinical framework';
-  set('#hero-eyebrow', 'Access Level: Experimental');
+  set('#hero-status', 'STATUS: ENCRYPTED_CONNECTION_ESTABLISHED // AUTH_LEVEL: 05');
+  set('#hero-eyebrow', 'Restricted Zone');
   set('#hero-title', 'Biohacker Lab');
   const heroSub = document.getElementById('hero-sub');
-  if (heroSub) heroSub.textContent = 'Frontier exploration in human optimization. Cellular reprogramming, off-label molecules, and high-intensity protocols.';
+  if (heroSub) heroSub.textContent = 'Frontier protocols and experimental-phase molecules. This section contains high-intensity therapies that require advanced technical supervision.';
   set('#hero-riskline', 'For advanced users only: proceed under your own biological responsibility.');
   set('#paywall .label', 'Premium access (same paywall)');
   const email = document.getElementById('email');
