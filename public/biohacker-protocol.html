@@ -8,13 +8,13 @@
 <style>
 :root {
   --bg:#0D1220; --bg2:#121828; --surface:#182030; --surface2:#1E2840; --border:#243045; --border2:#304060;
-  --text:#D8E4F0; --tx2:#ACBFD4; --muted:#688098; --dim:#3C5068; --accent:#6AA2CC; --warn:#B8924A; --danger:#C85858; --accent2:#9888C8; --accent3:#55B09A; --on-accent:#0D1220;
+  --text:#D8E4F0; --tx2:#ACBFD4; --muted:#688098; --dim:#3C5068; --accent:#C85858; --warn:#B8924A; --danger:#C85858; --accent2:#9888C8; --accent3:#55B09A; --on-accent:#0D1220;
   --accent-dim:rgba(200,88,88,.14);
   --bg-glow:#13253a; --grid-line:rgba(216,228,240,.06); --header-bg:rgba(13,18,32,.88); --nav-panel-bg:rgba(24,32,48,.96); --overlay:linear-gradient(to bottom,rgba(255,255,255,.02),rgba(255,255,255,0) 20%,rgba(200,88,88,.12) 62%,rgba(255,255,255,0));
 }
 html[data-theme="light"]{
   --bg:#F1F4F8; --bg2:#E7ECF3; --surface:#FFFFFF; --surface2:#F6F8FB; --border:#D4DCEA; --border2:#B8C6D8;
-  --text:#152030; --tx2:#334860; --muted:#5E7488; --dim:#94A8BC; --accent:#355F8C; --warn:#8C6828; --danger:#A83838; --accent2:#64508F; --accent3:#3A7865; --on-accent:#F6F8FB;
+  --text:#152030; --tx2:#334860; --muted:#5E7488; --dim:#94A8BC; --accent:#A83838; --warn:#8C6828; --danger:#A83838; --accent2:#64508F; --accent3:#3A7865; --on-accent:#F6F8FB;
   --accent-dim:rgba(168,56,56,.12);
   --bg-glow:#dbe5f0; --grid-line:rgba(21,32,48,.08); --header-bg:rgba(241,244,248,.9); --nav-panel-bg:rgba(255,255,255,.97); --overlay:linear-gradient(to bottom,rgba(255,255,255,.55),rgba(255,255,255,0) 22%,rgba(168,56,56,.08) 62%,rgba(255,255,255,0));
 }
@@ -73,6 +73,14 @@ html[data-theme="light"] .topnav a.nav-bio:hover{border-color:rgba(160,50,50,.6)
 html[data-theme="light"] .hero h1 em{color:#964848}
 html[data-theme="light"] .hero-list b{color:#964848}
 .alert { margin:14px auto 0; max-width:760px; background:rgba(200,88,88,.12); border:1px solid rgba(200,88,88,.34); color:var(--text); font-size:13px; padding:12px 14px; border-radius:10px; }
+/* ══ ESTÉTICA DISRUPTIVA — BIOHACKER LAB ════════════════ */
+.hero-area{position:relative;background:radial-gradient(circle at top right,rgba(200,88,88,.08),transparent),var(--bg);overflow:hidden}
+.hero-area::after{content:"";position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(rgba(18,16,16,0) 50%,rgba(0,0,0,.1) 50%),linear-gradient(90deg,rgba(255,0,0,.03),rgba(0,255,0,.01),rgba(0,0,255,.03));background-size:100% 2px,3px 100%;pointer-events:none;z-index:1}
+.hero-area > *{position:relative;z-index:2}
+.eyebrow-warn{font-family:'DM Mono',monospace;color:var(--danger);border:1px solid var(--danger);padding:2px 8px;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;display:inline-block;margin-bottom:1rem;animation:pulse-border 2s infinite}
+@keyframes pulse-border{0%{opacity:.6}50%{opacity:1;box-shadow:0 0 10px rgba(200,88,88,.3)}100%{opacity:.6}}
+h1.disruptive-title{text-shadow:0 0 20px rgba(200,88,88,.2);letter-spacing:-.02em}
+.hero-area p strong{color:var(--text)}
 .card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:22px; margin-bottom:14px; }
 .label { display:block; font-size:12px; color:var(--muted); margin-bottom:10px; letter-spacing:.06em; text-transform:uppercase; }
 .grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
@@ -102,6 +110,10 @@ textarea { min-height:90px; resize:vertical; }
 .item:last-child { margin-bottom:0; }
 .item h4 { font-size:14px; margin-bottom:6px; }
 .item p { font-size:12px; color:var(--muted); line-height:1.45; margin-bottom:6px; }
+.protocol-meta{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px}
+.protocol-id{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--dim);letter-spacing:.08em}
+.risk-indicator{font-family:'DM Mono',monospace;font-size:.65rem;display:flex;align-items:center;gap:5px}
+.risk-dot{width:6px;height:6px;border-radius:50%;background:var(--danger);box-shadow:0 0 5px var(--danger)}
 .tags { display:flex; gap:6px; flex-wrap:wrap; }
 .tag { font-size:10px; color:var(--muted); border:1px solid var(--border); border-radius:6px; padding:2px 6px; }
 .danger-box { margin-top:12px; border:1px solid rgba(200,88,88,.36); background:rgba(200,88,88,.10); color:var(--text); border-radius:10px; padding:12px; font-size:12px; line-height:1.5; }
@@ -189,17 +201,11 @@ textarea { min-height:90px; resize:vertical; }
 </header>
 
 <div class="wrap">
-  <div class="hero">
-    <div class="hero-kicker">BIOHACKER LAB · NIVEL AVANZADO</div>
-    <h1>Protocolo experimental<br><em>de péptidos</em></h1>
-    <p>Esto no es una rutina wellness. Es un módulo de optimización agresiva para perfiles avanzados, con fases, monitoreo y red flags clínicos para decidir cuándo frenar.</p>
-    <div class="hero-list">
-      <div><b>Reto real:</b> balancear resultados vs riesgo.</div>
-      <div><b>Regla clave:</b> si no podés medir, no deberías escalar.</div>
-      <div><b>Objetivo:</b> protocolo accionable sin autoengaños.</div>
-    </div>
-    <div class="alert">Solo para expertos. Esto no es consejo medico. Riesgo real de interacciones y efectos adversos.</div>
-  </div>
+  <section class="hero hero-area">
+    <div class="eyebrow-warn" id="hero-eyebrow">Nivel de Acceso: Experimental</div>
+    <h1 class="disruptive-title" id="hero-title">Biohacker Lab</h1>
+    <p id="hero-sub">Exploración de frontera en optimización humana. Reprogramación celular, moléculas off-label y protocolos de alta intensidad. <strong>Solo para usuarios avanzados: proceda bajo su propia responsabilidad biológica.</strong></p>
+  </section>
 
   <div class="bio-main">
   <div id="paywall" class="card">
@@ -399,13 +405,15 @@ function renderResult(p) {
   `;
 
   (p.protocol_phases || []).forEach((ph) => {
+    const phasePrefix = String(ph.phase || 'PH').replace(/[^A-Za-z0-9]/g, '').slice(0,3).toUpperCase() || 'BHK';
     html += `<div class="phase">
       <div class="phase-head">
         <strong>${escapeHtml(ph.phase || tr('Fase', 'Phase'))}</strong>
         <span style="font-size:12px;color:var(--muted);">${escapeHtml(ph.duration_weeks || '?')} ${tr('semanas', 'weeks')}</span>
       </div>
       <div class="phase-body">`;
-    (ph.items || []).forEach((it) => {
+    (ph.items || []).forEach((it, idx) => {
+      const protoId = `#${phasePrefix}-${String(700 + idx * 11 + 72).padStart(3, '0')}`;
       html += `<div class="item">
         <h4>${escapeHtml(it.peptide || tr('Peptido', 'Peptide'))}</h4>
         <p>${escapeHtml(it.reason || '')}</p>
@@ -416,6 +424,10 @@ function renderResult(p) {
           <span class="tag">${escapeHtml(it.route || '-')}</span>
           <span class="tag">${tr('Evidencia', 'Evidence')}: ${escapeHtml(it.evidence || '-')}</span>
           <span class="tag">~$${Number(it.monthly_cost || 0)}/${tr('mes', 'mo')}</span>
+        </div>
+        <div class="protocol-meta">
+          <span class="protocol-id">ID: ${protoId}</span>
+          <div class="risk-indicator"><span class="risk-dot"></span>${tr('RIESGO: ELEVADO / EXPERIMENTAL', 'RISK: HIGH / EXPERIMENTAL')}</div>
         </div>
       </div>`;
     });
@@ -473,17 +485,10 @@ function applyStaticI18n() {
   const chips = document.querySelectorAll('.badge-live');
   if (chips[0]) chips[0].textContent = 'Biohacker Lab · Experimental';
   if (chips[1]) chips[1].textContent = 'Physician-designed clinical framework';
-  set('.hero-kicker', 'BIOHACKER LAB · ADVANCED LEVEL');
-  const heroTitle = document.querySelector('.hero h1');
-  if (heroTitle) heroTitle.innerHTML = 'Experimental protocol<br><em>for peptides</em>';
-  const heroP = document.querySelector('.hero p');
-  if (heroP) heroP.textContent = 'Not a wellness routine. This is aggressive optimization for advanced users, with phases, monitoring, and clinical red flags.';
-  const heroList = document.querySelectorAll('.hero-list div');
-  if (heroList[0]) heroList[0].innerHTML = '<b>Real challenge:</b> balancing outcomes vs risk.';
-  if (heroList[1]) heroList[1].innerHTML = '<b>Core rule:</b> if you cannot measure it, do not escalate.';
-  if (heroList[2]) heroList[2].innerHTML = '<b>Goal:</b> actionable protocol without self-deception.';
-  const alert = document.querySelector('.alert');
-  if (alert) alert.textContent = 'Experts only. Not medical advice. Real risk of interactions and adverse effects.';
+  set('#hero-eyebrow', 'Access Level: Experimental');
+  set('#hero-title', 'Biohacker Lab');
+  const heroSub = document.getElementById('hero-sub');
+  if (heroSub) heroSub.innerHTML = 'Frontier exploration in human optimization. Cellular reprogramming, off-label molecules, and high-intensity protocols. <strong>For advanced users only: proceed under your own biological responsibility.</strong>';
   set('#paywall .label', 'Premium access (same paywall)');
   const email = document.getElementById('email');
   if (email) email.placeholder = 'you@email.com';
