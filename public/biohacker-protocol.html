@@ -32,6 +32,7 @@ body::after{content:'';position:fixed;inset:0;background:var(--overlay);pointer-
 .header-top{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .brand-wrap{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
 .logo-name{font-family:'DM Serif Display',serif;font-size:26px;letter-spacing:.1em;color:var(--accent);text-shadow:0 0 28px rgba(106,162,204,.22)}
+  .logo-name em{font-style:italic;margin-left:-.035em}
 .logo-tag{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:.16em}
 .status-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
 .menu-toggle{display:none;align-items:center;justify-content:center;flex-direction:column;gap:4px;width:34px;height:34px;border-radius:9px;border:1px solid var(--border);background:rgba(255,255,255,.02);cursor:pointer;transition:border-color .2s ease,background .2s ease}
@@ -624,6 +625,7 @@ html[data-theme="light"] .hero-list b{color:#964848}
   html[data-theme="light"] .o2{background:var(--orb2)!important}
   html[data-theme="light"] body::before{opacity:.28}
   html[data-theme="light"] .logo-name{text-shadow:none}
+  .logo-name em{font-style:italic;margin-left:-.035em}
   html[data-theme="light"] .result-card{background:#fff!important;border-color:var(--border2)!important}
   html[data-theme="light"] .step-card{background:#fff!important}
   html[data-theme="light"] #loading-state{background:#fff!important}
@@ -682,6 +684,239 @@ html[data-theme="light"] .hero-list b{color:#964848}
   }
   #bio-modal-close:hover { border-color:rgba(180,50,50,.6);color:var(--danger); }
 
+  /* ══════════════════════════════════════════════════
+     REDESIGNED ALERT MODALS — CLASSIFIED / DANGER SYSTEM
+  ══════════════════════════════════════════════════ */
+
+  /* Base card upgrades */
+  .alert-card {
+    position:relative;
+    overflow:hidden;
+    border-radius:4px !important;
+    padding:0 !important;
+    border:none !important;
+  }
+
+  /* Level 1: Classified access gate */
+  .alert-card--level1 {
+    width:min(680px,100%);
+    background:linear-gradient(160deg, rgba(10,8,14,.98) 0%, rgba(22,10,10,.97) 100%);
+    border:1px solid rgba(180,50,50,.38) !important;
+    box-shadow:0 0 0 1px rgba(180,50,50,.1), 0 28px 60px rgba(0,0,0,.65), inset 0 1px 0 rgba(255,255,255,.03);
+  }
+  html[data-theme="light"] .alert-card--level1 {
+    background:linear-gradient(160deg,#fff 0%,#fff6f6 100%);
+    border-color:rgba(160,40,40,.3) !important;
+    box-shadow:0 16px 40px rgba(0,0,0,.12);
+  }
+
+  /* Level 2: Danger confirmation */
+  .alert-card--level2 {
+    width:min(680px,100%);
+    background:linear-gradient(160deg, rgba(14,6,6,.99) 0%, rgba(28,8,8,.97) 100%);
+    border:1px solid rgba(200,50,50,.5) !important;
+    box-shadow:0 0 0 1px rgba(200,50,50,.15), 0 0 40px rgba(180,40,40,.1), 0 28px 60px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.02);
+  }
+  html[data-theme="light"] .alert-card--level2 {
+    background:linear-gradient(160deg,#fff8f8 0%,#fff0f0 100%);
+    border-color:rgba(180,40,40,.4) !important;
+    box-shadow:0 0 20px rgba(180,40,40,.06), 0 16px 40px rgba(0,0,0,.12);
+  }
+
+  /* Skill/education modals */
+  .alert-card--skill {
+    width:min(680px,100%);
+    background:linear-gradient(160deg, rgba(10,9,6,.98) 0%, rgba(20,16,4,.97) 100%);
+    border:1px solid rgba(184,146,74,.3) !important;
+    box-shadow:0 0 0 1px rgba(184,146,74,.08), 0 28px 60px rgba(0,0,0,.65), inset 0 1px 0 rgba(255,255,255,.03);
+  }
+  html[data-theme="light"] .alert-card--skill {
+    background:linear-gradient(160deg,#fffdf6 0%,#fff8e6 100%);
+    border-color:rgba(160,120,40,.3) !important;
+    box-shadow:0 16px 40px rgba(0,0,0,.1);
+  }
+
+  /* Scanlines texture */
+  .alert-scanlines {
+    position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;
+    background-image:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.04) 3px,rgba(0,0,0,.04) 4px);
+  }
+  html[data-theme="light"] .alert-scanlines { display:none; }
+
+  /* Classified stamp */
+  .alert-stamp {
+    position:absolute;top:14px;right:16px;z-index:5;
+    font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.32em;
+    color:rgba(190,60,60,.22);border:1px solid rgba(190,60,60,.15);
+    padding:3px 8px;border-radius:1px;
+    transform:rotate(5deg);
+    pointer-events:none;
+  }
+  .alert-stamp--red { color:rgba(210,60,60,.28);border-color:rgba(210,60,60,.2); }
+  .alert-stamp--amber { color:rgba(184,146,74,.28);border-color:rgba(184,146,74,.2); }
+  html[data-theme="light"] .alert-stamp { color:rgba(160,40,40,.18);border-color:rgba(160,40,40,.14); }
+  html[data-theme="light"] .alert-stamp--amber { color:rgba(140,100,20,.2);border-color:rgba(140,100,20,.15); }
+
+  /* Header row */
+  .alert-header-row {
+    position:relative;z-index:2;
+    display:flex;align-items:center;gap:14px;
+    padding:20px 22px 14px;
+  }
+
+  .alert-icon-wrap {
+    flex-shrink:0;width:44px;height:44px;border-radius:50%;
+    border:1px solid rgba(200,70,70,.3);
+    background:rgba(180,40,40,.08);
+    display:flex;align-items:center;justify-content:center;
+    animation:pulse-border 2.4s ease-in-out infinite;
+  }
+  .alert-icon-wrap--danger { border-color:rgba(220,60,60,.45);background:rgba(200,40,40,.12);animation-duration:1.8s; }
+  .alert-icon-wrap--amber { border-color:rgba(184,146,74,.4);background:rgba(160,120,40,.08);animation:pulse-border-amber 2.4s ease-in-out infinite; }
+
+  @keyframes pulse-border-amber {
+    0%,100%{border-color:rgba(184,146,74,.3);box-shadow:none}
+    50%{border-color:rgba(184,146,74,.65);box-shadow:0 0 10px rgba(184,146,74,.12)}
+  }
+
+  .alert-title-wrap { flex:1;min-width:0; }
+
+  .alert-kicker {
+    font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.2em;
+    color:var(--dim);text-transform:uppercase;margin-bottom:5px;
+  }
+  .alert-kicker--red { color:rgba(200,90,90,.7); }
+  .alert-kicker--amber { color:rgba(184,146,74,.75); }
+  html[data-theme="light"] .alert-kicker--red { color:rgba(160,50,50,.7); }
+  html[data-theme="light"] .alert-kicker--amber { color:rgba(140,100,30,.7); }
+
+  .alert-title {
+    font-family:'DM Mono',monospace;font-size:14px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--text);
+    margin:0 !important;padding:0 !important;background:none !important;border:none !important;
+  }
+  .alert-title--red { color:#ff8e8e; text-shadow:0 0 18px rgba(200,60,60,.25); }
+  .alert-title--amber { color:#f0c87a; text-shadow:0 0 16px rgba(184,146,74,.2); }
+  html[data-theme="light"] .alert-title--red { color:#a03030;text-shadow:none; }
+  html[data-theme="light"] .alert-title--amber { color:#7a5010;text-shadow:none; }
+
+  /* Divider */
+  .alert-divider {
+    position:relative;z-index:2;
+    height:1px;margin:0 22px;
+    background:linear-gradient(90deg, rgba(180,50,50,.35), rgba(180,50,50,.08) 70%, transparent);
+  }
+  .alert-divider--red { background:linear-gradient(90deg, rgba(210,60,60,.5), rgba(210,60,60,.1) 70%, transparent); }
+  .alert-divider--amber { background:linear-gradient(90deg, rgba(184,146,74,.45), rgba(184,146,74,.1) 70%, transparent); }
+  html[data-theme="light"] .alert-divider { background:linear-gradient(90deg, rgba(160,40,40,.2), transparent 70%); }
+  html[data-theme="light"] .alert-divider--amber { background:linear-gradient(90deg, rgba(140,100,30,.2), transparent 70%); }
+
+  /* Text content */
+  .alert-text {
+    position:relative;z-index:2;
+    font-size:13px !important;color:var(--tx2) !important;
+    line-height:1.7 !important;padding:14px 22px !important;margin:0 !important;
+  }
+  html[data-theme="light"] .alert-text { color:var(--tx2) !important; }
+
+  /* Warning strip (level 1) */
+  .alert-warning-strip {
+    position:relative;z-index:2;
+    margin:0 22px 14px;
+    display:flex;align-items:flex-start;gap:10px;
+    background:rgba(180,40,40,.08);border:1px solid rgba(180,50,50,.22);border-left:3px solid rgba(200,60,60,.55);
+    border-radius:0 3px 3px 0;padding:9px 12px;
+    font-family:'DM Mono',monospace;font-size:11px;color:rgba(220,160,160,.85);line-height:1.5;letter-spacing:.02em;
+  }
+  html[data-theme="light"] .alert-warning-strip { background:rgba(160,40,40,.05);color:rgba(130,40,40,.85);border-color:rgba(160,40,40,.2);border-left-color:rgba(160,40,40,.5); }
+
+  .alert-strip-dot {
+    flex-shrink:0;width:7px;height:7px;border-radius:50%;margin-top:3px;
+    background:rgba(210,70,70,.9);box-shadow:0 0 6px rgba(200,60,60,.5);
+    animation:blink-dot 1.4s ease-in-out infinite;
+  }
+
+  /* Risk grid (level 2) */
+  .alert-risk-grid {
+    position:relative;z-index:2;
+    margin:0 22px 16px;
+    display:grid;grid-template-columns:1fr 1fr;gap:7px;
+  }
+  .alert-risk-item {
+    display:flex;align-items:flex-start;gap:7px;
+    background:rgba(200,50,50,.07);border:1px solid rgba(200,60,60,.18);border-radius:2px;
+    padding:8px 10px;font-family:'DM Mono',monospace;font-size:10px;
+    color:rgba(220,180,180,.8);line-height:1.45;letter-spacing:.02em;
+  }
+  html[data-theme="light"] .alert-risk-item { background:rgba(160,40,40,.04);color:rgba(110,40,40,.8);border-color:rgba(160,40,40,.18); }
+  .alert-risk-bullet { color:rgba(220,80,80,.8);flex-shrink:0;margin-top:1px; }
+
+  /* Education block (skill modals) */
+  .alert-edu-block {
+    position:relative;z-index:2;
+    margin:0 22px 16px;
+    border:1px solid rgba(184,146,74,.22);border-radius:3px;
+    background:rgba(160,120,40,.06);overflow:hidden;
+  }
+  .alert-edu-title {
+    font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.22em;
+    color:rgba(210,170,90,.7);padding:7px 12px;
+    border-bottom:1px solid rgba(184,146,74,.15);
+    background:rgba(160,120,40,.05);
+  }
+  html[data-theme="light"] .alert-edu-title { color:rgba(120,90,20,.7);background:rgba(140,100,20,.05); }
+  .alert-edu-steps { display:flex;flex-direction:column;gap:0; }
+  .alert-edu-step {
+    display:flex;align-items:flex-start;gap:10px;
+    padding:9px 12px;font-size:11px;color:var(--tx2);line-height:1.5;
+    border-bottom:1px solid rgba(184,146,74,.1);
+  }
+  .alert-edu-step:last-child { border-bottom:none; }
+  html[data-theme="light"] .alert-edu-step { color:var(--tx2); }
+  .alert-edu-n {
+    flex-shrink:0;font-family:'DM Mono',monospace;font-size:9px;
+    color:rgba(200,160,80,.75);letter-spacing:.08em;margin-top:2px;min-width:18px;
+  }
+
+  /* Row */
+  .alert-row {
+    position:relative;z-index:2;
+    display:flex;justify-content:flex-end;gap:8px;
+    padding:0 22px 18px;margin:0 !important;
+  }
+
+  /* Confirm button variants */
+  .alert-confirm-btn {
+    letter-spacing:.08em;font-family:'DM Mono',monospace;font-size:10px;
+    padding:10px 18px;min-width:180px;text-align:center;
+  }
+  .alert-confirm-btn--danger { background:rgba(200,50,50,.9) !important;box-shadow:0 0 18px rgba(200,50,50,.2); }
+  .alert-confirm-btn--danger:hover { background:rgba(220,60,60,1) !important;box-shadow:0 0 26px rgba(210,60,60,.3); }
+  .alert-confirm-btn--amber { background:rgba(160,120,40,.85) !important;color:#fff !important; }
+  .alert-confirm-btn--amber:hover { background:rgba(184,146,74,.95) !important; }
+
+  /* Footer code */
+  .alert-footer-code {
+    position:relative;z-index:2;
+    font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.14em;
+    color:rgba(180,100,100,.2);text-align:center;
+    padding:0 22px 12px;
+  }
+  .alert-footer-code--red { color:rgba(200,80,80,.22); }
+  .alert-footer-code--amber { color:rgba(180,146,60,.22); }
+  html[data-theme="light"] .alert-footer-code { color:rgba(120,60,60,.18); }
+  html[data-theme="light"] .alert-footer-code--amber { color:rgba(120,90,20,.18); }
+
+  @media(max-width:600px){
+    .alert-risk-grid{grid-template-columns:1fr}
+    .alert-header-row{padding:16px 14px 12px;gap:10px}
+    .alert-text{padding:12px 14px !important}
+    .alert-warning-strip,.alert-edu-block,.alert-risk-grid{margin:0 14px 12px}
+    .alert-row{padding:0 14px 16px}
+    .alert-footer-code{padding:0 14px 10px}
+    .alert-divider{margin:0 14px}
+  }
+
 </style>
 </head>
 <body>
@@ -690,7 +925,7 @@ html[data-theme="light"] .hero-list b{color:#964848}
 <header class="site-header">
     <div class="header-top">
       <div class="brand-wrap">
-        <span class="logo-name">LONGEVAPP</span>
+        <span class="logo-name">LONGEV<em>APP</em></span>
         <span class="logo-tag">v3.2 · Plataforma de longevidad</span>
       </div>
       <div class="status-row">
@@ -910,41 +1145,115 @@ html[data-theme="light"] .hero-list b{color:#964848}
   </div>
 </div>
 <div id="alert-modal-1" class="alert-modal" aria-hidden="true">
-  <div class="alert-card" role="dialog" aria-modal="true" aria-labelledby="alert1-title">
-    <div class="alert-title" id="alert1-title">[ESTADO: ZONA RESTRINGIDA]</div>
+  <div class="alert-card alert-card--level1" role="dialog" aria-modal="true" aria-labelledby="alert1-title">
+    <div class="alert-stamp">CLASSIFIED</div>
+    <div class="alert-scanlines"></div>
+    <div class="alert-header-row">
+      <div class="alert-icon-wrap">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="13" stroke="rgba(200,70,70,.5)" stroke-width="1.5"/><circle cx="14" cy="14" r="7" stroke="rgba(200,70,70,.35)" stroke-width="1"/><circle cx="14" cy="14" r="3" fill="rgba(200,70,70,.7)"/><line x1="14" y1="1" x2="14" y2="6" stroke="rgba(200,70,70,.4)" stroke-width="1.5"/><line x1="14" y1="22" x2="14" y2="27" stroke="rgba(200,70,70,.4)" stroke-width="1.5"/><line x1="1" y1="14" x2="6" y2="14" stroke="rgba(200,70,70,.4)" stroke-width="1.5"/><line x1="22" y1="14" x2="27" y2="14" stroke="rgba(200,70,70,.4)" stroke-width="1.5"/></svg>
+      </div>
+      <div class="alert-title-wrap">
+        <div class="alert-kicker">AUTH_LEVEL: 05 · ACCESO SOLICITADO</div>
+        <div class="alert-title" id="alert1-title">ZONA RESTRINGIDA</div>
+      </div>
+    </div>
+    <div class="alert-divider"></div>
     <p class="alert-text" id="alert1-text">¿Desea iniciar el protocolo de reprogramación celular? Esta sección contiene moléculas que requieren un manejo técnico avanzado y compromiso con el monitoreo biológico.</p>
+    <div class="alert-warning-strip">
+      <span class="alert-strip-dot"></span>
+      <span>Este módulo opera fuera del marco regulatorio estándar. Solo para usuarios con formación técnica verificada.</span>
+    </div>
     <div class="alert-row">
       <button class="btn-ghost" type="button" onclick="closeAlertOne()" id="alert1-cancel">Cancelar</button>
-      <button class="btn btn-main" type="button" onclick="confirmAlertOne()" id="alert1-cta">INICIAR VINCULACIÓN</button>
+      <button class="btn btn-main alert-confirm-btn" type="button" onclick="confirmAlertOne()" id="alert1-cta">INICIAR VINCULACIÓN</button>
     </div>
+    <div class="alert-footer-code">SYS::BHK-GATE-01 · SOLICITUD PENDIENTE DE CONFIRMACIÓN</div>
   </div>
 </div>
 <div id="alert-modal-2" class="alert-modal" aria-hidden="true">
-  <div class="alert-card" role="dialog" aria-modal="true" aria-labelledby="alert2-title">
-    <div class="alert-title" id="alert2-title">[ CONFIRMACIÓN DE NIVEL 05 ]</div>
+  <div class="alert-card alert-card--level2" role="dialog" aria-modal="true" aria-labelledby="alert2-title">
+    <div class="alert-stamp alert-stamp--red">⚠ PELIGRO</div>
+    <div class="alert-scanlines"></div>
+    <div class="alert-header-row">
+      <div class="alert-icon-wrap alert-icon-wrap--danger">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M14 3L26 24H2L14 3Z" stroke="rgba(220,60,60,.7)" stroke-width="1.5" stroke-linejoin="round"/><line x1="14" y1="11" x2="14" y2="17" stroke="rgba(220,60,60,.9)" stroke-width="2" stroke-linecap="round"/><circle cx="14" cy="20.5" r="1.2" fill="rgba(220,60,60,.9)"/></svg>
+      </div>
+      <div class="alert-title-wrap">
+        <div class="alert-kicker alert-kicker--red">NIVEL 05 · AUTORIZACIÓN FINAL REQUERIDA</div>
+        <div class="alert-title alert-title--red" id="alert2-title">CONFIRMACIÓN DE RIESGO</div>
+      </div>
+    </div>
+    <div class="alert-divider alert-divider--red"></div>
     <p class="alert-text" id="alert2-text">¿Está absolutamente seguro? Al continuar, usted reconoce que los péptidos son compuestos de alta precisión y acepta la responsabilidad sobre su almacenamiento, reconstitución y administración.</p>
+    <div class="alert-risk-grid">
+      <div class="alert-risk-item"><span class="alert-risk-bullet">▸</span>Manejo de compuestos fuera de regulación estándar</div>
+      <div class="alert-risk-item"><span class="alert-risk-bullet">▸</span>Reconstitución técnica bajo responsabilidad propia</div>
+      <div class="alert-risk-item"><span class="alert-risk-bullet">▸</span>Cadena de frío y administración SC requeridas</div>
+      <div class="alert-risk-item"><span class="alert-risk-bullet">▸</span>Monitoreo clínico obligatorio durante el protocolo</div>
+    </div>
     <div class="alert-row">
       <button class="btn-ghost" type="button" onclick="closeAlertTwo()" id="alert2-cancel">Volver</button>
-      <button class="btn btn-main" type="button" onclick="acceptRiskAndStart()" id="alert2-cta">SÍ, ASUMO EL RIESGO</button>
+      <button class="btn btn-main alert-confirm-btn alert-confirm-btn--danger" type="button" onclick="acceptRiskAndStart()" id="alert2-cta">SÍ, ASUMO EL RIESGO</button>
     </div>
+    <div class="alert-footer-code alert-footer-code--red">SYS::BHK-GATE-02 · ESTA ACCIÓN QUEDA REGISTRADA</div>
   </div>
 </div>
 <div id="skill-modal-recon" class="alert-modal" aria-hidden="true">
-  <div class="alert-card" role="dialog" aria-modal="true" aria-labelledby="recon-title">
-    <div class="alert-title" id="recon-title">[ AVISO TÉCNICO: RECONSTITUCIÓN ]</div>
-    <p class="alert-text" id="recon-text">Si no tienes experiencia en reconstitución, debes aprender el procedimiento estéril (agua bacteriostática, técnica aséptica y cálculo de concentración) antes de iniciar. Recomendado: supervisión profesional en la primera preparación.</p>
-    <div class="alert-row">
-      <button class="btn btn-main" type="button" onclick="ackReconstitutionRisk()" id="recon-cta">ENTIENDO, CONTINUAR</button>
+  <div class="alert-card alert-card--skill" role="dialog" aria-modal="true" aria-labelledby="recon-title">
+    <div class="alert-stamp alert-stamp--amber">AVISO TÉCNICO</div>
+    <div class="alert-scanlines"></div>
+    <div class="alert-header-row">
+      <div class="alert-icon-wrap alert-icon-wrap--amber">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="4" y="8" width="20" height="14" rx="2" stroke="rgba(184,146,74,.7)" stroke-width="1.5"/><path d="M10 8V6a4 4 0 0 1 8 0v2" stroke="rgba(184,146,74,.7)" stroke-width="1.5"/><circle cx="14" cy="15" r="2" fill="rgba(184,146,74,.7)"/></svg>
+      </div>
+      <div class="alert-title-wrap">
+        <div class="alert-kicker alert-kicker--amber">PREREQUISITO TÉCNICO · NO BLOQUEANTE</div>
+        <div class="alert-title alert-title--amber" id="recon-title">RECONSTITUCIÓN DE PÉPTIDOS</div>
+      </div>
     </div>
+    <div class="alert-divider alert-divider--amber"></div>
+    <p class="alert-text" id="recon-text">Si no tienes experiencia en reconstitución, debes aprender el procedimiento estéril (agua bacteriostática, técnica aséptica y cálculo de concentración) antes de iniciar. Recomendado: supervisión profesional en la primera preparación.</p>
+    <div class="alert-edu-block">
+      <div class="alert-edu-title">APRENDE ANTES DE CONTINUAR</div>
+      <div class="alert-edu-steps">
+        <div class="alert-edu-step"><span class="alert-edu-n">01</span><span>Calcular la dilución: mg de péptido ÷ volumen de agua bacteriostática = concentración final</span></div>
+        <div class="alert-edu-step"><span class="alert-edu-n">02</span><span>Inyectar el agua por la pared del vial sin agitar — disolver rodando suavemente</span></div>
+        <div class="alert-edu-step"><span class="alert-edu-n">03</span><span>Refrigerar inmediatamente entre 2°C y 8°C tras reconstitución. Vida útil: 28 días</span></div>
+      </div>
+    </div>
+    <div class="alert-row">
+      <button class="btn btn-main alert-confirm-btn alert-confirm-btn--amber" type="button" onclick="ackReconstitutionRisk()" id="recon-cta">ENTIENDO, CONTINUAR</button>
+    </div>
+    <div class="alert-footer-code alert-footer-code--amber">SYS::BHK-SKILL-RECON · ESTE AVISO NO BLOQUEA EL ACCESO</div>
   </div>
 </div>
 <div id="skill-modal-subq" class="alert-modal" aria-hidden="true">
-  <div class="alert-card" role="dialog" aria-modal="true" aria-labelledby="subq-title">
-    <div class="alert-title" id="subq-title">[ AVISO TÉCNICO: VÍA SUBCUTÁNEA ]</div>
-    <p class="alert-text" id="subq-text">Si tienes inconvenientes con la administración SC, debes recibir instrucción básica de técnica, higiene y rotación de sitio. Sin tolerancia operativa, el protocolo puede no ser viable.</p>
-    <div class="alert-row">
-      <button class="btn btn-main" type="button" onclick="ackSubqRisk()" id="subq-cta">ENTIENDO, CONTINUAR</button>
+  <div class="alert-card alert-card--skill" role="dialog" aria-modal="true" aria-labelledby="subq-title">
+    <div class="alert-stamp alert-stamp--amber">AVISO TÉCNICO</div>
+    <div class="alert-scanlines"></div>
+    <div class="alert-header-row">
+      <div class="alert-icon-wrap alert-icon-wrap--amber">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><line x1="6" y1="22" x2="22" y2="6" stroke="rgba(184,146,74,.7)" stroke-width="1.5" stroke-linecap="round"/><path d="M18 4l6 6-3 3-6-6z" stroke="rgba(184,146,74,.7)" stroke-width="1.5" stroke-linejoin="round"/><path d="M6 22l-3 3" stroke="rgba(184,146,74,.55)" stroke-width="1.5" stroke-linecap="round"/><circle cx="10" cy="18" r="1.5" fill="rgba(184,146,74,.6)"/></svg>
+      </div>
+      <div class="alert-title-wrap">
+        <div class="alert-kicker alert-kicker--amber">PREREQUISITO OPERATIVO · NO BLOQUEANTE</div>
+        <div class="alert-title alert-title--amber" id="subq-title">VÍA SUBCUTÁNEA</div>
+      </div>
     </div>
+    <div class="alert-divider alert-divider--amber"></div>
+    <p class="alert-text" id="subq-text">Si tienes inconvenientes con la administración SC, debes recibir instrucción básica de técnica, higiene y rotación de sitio. Sin tolerancia operativa, el protocolo puede no ser viable.</p>
+    <div class="alert-edu-block">
+      <div class="alert-edu-title">TÉCNICA BÁSICA SC</div>
+      <div class="alert-edu-steps">
+        <div class="alert-edu-step"><span class="alert-edu-n">01</span><span>Sitios recomendados: abdomen periumbilical, muslo externo. Rotar cada aplicación</span></div>
+        <div class="alert-edu-step"><span class="alert-edu-n">02</span><span>Aguja 29G–31G, 8mm. Pellizcar piel, insertar a 45°, liberar pliegue antes de inyectar</span></div>
+        <div class="alert-edu-step"><span class="alert-edu-n">03</span><span>Limpiar zona con alcohol 70% y dejar secar 30s antes de puncionar</span></div>
+      </div>
+    </div>
+    <div class="alert-row">
+      <button class="btn btn-main alert-confirm-btn alert-confirm-btn--amber" type="button" onclick="ackSubqRisk()" id="subq-cta">ENTIENDO, CONTINUAR</button>
+    </div>
+    <div class="alert-footer-code alert-footer-code--amber">SYS::BHK-SKILL-SCQ · ESTE AVISO NO BLOQUEA EL ACCESO</div>
   </div>
 </div>
 <div id="clinical-block-modal" class="alert-modal" aria-hidden="true">
@@ -1603,18 +1912,18 @@ function applyStaticI18n() {
   set('#catalog-sub', 'Open summary: what peptides are and what goals they can support.');
   set('#peptide-brief-copy', 'Peptides are high-precision signaling compounds used in advanced protocols for tissue repair, cognitive optimization, bioregulatory longevity, and body composition. Detailed protocols and compound names are unlocked only in premium access.');
   set('#init-quiz-btn', 'Start questionnaire');
-  set('#alert1-title', '[STATUS: RESTRICTED ZONE]');
+  set('#alert1-title', 'RESTRICTED ZONE');
   set('#alert1-text', 'Do you want to start the cellular reprogramming protocol? This section contains molecules that require advanced technical handling and commitment to biological monitoring.');
   set('#alert1-cancel', 'Cancel');
   set('#alert1-cta', 'START LINKING');
-  set('#alert2-title', '[ LEVEL 05 CONFIRMATION ]');
+  set('#alert2-title', 'RISK CONFIRMATION');
   set('#alert2-text', 'Are you absolutely sure? By continuing, you acknowledge peptides are high-precision compounds and accept responsibility for storage, reconstitution, and administration.');
   set('#alert2-cancel', 'Back');
   set('#alert2-cta', 'YES, I ASSUME THE RISK');
-  set('#recon-title', '[ TECHNICAL NOTICE: RECONSTITUTION ]');
+  set('#recon-title', 'PEPTIDE RECONSTITUTION');
   set('#recon-text', 'If you have no reconstitution experience, you should learn sterile procedure (bacteriostatic water, aseptic technique, and concentration calculation) before starting. Professional supervision is recommended for first preparation.');
   set('#recon-cta', 'I UNDERSTAND, CONTINUE');
-  set('#subq-title', '[ TECHNICAL NOTICE: SUBCUTANEOUS ROUTE ]');
+  set('#subq-title', 'SUBCUTANEOUS ROUTE');
   set('#subq-text', 'If you have issues with SC administration, receive basic instruction on technique, hygiene, and site rotation. Without operational tolerance, protocol viability may be limited.');
   set('#subq-cta', 'I UNDERSTAND, CONTINUE');
   set('#clinical-block-title', '[ CLINICAL SAFETY RESTRICTION ]');
