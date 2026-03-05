@@ -2129,15 +2129,9 @@ function renderResult(p) {
     </div>`;
 
   if (out) out.innerHTML = html;
+  if (out) out.style.display = 'block';
   document.getElementById('form').style.display = 'none';
-  const bioModal = document.getElementById('bio-result-modal');
-  if (bioModal) {
-    bioModal.classList.add('open');
-    bioModal.setAttribute('aria-hidden','false');
-    document.body.style.overflow = 'hidden';
-    const card = document.getElementById('bio-result-modal-card');
-    if (card) card.scrollTop = 0;
-  }
+  out?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function escapeHtml(s) {
