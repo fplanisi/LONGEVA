@@ -109,9 +109,6 @@
   .disc-close:hover{border-color:var(--accent2);color:var(--accent2)}
 
   /* AI PANEL */
-  #ai-panel{display:none;background:linear-gradient(155deg,var(--surface2),var(--surface));border:1px solid rgba(0,196,140,.34);border-radius:18px;padding:28px;margin-bottom:32px;position:relative;box-shadow:0 12px 30px rgba(0,0,0,.3)}
-  #ai-panel.panel-flash{box-shadow:0 0 0 2px rgba(106,255,217,.35),0 12px 30px rgba(0,0,0,.3)}
-  #ai-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:.5}
   .ai-head{display:flex;align-items:flex-start;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--border);gap:12px}
   .ai-mol-name{font-family:'DM Serif Display',serif;font-size:22px;color:var(--text);flex:1}
   .ai-head-right{display:flex;gap:6px;align-items:flex-start;flex-shrink:0;margin-top:2px}
@@ -137,6 +134,19 @@
   .detail-section-title{font-family:'Instrument Sans',sans-serif;font-size:.85rem;font-weight:600;color:var(--tx2);text-transform:uppercase;margin-top:1.5rem;display:flex;align-items:center;gap:8px}
   .detail-section-title::before{content:'';width:4px;height:12px;background:var(--accent);border-radius:2px}
   .detail-content{font-size:.95rem;line-height:1.6;color:var(--text);margin-top:.5rem}
+  .molecule-modal{position:fixed;inset:0;z-index:80;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(6,10,18,.62);backdrop-filter:blur(8px)}
+  .molecule-modal.open{display:flex}
+  .molecule-modal-card{width:min(980px,100%);max-height:min(90vh,980px);overflow:auto;background:linear-gradient(160deg,var(--surface2),var(--surface));border:1px solid var(--border2);border-radius:16px;padding:22px 22px 18px;box-shadow:0 28px 64px rgba(0,0,0,.45);position:relative}
+  .molecule-title-wrap{display:flex;flex-direction:column;gap:8px}
+  .molecule-meta-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .molecule-formula{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--muted);border:1px solid var(--border);padding:3px 8px;border-radius:4px}
+  .modal-close{position:absolute;top:16px;right:16px;background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:8px;padding:4px 10px;cursor:pointer;font-family:'DM Mono',monospace;font-size:10px}
+  .modal-close:hover{border-color:var(--accent);color:var(--accent)}
+  .modal-sections{display:grid;gap:8px}
+  .modal-section{padding:6px 0}
+  .modal-cta-row{margin-top:14px;padding-top:12px;border-top:1px solid var(--border);display:flex;justify-content:flex-end}
+  .modal-cta-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:10px;background:var(--accent);color:var(--on-accent);text-decoration:none;font-weight:600;font-size:13px}
+  .modal-cta-btn:hover{filter:brightness(1.06)}
   .ai-provider-note{margin-top:14px;padding-top:12px;border-top:1px solid var(--border);font-family:'DM Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:.05em}
 
   /* LOADING */
@@ -220,13 +230,15 @@
     .stat-n{font-size:22px}
     .main{padding:0 16px 60px}
     .grid{grid-template-columns:1fr}
-    #ai-panel,#discover-panel{padding:18px}
+    #discover-panel{padding:18px}
     .search-modes{flex-wrap:wrap;gap:6px}
     .discover-btn{padding:12px 16px;font-size:10px}
     .card{padding:15px}
     .mol-n{font-size:16px}
     .card-desc{font-size:12px;line-height:1.45}
     .chip{font-size:8px;padding:2px 8px}
+    .molecule-modal{padding:8px}
+    .molecule-modal-card{max-height:92vh;padding:16px}
   }
   .legal-footer{position:relative;z-index:10;max-width:1320px;margin:18px auto 22px;padding:0 16px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.04em;color:var(--dim)}
   .legal-footer a{color:var(--muted);text-decoration:none}
@@ -337,9 +349,38 @@
     <div id="discover-content"></div>
   </div>
 
-  <!-- Panel análisis IA -->
-  <div id="ai-panel">
-    <div id="ai-area"></div>
+  <!-- Modal ficha técnica -->
+  <div id="molecule-modal" class="molecule-modal" aria-hidden="true">
+    <div class="molecule-modal-card" role="dialog" aria-modal="true" aria-labelledby="md-title">
+      <button class="modal-close" id="md-close" type="button">✕</button>
+      <div class="molecule-detail-header">
+        <div class="molecule-title-wrap">
+          <div class="ai-mol-name" id="md-title">—</div>
+          <div class="molecule-meta-row">
+            <span class="molecule-category-tag" id="md-category">—</span>
+            <span class="molecule-formula" id="md-formula">Fórmula: —</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-sections">
+        <section class="modal-section">
+          <h3 class="detail-section-title" id="md-sec1-title">I. Farmacodinámica</h3>
+          <div class="detail-content" id="md-pharma"></div>
+        </section>
+        <section class="modal-section">
+          <h3 class="detail-section-title" id="md-sec2-title">II. Evidencia de Longevidad</h3>
+          <div class="detail-content" id="md-evidence"></div>
+        </section>
+        <section class="modal-section">
+          <h3 class="detail-section-title" id="md-sec3-title">III. Protocolo Sugerido</h3>
+          <div class="detail-content" id="md-protocol"></div>
+        </section>
+      </div>
+      <div class="modal-cta-row">
+        <a class="modal-cta-btn" id="md-cta" href="/stack-builder.html">Agregar a mi protocolo personalizado →</a>
+      </div>
+      <div class="ai-provider-note" id="md-provider-note"></div>
+    </div>
   </div>
 
   <!-- Grid de moléculas -->
@@ -423,6 +464,16 @@ function applyStaticI18n() {
   if (nav[4]) nav[4].textContent = 'Nutrition';
   const si = document.getElementById('search-input');
   if (si) si.placeholder = 'Filter by molecule, category or metabolic pathway...';
+  const f = document.getElementById('md-formula');
+  if (f) f.textContent = 'Formula: —';
+  const s1 = document.getElementById('md-sec1-title');
+  if (s1) s1.textContent = 'I. Pharmacodynamics';
+  const s2 = document.getElementById('md-sec2-title');
+  if (s2) s2.textContent = 'II. Longevity Evidence';
+  const s3 = document.getElementById('md-sec3-title');
+  if (s3) s3.textContent = 'III. Suggested Protocol';
+  const cta = document.getElementById('md-cta');
+  if (cta) cta.textContent = 'Add to my personalized protocol →';
   const sbtn = document.getElementById('sbtn');
   if (sbtn) sbtn.textContent = 'Analyze →';
   const modeBase = document.getElementById('mode-base');
@@ -695,13 +746,7 @@ function bindMoleculeCards() {
       try {
         const raw = card.getAttribute('data-mol') || '';
         const payload = JSON.parse(decodeURIComponent(raw));
-        await askMol(
-          payload.name,
-          payload.full_name,
-          payload.pathways || [],
-          payload.category || '',
-          payload.study_count || 0
-        );
+        await askMol(payload);
       } catch (_e) {}
     });
   });
@@ -710,39 +755,130 @@ function bindMoleculeCards() {
 // ─────────────────────────────────────────────
 // IA — Analizar molécula
 // ─────────────────────────────────────────────
-async function askMol(name, fullName, pathways, category, studyCount) {
-  document.getElementById('search-input').value = name;
-  srQuery = '';
-  render();
-  const panel = document.getElementById('ai-panel');
-  const area = document.getElementById('ai-area');
-  panel.style.display = 'block';
-  panel.classList.remove('panel-flash');
-  area.innerHTML = `<div class="loading"><div class="spin"></div>${tr('Analizando', 'Analyzing')} <strong style="color:var(--accent)">${name}</strong>...</div>`;
-  scrollToAiPanel(true);
-  await searchIA(name, fullName, pathways, category, studyCount);
+function openMoleculeModal() {
+  const modal = document.getElementById('molecule-modal');
+  if (!modal) return;
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
 }
 
-async function searchIA(forceName, forceFull, forcePaths, forceCat, forceStudies) {
-  const q = forceName || document.getElementById('search-input').value.trim();
-  if (!q || q === '__ping__') return;
+function closeMoleculeModal() {
+  const modal = document.getElementById('molecule-modal');
+  if (!modal) return;
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+}
 
-  if (!forceName) {
+function setModalLoading(name) {
+  const title = document.getElementById('md-title');
+  if (title) title.textContent = name;
+  const cat = document.getElementById('md-category');
+  if (cat) cat.textContent = tr('Cargando categoría...', 'Loading category...');
+  const formula = document.getElementById('md-formula');
+  if (formula) formula.textContent = `${tr('Fórmula', 'Formula')}: —`;
+  const loading = `<div class="loading"><div class="spin"></div>${tr('Analizando', 'Analyzing')} <strong style="color:var(--accent)">${name}</strong>...</div>`;
+  document.getElementById('md-pharma').innerHTML = loading;
+  document.getElementById('md-evidence').innerHTML = loading;
+  document.getElementById('md-protocol').innerHTML = loading;
+}
+
+function sectionFallbacks(mol) {
+  const pathways = Array.isArray(mol?.pathways) && mol.pathways.length
+    ? mol.pathways.slice(0, 4).join(', ')
+    : tr('vías metabólicas relacionadas con longevidad', 'longevity-related metabolic pathways');
+  return {
+    pharma: tr(
+      `Intervención potencial sobre ${pathways}.`,
+      `Potential intervention across ${pathways}.`
+    ),
+    evidence: tr(
+      `Evidencia reportada: ${mol?.evidence_rating || 'N/A'} · ${mol?.study_count || 0}+ estudios.`,
+      `Reported evidence: ${mol?.evidence_rating || 'N/A'} · ${mol?.study_count || 0}+ studies.`
+    ),
+    protocol: tr(
+      'Definir dosis, horario y sinergias según perfil clínico, objetivos y medicación actual.',
+      'Define dose, timing, and synergies according to clinical profile, goals, and current medication.'
+    ),
+  };
+}
+
+function splitDeepDive(text, mol) {
+  const out = sectionFallbacks(mol);
+  if (!text || !String(text).trim()) return out;
+  const blocks = String(text).split(/\n(?=#{1,3}\s)/g);
+  let usedHeading = false;
+  blocks.forEach((b) => {
+    const m = b.match(/^#{1,3}\s*(.+)\n?/);
+    const heading = (m?.[1] || '').toLowerCase();
+    const content = m ? b.replace(/^#{1,3}\s*.+\n?/, '') : b;
+    if (!content.trim()) return;
+    if (/farmaco|pharmacod|mechanism|mecanismo|action|pathway|target/.test(heading)) {
+      out.pharma = content.trim();
+      usedHeading = true;
+    } else if (/evid|study|estudio|human|modelo|model|longevity|longevidad/.test(heading)) {
+      out.evidence = content.trim();
+      usedHeading = true;
+    } else if (/protocol|dosis|dose|synerg|sinerg|timing|schedule/.test(heading)) {
+      out.protocol = content.trim();
+      usedHeading = true;
+    }
+  });
+  if (!usedHeading) out.pharma = text;
+  return out;
+}
+
+function setModalContent(mol, data) {
+  const category = mol.category || tr('Sin categoría', 'Uncategorized');
+  const formula = mol.formula || mol.chemical_formula || '—';
+  document.getElementById('md-title').textContent = mol.full_name || mol.name || '—';
+  document.getElementById('md-category').textContent = category;
+  document.getElementById('md-formula').textContent = `${tr('Fórmula', 'Formula')}: ${formula}`;
+
+  const sections = splitDeepDive(data?.text || '', mol);
+  document.getElementById('md-pharma').innerHTML = fmt(sections.pharma);
+  document.getElementById('md-evidence').innerHTML = fmt(sections.evidence);
+  document.getElementById('md-protocol').innerHTML = fmt(sections.protocol);
+
+  document.getElementById('md-provider-note').textContent = `${tr('Análisis generado con', 'Analysis generated with')} ${
+    data?.provider === 'anthropic'
+      ? 'Claude (Anthropic)'
+      : data?.provider === 'groq'
+        ? 'Llama 3.3 70B (Groq - testing)'
+        : data?.provider === 'openai'
+          ? 'GPT-4.1 (OpenAI)'
+          : data?.provider || 'AI'
+  }`;
+}
+
+async function askMol(nameOrMol, fullName, pathways, category, studyCount) {
+  const inputMol = typeof nameOrMol === 'object' && nameOrMol
+    ? nameOrMol
+    : { name: nameOrMol, full_name: fullName || nameOrMol, pathways: pathways || [], category: category || '', study_count: studyCount || 0, type: 'unknown' };
+  document.getElementById('search-input').value = inputMol.name || '';
+  srQuery = '';
+  render();
+  openMoleculeModal();
+  setModalLoading(inputMol.name || tr('molécula', 'molecule'));
+  await searchIA(inputMol);
+}
+
+async function searchIA(forceMol) {
+  const q = forceMol?.name || document.getElementById('search-input').value.trim();
+  if (!q || q === '__ping__') return;
+  openMoleculeModal();
+
+  if (!forceMol?.name) {
     srQuery = q;
     render();
   }
 
-  const panel = document.getElementById('ai-panel');
-  const area = document.getElementById('ai-area');
-  panel.style.display = 'block';
-
   const isLatest = aiMode === 'latest';
-  area.innerHTML = `<div class="loading"><div class="spin ${isLatest?'spin-blue':''}"></div>${isLatest ? `${tr('Buscando novedades 2025-2026 sobre', 'Searching 2025-2026 updates for')} <strong style="color:var(--accent2)">${q}</strong>...` : `${tr('Analizando', 'Analyzing')} <strong style="color:var(--accent)">${q}</strong>...`}</div>`;
-
-  if (!forceName) scrollToAiPanel(false);
+  setModalLoading(q);
 
   // Buscar en la DB local
-  const lm = DB?.molecules?.find(m =>
+  const lm = forceMol || DB?.molecules?.find(m =>
     m.name?.toLowerCase() === q.toLowerCase() ||
     m.full_name?.toLowerCase().includes(q.toLowerCase()) ||
     q.toLowerCase().includes(m.name?.toLowerCase() || '')
@@ -771,38 +907,13 @@ async function searchIA(forceName, forceFull, forcePaths, forceCat, forceStudies
 
     if (!res.ok) throw new Error(`Error ${res.status}`);
     const data = await res.json();
-
-    area.innerHTML = `
-      <div class="ai-head molecule-detail-header">
-        <div class="ai-mol-name">${mol.full_name || q}</div>
-        <div class="ai-head-right">
-          ${!isLatest ? `<button class="cbtn latest-btn" onclick="setModeAndSearch('${mol.name.replace(/'/g,"\\'")}')">🔍 ${tr('Ver novedades', 'See updates')}</button>` : ''}
-          <button class="cbtn" onclick="document.getElementById('ai-panel').style.display='none'">✕</button>
-        </div>
-      </div>
-      <div class="ai-tags">
-        ${mol.type==='natural'?'<span class="at tn">🌿 Natural</span>':''}
-        ${mol.type==='synthetic'?'<span class="at ts">⚗️ Sintética</span>':''}
-        ${mol.category?`<span class="at tp molecule-category-tag">${mol.category}</span>`:''}
-        ${(mol.pathways||[]).slice(0,4).map(p=>`<span class="at tp">${p}</span>`).join('')}
-        ${mol.evidence_rating&&mol.evidence_rating!=='N/A'?`<span class="at te">Evidencia ${mol.evidence_rating}</span>`:''}
-        ${isLatest?`<span class="at" style="background:rgba(0,152,255,.1);border:1px solid rgba(0,152,255,.25);color:var(--accent2)">🔍 ${tr('Búsqueda web', 'Web search')}</span>`:''}
-      </div>
-      <div class="ai-body detail-content">${fmt(data.text || '')}</div>
-      <div class="ai-provider-note">Análisis generado con ${
-        data.provider === 'anthropic'
-          ? 'Claude (Anthropic)'
-          : data.provider === 'groq'
-            ? 'Llama 3.3 70B (Groq - modo testing)'
-            : data.provider === 'openai'
-              ? 'GPT-4.1 (OpenAI)'
-              : data.provider
-      }</div>`;
-    panel.classList.add('panel-flash');
-    setTimeout(() => panel.classList.remove('panel-flash'), 900);
+    setModalContent(mol, data);
 
   } catch (e) {
-    area.innerHTML = `<div class="err">⚠ ${tr('Error al conectar con el backend. ¿Está ejecutándose el servidor?', 'Error connecting to backend. Is the server running?')} (${e.message})</div>`;
+    const err = `<div class="err">⚠ ${tr('Error al conectar con el backend. ¿Está ejecutándose el servidor?', 'Error connecting to backend. Is the server running?')} (${e.message})</div>`;
+    document.getElementById('md-pharma').innerHTML = err;
+    document.getElementById('md-evidence').innerHTML = err;
+    document.getElementById('md-protocol').innerHTML = err;
   }
 }
 
@@ -855,17 +966,6 @@ function fmt(t) {
     .split('\n').filter(l => l.trim()).join('\n');
 }
 
-function scrollToAiPanel(force = false) {
-  const panel = document.getElementById('ai-panel');
-  if (!panel) return;
-  const header = document.querySelector('header');
-  const headerH = header ? header.getBoundingClientRect().height : 0;
-  const y = window.scrollY + panel.getBoundingClientRect().top - headerH - 10;
-  if (force || Math.abs(window.scrollY - y) > 24) {
-    window.scrollTo({ top: Math.max(y, 0), behavior: 'smooth' });
-  }
-}
-
 function initToTop() {
   const btn = document.getElementById('to-top');
   if (!btn) return;
@@ -884,6 +984,13 @@ document.getElementById('search-input').addEventListener('keydown', e => {
 document.getElementById('search-input').addEventListener('input', e => {
   srQuery = e.target.value.trim();
   if (DB) render();
+});
+document.getElementById('md-close').addEventListener('click', closeMoleculeModal);
+document.getElementById('molecule-modal').addEventListener('click', (e) => {
+  if (e.target.id === 'molecule-modal') closeMoleculeModal();
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeMoleculeModal();
 });
 
 // START
