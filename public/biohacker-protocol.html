@@ -75,6 +75,7 @@ html[data-theme="light"] .hero-list b{color:#964848}
 .alert { margin:14px auto 0; max-width:760px; background:rgba(200,88,88,.12); border:1px solid rgba(200,88,88,.34); color:var(--text); font-size:13px; padding:12px 14px; border-radius:10px; }
 /* ══ ESTÉTICA DISRUPTIVA — BIOHACKER LAB ════════════════ */
 .hero-area{position:relative;background:radial-gradient(circle at top right,rgba(200,88,88,.08),transparent),var(--bg);overflow:hidden}
+.hero-area::before{inset:0}
 .hero-area::after{content:"";position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(rgba(18,16,16,0) 50%,rgba(0,0,0,.1) 50%),linear-gradient(90deg,rgba(255,0,0,.03),rgba(0,255,0,.01),rgba(0,0,255,.03));background-size:100% 2px,3px 100%;pointer-events:none;z-index:1}
 .hero-area > *{position:relative;z-index:2}
 .eyebrow-warn{font-family:'DM Mono',monospace;color:var(--danger);border:1px solid var(--danger);padding:2px 8px;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;display:inline-block;margin-bottom:1rem;animation:pulse-border 2s infinite}
