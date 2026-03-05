@@ -11,12 +11,14 @@
   --accent:#6AA2CC; --accent2:#9888C8; --accent3:#55B09A; --text:#D8E4F0; --tx2:#ACBFD4; --muted:#688098; --dim:#3C5068;
   --gold:#B8924A; --red:#C85858; --on-accent:#0D1220; --accent-dim:rgba(106,162,204,.14); --bg-glow:#13253a; --grid-line:rgba(216,228,240,.06);
   --header-bg:rgba(13,18,32,.88); --nav-panel-bg:rgba(24,32,48,.96); --overlay:linear-gradient(to bottom,rgba(255,255,255,.02),rgba(255,255,255,0) 20%,rgba(106,162,204,.08) 62%,rgba(255,255,255,0));
+  --orb1:rgba(106,162,204,.08);--orb2:rgba(152,136,200,.06);
 }
 html[data-theme="light"]{
   --bg:#F1F4F8; --bg2:#E7ECF3; --surface:#FFFFFF; --surface2:#F6F8FB; --border:#D4DCEA; --border2:#B8C6D8;
   --accent:#355F8C; --accent2:#64508F; --accent3:#3A7865; --text:#152030; --tx2:#334860; --muted:#5E7488; --dim:#94A8BC;
   --gold:#8C6828; --red:#A83838; --on-accent:#F6F8FB; --accent-dim:rgba(53,95,140,.12); --bg-glow:#dbe5f0; --grid-line:rgba(21,32,48,.08);
   --header-bg:rgba(241,244,248,.9); --nav-panel-bg:rgba(255,255,255,.97); --overlay:linear-gradient(to bottom,rgba(255,255,255,.55),rgba(255,255,255,0) 22%,rgba(53,95,140,.08) 62%,rgba(255,255,255,0));
+  --orb1:rgba(53,95,140,.07);--orb2:rgba(100,80,160,.05);
 }
 html { background: var(--bg); max-width: 100%; overflow-x: hidden; overscroll-behavior-y:auto;overscroll-behavior-x:none; }
 body.paid-mode {
@@ -40,8 +42,8 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 
 /* ── ORBS ── */
 .orb{position:fixed;border-radius:50%;filter:blur(120px);pointer-events:none;z-index:0}
-.o1{width:680px;height:680px;background:rgba(31,107,255,.1);top:-260px;right:-240px}
-.o2{width:540px;height:540px;background:rgba(108,77,255,.08);bottom:-200px;left:-200px}
+.o1{width:680px;height:680px;background:var(--orb1);top:-260px;right:-240px}
+.o2{width:540px;height:540px;background:var(--orb2);bottom:-200px;left:-200px}
 
 /* ── HEADER ── */
 header {
@@ -56,14 +58,15 @@ header {
 }
 .header-top { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .brand-wrap { display: flex; align-items: baseline; gap: 9px; flex-wrap: wrap; }
-.logo-name { font-family: 'DM Serif Display', serif; font-size: 26px; font-weight: 400; letter-spacing: .1em; color: var(--accent); text-shadow: 0 0 20px rgba(106,162,204,.28); }
+.logo-name { font-family: 'DM Serif Display', serif; font-size: 26px; font-weight: 400; letter-spacing: .1em; color: var(--accent); text-shadow: 0 0 22px rgba(106,162,204,.2); }
+.logo-name em{font-style:italic;margin-left:-.035em}
 .logo-tag { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--muted); letter-spacing: .16em; }
 .badge { display:flex; align-items:center; gap:7px; padding:6px 11px; border-radius:100px; font-family:'DM Mono',monospace; font-size:10px; letter-spacing:.08em; }
 .badge-live { background:rgba(0,196,140,.12); border:1px solid rgba(0,196,140,.34); color:var(--accent3); }
 .status-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
 .menu-toggle{display:none;align-items:center;justify-content:center;flex-direction:column;gap:4px;width:34px;height:34px;border-radius:9px;border:1px solid var(--border);background:rgba(255,255,255,.02);cursor:pointer;transition:border-color .2s ease,background .2s ease}
 .menu-toggle span{display:block;width:15px;height:2px;border-radius:999px;background:var(--accent);transition:transform .2s ease,opacity .2s ease}
-.menu-toggle.active{border-color:rgba(31,107,255,.55);background:rgba(31,107,255,.1)}
+.menu-toggle.active{border-color:rgba(106,162,204,.45);background:rgba(106,162,204,.08)}
 .menu-toggle.active span:nth-child(1){transform:translateY(6px) rotate(45deg)}
 .menu-toggle.active span:nth-child(2){opacity:0}
 .menu-toggle.active span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
@@ -683,6 +686,146 @@ input[type=range]::-webkit-slider-thumb {
     backdrop-filter: none;
   }
 }
+
+  /* ── LIGHT MODE OVERRIDES ── */
+  html[data-theme="light"] body { background:radial-gradient(circle at 14% -8%,var(--bg-glow) 0%,var(--bg) 58%); }
+  html[data-theme="light"] .o1 { background:var(--orb1)!important; }
+  html[data-theme="light"] .o2 { background:var(--orb2)!important; }
+  html[data-theme="light"] body::before { opacity:.26; }
+  html[data-theme="light"] .logo-name { text-shadow:none; }
+  html[data-theme="light"] .step-card { background:#fff!important; box-shadow:0 2px 18px rgba(21,32,48,.07)!important; }
+  html[data-theme="light"] #loading-state { background:#fff!important; box-shadow:0 2px 12px rgba(21,32,48,.05)!important; }
+  html[data-theme="light"] .result-card { background:#fff!important; border-color:var(--border2)!important; }
+  html[data-theme="light"] .budget-card { background:#f6f8fb!important; border:1px solid var(--border)!important; }
+  html[data-theme="light"] .rationale-card { background:#fff!important; box-shadow:0 2px 12px rgba(0,0,0,.04)!important; }
+  html[data-theme="light"] .monthly-card { background:#f6f8fb!important; }
+  html[data-theme="light"] .diet-extras-card { background:#f6f8fb!important; }
+  html[data-theme="light"] .history-card { background:#f6f8fb!important; }
+  html[data-theme="light"] #email-gate { background:#fff!important; box-shadow:0 2px 18px rgba(21,32,48,.07)!important; }
+  html[data-theme="light"] .email-input { background:#f6f8fb; }
+  html[data-theme="light"] .day-card { background:#fff!important; border-color:var(--border)!important; }
+  html[data-theme="light"] .mol-item:hover { background:rgba(53,95,140,.025)!important; }
+  html[data-theme="light"] .warnings-card { background:rgba(200,88,88,.03)!important; }
+
+
+  /* ── DESIGN ENHANCEMENTS — CLINICAL PRECISION ── */
+
+  /* Step card: top accent hairline */
+  .step-card::before {
+    content:''; position:absolute; top:0; left:0; right:0; height:1px;
+    background:linear-gradient(90deg,transparent,var(--accent),transparent);
+    opacity:.3;
+  }
+
+  /* Hero: subtle clinical gradient */
+  .hero::before {
+    background:linear-gradient(145deg,var(--accent-dim),transparent 60%)!important;
+  }
+  /* Hero trust line: pill style */
+  .hero-trust {
+    border:1px solid var(--border)!important;
+    background:rgba(255,255,255,.02)!important;
+  }
+  html[data-theme="light"] .hero-trust {
+    background:rgba(53,95,140,.03)!important;
+    border-color:var(--border)!important;
+  }
+
+  /* Result card watermark */
+  .result-card::before {
+    content:'LONGEVAPP · INFORME CLÍNICO PERSONALIZADO'!important;
+    font-family:'DM Mono',monospace!important;
+    font-size:clamp(10px,2.2vw,18px)!important;
+    color:rgba(106,162,204,.055)!important;
+    position:absolute!important; top:50%!important; left:50%!important;
+    transform:translate(-50%,-50%) rotate(-22deg)!important;
+    white-space:nowrap!important; pointer-events:none!important;
+    width:max-content!important; letter-spacing:.2em!important;
+    font-weight:400!important;
+  }
+
+  /* Report header: accent bottom line */
+  .report-header { border-bottom:1px solid rgba(106,162,204,.3)!important; }
+
+  /* Time blocks: proper palette colors */
+  .time-morning .time-title { color:var(--gold)!important; }
+  .time-afternoon .time-title { color:var(--accent)!important; }
+  .time-night .time-title { color:var(--accent2)!important; }
+
+  /* Rank badges */
+  .rank-core { background:rgba(85,176,154,.12)!important; color:var(--accent3)!important; border:1px solid rgba(85,176,154,.26)!important; }
+  .rank-support { background:rgba(106,162,204,.10)!important; color:var(--accent)!important; border:1px solid rgba(106,162,204,.22)!important; }
+
+  /* Actions: sharp */
+  .action-primary { background:var(--accent)!important; color:var(--on-accent)!important; }
+  .action-secondary { border:1px solid var(--border2)!important; }
+  .action-secondary:hover { border-color:var(--muted)!important; color:var(--text)!important; }
+
+  /* Disclaimer: mono clinical */
+  .disclaimer {
+    font-family:'DM Mono',monospace!important;
+    font-size:9px!important;
+    letter-spacing:.03em!important;
+    border:1px solid var(--border)!important;
+  }
+  html[data-theme="light"] .disclaimer { background:rgba(53,95,140,.03)!important; }
+
+  /* ── RESULTS MODAL ── */
+  #results-modal {
+    position:fixed; inset:0; z-index:80;
+    display:none; align-items:center; justify-content:center;
+    padding:20px;
+    background:rgba(4,8,18,.78);
+    backdrop-filter:blur(7px);
+  }
+  #results-modal.open { display:flex; }
+  #results-modal-card {
+    width:min(1040px,100%);
+    max-height:min(90vh,940px);
+    overflow-y:auto;
+    background:linear-gradient(160deg,var(--surface2),var(--surface));
+    border:1px solid var(--border2);
+    border-top:2px solid var(--accent);
+    border-radius:14px;
+    padding:0 24px 28px;
+    box-shadow:0 28px 64px rgba(0,0,0,.5);
+    position:relative;
+  }
+  html[data-theme="light"] #results-modal-card {
+    background:#fff;
+    border-color:var(--border);
+    box-shadow:0 12px 40px rgba(21,32,48,.12);
+  }
+  #results-modal-card::-webkit-scrollbar { width:4px; }
+  #results-modal-card::-webkit-scrollbar-thumb { background:var(--border2); border-radius:2px; }
+  .modal-header-bar {
+    position:sticky; top:0; z-index:5;
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    padding:18px 0 14px;
+    border-bottom:1px solid var(--border);
+    background:inherit;
+  }
+  .modal-header-title {
+    font-family:'DM Serif Display',serif;
+    font-size:20px; font-weight:400; color:var(--text);
+  }
+  .modal-header-title em { font-style:italic; color:var(--accent); }
+  .modal-header-meta {
+    font-family:'DM Mono',monospace; font-size:9px;
+    color:var(--dim); margin-top:3px; display:block; letter-spacing:.06em;
+  }
+  #modal-close-btn {
+    width:32px; height:32px; border-radius:8px;
+    border:1px solid var(--border);
+    background:rgba(255,255,255,.02);
+    color:var(--muted); font-size:18px; line-height:1;
+    cursor:pointer; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    transition:.15s;
+  }
+  #modal-close-btn:hover { border-color:var(--accent); color:var(--text); }
+  html[data-theme="light"] .modal-header-bar { background:#fff; }
+
 </style>
 </head>
 <body>
@@ -692,7 +835,7 @@ input[type=range]::-webkit-slider-thumb {
 <header>
   <div class="header-top">
     <div class="brand-wrap">
-      <span class="logo-name">LONGEVAPP</span>
+      <span class="logo-name">LONGEV<em>APP</em></span>
       <span class="logo-tag">v3.2 · Plataforma de longevidad</span>
     </div>
     <div class="status-row">
@@ -749,7 +892,7 @@ input[type=range]::-webkit-slider-thumb {
       <input class="email-input" id="user-email" type="email" placeholder="tu@email.com">
       <button class="gate-btn" id="gate-btn" onclick="startCheckout()">Continuar al pago →</button>
     </div>
-    <div class="gate-note">Paywall activo desde día 1 · Cobro gestionado por Stripe</div>
+    <div class="gate-note" id="gate-note-copy">Paywall activo desde día 1 · Cobro gestionado por Stripe</div>
     <div class="gate-legal" id="gate-legal-copy">Al continuar aceptas <a href="/terms.html" target="_blank" rel="noopener">Términos</a> / <a href="/privacy.html" target="_blank" rel="noopener">Privacidad</a>.</div>
     <div class="gate-msg" id="gate-msg"></div>
   </div>
@@ -1461,12 +1604,12 @@ async function generateStack() {
   safetyConfirmed = false;
   document.getElementById('wizard').style.display = 'none';
   document.getElementById('results').style.display = 'block';
-  const resultsEl = document.getElementById('results');
-  if (window.matchMedia('(max-width: 640px)').matches) {
-    resultsEl?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  } else {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
+  // Pre-open modal with loading state
+  const modalOut = document.getElementById('stack-output-modal');
+  if (modalOut) modalOut.innerHTML = '';
+  const modalPBar = document.getElementById('modal-profile-bar');
+  if (modalPBar) modalPBar.innerHTML = '';
+  openResultsModal();
 
   // Build profile chips
   const budgetLabel = state.budget >= 999 ? tr('Sin límite', 'No limit') : state.budget >= 350 ? '$150–350/mo' : state.budget >= 150 ? '$50–150/mo' : tr('Hasta $50/mes', 'Up to $50/mo');
@@ -1499,6 +1642,19 @@ async function generateStack() {
     state.currentProtocol ? tr('Con protocolo actual', 'With current protocol') : tr('Sin protocolo previo', 'No prior protocol')
   ];
   document.getElementById('profile-bar').innerHTML = chips.map(c => `<div class="profile-chip">${c}</div>`).join('');
+  // Show loading in modal content area
+  if (modalOut) modalOut.innerHTML = `<div style="text-align:center;padding:52px 20px 60px;">
+    <div style="font-size:42px;margin-bottom:16px;animation:breathe 2s ease-in-out infinite">🧬</div>
+    <div style="font-family:'DM Serif Display',serif;font-size:22px;font-weight:300;margin-bottom:8px">${tr('Analizando tu perfil...','Analyzing your profile...')}</div>
+    <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.06em;margin-bottom:24px">${tr('Cruzando 120+ moléculas con tus datos','Cross-checking 120+ molecules with your data')}</div>
+    <div id="modal-lsteps" style="display:flex;flex-direction:column;gap:8px;max-width:260px;margin:0 auto">
+      <div class="lstep active" id="mls1"><div class="lstep-dot"></div>${tr('Evaluando perfil biológico','Evaluating biological profile')}</div>
+      <div class="lstep" id="mls2"><div class="lstep-dot"></div>${tr('Priorizando por objetivos','Prioritizing by goals')}</div>
+      <div class="lstep" id="mls3"><div class="lstep-dot"></div>${tr('Calculando dosis y horarios','Calculating doses and timing')}</div>
+      <div class="lstep" id="mls4"><div class="lstep-dot"></div>${tr('Verificando interacciones','Checking interactions')}</div>
+      <div class="lstep" id="mls5"><div class="lstep-dot"></div>${tr('Optimizando para presupuesto','Optimizing for budget')}</div>
+    </div>
+  </div>`;
   trackEvent('stack_generate_start', {
     goal: state.goals[0] || 'none',
     budget: state.budget || null,
@@ -1507,7 +1663,7 @@ async function generateStack() {
   });
 
   // Animate loading steps
-  const lsSteps = ['ls1','ls2','ls3','ls4','ls5'];
+  const lsSteps = ['mls1','mls2','mls3','mls4','mls5'];
   let si = 0;
   const lsInterval = setInterval(() => {
     const activeIdx = si % lsSteps.length;
@@ -1538,7 +1694,7 @@ async function generateStack() {
     });
 
     clearInterval(lsInterval);
-    lsSteps.forEach(id => { document.getElementById(id).classList.remove('active'); document.getElementById(id).classList.add('done'); });
+    lsSteps.forEach(id => { const el=document.getElementById(id); if(el){el.classList.remove('active');el.classList.add('done');} });
 
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || `API error ${res.status}`);
@@ -1552,7 +1708,7 @@ async function generateStack() {
 
   } catch (err) {
     clearInterval(lsInterval);
-    document.getElementById('loading-state').innerHTML = `<div class="err-box">⚠ ${tr('Error generando el stack', 'Error generating stack')}: ${err.message}<br><br>${tr('Verifica variables de entorno y endpoint /api/stack-builder.', 'Check environment variables and /api/stack-builder endpoint.')}</div>`;
+    if (modalOut) modalOut.innerHTML = `<div class="err-box">⚠ ${tr('Error generando el stack', 'Error generating stack')}: ${err.message}<br><br>${tr('Verifica variables de entorno y endpoint /api/stack-builder.', 'Check environment variables and /api/stack-builder endpoint.')}</div>`;
     trackEvent('stack_generate_error', { message: err.message || 'unknown' });
   }
 }
@@ -1582,8 +1738,8 @@ function renderStack(stack, budgetLabel) {
   state.lastBudgetLabel = budgetLabel;
   saveStackVersion(stack, budgetLabel);
   document.getElementById('loading-state').style.display = 'none';
-  const out = document.getElementById('stack-output');
-  out.style.display = 'block';
+  const out = document.getElementById('stack-output-modal');
+  if (!out) return;
 
   const pct = Math.min(100, Math.round((stack.estimated_cost / state.budget) * 100));
   const costClass = pct > 90 ? 'warn' : 'ok';
@@ -1777,6 +1933,10 @@ function renderStack(stack, budgetLabel) {
   html += `</div>`;
 
   out.innerHTML = html;
+  // Sync profile chips to modal
+  const pbar = document.getElementById('modal-profile-bar');
+  if (pbar) pbar.innerHTML = document.getElementById('profile-bar').innerHTML;
+  openResultsModal();
 }
 
 function fmtText(t) {
@@ -1876,7 +2036,23 @@ function downloadExecutivePDF() {
   <div class="card"><b>${tr('Racional científico breve', 'Scientific rationale')}:</b><br>${escapeHtml(stack.summary || stack.rationale || '')}</div>
   <p class="muted">${tr('Este reporte es informativo y no reemplaza consulta médica profesional.', 'This report is informational and does not replace professional medical advice.')}</p>
   <script>window.onload=()=>window.print()<\/script>
-  </body></html>`;
+  
+<!-- RESULTS MODAL — CLINICAL REPORT -->
+<div id="results-modal" aria-hidden="true">
+  <div id="results-modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-main-title">
+    <div class="modal-header-bar">
+      <div>
+        <div class="modal-header-title" id="modal-main-title">Tu plan de longevidad <em>personalizado</em></div>
+        <span class="modal-header-meta" id="modal-sub-meta">Generado con IA · Basado en evidencia científica 2026</span>
+      </div>
+      <button id="modal-close-btn" type="button" aria-label="Cerrar">×</button>
+    </div>
+    <div id="modal-profile-bar" style="display:flex;gap:8px;flex-wrap:wrap;padding:14px 0 4px;"></div>
+    <div id="stack-output-modal"></div>
+  </div>
+</div>
+
+</body></html>`;
   const w = window.open('', '_blank', 'noopener,noreferrer');
   if (!w) {
     alert(tr('Tu navegador bloqueó la ventana de impresión. Habilita popups para LONGEVAPP.', 'Your browser blocked the print window. Enable popups for LONGEVAPP.'));
@@ -1998,6 +2174,7 @@ function applyStaticI18n() {
   set('.gate-title', 'Unlock your Personalized Plan');
   const gateSub = document.querySelector('.gate-sub');
   if (gateSub) gateSub.textContent = 'Enter your email and continue to secure checkout to generate your personalized monthly protocol.';
+  set('#gate-note-copy', 'Paywall active from day 1 · Billing handled by Stripe');
   const gateBtn = document.getElementById('gate-btn');
   if (gateBtn) gateBtn.textContent = 'Continue to checkout →';
   const gateLegal = document.getElementById('gate-legal-copy');
@@ -2265,9 +2442,39 @@ function initToTop() {
   toggle();
 }
 
+
+// ── RESULTS MODAL ──
+function openResultsModal() {
+  const modal = document.getElementById('results-modal');
+  if (!modal) return;
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+  const card = document.getElementById('results-modal-card');
+  if (card) card.scrollTop = 0;
+}
+function closeResultsModal() {
+  const modal = document.getElementById('results-modal');
+  if (!modal) return;
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+}
+function initResultsModal() {
+  const modal = document.getElementById('results-modal');
+  const closeBtn = document.getElementById('modal-close-btn');
+  if (!modal || !closeBtn) return;
+  closeBtn.addEventListener('click', closeResultsModal);
+  modal.addEventListener('click', (e) => { if (e.target === modal) closeResultsModal(); });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.classList.contains('open')) closeResultsModal();
+  });
+}
+
 applyTheme(getPreferredTheme());
 initMobileMenu();
 initToTop();
+initResultsModal();
 
 initAccess();
 </script>
