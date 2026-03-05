@@ -73,6 +73,7 @@ html[data-theme="light"] .topnav a.nav-bio:hover{border-color:rgba(160,50,50,.6)
 .hero h1 em{font-style:italic;color:var(--accent)}
 .hero-sub{font-size:14px;color:var(--muted);max-width:760px;margin:0 auto 18px;line-height:1.65;font-weight:300}
 .trust-line{margin:0 auto 0;max-width:760px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;color:var(--muted);border:1px solid var(--border);border-radius:999px;padding:7px 12px;display:inline-flex;gap:8px;align-items:center;background:rgba(255,255,255,.02)}
+.hero-area strong{color:var(--text)}
 .grid{display:grid;grid-template-columns:1fr;gap:12px}
 .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px}
 .label{font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
@@ -112,6 +113,24 @@ html[data-theme="light"] .topnav a.nav-bio:hover{border-color:rgba(160,50,50,.6)
 .result-modal-card .food p,
 .result-modal-card .note{text-align:center}
 .result-modal-card .pill-wrap{display:flex;justify-content:center;flex-wrap:wrap}
+.serif{font-family:'DM Serif Display',serif}
+.mono{font-family:'DM Mono',monospace}
+.plan-header{border-bottom:1px solid var(--border);padding-bottom:1.5rem;margin-bottom:1.5rem;text-align:center}
+.plan-badge{display:inline-flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;background:var(--accent-dim);padding:4px 10px;border-radius:4px;margin-bottom:10px}
+.plan-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.plan-column h3{font-family:'Instrument Sans',sans-serif;font-size:.9rem;font-weight:600;color:var(--tx2);text-transform:uppercase;margin-bottom:.8rem;display:flex;align-items:center;gap:8px}
+.plan-column h3 .icon{width:4px;height:12px;background:var(--accent);border-radius:2px;display:inline-block}
+.foods-list{display:grid;gap:9px}
+.food-item{padding:10px;border:1px solid var(--border);border-radius:8px;background:rgba(255,255,255,.01)}
+.food-item h4{font-size:.9rem;margin-bottom:4px}
+.food-item p{font-size:.85rem;color:var(--muted);line-height:1.5}
+.highlight-box{background:var(--accent-dim);border:1px solid var(--accent);border-radius:8px;padding:1.5rem}
+.day-brief{margin-bottom:1rem;border-left:2px solid var(--accent);padding-left:1rem}
+.day-brief span{font-family:'DM Mono',monospace;font-size:.7rem;color:var(--accent);display:block}
+.day-brief p{margin:0;font-size:.9rem;line-height:1.45}
+.cta-mini{margin-top:1.5rem;font-size:.8rem;border-top:1px solid var(--border);padding-top:1rem;color:var(--tx2)}
+.cta-mini a{color:var(--accent2);text-decoration:none}
+.cta-mini a:hover{color:var(--text)}
 @media(max-width:900px){
   .grid,.opts{grid-template-columns:1fr}
   body{padding-top:56px}
@@ -145,6 +164,7 @@ html[data-theme="light"] .topnav a.nav-bio:hover{border-color:rgba(160,50,50,.6)
   .result-modal{padding:10px}
   .result-modal-card{max-height:90vh;padding:14px}
   .result-modal-title{font-size:23px}
+  .plan-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -186,10 +206,10 @@ html[data-theme="light"] .topnav a.nav-bio:hover{border-color:rgba(160,50,50,.6)
 </header>
 
 <div class="wrap">
-  <section class="hero">
-    <p class="hero-eye">Protocolo natural · Sin suplementos</p>
-    <h1>Nutrición de longevidad<br><em>solo con alimentos</em></h1>
-    <p class="hero-sub">Recomendaciones de alimentos ricos en compuestos asociados a salud metabólica, función mitocondrial e inflamación baja. Enfoque práctico para quienes prefieren comida real.</p>
+  <section class="hero hero-area">
+    <p class="hero-eye eyebrow">SUSTRATO BIOLÓGICO</p>
+    <h1>Nutrición & Epigenética</h1>
+    <p class="hero-sub">La suplementación no ocurre en el vacío. Optimizá tu farmacocinética mediante alimentos diseñados para maximizar la biodisponibilidad y activar vías de longevidad. <strong>Accedé a protocolos de alimentación pura y menús semanales.</strong></p>
     <p class="trust-line">Sin cápsulas · Solo comida y hábitos sostenibles</p>
   </section>
 
@@ -228,7 +248,25 @@ html[data-theme="light"] .topnav a.nav-bio:hover{border-color:rgba(160,50,50,.6)
       <h2 id="result-modal-title" class="result-modal-title">Tu plan final</h2>
       <button id="result-close" class="result-close" type="button" aria-label="Cerrar">×</button>
     </div>
-    <div id="result-modal-content"></div>
+    <div id="result-content">
+      <div class="plan-header">
+        <div class="plan-badge">PROTOCOLO ACTIVO</div>
+        <h2 id="res-title" class="serif">Nombre del Protocolo</h2>
+        <p id="res-subtitle" class="mono">Enfoque: Optimización Biológica</p>
+      </div>
+
+      <div class="plan-grid">
+        <div class="plan-column">
+          <h3><i class="icon"></i> Alquimia de Alimentos</h3>
+          <div id="res-foods" class="foods-list"></div>
+        </div>
+
+        <div class="plan-column highlight-box">
+          <h3><i class="icon"></i> Menú Semanal Sugerido</h3>
+          <div id="res-menu" class="menu-preview"></div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 <footer class="legal-footer">
@@ -409,32 +447,72 @@ document.getElementById('style-grid').addEventListener('click', (e) => {
   b.classList.add('active');
 });
 
-document.getElementById('gen-btn').addEventListener('click', () => {
-  const p = IS_EN ? plansEn[state.goal] : plans[state.goal];
-  const out = document.getElementById('result-modal-content');
+function getWeeklyMenuContent(goal) {
+  if (goal === 'longevity') {
+    return IS_EN
+      ? `
+        <div class="day-brief"><span>FASTING:</span><p>16/8 feeding window to support autophagy signaling.</p></div>
+        <div class="day-brief"><span>BASE:</span><p>Polyphenol-rich fasting-mimicking pattern.</p></div>`
+      : `
+        <div class="day-brief"><span>AYUNO:</span><p>Ventana 16/8 para autofagia inducida.</p></div>
+        <div class="day-brief"><span>BASE:</span><p>Dieta Mimética de Ayuno (FMD) rica en polifenoles.</p></div>`;
+  }
+  if (goal === 'metabolic') {
+    return IS_EN
+      ? `
+        <div class="day-brief"><span>BREAKFAST:</span><p>High-protein savory plate + olive oil.</p></div>
+        <div class="day-brief"><span>LUNCH:</span><p>Legumes, greens and vinegar preload.</p></div>
+        <div class="day-brief"><span>DINNER:</span><p>Fish/tofu + crucifers + low glycemic carbs.</p></div>`
+      : `
+        <div class="day-brief"><span>DESAYUNO:</span><p>Plato salado alto en proteína + aceite de oliva.</p></div>
+        <div class="day-brief"><span>ALMUERZO:</span><p>Legumbres, hojas verdes y preload de vinagre.</p></div>
+        <div class="day-brief"><span>CENA:</span><p>Pescado/tofu + crucíferas + carbos de baja carga.</p></div>`;
+  }
+  return IS_EN
+    ? `
+      <div class="day-brief"><span>BREAKFAST:</span><p>Curcumin omelet + avocado (Nrf2 activation).</p></div>
+      <div class="day-brief"><span>LUNCH:</span><p>Wild salmon with asparagus (Omega-3 substrate).</p></div>
+      <div class="day-brief"><span>DINNER:</span><p>Bone broth and crucifers (Cellular repair).</p></div>`
+    : `
+      <div class="day-brief"><span>DESAYUNO:</span><p>Omelette de cúrcuma y palta (Activación Nrf2).</p></div>
+      <div class="day-brief"><span>ALMUERZO:</span><p>Salmón salvaje con espárragos (Sustrato Omega-3).</p></div>
+      <div class="day-brief"><span>CENA:</span><p>Caldo de huesos y crucíferas (Reparación celular).</p></div>`;
+}
+
+function generateResult(goal) {
+  const p = IS_EN ? plansEn[goal] : plans[goal];
   const modal = document.getElementById('result-modal');
+  const title = document.getElementById('res-title');
+  const subtitle = document.getElementById('res-subtitle');
+  const foods = document.getElementById('res-foods');
+  const menu = document.getElementById('res-menu');
 
-  let html = `<div class="label">${tr('Plan recomendado', 'Recommended plan')}</div>`;
-  html += `<h3 style="font-size:22px;margin-bottom:6px;">${p.title}</h3>`;
-  html += `<div class="pill-wrap">${p.nutrients.map(n => `<span class="pill">${n}</span>`).join('')}</div>`;
-  html += `<div class="plan"><div class="plan-head">${tr('Alimentos clave para esta semana', 'Key foods for this week')}</div><div class="plan-body">`;
-  p.foods.forEach(f => {
-    html += `<div class="food"><h4>${f.name}</h4><p>${f.why}</p></div>`;
-  });
-  html += `</div></div>`;
+  if (title) title.textContent = p.title;
+  if (subtitle) subtitle.textContent = tr('Enfoque: Optimización Biológica', 'Focus: Biological Optimization');
 
+  let foodsHtml = p.foods.map(f => `<div class="food-item"><h4>${f.name}</h4><p>${f.why}</p></div>`).join('');
   if (state.style === 'vegan' || state.style === 'vegetarian') {
     const swaps = state.style === 'vegan' ? (IS_EN ? veganSwapsEn : veganSwaps) : (IS_EN ? vegetarianSwapsEn : vegetarianSwaps);
-    html += `<div class="plan"><div class="plan-head">${tr('Ajustes para', 'Adjustments for')} ${state.style === 'vegan' ? tr('vegano', 'vegan') : tr('vegetariano', 'vegetarian')}</div><div class="plan-body">`;
-    swaps.forEach(s => { html += `<div class="food"><p>${s}</p></div>`; });
-    html += `</div></div>`;
+    foodsHtml += `<div class="food-item"><h4>${tr('Ajustes de estilo', 'Style adjustments')}</h4><p>${swaps.join(' · ')}</p></div>`;
+  }
+  if (foods) foods.innerHTML = foodsHtml;
+
+  const menuContent = getWeeklyMenuContent(goal);
+  if (menu) {
+    menu.innerHTML = `${menuContent}
+      <div class="cta-mini">
+        ${tr('¿Buscás optimización sin cápsulas?','Looking for capsule-free optimization?')}<br>
+        <strong>${tr('Accedé al Plan Full-Food de 30 días.','Unlock the 30-day Full-Food Plan.')}</strong>
+      </div>`;
   }
 
-  html += `<p class="note">${tr('Sugerencia práctica: arma 2-3 comidas base repetibles por semana para adherencia. Si querés personalización completa con dosis/ciclos, usá Plan Personalizado.', 'Practical tip: build 2-3 repeatable base meals per week to improve adherence. For full personalization with doses/cycles, use Personalized Plan.')}</p>`;
-  out.innerHTML = html;
   modal.classList.add('open');
   modal.setAttribute('aria-hidden', 'false');
   document.body.style.overflow = 'hidden';
+}
+
+document.getElementById('gen-btn').addEventListener('click', () => {
+  generateResult(state.goal);
 });
 
 function applyStaticI18n() {
@@ -454,15 +532,15 @@ function applyStaticI18n() {
   const chips = document.querySelectorAll('.badge-live');
   if (chips[0]) chips[0].textContent = 'Nutrition · Food-first (free)';
   if (chips[1]) chips[1].textContent = 'Physician-designed clinical framework';
-  set('#result-modal-title', 'Your final plan');
+  set('#result-modal-title', 'Your active protocol');
   const closeBtn = document.getElementById('result-close');
   if (closeBtn) closeBtn.setAttribute('aria-label', 'Close');
   set('#gen-btn', 'Generate food plan');
-  set('.hero-eye', 'Natural protocol · No supplements');
+  set('.hero-eye', 'BIOLOGICAL SUBSTRATE');
   const heroTitle = document.querySelector('.hero h1');
-  if (heroTitle) heroTitle.innerHTML = 'Longevity nutrition<br><em>with real food only</em>';
+  if (heroTitle) heroTitle.textContent = 'Nutrition & Epigenetics';
   const heroP = document.querySelector('.hero-sub');
-  if (heroP) heroP.textContent = 'Food recommendations rich in compounds associated with metabolic health, mitochondrial function, and low inflammation. Practical for users who prefer real food.';
+  if (heroP) heroP.innerHTML = 'Supplementation does not happen in a vacuum. Optimize your pharmacokinetics through foods designed to maximize bioavailability and activate longevity pathways. <strong>Access pure-food protocols and weekly menus.</strong>';
   set('.trust-line', 'No capsules · Food and sustainable habits');
   const labels = document.querySelectorAll('.label');
   if (labels[0]) labels[0].textContent = '1) Main objective';
@@ -479,6 +557,11 @@ function applyStaticI18n() {
   if (styles[1]) styles[1].textContent = 'Vegetarian';
   if (styles[2]) styles[2].textContent = 'Vegan';
   set('.note', 'This module prioritizes natural sources of polyphenols, omega-3, prebiotic fiber, sulfur compounds, carotenoids, choline, and high-quality protein.');
+  set('.plan-badge', 'ACTIVE PROTOCOL');
+  set('#res-subtitle', 'Focus: Biological Optimization');
+  const colTitles = document.querySelectorAll('.plan-column h3');
+  if (colTitles[0]) colTitles[0].innerHTML = '<i class="icon"></i> Food Alchemy';
+  if (colTitles[1]) colTitles[1].innerHTML = '<i class="icon"></i> Suggested Weekly Menu';
 }
 
 function getPreferredLang() {
