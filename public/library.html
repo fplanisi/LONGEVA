@@ -387,7 +387,7 @@
   <div id="mols"><div class="nores">Cargando base de datos...</div></div>
 </main>
 <footer class="legal-footer">
-  <span id="footer-disclaimer">Desarrollo médico · Eficacia, seguridad y adherencia · Uso informativo. No reemplaza evaluación médica profesional.</span>
+  <span id="footer-disclaimer">© 2026 LONGEVAPP · Desarrollo médico · Eficacia, seguridad y adherencia · Uso informativo. No reemplaza evaluación médica profesional.</span>
   <span id="footer-links"><a href="/terms.html">Términos</a> · <a href="/privacy.html">Privacidad</a></span>
 </footer>
 <button class="to-top" id="to-top" type="button" aria-label="Volver arriba">↑</button>
@@ -509,7 +509,7 @@ function applyStaticI18n() {
   if (closeBtn) closeBtn.textContent = '✕ Close';
   const loading = document.querySelector('#mols .nores');
   if (loading && loading.textContent.includes('Cargando')) loading.textContent = 'Loading database...';
-  set('#footer-disclaimer', 'Physician-developed · Efficacy, safety & adherence · Informational use only. Does not replace professional medical evaluation.');
+  set('#footer-disclaimer', '© 2026 LONGEVAPP · Physician-developed · Efficacy, safety & adherence · Informational use only. Does not replace professional medical evaluation.');
   const footerLinks = document.getElementById('footer-links');
   if (footerLinks) footerLinks.innerHTML = '<a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a>';
 }
