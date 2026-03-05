@@ -316,7 +316,7 @@ input[type=range]::-webkit-slider-thumb {
 @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
 
 /* STACK OUTPUT */
-#stack-output { display: none; }
+#stack-output { display: block; }
 .result-card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -1655,7 +1655,10 @@ async function generateStack() {
   document.getElementById('results').style.display = 'block';
   // Inline results (no modal)
   const resultOut = document.getElementById('stack-output');
-  if (resultOut) resultOut.innerHTML = '';
+  if (resultOut) {
+    resultOut.style.display = 'block';
+    resultOut.innerHTML = '';
+  }
 
   // Build profile chips
   const budgetLabel = state.budget >= 999 ? tr('Sin límite', 'No limit') : state.budget >= 350 ? '$150–350/mo' : state.budget >= 150 ? '$50–150/mo' : tr('Hasta $50/mes', 'Up to $50/mo');
@@ -1786,6 +1789,7 @@ function renderStack(stack, budgetLabel) {
   document.getElementById('loading-state').style.display = 'none';
   const out = document.getElementById('stack-output');
   if (!out) return;
+  out.style.display = 'block';
 
   const pct = Math.min(100, Math.round((stack.estimated_cost / state.budget) * 100));
   const costClass = pct > 90 ? 'warn' : 'ok';
