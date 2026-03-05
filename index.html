@@ -190,46 +190,57 @@
   [data-theme="light"] .primary-cta{color:#fff}
 
   /* ════════════════════════════════════════
-     ② BIOHACKER — PELIGROSO / AVANZADO
-     Segunda fila izquierda — rojo contenido, tenso
+     ② BIOHACKER — REDISEÑO OSADO
   ════════════════════════════════════════ */
   .qmod-bio{
     grid-column:1;
-    border:1.5px solid rgba(180,58,58,.38);
-    background:linear-gradient(135deg, transparent 0%, rgba(160,40,40,.18) 55%);
+    border:1.5px solid rgba(220,38,38,.4);
+    background:linear-gradient(165deg,rgba(15,10,10,.95) 0%,rgba(40,5,5,.4) 100%);
+    position:relative;
+    overflow:hidden;
+    transition:all .4s cubic-bezier(.4,0,.2,1);
+    animation:bioWarning 4s ease-in-out infinite;
+  }
+  .qmod-bio::before{
+    content:'';
+    position:absolute;
+    top:0;left:0;right:0;
+    height:2px;
+    background:linear-gradient(90deg,transparent,#ff3d3d,transparent);
+    filter:drop-shadow(0 0 8px #ff3d3d);
+    z-index:2;
+  }
+  @keyframes bioWarning{
+    0%,100%{box-shadow:0 0 20px rgba(220,38,38,.05)}
+    50%{box-shadow:0 0 40px rgba(220,38,38,.15),inset 0 0 20px rgba(220,38,38,.05)}
   }
   [data-theme="light"] .qmod-bio{
-    background:linear-gradient(135deg, #F8FAFB 0%, rgba(160,40,40,.12) 65%);
-    border-color:rgba(155,50,50,.28);
+    background:linear-gradient(165deg,#ffffff 0%,#fff0f0 100%);
+    border-color:rgba(180,0,0,.2);
+    animation:none;
   }
-  /* línea de tensión en el borde superior */
-  .qmod-bio::before{
-    content:'';position:absolute;top:0;left:0;right:0;height:2px;
-    background:linear-gradient(90deg,transparent 0%,rgba(190,60,60,.55) 40%,rgba(200,70,70,.65) 60%,transparent 100%);
-  }
-  /* pulso de alerta sutil */
-  .qmod-bio{animation:bioPulse 3.5s ease-in-out infinite}
-  @keyframes bioPulse{
-    0%,100%{box-shadow:0 0 0 0 rgba(160,40,40,0)}
-    50%{box-shadow:0 4px 22px rgba(160,40,40,.11),inset 0 0 16px rgba(140,30,30,.06)}
+  [data-theme="light"] .qmod-bio::before{
+    background:linear-gradient(90deg,transparent,#c00000,transparent);
+    filter:none;
   }
   .qmod-bio .qmod-eyebrow{
-    background:rgba(160,40,40,.1);border-color:rgba(170,55,55,.4);color:#c09090;
+    background:rgba(150,40,40,.1);border-color:rgba(190,70,70,.45);color:#c09090;
   }
   [data-theme="light"] .qmod-bio .qmod-eyebrow{
-    background:rgba(140,35,35,.07);border-color:rgba(150,45,45,.3);color:#8a4040;
+    background:#fff5f5;border-color:#ffc1c1;color:#a80000;
   }
-  .qmod-bio .qmod-title{color:var(--tx)}
-  .qmod-bio .qmod-foot{color:#c09090}
+  .qmod-bio .qmod-title{color:#ff6b6b;text-shadow:0 0 15px rgba(255,61,61,.2)}
+  [data-theme="light"] .qmod-bio .qmod-title{color:#a80000;text-shadow:none}
+  .qmod-bio .qmod-foot{color:#ff8e8e}
+  [data-theme="light"] .qmod-bio .qmod-foot{color:#a80000}
   .bio-pills{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
   .bio-pill{
     font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.07em;
     padding:2px 9px;border-radius:4px;
-    background:rgba(150,40,40,.10);border:1px solid rgba(160,50,50,.26);color:#b08080;
+    background:rgba(255,61,61,.08);border:1px solid rgba(255,61,61,.3);color:#ff8e8e;
+    font-weight:500;text-transform:uppercase;
   }
-  [data-theme="light"] .bio-pill{
-    background:rgba(130,35,35,.07);border-color:rgba(140,45,45,.22);color:#844040;
-  }
+  [data-theme="light"] .bio-pill{background:#fff5f5;border-color:#ffc1c1;color:#a80000}
 
   /* ════════════════════════════════════════
      ③ BIBLIOTECA — secundario visible
@@ -348,14 +359,14 @@
 </header>
 
 <section class="hero">
-  <p class="hero-eye" id="hero-eye">Evidencia científica + personalización clínica</p>
-  <h1 id="hero-title">Tus suplementos para<br><em>longevidad real</em></h1>
-  <p class="hero-sub" id="hero-sub">LONGEVAPP convierte evidencia de longevidad en decisiones accionables: qué tomar, qué comer y cómo organizar tu protocolo según tu perfil.</p>
-  <p class="trust-line" id="trust-line">Plataforma diseñada por médico · seguridad, interacciones y adherencia primero</p>
+  <p class="hero-eye" id="hero-eye">PLATAFORMA DE BIOHACKING Y LONGEVIDAD</p>
+  <h1 id="hero-title">Diseñá tu protocolo de<br><em>suplementación inteligente</em></h1>
+  <p class="hero-sub" id="hero-sub">Crea tu "stack" personalizado de suplementos. Optimiza tu biología con protocolos basados en evidencia clínica, dosis exactas y cero riesgo de interacciones.</p>
+  <p class="trust-line" id="trust-line">Desarrollo médico · Eficacia, seguridad y adherencia</p>
   <div class="flow-strip">
-    <div class="flow-step" id="flow-1"><b>1.</b> Diagnóstico en 2 minutos</div>
-    <div class="flow-step" id="flow-2"><b>2.</b> Plan mensual accionable</div>
-    <div class="flow-step" id="flow-3"><b>3.</b> Seguimiento y reemplazos</div>
+    <div class="flow-step" id="flow-1"><b>1.</b> Perfil Biológico</div>
+    <div class="flow-step" id="flow-2"><b>2.</b> Stack Personalizado</div>
+    <div class="flow-step" id="flow-3"><b>3.</b> Evolución Continua</div>
   </div>
 </section>
 
@@ -365,40 +376,40 @@
     <!-- ① PLAN PERSONALIZADO — ocupa fila completa, es la estrella -->
     <section class="qmod qmod-primary">
       <i class="qmod-eyebrow" id="tag-plan">PRINCIPAL</i>
-      <div class="qmod-title" id="m2-title">Plan Personalizado</div>
-      <div class="qmod-desc" id="m2-copy">Stack mensual diseñado para tu perfil exacto: edad, objetivos, presupuesto y condiciones de salud. Dosis, horarios, sinergias y alertas de interacciones.</div>
-      <a class="primary-cta" href="/stack-builder.html" id="cta-plan">Crear mi stack →</a>
+      <div class="qmod-title" id="m2-title">Protocolo Personalizado</div>
+      <div class="qmod-desc" id="m2-copy">El núcleo de tu optimización. Un algoritmo clínico que cruza tu biometría, objetivos y presupuesto para diseñar tu stack exacto. Sin suposiciones: dosis precisas, sinergias moleculares y control total de interacciones.</div>
+      <a class="primary-cta" href="/stack-builder.html" id="cta-plan">Generar mi protocolo →</a>
     </section>
 
     <!-- ② BIOHACKER — avanzado, peligroso, segunda fila izquierda -->
     <a class="qmod qmod-bio" href="/biohacker-protocol.html">
-      <i class="qmod-eyebrow" id="tag-bio">⚠ AVANZADO</i>
+      <i class="qmod-eyebrow" id="tag-bio">⚠ ZONA RESTRINGIDA</i>
       <div class="qmod-title" id="m3-title">Biohacker Lab</div>
-      <div class="qmod-desc" id="m3-copy">Protocolos experimentales y off-label: senolíticos, rapamicina, péptidos, reprogramación epigenética. Solo para usuarios con base clínica.</div>
+      <div class="qmod-desc" id="m3-copy">Terreno de moléculas experimentales, terapias off-label y reprogramación celular agresiva. Sin red de seguridad comercial. Solo para quienes entienden el riesgo de empujar el límite biológico.</div>
       <div class="bio-pills">
-        <span class="bio-pill" id="bp1">Experimental</span>
+        <span class="bio-pill" id="bp1">Alto Riesgo</span>
         <span class="bio-pill" id="bp2">Off-label</span>
-        <span class="bio-pill" id="bp3">Sup. médica</span>
+        <span class="bio-pill" id="bp3">Nivel Experto</span>
       </div>
-      <div class="qmod-foot" id="bio-arrow">Entrar al lab →</div>
+      <div class="qmod-foot" id="bio-arrow">Desbloquear acceso →</div>
     </a>
 
     <!-- ③ BIBLIOTECA — secundario, segunda fila derecha -->
     <a class="qmod qmod-library" href="/library.html">
-      <i class="qmod-eyebrow" id="tag-lib">CURADA</i>
-      <div class="qmod-title" id="m1-title">Biblioteca</div>
-      <div class="qmod-desc" id="m1-copy">120+ moléculas con mecanismo de acción, evidencia y análisis IA. Filtrá por categoría o vía molecular.</div>
-      <div class="qmod-foot" id="lib-arrow">Explorar →</div>
+      <i class="qmod-eyebrow" id="tag-lib">DATOS CRUDOS</i>
+      <div class="qmod-title" id="m1-title">Vademécum Molecular</div>
+      <div class="qmod-desc" id="m1-copy">El catálogo completo de compuestos. Seleccioná cualquier molécula del índice para acceder a un desglose extendido sobre su mecanismo de acción, evidencia científica y vías metabólicas.</div>
+      <div class="qmod-foot" id="lib-arrow">Consultar índice →</div>
     </a>
 
     <!-- ④ NUTRICIÓN — discreto, franja inferior -->
     <a class="qmod qmod-nutri" href="/food-longevity.html">
-      <i class="qmod-eyebrow" id="tag-nutri">GRATIS</i>
+      <i class="qmod-eyebrow" id="tag-nutri">COMPLEMENTO GRATUITO</i>
       <div class="nutri-body">
-        <div class="qmod-title" id="m4-title">Nutrición</div>
-        <div class="qmod-desc" id="m4-copy">Plan alimentario de longevidad sin suplementos.</div>
+        <div class="qmod-title" id="m4-title">Nutrición Estratégica</div>
+        <div class="qmod-desc" id="m4-copy">La base para maximizar la absorción celular. Descubrí qué alimentos específicos potencian el protocolo que elijas realizar.</div>
       </div>
-      <div class="qmod-foot" id="nutri-arrow">Ver plan →</div>
+      <div class="qmod-foot" id="nutri-arrow">Ver alimentos →</div>
     </a>
 
   </div>
@@ -433,36 +444,36 @@ function tr(es, en){ return IS_EN ? en : es; }
 function applyCopy(){
   document.documentElement.lang = IS_EN ? 'en' : 'es';
   document.querySelector('title').textContent = tr('LONGEVAPP — Inicio','LONGEVAPP — Home');
-  document.getElementById('hero-eye').textContent   = tr('Evidencia científica + personalización clínica','Scientific evidence + clinical personalization');
-  document.getElementById('hero-title').innerHTML   = tr('Tus suplementos para<br><em>longevidad real</em>','Your supplements for<br><em>real longevity</em>');
-  document.getElementById('hero-sub').textContent   = tr('LONGEVAPP convierte evidencia de longevidad en decisiones accionables: qué tomar, qué comer y cómo organizar tu protocolo según tu perfil.','LONGEVAPP turns longevity evidence into actionable decisions: what to take, what to eat, and how to structure your protocol.');
-  document.getElementById('trust-line').textContent = tr('Plataforma diseñada por médico · seguridad, interacciones y adherencia primero','Physician-designed platform · safety, interactions and adherence first');
-  document.getElementById('flow-1').innerHTML = tr('<b>1.</b> Diagnóstico en 2 minutos','<b>1.</b> 2-minute diagnosis');
-  document.getElementById('flow-2').innerHTML = tr('<b>2.</b> Plan mensual accionable','<b>2.</b> Actionable monthly plan');
-  document.getElementById('flow-3').innerHTML = tr('<b>3.</b> Seguimiento y reemplazos','<b>3.</b> Follow-up and replacements');
+  document.getElementById('hero-eye').textContent   = tr('PLATAFORMA DE BIOHACKING Y LONGEVIDAD','BIOHACKING & LONGEVITY PLATFORM');
+  document.getElementById('hero-title').innerHTML   = tr('Diseñá tu protocolo de<br><em>suplementación inteligente</em>','Design your<br><em>intelligent supplementation protocol</em>');
+  document.getElementById('hero-sub').textContent   = tr('Crea tu "stack" personalizado de suplementos. Optimiza tu biología con protocolos basados en evidencia clínica, dosis exactas y cero riesgo de interacciones.','Build your personalized supplement stack. Optimize your biology with clinically grounded protocols, exact dosing, and zero interaction guesswork.');
+  document.getElementById('trust-line').textContent = tr('Desarrollo médico · Eficacia, seguridad y adherencia','Medical development · Efficacy, safety, and adherence');
+  document.getElementById('flow-1').innerHTML = tr('<b>1.</b> Perfil Biológico','<b>1.</b> Biological profile');
+  document.getElementById('flow-2').innerHTML = tr('<b>2.</b> Stack Personalizado','<b>2.</b> Personalized stack');
+  document.getElementById('flow-3').innerHTML = tr('<b>3.</b> Evolución Continua','<b>3.</b> Continuous evolution');
 
   document.getElementById('tag-plan').textContent   = tr('PRINCIPAL','FLAGSHIP');
-  document.getElementById('m2-title').textContent   = tr('Plan Personalizado','Personalized Plan');
-  document.getElementById('m2-copy').textContent    = tr('Stack mensual diseñado para tu perfil exacto: edad, objetivos, presupuesto y condiciones de salud. Dosis, horarios, sinergias y alertas de interacciones.','Monthly stack tailored to your exact profile: age, goals, budget and health conditions. Doses, timing, synergies and interaction alerts.');
-  document.getElementById('cta-plan').textContent   = tr('Crear mi stack →','Build my stack →');
+  document.getElementById('m2-title').textContent   = tr('Protocolo Personalizado','Personalized Protocol');
+  document.getElementById('m2-copy').textContent    = tr('El núcleo de tu optimización. Un algoritmo clínico que cruza tu biometría, objetivos y presupuesto para diseñar tu stack exacto. Sin suposiciones: dosis precisas, sinergias moleculares y control total de interacciones.','The core of your optimization. A clinical algorithm that crosses your biometrics, goals, and budget to build your exact stack. No guessing: precise doses, molecular synergies, and full interaction control.');
+  document.getElementById('cta-plan').textContent   = tr('Generar mi protocolo →','Generate my protocol →');
 
-  document.getElementById('tag-bio').textContent    = tr('⚠ AVANZADO','⚠ ADVANCED');
+  document.getElementById('tag-bio').textContent    = tr('⚠ ZONA RESTRINGIDA','⚠ RESTRICTED ZONE');
   document.getElementById('m3-title').textContent   = tr('Biohacker Lab','Biohacker Lab');
-  document.getElementById('m3-copy').textContent    = tr('Protocolos experimentales y off-label: senolíticos, rapamicina, péptidos, reprogramación epigenética. Solo para usuarios con base clínica.','Experimental and off-label protocols: senolytics, rapamycin, peptides, epigenetic reprogramming. For clinically knowledgeable users only.');
-  document.getElementById('bp1').textContent        = tr('Experimental','Experimental');
+  document.getElementById('m3-copy').textContent    = tr('Terreno de moléculas experimentales, terapias off-label y reprogramación celular agresiva. Sin red de seguridad comercial. Solo para quienes entienden el riesgo de empujar el límite biológico.','Terrain of experimental molecules, off-label therapies, and aggressive cellular reprogramming. No commercial safety net. Only for those who understand the risk of pushing biological limits.');
+  document.getElementById('bp1').textContent        = tr('Alto Riesgo','High risk');
   document.getElementById('bp2').textContent        = tr('Off-label','Off-label');
-  document.getElementById('bp3').textContent        = tr('Sup. médica','Medical supervision');
-  document.getElementById('bio-arrow').textContent  = tr('Entrar al lab →','Enter the lab →');
+  document.getElementById('bp3').textContent        = tr('Nivel Experto','Expert level');
+  document.getElementById('bio-arrow').textContent  = tr('Desbloquear acceso →','Unlock access →');
 
-  document.getElementById('tag-lib').textContent    = tr('CURADA','CURATED');
-  document.getElementById('m1-title').textContent   = tr('Biblioteca','Library');
-  document.getElementById('m1-copy').textContent    = tr('120+ moléculas con mecanismo de acción, evidencia y análisis IA. Filtrá por categoría o vía molecular.','120+ molecules with mechanism of action, evidence and AI analysis. Filter by category or molecular pathway.');
-  document.getElementById('lib-arrow').textContent  = tr('Explorar →','Explore →');
+  document.getElementById('tag-lib').textContent    = tr('DATOS CRUDOS','RAW DATA');
+  document.getElementById('m1-title').textContent   = tr('Vademécum Molecular','Molecular Vademecum');
+  document.getElementById('m1-copy').textContent    = tr('El catálogo completo de compuestos. Seleccioná cualquier molécula del índice para acceder a un desglose extendido sobre su mecanismo de acción, evidencia científica y vías metabólicas.','The full compounds catalog. Select any molecule from the index to access an extended breakdown of mechanism of action, scientific evidence, and metabolic pathways.');
+  document.getElementById('lib-arrow').textContent  = tr('Consultar índice →','Consult index →');
 
-  document.getElementById('tag-nutri').textContent  = tr('GRATIS','FREE');
-  document.getElementById('m4-title').textContent   = tr('Nutrición','Nutrition');
-  document.getElementById('m4-copy').textContent    = tr('Plan alimentario de longevidad sin suplementos.','Food-based longevity plan without supplements.');
-  document.getElementById('nutri-arrow').textContent= tr('Ver plan →','See plan →');
+  document.getElementById('tag-nutri').textContent  = tr('COMPLEMENTO GRATUITO','FREE COMPLEMENT');
+  document.getElementById('m4-title').textContent   = tr('Nutrición Estratégica','Strategic Nutrition');
+  document.getElementById('m4-copy').textContent    = tr('La base para maximizar la absorción celular. Descubrí qué alimentos específicos potencian el protocolo que elijas realizar.','The foundation for maximizing cellular absorption. Discover which specific foods potentiate the protocol you choose.');
+  document.getElementById('nutri-arrow').textContent= tr('Ver alimentos →','View foods →');
 
   document.getElementById('nav-home').textContent   = tr('Inicio','Home');
   document.getElementById('nav-lib').textContent    = tr('Biblioteca','Library');
