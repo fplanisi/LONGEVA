@@ -2030,7 +2030,7 @@ async function generateProtocol() {
 }
 
 function renderResult(p) {
-  const out = document.getElementById('bio-modal-content');
+  const out = document.getElementById('result');
   const riskRaw = String(p.risk_level || 'medio').toLowerCase();
   const risk = riskRaw === 'high' ? 'alto' : riskRaw === 'medium' ? 'medio' : riskRaw === 'low' ? 'bajo' : riskRaw;
   const riskLabel = IS_EN ? (riskRaw === 'high' ? 'high' : riskRaw === 'medium' ? 'medium' : 'low') : risk;
