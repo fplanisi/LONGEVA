@@ -609,7 +609,7 @@ html[data-theme="light"] .hero-list b{color:#964848}
 
 <div class="wrap">
   <section class="hero hero-area">
-    <div class="terminal-status" id="terminal-status">Access Level: Experimental</div>
+    <div class="terminal-status" id="terminal-status">STATUS: <span style="color: var(--accent)">PEPTIDE_SYNTHESIS_ACTIVE</span> // AUTH_LEVEL: 05</div>
     <div class="eyebrow-warn" id="hero-eyebrow">Ingeniería Molecular</div>
     <h1 class="disruptive-title" id="hero-title">Biohacker Lab</h1>
     <p id="hero-sub">Exploración de frontera en <strong>terapias con péptidos</strong>, bioreguladores y moléculas off-label. Protocolos diseñados para la reparación tisular, optimización hormonal y reprogramación celular activa.</p>
@@ -1060,7 +1060,7 @@ function applyStaticI18n() {
   const chips = document.querySelectorAll('.badge-live');
   if (chips[0]) chips[0].textContent = 'Biohacker Lab · Experimental';
   if (chips[1]) chips[1].textContent = 'Physician-designed clinical framework';
-  set('#terminal-status', 'Access Level: Experimental');
+  set('#terminal-status', 'STATUS: PEPTIDE_SYNTHESIS_ACTIVE // AUTH_LEVEL: 05');
   set('#hero-eyebrow', 'Molecular Engineering');
   set('#hero-title', 'Biohacker Lab');
   const heroSub = document.getElementById('hero-sub');
