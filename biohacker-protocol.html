@@ -734,6 +734,15 @@ html[data-theme="light"] .hero-list b{color:#964848}
     <div class="catalog-modal-body">
       <p id="catalog-modal-desc"></p>
       <div class="catalog-nature" id="catalog-modal-nature"></div>
+      <div class="danger-box" style="margin-top:10px;">
+        <strong id="peptide-warning-title">Advertencia de uso (péptidos):</strong>
+        <ul style="margin:8px 0 0 18px;line-height:1.5;">
+          <li id="pw-1">No son suplementos nutricionales estándar; son bioreguladores de señalización.</li>
+          <li id="pw-2">La mayoría requiere reconstitución y administración subcutánea para preservar biodisponibilidad.</li>
+          <li id="pw-3">Tras reconstituirse, deben mantenerse refrigerados entre 2°C y 8°C.</li>
+          <li id="pw-4">Se recomienda seguimiento con analíticas y biomarcadores durante el protocolo.</li>
+        </ul>
+      </div>
       <div class="catalog-use">
         <button class="btn btn-main" type="button" id="catalog-use-btn">Usar como base en el cuestionario</button>
       </div>
@@ -1072,6 +1081,15 @@ function renderResult(p) {
     <div class="danger-box" style="margin-top:10px;">
       ${escapeHtml(p.disclaimer || tr('Modulo experimental para expertos. Requiere supervision medica.', 'Experimental module for advanced users. Requires medical supervision.'))}
     </div>
+    <div class="danger-box" style="margin-top:10px;">
+      <strong>${tr('Advertencia de uso (péptidos):', 'Usage warning (peptides):')}</strong>
+      <ul style="margin:8px 0 0 18px;line-height:1.5;">
+        <li>${tr('No son suplementos nutricionales estándar; son bioreguladores de señalización.', 'These are not standard nutritional supplements; they are signaling bioregulators.')}</li>
+        <li>${tr('La mayoría requiere reconstitución y administración subcutánea para preservar biodisponibilidad.', 'Most require reconstitution and subcutaneous administration to preserve bioavailability.')}</li>
+        <li>${tr('Tras reconstituirse, deben mantenerse refrigerados entre 2°C y 8°C.', 'After reconstitution, they should be refrigerated between 2°C and 8°C.')}</li>
+        <li>${tr('Se recomienda seguimiento con analíticas y biomarcadores durante el protocolo.', 'Clinical labs and biomarker follow-up are recommended throughout the protocol.')}</li>
+      </ul>
+    </div>
   `;
 
   if (out) out.innerHTML = html;
@@ -1121,6 +1139,11 @@ function applyStaticI18n() {
   set('#hero-riskline', 'For advanced users only: proceed under your own biological responsibility.');
   set('#catalog-title', 'Classified Peptide Protocol Index');
   set('#catalog-sub', 'Select a dossier to review compound nature and therapeutic focus.');
+  set('#peptide-warning-title', 'Usage warning (peptides):');
+  set('#pw-1', 'These are not standard nutritional supplements; they are signaling bioregulators.');
+  set('#pw-2', 'Most require reconstitution and subcutaneous administration to preserve bioavailability.');
+  set('#pw-3', 'After reconstitution, they should be refrigerated between 2°C and 8°C.');
+  set('#pw-4', 'Clinical labs and biomarker follow-up are recommended throughout the protocol.');
   set('#catalog-use-btn', 'Use as baseline in questionnaire');
   set('#paywall .label', 'Premium access (same paywall)');
   const email = document.getElementById('email');
