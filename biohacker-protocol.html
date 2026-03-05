@@ -260,6 +260,9 @@ html[data-theme="light"] .hero-list b{color:#964848}
   .legal-footer{position:relative;z-index:10;max-width:1320px;margin:18px auto 24px;padding:0 16px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.04em;color:var(--muted)}
   .legal-footer a{color:var(--accent2);text-decoration:none}
   .legal-footer a:hover{color:var(--text)}
+  .to-top{position:fixed;right:16px;bottom:16px;width:42px;height:42px;border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--accent);font-size:18px;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;pointer-events:none;transform:translateY(8px);transition:opacity .2s ease,transform .2s ease,border-color .2s ease;z-index:45}
+  .to-top:hover{border-color:var(--accent2);color:var(--text)}
+  .to-top.show{opacity:1;pointer-events:auto;transform:translateY(0)}
 
   /* Result card: classified dossier */
   #result {
