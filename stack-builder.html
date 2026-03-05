@@ -29,6 +29,8 @@ body.paid-mode {
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body{background:radial-gradient(circle at 14% -8%,var(--bg-glow) 0%,var(--bg) 58%);color:var(--text);font-family:'Instrument Sans',sans-serif;min-height:100vh;max-width:100%;overflow-x:hidden;overscroll-behavior-y:auto;overscroll-behavior-x:none}
+.serif{font-family:'DM Serif Display',serif}
+.mono{font-family:'DM Mono',monospace}
 
 /* ── SURFACE GRID ── */
 body::after{content:'';position:fixed;inset:0;background:var(--overlay);pointer-events:none;z-index:0}
@@ -111,6 +113,7 @@ html[data-theme="light"] .topnav a.nav-bio:hover { border-color: rgba(160,50,50,
 .proof-item { text-align: center; }
 .proof-n { font-family: 'DM Serif Display', serif; font-size: 28px; font-weight: 400; color: var(--accent); line-height: 1; }
 .proof-l { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--dim); letter-spacing: .1em; text-transform: uppercase; margin-top: 3px; }
+.eyebrow { font-family:'DM Mono', monospace; font-size: 10px; text-transform: uppercase; }
 
 /* ── EMAIL GATE ── */
 #email-gate {
@@ -311,6 +314,65 @@ input[type=range]::-webkit-slider-thumb {
 
 /* STACK OUTPUT */
 #stack-output { display: none; }
+.result-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2.5rem;
+  position: relative;
+  overflow: hidden;
+}
+.result-card::before {
+  content: 'SOMA_PRIME_PROTOCOL';
+  position: absolute;
+  top: 20px;
+  right: -30px;
+  font-family: 'DM Mono', monospace;
+  font-size: 4rem;
+  color: rgba(255, 255, 255, 0.02);
+  transform: rotate(-15deg);
+  pointer-events: none;
+}
+.report-header {
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.report-id { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--accent); }
+.molecule-category-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  background: var(--accent-dim);
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+.stack-list { margin-bottom: 18px; }
+.stack-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.stack-item b { color: var(--text); font-size: 1.1rem; }
+.stack-item span { font-family: 'DM Mono', monospace; color: var(--accent3); }
+.nutrition-alternative {
+  margin-top: 3rem;
+  padding: 1.5rem;
+  background: var(--accent-dim);
+  border-radius: 4px;
+  border: 1px solid var(--border2);
+}
+.btn-link { color: var(--accent2); text-decoration: none; font-family: 'DM Mono', monospace; }
+.btn-link:hover { color: var(--text); }
 
 /* TIME BLOCKS */
 .time-blocks { display: grid; gap: 16px; margin-bottom: 32px; }
@@ -605,6 +667,8 @@ input[type=range]::-webkit-slider-thumb {
   .mol-price { width: 100%; text-align: left; }
   .monthly-grid { grid-template-columns: 1fr; }
   .weekly-food-grid { grid-template-columns: 1fr; }
+  .result-card { padding: 1.2rem; }
+  .stack-item { flex-direction: column; align-items: flex-start; }
   .day-name { font-size: 9px; }
   .day-meal b, .day-meal p { font-size: 12px; }
   .progress-wrap {
@@ -659,13 +723,13 @@ input[type=range]::-webkit-slider-thumb {
 </header>
 
 <!-- HERO -->
-<div class="hero">
-  <div class="hero-kicker">Personalización científica</div>
-  <h1>
-    Tu protocolo de
-    <em>longevidad personalizado</em>
-  </h1>
-  <p class="hero-sub">Define tu perfil en 2 minutos y recibe un plan claro de suplementos/alimentos con prioridades, dosis y horarios.</p>
+<section class="hero hero-area">
+  <i class="hero-kicker eyebrow" style="color: var(--accent); letter-spacing: 0.2em;" id="hero-kicker-core">SYSTEM_CORE: PROTOCOL GENERATOR</i>
+  <h1 class="serif" id="hero-main-title" style="font-size: 3rem; margin-bottom: 1rem;">Algoritmo de Optimización</h1>
+  <p class="hero-sub" id="hero-main-sub" style="max-width: 650px; margin: 0 auto; color: var(--tx2);">
+    Configuración de protocolos de precisión basados en variables biométricas, objetivos de longevidad y presupuesto.
+    <strong>La ciencia de la suplementación, personalizada.</strong>
+  </p>
   <p class="hero-trust" id="hero-trust-med">Diseño clínico por médico · priorización de seguridad y contraindicaciones</p>
   <div class="hero-proof">
     <div class="proof-item"><div class="proof-n">120+</div><div class="proof-l">Moléculas</div></div>
@@ -674,7 +738,7 @@ input[type=range]::-webkit-slider-thumb {
     <div class="proof-item"><div class="proof-n">2min</div><div class="proof-l">Proceso</div></div>
   </div>
   <a class="hero-link" href="/biohacker-protocol.html">🧪 Módulo Biohacker Experimental (Peptidos)</a>
-</div>
+</section>
 
 <div class="stack-main">
 
@@ -1542,7 +1606,34 @@ function renderStack(stack, budgetLabel) {
     { key: 'night', icon: '🌙', label: tr('Noche', 'Night'), sub: tr('Antes de dormir', 'Before sleep'), cls: 'time-night' },
   ];
 
-  let html = '';
+  const reportLevel = state.budget >= 350 ? tr('Avanzado', 'Advanced')
+    : state.budget >= 150 ? tr('Intermedio', 'Intermediate')
+      : tr('Base', 'Core');
+  const allItems = ['morning','afternoon','night']
+    .flatMap(k => (stack[k] || []).map(x => ({ ...x, slot: k })))
+    .slice(0, 5);
+
+  let html = `<div class="result-card">
+    <div class="report-header">
+      <div>
+        <h2 class="serif">${tr('Tu Protocolo de Precisión', 'Your Precision Protocol')}</h2>
+        <p class="report-id">GENERATED_ON: ${new Date().toLocaleDateString()} // REF: SOMA-XP</p>
+      </div>
+      <div style="text-align:right">
+        <span class="molecule-category-tag">${tr('NIVEL', 'LEVEL')}: ${reportLevel}</span>
+      </div>
+    </div>`;
+
+  if (allItems.length) {
+    html += `<div class="stack-list">`;
+    allItems.forEach((it) => {
+      html += `<div class="stack-item">
+        <div><b>${it.name || '-'}</b><br><small>${it.why || ''}</small></div>
+        <span>${it.dose || '-'}</span>
+      </div>`;
+    });
+    html += `</div>`;
+  }
   const replacementsLeft = Math.max(0, state.replaceLimit - state.replaceUsage);
 
   // Budget bar
@@ -1678,7 +1769,13 @@ function renderStack(stack, budgetLabel) {
 
   // Disclaimer
   html += `<div class="disclaimer">⚕ ${tr('AVISO MÉDICO: Este stack es informativo y está basado en evidencia científica disponible. No reemplaza el consejo médico profesional. Consulta con tu médico antes de comenzar cualquier protocolo de suplementación, especialmente si tienes condiciones de salud o tomas medicamentos. LONGEVAPP no se hace responsable del uso de esta información.', 'MEDICAL NOTICE: This stack is informational and based on currently available scientific evidence. It does not replace professional medical advice. Consult your physician before starting any supplementation protocol, especially with health conditions or medications. LONGEVAPP is not liable for use of this information.')}</div>`;
+  html += `<div class="nutrition-alternative">
+    <h4 class="mono" style="font-size:0.8rem;color:var(--accent);margin-bottom:8px;">${tr('OPCIÓN SIN SUPLEMENTACIÓN', 'NO-SUPPLEMENT OPTION')}</h4>
+    <p style="font-size:0.9rem;">${tr('¿Prefieres un enfoque 100% natural? Hemos diseñado un Menú Semanal de Longevidad que replica el perfil bioquímico de este stack mediante alimentos reales.', 'Prefer a 100% natural approach? We designed a Weekly Longevity Menu that replicates this stack biochemical profile through real foods.')}</p>
+    <a href="/food-longevity.html" class="btn-link">${tr('Ver Menú de Reemplazo →', 'View Replacement Menu →')}</a>
+  </div>`;
   html += renderHistorySection();
+  html += `</div>`;
 
   out.innerHTML = html;
 }
@@ -1892,10 +1989,11 @@ function applyStaticI18n() {
   if (nav[4]) nav[4].textContent = 'Nutrition';
   set('.logo-tag', 'v3.2 · Plataforma de longevidad');
   document.title = 'LONGEVAPP — Your Personalized Plan';
-  set('.hero-kicker', 'Scientific personalization');
-  const heroTitle = document.querySelector('.hero h1');
-  if (heroTitle) heroTitle.innerHTML = 'Build your exact<br><em>longevity stack</em>';
-  set('.hero-sub', 'Define your profile in 2 minutes and get a clear supplement/food plan with priorities, doses, and timing.');
+  set('#hero-kicker-core', 'SYSTEM_CORE: PROTOCOL GENERATOR');
+  const heroTitle = document.getElementById('hero-main-title');
+  if (heroTitle) heroTitle.textContent = 'Optimization Algorithm';
+  const heroSubMain = document.getElementById('hero-main-sub');
+  if (heroSubMain) heroSubMain.innerHTML = 'Precision protocol configuration based on biometric variables, longevity targets, and budget. <strong>The science of supplementation, personalized.</strong>';
   set('#hero-trust-med', 'Physician-led clinical design · safety and contraindication-first logic');
   set('.hero-link', 'Back to library');
   set('.gate-title', 'Unlock your Personalized Plan');
