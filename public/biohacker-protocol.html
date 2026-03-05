@@ -1183,7 +1183,8 @@ function applyStaticI18n() {
   const chips = document.querySelectorAll('.badge-live');
   if (chips[0]) chips[0].textContent = 'Biohacker Lab · Experimental';
   if (chips[1]) chips[1].textContent = 'Physician-designed clinical framework';
-  set('#terminal-status', 'STATUS: PEPTIDE_SYNTHESIS_ACTIVE // AUTH_LEVEL: 05');
+  const terminal = document.getElementById('terminal-status');
+  if (terminal) terminal.innerHTML = 'STATUS: <span style="color: var(--accent)">PEPTIDE_SYNTHESIS_ACTIVE</span> // AUTH_LEVEL: 05';
   set('#hero-eyebrow', 'Access Level: Experimental');
   set('#hero-title', 'Biohacker Lab');
   const heroSub = document.getElementById('hero-sub');
