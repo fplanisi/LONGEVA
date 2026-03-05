@@ -583,6 +583,8 @@ input[type=range]::-webkit-slider-thumb {
 /* ACTIONS */
 .actions-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 32px; }
 .action-btn { padding: 13px 26px; border-radius: 0; font-family: 'Instrument Sans', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; transition: .2s; }
+.affiliate-disclosure { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--dim); line-height: 1.6; letter-spacing: .03em; padding: 10px 14px; border-top: 1px solid var(--border); margin-top: 4px; max-width: 680px; }
+html[data-theme="light"] .affiliate-disclosure { color: var(--muted); }
 .action-primary { background: var(--accent); color: var(--on-accent); border: none; }
 .action-primary:hover { filter: brightness(1.06); transform: translateY(-1px); }
 .action-secondary { background: transparent; border: 1px solid var(--border2); color: var(--muted); }
@@ -860,6 +862,7 @@ input[type=range]::-webkit-slider-thumb {
       <a href="/stack-builder.html" class="active">Plan Personalizado</a>
       <a href="/biohacker-protocol.html" class="nav-bio">Biohacker</a>
       <a href="/food-longevity.html">Nutrición</a>
+      <a href="/pricing.html" id="nav-pricing">Precios</a>
     </nav>
   </div>
   <div class="mobile-nav-backdrop" id="mobile-nav-backdrop"></div>
@@ -887,12 +890,12 @@ input[type=range]::-webkit-slider-thumb {
   <!-- EMAIL GATE -->
   <div id="email-gate">
     <div class="gate-title">Desbloquea tu Plan Personalizado</div>
-    <p class="gate-sub">Ingresa tu email y continúa al pago seguro con Stripe para generar tu protocolo mensual personalizado.</p>
+    <p class="gate-sub">Protocolo clínico único generado por IA, diseñado y supervisado por médico. Un pago único de <strong style="color:var(--accent)">$4,99</strong> — sin suscripción.</p>
     <div class="email-row">
       <input class="email-input" id="user-email" type="email" placeholder="tu@email.com">
       <button class="gate-btn" id="gate-btn" onclick="startCheckout()">Continuar al pago →</button>
     </div>
-    <div class="gate-note" id="gate-note-copy">Paywall activo desde día 1 · Cobro gestionado por Stripe</div>
+    <div class="gate-note" id="gate-note-copy">Pago único · $4,99 · Cobro gestionado por Stripe</div>
     <div class="gate-legal" id="gate-legal-copy">Al continuar aceptas <a href="/terms.html" target="_blank" rel="noopener">Términos</a> / <a href="/privacy.html" target="_blank" rel="noopener">Privacidad</a>.</div>
     <div class="gate-msg" id="gate-msg"></div>
   </div>
@@ -1325,6 +1328,22 @@ function applyWizardStateToUI() {
 
   const protocolInput = document.getElementById('protocol-input');
   protocolInput.value = state.currentProtocol || '';
+
+  // If coming from library deep-link, pre-fill protocol textarea with the molecule
+  if (window._libraryMolecule && !state.currentProtocol) {
+    const molHint = tr(
+      `Interesado en: ${window._libraryMolecule}. Completá el resto del perfil para un protocolo personalizado.`,
+      `Interested in: ${window._libraryMolecule}. Complete your profile for a personalized protocol.`
+    );
+    protocolInput.value = molHint;
+    state.currentProtocol = molHint;
+    // Show a subtle banner
+    const banner = document.createElement('div');
+    banner.style.cssText = 'font-family:"DM Mono",monospace;font-size:10px;color:var(--accent);letter-spacing:.08em;padding:6px 0 2px;margin-bottom:6px;';
+    banner.textContent = tr(`↳ Llegaste desde la Biblioteca · Molécula: ${window._libraryMolecule}`, `↳ From Library · Molecule: ${window._libraryMolecule}`);
+    protocolInput.parentNode.insertBefore(banner, protocolInput);
+    window._libraryMolecule = null;
+  }
   checkStep1();
   checkStep3();
 
@@ -1890,7 +1909,7 @@ function renderStack(stack, budgetLabel) {
             /${tr('mes', 'month')}
             <div class="mol-actions">
               <button class="mini-btn replace" onclick="replaceItem('${sec.key}', ${idx})">${tr('Reemplazar', 'Replace')}</button>
-              <a class="mini-btn buy" href="/api/partner-link?item=${encodeURIComponent(buyLabel)}" target="_blank" rel="noopener">${tr('Comprar', 'Buy')}</a>
+              <a class="mini-btn buy" href="/api/partner-link?item=${encodeURIComponent(buyLabel)}" target="_blank" rel="noopener sponsored" title="Enlace de afiliado · LONGEVAPP puede recibir una comisión">${tr('Comprar ↗', 'Buy ↗')}</a>
             </div>
           </div>
         </div>`;
@@ -1920,7 +1939,8 @@ function renderStack(stack, budgetLabel) {
     <button class="action-btn action-primary" onclick="downloadExecutivePDF()">📋 ${tr('PDF ejecutivo', 'Executive PDF')}</button>
     <button class="action-btn action-secondary" onclick="window.print()">🖨 ${tr('Imprimir vista completa', 'Print full view')}</button>
     <button class="action-btn action-secondary" onclick="location.reload()">↺ ${tr('Nuevo stack', 'New stack')}</button>
-  </div>`;
+  </div>
+  <div class="affiliate-disclosure">${tr('Los enlaces "Comprar" son de afiliado. LONGEVAPP puede recibir una comisión sin costo adicional para ti. Esto no influye en las recomendaciones del protocolo, que son generadas exclusivamente por criterio clínico.', 'Buy links are affiliate links. LONGEVAPP may receive a commission at no extra cost to you. This does not influence protocol recommendations, which are generated solely on clinical criteria.')}</div>`;
 
   // Disclaimer
   html += `<div class="disclaimer">⚕ ${tr('AVISO MÉDICO: Este stack es informativo y está basado en evidencia científica disponible. No reemplaza el consejo médico profesional. Consulta con tu médico antes de comenzar cualquier protocolo de suplementación, especialmente si tienes condiciones de salud o tomas medicamentos. LONGEVAPP no se hace responsable del uso de esta información.', 'MEDICAL NOTICE: This stack is informational and based on currently available scientific evidence. It does not replace professional medical advice. Consult your physician before starting any supplementation protocol, especially with health conditions or medications. LONGEVAPP is not liable for use of this information.')}</div>`;
@@ -1928,6 +1948,7 @@ function renderStack(stack, budgetLabel) {
     <h4 class="mono" style="font-size:0.8rem;color:var(--accent);margin-bottom:8px;">${tr('OPCIÓN SIN SUPLEMENTACIÓN', 'NO-SUPPLEMENT OPTION')}</h4>
     <p style="font-size:0.9rem;">${tr('¿Prefieres un enfoque 100% natural? Hemos diseñado un Menú Semanal de Longevidad que replica el perfil bioquímico de este stack mediante alimentos reales.', 'Prefer a 100% natural approach? We designed a Weekly Longevity Menu that replicates this stack biochemical profile through real foods.')}</p>
     <a href="/food-longevity.html" class="btn-link">${tr('Ver Menú de Reemplazo →', 'View Replacement Menu →')}</a>
+      <a href="/pricing.html" id="nav-pricing">Precios</a>
   </div>`;
   html += renderHistorySection();
   html += `</div>`;
@@ -2475,6 +2496,15 @@ applyTheme(getPreferredTheme());
 initMobileMenu();
 initToTop();
 initResultsModal();
+
+// Read ?molecule= param from library deep-link
+(function readMoleculeParam() {
+  const params = new URLSearchParams(window.location.search);
+  const mol = params.get('molecule');
+  if (!mol) return;
+  // Store it so initAccess/initWizardUI can surface it
+  window._libraryMolecule = decodeURIComponent(mol);
+})();
 
 initAccess();
 </script>

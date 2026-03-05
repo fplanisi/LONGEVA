@@ -22,6 +22,7 @@
   .header-top{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px}
   .brand-wrap{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
   .logo-name{font-family:'DM Serif Display',serif;font-size:26px;letter-spacing:.1em;color:var(--accent);text-shadow:0 0 24px rgba(106,162,204,.18)}
+  .logo-name em{font-style:italic;margin-left:-.035em}
   .logo-tag{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:.16em}
   .status-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
   .menu-toggle{display:none;align-items:center;justify-content:center;flex-direction:column;gap:4px;width:34px;height:34px;border-radius:9px;border:1px solid var(--border);background:rgba(255,255,255,.02);cursor:pointer;transition:border-color .2s ease,background .2s ease}
@@ -255,6 +256,7 @@
   html[data-theme="light"] .o2{background:var(--orb2)!important}
   html[data-theme="light"] body::before{opacity:.28}
   html[data-theme="light"] .logo-name{text-shadow:none}
+  .logo-name em{font-style:italic;margin-left:-.035em}
   html[data-theme="light"] .result-card{background:#fff!important;border-color:var(--border2)!important}
   html[data-theme="light"] .step-card{background:#fff!important}
   html[data-theme="light"] #loading-state{background:#fff!important}
@@ -275,7 +277,7 @@
 <header>
   <div class="header-top">
   <div class="brand-wrap">
-    <span class="logo-name">LONGEVAPP</span>
+    <span class="logo-name">LONGEV<em>APP</em></span>
     <span class="logo-tag">v3.2 · Plataforma de longevidad</span>
   </div>
   <div class="status-row">
@@ -301,6 +303,7 @@
       <a href="/stack-builder.html">Plan Personalizado</a>
       <a href="/biohacker-protocol.html" class="nav-bio">Biohacker</a>
       <a href="/food-longevity.html">Nutrición</a>
+      <a href="/pricing.html" id="nav-pricing">Precios</a>
     </nav>
   </div>
   <div class="mobile-nav-backdrop" id="mobile-nav-backdrop"></div>
@@ -863,6 +866,14 @@ function setModalContent(mol, data) {
   document.getElementById('md-pharma').innerHTML = fmt(sections.pharma);
   document.getElementById('md-evidence').innerHTML = fmt(sections.evidence);
   document.getElementById('md-protocol').innerHTML = fmt(sections.protocol);
+
+  // Pass molecule name to stack-builder as URL param
+  const molSlug = encodeURIComponent(mol.name || mol.full_name || '');
+  const cta = document.getElementById('md-cta');
+  if (cta) {
+    cta.href = `/stack-builder.html?molecule=${molSlug}`;
+    cta.textContent = tr(`Generar protocolo con ${mol.name || 'esta molécula'} →`, `Generate protocol with ${mol.name || 'this molecule'} →`);
+  }
 
   document.getElementById('md-provider-note').textContent = `${tr('Análisis generado con', 'Analysis generated with')} ${
     data?.provider === 'anthropic'

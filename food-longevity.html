@@ -37,6 +37,7 @@ body::after{content:'';position:fixed;inset:0;background:var(--overlay);pointer-
 .header-top{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .brand-wrap{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
 .logo-name{font-family:'DM Serif Display',serif;font-size:26px;letter-spacing:.1em;color:var(--accent);text-shadow:0 0 28px rgba(106,162,204,.22)}
+  .logo-name em{font-style:italic;margin-left:-.035em}
 .logo-tag{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:.16em}
 .status-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
 .menu-toggle{display:none;align-items:center;justify-content:center;flex-direction:column;gap:4px;width:34px;height:34px;border-radius:9px;border:1px solid var(--border);background:rgba(255,255,255,.02);cursor:pointer;transition:border-color .2s ease,background .2s ease}
@@ -175,6 +176,7 @@ html[data-theme="light"] .topnav a.nav-bio:hover{border-color:rgba(160,50,50,.6)
   html[data-theme="light"] .o2{background:var(--orb2)!important}
   html[data-theme="light"] body::before{opacity:.28}
   html[data-theme="light"] .logo-name{text-shadow:none}
+  .logo-name em{font-style:italic;margin-left:-.035em}
   html[data-theme="light"] .result-card{background:#fff!important;border-color:var(--border2)!important}
   html[data-theme="light"] .step-card{background:#fff!important}
   html[data-theme="light"] #loading-state{background:#fff!important}
@@ -195,7 +197,7 @@ html[data-theme="light"] .topnav a.nav-bio:hover{border-color:rgba(160,50,50,.6)
 <header class="site-header">
     <div class="header-top">
       <div class="brand-wrap">
-        <span class="logo-name">LONGEVAPP</span>
+        <span class="logo-name">LONGEV<em>APP</em></span>
         <span class="logo-tag">v3.2 · Plataforma de longevidad</span>
       </div>
       <div class="status-row">
@@ -221,6 +223,7 @@ html[data-theme="light"] .topnav a.nav-bio:hover{border-color:rgba(160,50,50,.6)
       <a href="/stack-builder.html">Plan Personalizado</a>
       <a href="/biohacker-protocol.html" class="nav-bio">Biohacker</a>
       <a href="/food-longevity.html" class="active">Nutrición</a>
+      <a href="/pricing.html" id="nav-pricing">Precios</a>
     </nav>
     </div>
     <div class="mobile-nav-backdrop" id="mobile-nav-backdrop"></div>
@@ -230,7 +233,7 @@ html[data-theme="light"] .topnav a.nav-bio:hover{border-color:rgba(160,50,50,.6)
   <section class="hero hero-area">
     <p class="hero-eye eyebrow">SUSTRATO BIOLÓGICO</p>
     <h1>Nutrición & Epigenética</h1>
-    <p class="hero-sub">La suplementación no ocurre en el vacío. Optimizá tu farmacocinética mediante alimentos diseñados para maximizar la biodisponibilidad y activar vías de longevidad. <strong>Accedé a protocolos de alimentación pura y menús semanales.</strong></p>
+    <p class="hero-sub">La suplementación no ocurre en el vacío. Optimizá tu farmacocinética mediante alimentos diseñados para maximizar la biodisponibilidad y activar vías de longevidad. <strong>Gratis · Complemento de tu protocolo personalizado.</strong></p>
     <p class="trust-line">Sin cápsulas · Solo comida y hábitos sostenibles</p>
   </section>
 
@@ -520,10 +523,20 @@ function generateResult(goal) {
 
   const menuContent = getWeeklyMenuContent(goal);
   if (menu) {
+    // Check if user has a stack session saved — if so, personalize the CTA
+    const hasStack = !!localStorage.getItem('longeva_paid_session');
+    const ctaLine = hasStack
+      ? tr(
+          '¿Querés optimizar la absorción de tu stack activo? <strong><a href="/stack-builder.html">Actualizar mi protocolo →</a></strong>',
+          'Want to optimize absorption for your active stack? <strong><a href="/stack-builder.html">Update my protocol →</a></strong>'
+        )
+      : tr(
+          '¿Querés un protocolo de suplementación que potencie esta nutrición? <strong><a href="/stack-builder.html">Generar mi stack — $4,99 →</a></strong>',
+          'Want a supplement protocol that amplifies this nutrition? <strong><a href="/stack-builder.html">Generate my stack — $4.99 →</a></strong>'
+        );
     menu.innerHTML = `${menuContent}
       <div class="cta-mini">
-        ${tr('¿Buscás optimización sin cápsulas?','Looking for capsule-free optimization?')}<br>
-        <strong><a href="/stack-builder.html">${tr('Accedé al Plan Personalizado.','Go to Personalized Plan.')}</a></strong>
+        ${ctaLine}
       </div>`;
   }
 

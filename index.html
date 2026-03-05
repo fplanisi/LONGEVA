@@ -68,6 +68,7 @@
   .header-top{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px}
   .brand-wrap{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
   .logo-name{font-family:'DM Serif Display',serif;font-size:26px;letter-spacing:.1em;color:var(--a1)}
+  .logo-name em{font-style:italic;margin-left:-.035em}
   .logo-tag{font-family:'DM Mono',monospace;font-size:9px;color:var(--mu);letter-spacing:.16em}
   .status-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
   .badge{display:flex;align-items:center;gap:7px;padding:6px 11px;border-radius:100px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em}
@@ -243,6 +244,7 @@
     font-weight:500;text-transform:uppercase;
   }
   [data-theme="light"] .bio-pill{background:#fff5f5;border-color:#ffc1c1;color:#a80000}
+  .bio-pill--price{background:rgba(184,146,74,.12)!important;border-color:rgba(184,146,74,.5)!important;color:#d4a84b!important;font-size:9px!important}
 
   /* ════════════════════════════════════════
      ③ BIBLIOTECA — secundario visible
@@ -336,7 +338,7 @@
 <header>
   <div class="header-top">
     <div class="brand-wrap">
-      <span class="logo-name">LONGEVAPP</span>
+      <span class="logo-name">LONGEV<em>APP</em></span>
       <span class="logo-tag">v3.2 · Plataforma de longevidad</span>
     </div>
     <div class="status-row">
@@ -361,6 +363,7 @@
       <a href="/stack-builder.html" id="nav-plan">Plan Personalizado</a>
       <a href="/biohacker-protocol.html" class="nav-bio" id="nav-bio">Biohacker</a>
       <a href="/food-longevity.html" id="nav-nutri">Nutrición</a>
+      <a href="/pricing.html" id="nav-pricing">Precios</a>
     </nav>
   </div>
   <div class="mobile-nav-backdrop" id="mobile-nav-backdrop"></div>
@@ -369,7 +372,7 @@
 <section class="hero">
   <p class="hero-eye" id="hero-eye">PLATAFORMA DE BIOHACKING Y LONGEVIDAD</p>
   <h1 id="hero-title">Diseñá tu protocolo de<br><em>suplementación inteligente</em></h1>
-  <p class="hero-sub" id="hero-sub">Crea tu "stack" personalizado de suplementos. Optimiza tu biología con protocolos basados en evidencia clínica, dosis exactas y cero riesgo de interacciones.</p>
+  <p class="hero-sub" id="hero-sub">Crea tu stack personalizado de suplementos. Protocolos basados en evidencia clínica, dosis exactas e interacciones identificadas y monitoreadas por médico.</p>
   <p class="trust-line" id="trust-line">Desarrollo médico · Eficacia, seguridad y adherencia</p>
   <div class="flow-strip">
     <div class="flow-step" id="flow-1"><b>1.</b> Perfil Biológico</div>
@@ -385,19 +388,20 @@
     <section class="qmod qmod-primary">
       <i class="qmod-eyebrow" id="tag-plan">PRINCIPAL</i>
       <div class="qmod-title" id="m2-title">Protocolo Personalizado</div>
-      <div class="qmod-desc" id="m2-copy">El núcleo de tu optimización. Un algoritmo clínico que cruza tu biometría, objetivos y presupuesto para diseñar tu stack exacto. Sin suposiciones: dosis precisas, sinergias moleculares y control total de interacciones.</div>
-      <a class="primary-cta" href="/stack-builder.html" id="cta-plan">Generar mi protocolo →</a>
+      <div class="qmod-desc" id="m2-copy">El núcleo de tu optimización. Un algoritmo clínico que cruza tu biometría, objetivos y presupuesto para diseñar tu stack exacto. Dosis precisas, sinergias moleculares y control total de interacciones.</div>
+      <a class="primary-cta" href="/stack-builder.html" id="cta-plan">Generar mi protocolo — $4,99 →</a>
     </section>
 
     <!-- ② BIOHACKER — avanzado, peligroso, segunda fila izquierda -->
     <a class="qmod qmod-bio" href="/biohacker-protocol.html">
       <i class="qmod-eyebrow" id="tag-bio">⚠ ZONA RESTRINGIDA</i>
       <div class="qmod-title" id="m3-title">Biohacker Lab</div>
-      <div class="qmod-desc" id="m3-copy">Terreno de moléculas experimentales, terapias off-label y reprogramación celular agresiva. Sin red de seguridad comercial. Solo para quienes entienden el riesgo de empujar el límite biológico.</div>
+      <div class="qmod-desc" id="m3-copy">Terreno de péptidos, moléculas experimentales y reprogramación celular. Diseñado por médico. Cuestionario clínico de validación, protocolos off-label y gatekeeping de seguridad real. Solo para quienes entienden el riesgo.</div>
       <div class="bio-pills">
-        <span class="bio-pill" id="bp1">Alto Riesgo</span>
+        <span class="bio-pill" id="bp1">Péptidos</span>
         <span class="bio-pill" id="bp2">Off-label</span>
         <span class="bio-pill" id="bp3">Nivel Experto</span>
+        <span class="bio-pill bio-pill--price" id="bp4">$7,99</span>
       </div>
       <div class="qmod-foot" id="bio-arrow">Desbloquear acceso →</div>
     </a>
@@ -451,7 +455,7 @@ function applyCopy(){
   document.querySelector('title').textContent = tr('LONGEVAPP — Inicio','LONGEVAPP — Home');
   document.getElementById('hero-eye').textContent   = tr('PLATAFORMA DE BIOHACKING Y LONGEVIDAD','BIOHACKING & LONGEVITY PLATFORM');
   document.getElementById('hero-title').innerHTML   = tr('Diseñá tu protocolo de<br><em>suplementación inteligente</em>','Design your<br><em>smart supplement protocol</em>');
-  document.getElementById('hero-sub').textContent   = tr('Crea tu "stack" personalizado de suplementos. Optimiza tu biología con protocolos basados en evidencia clínica, dosis exactas y cero riesgo de interacciones.','Build your custom supplement stack. Optimize your biology with clinically-evidenced protocols, exact dosing, and zero interaction risks.');
+  document.getElementById('hero-sub').textContent   = tr('Crea tu stack personalizado de suplementos. Protocolos basados en evidencia clínica, dosis exactas e interacciones identificadas y monitoreadas por médico.','Build your custom supplement stack. Clinically-evidenced protocols, exact dosing, and physician-monitored interactions.');
   document.getElementById('trust-line').textContent = tr('Desarrollo médico · Eficacia, seguridad y adherencia','Physician-developed · Efficacy, safety & adherence');
   document.getElementById('flow-1').innerHTML = tr('<b>1.</b> Perfil Biológico','<b>1.</b> Biological Profile');
   document.getElementById('flow-2').innerHTML = tr('<b>2.</b> Stack Personalizado','<b>2.</b> Custom Stack');
@@ -459,15 +463,16 @@ function applyCopy(){
 
   document.getElementById('tag-plan').textContent   = tr('PRINCIPAL','FLAGSHIP');
   document.getElementById('m2-title').textContent   = tr('Protocolo Personalizado','Personalized Protocol');
-  document.getElementById('m2-copy').textContent    = tr('El núcleo de tu optimización. Un algoritmo clínico que cruza tu biometría, objetivos y presupuesto para diseñar tu stack exacto. Sin suposiciones: dosis precisas, sinergias moleculares y control total de interacciones.','The core of your optimization. A clinical algorithm that cross-references your biometrics, goals, and budget to design your exact stack. No guesswork: precise doses, molecular synergies, and total interaction control.');
-  document.getElementById('cta-plan').textContent   = tr('Generar mi protocolo →','Generate my protocol →');
+  document.getElementById('m2-copy').textContent    = tr('El núcleo de tu optimización. Un algoritmo clínico que cruza tu biometría, objetivos y presupuesto para diseñar tu stack exacto. Dosis precisas, sinergias moleculares y control total de interacciones.','The core of your optimization. A clinical algorithm that cross-references your biometrics, goals, and budget to design your exact stack. Precise doses, molecular synergies, and full interaction control.');
+  document.getElementById('cta-plan').textContent   = tr('Generar mi protocolo — $4,99 →','Generate my protocol — $4.99 →');
 
   document.getElementById('tag-bio').textContent    = tr('⚠ ZONA RESTRINGIDA','⚠ RESTRICTED ZONE');
   document.getElementById('m3-title').textContent   = tr('Biohacker Lab','Biohacker Lab');
-  document.getElementById('m3-copy').textContent    = tr('Terreno de moléculas experimentales, terapias off-label y reprogramación celular agresiva. Sin red de seguridad comercial. Solo para quienes entienden el riesgo de empujar el límite biológico.','Terrain for experimental molecules, off-label therapies, and aggressive cellular reprogramming. No commercial safety net. Only for those who understand the risk of pushing the biological limit.');
-  document.getElementById('bp1').textContent        = tr('Alto Riesgo','High Risk');
+  document.getElementById('m3-copy').textContent    = tr('Terreno de péptidos, moléculas experimentales y reprogramación celular. Diseñado por médico. Cuestionario clínico de validación, protocolos off-label y gatekeeping de seguridad real. Solo para quienes entienden el riesgo.','Peptides, experimental molecules, and cellular reprogramming. Physician-designed. Clinical validation questionnaire, off-label protocols, and real safety gatekeeping. Only for those who understand the risk.');
+  document.getElementById('bp1').textContent        = tr('Péptidos','Peptides');
   document.getElementById('bp2').textContent        = tr('Off-label','Off-label');
   document.getElementById('bp3').textContent        = tr('Nivel Experto','Expert Level');
+  document.getElementById('bp4').textContent        = '$7,99';
   document.getElementById('bio-arrow').textContent  = tr('Desbloquear acceso →','Unlock access →');
 
   document.getElementById('tag-lib').textContent    = tr('DATOS CRUDOS','RAW DATA');
@@ -485,6 +490,7 @@ function applyCopy(){
   document.getElementById('nav-plan').textContent   = tr('Plan Personalizado','Personalized Plan');
   document.getElementById('nav-bio').textContent    = tr('Biohacker','Biohacker');
   document.getElementById('nav-nutri').textContent  = tr('Nutrición','Nutrition');
+  document.getElementById('nav-pricing').textContent = tr('Precios','Pricing');
   document.getElementById('badge-txt').textContent  = tr('Inicio','Home');
 
   document.getElementById('footer-links').innerHTML = IS_EN
