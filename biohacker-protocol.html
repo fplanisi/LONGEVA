@@ -863,6 +863,27 @@ html[data-theme="light"] .hero-list b{color:#964848}
     </div>
   </div>
 </div>
+<div id="clinical-block-modal" class="alert-modal" aria-hidden="true">
+  <div class="alert-card" role="dialog" aria-modal="true" aria-labelledby="clinical-block-title" style="border-color:rgba(200,88,88,.55);">
+    <div class="alert-title" id="clinical-block-title">[ RESTRICCIÓN DE SEGURIDAD CLÍNICA ]</div>
+    <p class="alert-text" id="clinical-block-text">
+      El algoritmo de SOMA ha detectado variables en tu perfil que representan una contraindicación directa para el uso de péptidos en este momento.
+      La biotecnología de alta precisión exige un entorno biológico específico para ser segura y efectiva. Proceder bajo tus condiciones actuales podría comprometer tu salud sistémica en lugar de optimizarla. Tu seguridad es nuestra prioridad absoluta.
+    </p>
+    <div class="danger-box" style="margin-top:10px;">
+      <strong id="clinical-reasons-title">Por qué se bloqueó el acceso:</strong>
+      <ul id="clinical-reasons-list" style="margin:8px 0 0 18px;line-height:1.5;"></ul>
+    </div>
+    <div class="danger-box" style="margin-top:10px;">
+      <strong id="clinical-bridge-title">Puente seguro:</strong>
+      <span id="clinical-bridge-text">Aunque el Biohacker Lab está restringido para vos hoy, el Plan Personalizado y la Nutrición Epigenética están diseñados para estabilizar tu biología antes de intervenciones nivel 05.</span>
+    </div>
+    <div class="alert-row">
+      <button class="btn-ghost" type="button" onclick="closeClinicalBlockModal()" id="clinical-close">Cerrar</button>
+      <a class="btn btn-main" href="/stack-builder.html" id="clinical-safe-cta">REPLEGAR A PROTOCOLO SEGURO</a>
+    </div>
+  </div>
+</div>
 <footer class="legal-footer">
   <span id="footer-disclaimer">© 2026 LONGEVAPP · Desarrollo médico · Eficacia, seguridad y adherencia · Módulo experimental. No reemplaza evaluación médica profesional.</span>
   <span id="footer-links"><a href="/terms.html">Términos</a> · <a href="/privacy.html">Privacidad</a></span>
@@ -981,6 +1002,35 @@ function ackSubqRisk() {
   state.ack_subq = true;
   closeSubqSkillModal();
   updateGenerateEnabled();
+}
+
+function getClinicalRestrictionReasons() {
+  const reasons = [];
+  if (state.onc_history === 'personal') {
+    reasons.push(tr(
+      'Interferencia detectada: antecedente oncológico personal con potencial incompatibilidad para señalización celular de alta intensidad.',
+      'Detected interference: personal oncological history with potential incompatibility for high-intensity cellular signaling.'
+    ));
+  }
+  if (state.autoimmune === 'yes') {
+    reasons.push(tr(
+      'Riesgo biológico: enfermedad autoinmune activa con posibilidad de exacerbación de respuesta inflamatoria o inmune.',
+      'Biological risk: active autoimmune disease with possible exacerbation of inflammatory or immune response.'
+    ));
+  }
+  return reasons;
+}
+
+function openClinicalBlockModal(reasons) {
+  const list = document.getElementById('clinical-reasons-list');
+  if (list) list.innerHTML = reasons.map((r) => `<li>${escapeHtml(r)}</li>`).join('');
+  document.getElementById('clinical-block-modal')?.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeClinicalBlockModal() {
+  document.getElementById('clinical-block-modal')?.classList.remove('open');
+  document.body.style.overflow = '';
 }
 
 function goBioStep(n) {
@@ -1172,6 +1222,12 @@ async function init() {
 }
 
 async function generateProtocol() {
+  const blockingReasons = getClinicalRestrictionReasons();
+  if (blockingReasons.length) {
+    openClinicalBlockModal(blockingReasons);
+    formMsg.textContent = tr('Acceso restringido por seguridad clínica.', 'Access restricted for clinical safety.');
+    return;
+  }
   if (!state.sessionId) {
     saveDraftProfile();
     localStorage.setItem(BIO_AUTORUN_KEY, '1');
@@ -1362,6 +1418,13 @@ function applyStaticI18n() {
   set('#subq-title', '[ TECHNICAL NOTICE: SUBCUTANEOUS ROUTE ]');
   set('#subq-text', 'If you have issues with SC administration, receive basic instruction on technique, hygiene, and site rotation. Without operational tolerance, protocol viability may be limited.');
   set('#subq-cta', 'I UNDERSTAND, CONTINUE');
+  set('#clinical-block-title', '[ CLINICAL SAFETY RESTRICTION ]');
+  set('#clinical-block-text', 'SOMA algorithm has detected profile variables representing a direct contraindication for peptide use at this stage. High-precision biotechnology requires a specific biological environment to be safe and effective. Proceeding under current conditions may compromise systemic health instead of optimizing it. Your safety is our top priority.');
+  set('#clinical-reasons-title', 'Why access was restricted:');
+  set('#clinical-bridge-title', 'Safe bridge:');
+  set('#clinical-bridge-text', 'Even if Biohacker Lab is restricted today, Personalized Plan and Epigenetic Nutrition are designed to stabilize your biology before level-05 interventions.');
+  set('#clinical-close', 'Close');
+  set('#clinical-safe-cta', 'DEPLOY TO SAFE PROTOCOL');
   set('#paywall .label', 'Premium access (same paywall)');
   const email = document.getElementById('email');
   if (email) email.placeholder = 'you@email.com';
@@ -1531,13 +1594,15 @@ function initAlertModals() {
   const m2 = document.getElementById('alert-modal-2');
   const m3 = document.getElementById('skill-modal-recon');
   const m4 = document.getElementById('skill-modal-subq');
-  const closeAll = () => { closeAlertOne(); closeAlertTwo(); closeReconSkillModal(); closeSubqSkillModal(); };
+  const m5 = document.getElementById('clinical-block-modal');
+  const closeAll = () => { closeAlertOne(); closeAlertTwo(); closeReconSkillModal(); closeSubqSkillModal(); closeClinicalBlockModal(); };
   m1?.addEventListener('click', (e) => { if (e.target === m1) closeAlertOne(); });
   m2?.addEventListener('click', (e) => { if (e.target === m2) closeAlertTwo(); });
   m3?.addEventListener('click', (e) => { if (e.target === m3) closeReconSkillModal(); });
   m4?.addEventListener('click', (e) => { if (e.target === m4) closeSubqSkillModal(); });
+  m5?.addEventListener('click', (e) => { if (e.target === m5) closeClinicalBlockModal(); });
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && (m1?.classList.contains('open') || m2?.classList.contains('open') || m3?.classList.contains('open') || m4?.classList.contains('open'))) closeAll();
+    if (e.key === 'Escape' && (m1?.classList.contains('open') || m2?.classList.contains('open') || m3?.classList.contains('open') || m4?.classList.contains('open') || m5?.classList.contains('open'))) closeAll();
   });
 }
 
