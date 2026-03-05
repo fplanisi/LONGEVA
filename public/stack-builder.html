@@ -1409,7 +1409,8 @@ async function initAccess() {
   if (localStorage.getItem(STACK_SESSION_KEY)) {
     state.paidSessionId = localStorage.getItem(STACK_SESSION_KEY);
     unlockWizard();
-    if (localStorage.getItem(STACK_RESUME_KEY) === '1') {
+    const shouldResume = localStorage.getItem(STACK_RESUME_KEY) === '1' || paidFlag === '1' || !!params.get('session_id');
+    if (shouldResume) {
       localStorage.removeItem(STACK_RESUME_KEY);
       safetyConfirmed = true;
       setTimeout(() => generateStack(), 80);
@@ -1439,7 +1440,8 @@ async function initAccess() {
     const clean = window.location.pathname + (params.get('molecule') ? `?molecule=${params.get('molecule')}` : '');
     window.history.replaceState({}, '', clean);
 
-    if (localStorage.getItem(STACK_RESUME_KEY) === '1') {
+    const shouldResume = localStorage.getItem(STACK_RESUME_KEY) === '1' || paidFlag === '1' || !!sessionId;
+    if (shouldResume) {
       localStorage.removeItem(STACK_RESUME_KEY);
       safetyConfirmed = true;
       setTimeout(() => generateStack(), 80);
@@ -1747,6 +1749,9 @@ async function generateStack() {
 
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || `API error ${res.status}`);
+    if (!data?.stack || typeof data.stack !== 'object') {
+      throw new Error(tr('Respuesta inválida del motor de stack.', 'Invalid stack engine response.'));
+    }
     state.replaceUsage = 0;
     state.replacedOut = [];
     renderStack(data.stack, budgetLabel);
