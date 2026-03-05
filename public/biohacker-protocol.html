@@ -219,7 +219,7 @@ textarea { min-height:90px; resize:vertical; }
       <input id="email" type="text" placeholder="tu@email.com" />
       <button id="pay-btn" class="btn btn-main">Continuar al pago</button>
     </div>
-    <div class="pay-legal">Al continuar aceptas <a href="/terms.html" target="_blank" rel="noopener">Términos</a> / <a href="/privacy.html" target="_blank" rel="noopener">Privacidad</a>.</div>
+    <div class="pay-legal" id="pay-legal-copy">Al continuar aceptas <a href="/terms.html" target="_blank" rel="noopener">Términos</a> / <a href="/privacy.html" target="_blank" rel="noopener">Privacidad</a>.</div>
     <div class="msg" id="pay-msg"></div>
   </div>
 
@@ -261,8 +261,8 @@ textarea { min-height:90px; resize:vertical; }
   </div>
 </div>
 <footer class="legal-footer">
-  <span>Módulo experimental. No reemplaza evaluación médica profesional.</span>
-  <span><a href="/terms.html">Términos</a> · <a href="/privacy.html">Privacidad</a></span>
+  <span id="footer-disclaimer">Módulo experimental. No reemplaza evaluación médica profesional.</span>
+  <span id="footer-links"><a href="/terms.html">Términos</a> · <a href="/privacy.html">Privacidad</a></span>
 </footer>
 <button class="to-top" id="to-top" type="button" aria-label="Volver arriba">↑</button>
 
@@ -486,7 +486,7 @@ function applyStaticI18n() {
   if (nav[2]) nav[2].textContent = 'Personalized Plan';
   if (nav[3]) nav[3].textContent = 'Biohacker';
   if (nav[4]) nav[4].textContent = 'Nutrition';
-  set('.logo-tag', 'v3.2 · Plataforma de longevidad');
+  set('.logo-tag', 'v3.2 · Longevity platform');
   const chips = document.querySelectorAll('.badge-live');
   if (chips[0]) chips[0].textContent = 'Biohacker Lab · Experimental';
   if (chips[1]) chips[1].textContent = 'Physician-designed clinical framework';
@@ -499,6 +499,8 @@ function applyStaticI18n() {
   const email = document.getElementById('email');
   if (email) email.placeholder = 'you@email.com';
   set('#pay-btn', 'Continue to checkout');
+  const payLegal = document.getElementById('pay-legal-copy');
+  if (payLegal) payLegal.innerHTML = 'By continuing, you accept <a href="/terms.html" target="_blank" rel="noopener">Terms</a> / <a href="/privacy.html" target="_blank" rel="noopener">Privacy</a>.';
   set('#form .label:nth-of-type(1)', 'Main objective');
   set('#form .label:nth-of-type(2)', 'Experience level');
   set('#form .label:nth-of-type(3)', 'Current conditions / medication');
@@ -519,6 +521,9 @@ function applyStaticI18n() {
   const check = document.querySelector('.check label');
   if (check) check.textContent = 'I confirm that I understand this module is experimental and requires professional supervision.';
   set('#gen-btn', 'Generate experimental protocol');
+  set('#footer-disclaimer', 'Experimental module. Does not replace professional medical evaluation.');
+  const footerLinks = document.getElementById('footer-links');
+  if (footerLinks) footerLinks.innerHTML = '<a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a>';
 }
 
 function getPreferredLang() {
