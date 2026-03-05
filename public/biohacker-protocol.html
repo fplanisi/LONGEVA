@@ -1803,12 +1803,13 @@ async function startCheckout() {
   saveDraftProfile();
   const email = document.getElementById('email').value.trim();
   const pmsg = document.getElementById('pay-msg');
+  const payBtnEl = document.getElementById('pay-btn');
   if (!email || !email.includes('@')) {
     if (pmsg) { pmsg.textContent = tr('Ingresá un email válido.', 'Enter a valid email.'); pmsg.className = 'paywall-modal-msg error'; }
     return;
   }
   if (pmsg) { pmsg.textContent = tr('Creando checkout...', 'Creating checkout...'); pmsg.className = 'paywall-modal-msg ok'; }
-  payBtn.disabled = true;
+  if (payBtnEl) payBtnEl.disabled = true;
   try {
     const res = await fetch('/api/create-checkout-session', {
       method: 'POST',
@@ -1822,7 +1823,7 @@ async function startCheckout() {
     window.location.href = data.url;
   } catch (err) {
     if (pmsg) { pmsg.textContent = `${tr('Error', 'Error')}: ${err.message}`; pmsg.className = 'paywall-modal-msg error'; }
-    payBtn.disabled = false;
+    if (payBtnEl) payBtnEl.disabled = false;
   }
 }
 
@@ -2408,7 +2409,7 @@ init();
     <div class="paywall-modal-pricetype" id="pm-pricetype">Pago único · Acceso permanente al resultado</div>
     <div class="paywall-modal-row">
       <input class="paywall-modal-input" id="email" type="email" placeholder="tu@email.com" />
-      <button class="paywall-modal-btn" id="pay-btn" type="button">Continuar →</button>
+      <button class="paywall-modal-btn" id="pay-btn" type="button" onclick="startCheckout()">Continuar →</button>
     </div>
     <div class="paywall-modal-legal" id="pm-legal">Al continuar aceptás <a href="/terms.html" target="_blank" rel="noopener">Términos</a> / <a href="/privacy.html" target="_blank" rel="noopener">Privacidad</a>.</div>
     <div class="paywall-modal-msg" id="pay-msg"></div>
