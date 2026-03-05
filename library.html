@@ -132,6 +132,11 @@
   .ai-body ul{margin:4px 0 8px 16px}
   .ai-body li{margin-bottom:4px;color:#aebdca}
   .ai-body strong{color:var(--accent);font-weight:500}
+  .molecule-detail-header{border-bottom:1px solid var(--border);padding-bottom:1.5rem;margin-bottom:1.5rem}
+  .molecule-category-tag{font-family:'DM Mono',monospace;font-size:.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;background:var(--accent-dim);padding:4px 8px;border-radius:4px}
+  .detail-section-title{font-family:'Instrument Sans',sans-serif;font-size:.85rem;font-weight:600;color:var(--tx2);text-transform:uppercase;margin-top:1.5rem;display:flex;align-items:center;gap:8px}
+  .detail-section-title::before{content:'';width:4px;height:12px;background:var(--accent);border-radius:2px}
+  .detail-content{font-size:.95rem;line-height:1.6;color:var(--text);margin-top:.5rem}
   .ai-provider-note{margin-top:14px;padding-top:12px;border-top:1px solid var(--border);font-family:'DM Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:.05em}
 
   /* LOADING */
@@ -269,15 +274,15 @@
   <div class="mobile-nav-backdrop" id="mobile-nav-backdrop"></div>
 </header>
 
-<section class="hero">
+<section class="hero hero-area">
   <p class="hero-eye">Biblioteca científica de compuestos pro-longevidad</p>
-  <h1>Tu biblioteca de<br><em>moléculas de longevidad</em></h1>
-  <p class="hero-sub">Explora una base curada de moléculas naturales y sintéticas con evidencia científica asociada a envejecimiento saludable, mecanismos de acción y análisis asistido por IA.</p>
+  <h1 id="lib-hero-title">Vademécum Molecular</h1>
+  <p class="hero-sub" id="lib-hero-sub">El índice completo de la suplementación avanzada. Seleccioná una molécula para desplegar su ficha técnica, mecanismos de acción y evidencia clínica.</p>
 
   <div class="search-box">
     <div class="search-wrap">
       <div class="si"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div>
-      <input class="search-input" id="si" type="text" placeholder="Buscar molécula o preguntar sobre cualquier compuesto..." autocomplete="off">
+      <input class="search-input" id="search-input" type="text" placeholder="Filtrar por molécula, categoría o vía metabólica..." autocomplete="off">
       <button class="sbtn" id="sbtn" onclick="searchIA()">Analizar →</button>
     </div>
 
@@ -406,17 +411,18 @@ function applyStaticI18n() {
   const badges = document.querySelectorAll('.badge-live');
   if (badges[0]) badges[0].childNodes[1].nodeValue = ' Scientific base active';
   set('.hero-eye', 'Scientific library of longevity compounds');
-  const h1 = document.querySelector('h1');
-  if (h1) h1.innerHTML = 'Your library of<br><em>longevity molecules</em>';
-  set('.hero-sub', 'Explore a curated base of natural and synthetic molecules linked to healthy aging, mechanism of action, and AI-assisted analysis.');
+  const h1 = document.getElementById('lib-hero-title');
+  if (h1) h1.textContent = 'Molecular Vademecum';
+  const hSub = document.getElementById('lib-hero-sub');
+  if (hSub) hSub.textContent = 'The complete index of advanced supplementation. Select a molecule to display its technical sheet, mechanisms of action, and clinical evidence.';
   const nav = document.querySelectorAll('.topnav a');
   if (nav[0]) nav[0].textContent = 'Home';
   if (nav[1]) nav[1].textContent = 'Library';
   if (nav[2]) nav[2].textContent = 'Personalized Plan';
   if (nav[3]) nav[3].textContent = 'Biohacker';
   if (nav[4]) nav[4].textContent = 'Nutrition';
-  const si = document.getElementById('si');
-  if (si) si.placeholder = 'Search molecule or ask about any compound...';
+  const si = document.getElementById('search-input');
+  if (si) si.placeholder = 'Filter by molecule, category or metabolic pathway...';
   const sbtn = document.getElementById('sbtn');
   if (sbtn) sbtn.textContent = 'Analyze →';
   const modeBase = document.getElementById('mode-base');
@@ -572,9 +578,9 @@ function setMode(m, btn) {
   aiMode = m;
   document.querySelectorAll('.mode-btn').forEach(x => x.classList.remove('active'));
   btn.classList.add('active');
-  document.getElementById('si').placeholder = m === 'latest'
+  document.getElementById('search-input').placeholder = m === 'latest'
     ? tr('Buscar novedades: Taurina 2024, nuevas senolíticas, NAD+ estudios recientes...', 'Search updates: Taurine 2024, new senolytics, recent NAD+ studies...')
-    : tr('Buscar molécula o preguntar sobre cualquier compuesto...', 'Search molecule or ask about any compound...');
+    : tr('Filtrar por molécula, categoría o vía metabólica...', 'Filter by molecule, category or metabolic pathway...');
 }
 
 function getFiltered() {
@@ -705,7 +711,7 @@ function bindMoleculeCards() {
 // IA — Analizar molécula
 // ─────────────────────────────────────────────
 async function askMol(name, fullName, pathways, category, studyCount) {
-  document.getElementById('si').value = name;
+  document.getElementById('search-input').value = name;
   srQuery = '';
   render();
   const panel = document.getElementById('ai-panel');
@@ -718,7 +724,7 @@ async function askMol(name, fullName, pathways, category, studyCount) {
 }
 
 async function searchIA(forceName, forceFull, forcePaths, forceCat, forceStudies) {
-  const q = forceName || document.getElementById('si').value.trim();
+  const q = forceName || document.getElementById('search-input').value.trim();
   if (!q || q === '__ping__') return;
 
   if (!forceName) {
@@ -767,7 +773,7 @@ async function searchIA(forceName, forceFull, forcePaths, forceCat, forceStudies
     const data = await res.json();
 
     area.innerHTML = `
-      <div class="ai-head">
+      <div class="ai-head molecule-detail-header">
         <div class="ai-mol-name">${mol.full_name || q}</div>
         <div class="ai-head-right">
           ${!isLatest ? `<button class="cbtn latest-btn" onclick="setModeAndSearch('${mol.name.replace(/'/g,"\\'")}')">🔍 ${tr('Ver novedades', 'See updates')}</button>` : ''}
@@ -777,12 +783,12 @@ async function searchIA(forceName, forceFull, forcePaths, forceCat, forceStudies
       <div class="ai-tags">
         ${mol.type==='natural'?'<span class="at tn">🌿 Natural</span>':''}
         ${mol.type==='synthetic'?'<span class="at ts">⚗️ Sintética</span>':''}
-        ${mol.category?`<span class="at tp">${mol.category}</span>`:''}
+        ${mol.category?`<span class="at tp molecule-category-tag">${mol.category}</span>`:''}
         ${(mol.pathways||[]).slice(0,4).map(p=>`<span class="at tp">${p}</span>`).join('')}
         ${mol.evidence_rating&&mol.evidence_rating!=='N/A'?`<span class="at te">Evidencia ${mol.evidence_rating}</span>`:''}
         ${isLatest?`<span class="at" style="background:rgba(0,152,255,.1);border:1px solid rgba(0,152,255,.25);color:var(--accent2)">🔍 ${tr('Búsqueda web', 'Web search')}</span>`:''}
       </div>
-      <div class="ai-body">${fmt(data.text || '')}</div>
+      <div class="ai-body detail-content">${fmt(data.text || '')}</div>
       <div class="ai-provider-note">Análisis generado con ${
         data.provider === 'anthropic'
           ? 'Claude (Anthropic)'
@@ -839,8 +845,8 @@ async function discoverNew() {
 // ─────────────────────────────────────────────
 function fmt(t) {
   return t
-    .replace(/^### (.+)$/gm, '<h3>$1</h3>')
-    .replace(/^## (.+)$/gm, '<h3>$1</h3>')
+    .replace(/^### (.+)$/gm, '<h3 class="detail-section-title">$1</h3>')
+    .replace(/^## (.+)$/gm, '<h3 class="detail-section-title">$1</h3>')
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
     .replace(/^- (.+)$/gm, '<li>$1</li>')
     .replace(/(<li>[^<]*<\/li>\n?)+/g, m => `<ul>${m}</ul>`)
@@ -872,10 +878,10 @@ function initToTop() {
 // ─────────────────────────────────────────────
 // EVENTS
 // ─────────────────────────────────────────────
-document.getElementById('si').addEventListener('keydown', e => {
+document.getElementById('search-input').addEventListener('keydown', e => {
   if (e.key === 'Enter') { srQuery = ''; searchIA(); }
 });
-document.getElementById('si').addEventListener('input', e => {
+document.getElementById('search-input').addEventListener('input', e => {
   srQuery = e.target.value.trim();
   if (DB) render();
 });
