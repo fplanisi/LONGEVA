@@ -1092,9 +1092,20 @@ function getClinicalRestrictionReasons() {
   return reasons;
 }
 
-function openClinicalBlockModal(reasons) {
-  const list = document.getElementById('clinical-reasons-list');
-  const defaults = [
+function openClinicalBlockModal(reasons, opts = {}) {
+  const title = opts.title || tr('[ RESTRICCIÓN DE SEGURIDAD CLÍNICA ]', '[ CLINICAL SAFETY RESTRICTION ]');
+  const body = opts.body || tr(
+    'El algoritmo de SOMA ha detectado variables en tu perfil que representan una contraindicación directa para el uso de péptidos en este momento. La biotecnología de alta precisión exige un entorno biológico específico para ser segura y efectiva. Proceder bajo tus condiciones actuales podría comprometer tu salud sistémica en lugar de optimizarla. Tu seguridad es nuestra prioridad absoluta.',
+    'SOMA algorithm has detected profile variables representing a direct contraindication for peptide use at this stage. High-precision biotechnology requires a specific biological environment to be safe and effective. Proceeding under current conditions may compromise systemic health instead of optimizing it. Your safety is our top priority.'
+  );
+  const bridge = opts.bridge || tr(
+    'No todo está perdido. Aunque el Biohacker Lab está restringido para vos hoy, nuestro Plan Personalizado (Nutracéuticos) y la Nutrición Epigenética están diseñados para estabilizar tu biología. Te sugerimos comenzar por optimizar tu base con suplementación de grado médico antes de intentar intervenciones de nivel 05.',
+    'Not everything is lost. Even if Biohacker Lab is restricted for you today, Personalized Plan (nutraceuticals) and Epigenetic Nutrition are designed to stabilize your biology first. We suggest optimizing your base with medical-grade supplementation before attempting level-05 interventions.'
+  );
+  const ctaLabel = opts.ctaLabel || tr('REPLEGAR A PROTOCOLO SEGURO', 'DEPLOY TO SAFE PROTOCOL');
+  const ctaHref = opts.ctaHref || '/stack-builder.html';
+  const defaultsOn = opts.includeDefaults !== false;
+  const defaults = defaultsOn ? [
     tr(
       'Interferencia detectada: antecedentes o marcadores no compatibles con la señalización celular de estos compuestos.',
       'Detected interference: history or markers not compatible with the cellular signaling profile of these compounds.'
@@ -1103,8 +1114,20 @@ function openClinicalBlockModal(reasons) {
       'Riesgo biológico: posibilidad de efectos adversos no deseados o exacerbación de condiciones preexistentes.',
       'Biological risk: potential for undesired adverse effects or exacerbation of pre-existing conditions.'
     )
-  ];
+  ] : [];
   const merged = [...defaults, ...(reasons || [])];
+  const titleEl = document.getElementById('clinical-block-title');
+  const textEl = document.getElementById('clinical-block-text');
+  const bridgeEl = document.getElementById('clinical-bridge-text');
+  const ctaEl = document.getElementById('clinical-safe-cta');
+  const list = document.getElementById('clinical-reasons-list');
+  if (titleEl) titleEl.textContent = title;
+  if (textEl) textEl.textContent = body;
+  if (bridgeEl) bridgeEl.textContent = bridge;
+  if (ctaEl) {
+    ctaEl.textContent = ctaLabel;
+    ctaEl.setAttribute('href', ctaHref);
+  }
   if (list) list.innerHTML = merged.map((r) => `<li>${escapeHtml(r)}</li>`).join('');
   document.getElementById('clinical-block-modal')?.classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -1305,24 +1328,44 @@ async function init() {
 
 async function generateProtocol() {
   if (!expertCheck.checked || !monitorCheck.checked || !consentCheck.checked) {
-    formMsg.textContent = tr(
-      'Completa las tres confirmaciones del paso final para continuar.',
-      'Complete the three final confirmations to continue.'
-    );
+    openClinicalBlockModal([
+      tr('Validación incompleta: faltan confirmaciones obligatorias del paso final.', 'Incomplete validation: required confirmations in final step are missing.')
+    ], {
+      title: tr('[ INTERVENCIÓN DE SEGURIDAD CLÍNICA ]', '[ CLINICAL SAFETY INTERVENTION ]'),
+      body: tr(
+        'Antes de generar un protocolo nivel 05 necesitamos consentimiento explícito sobre riesgos, monitoreo y alcance clínico.',
+        'Before generating a level-05 protocol we need explicit consent on risks, monitoring, and clinical scope.'
+      ),
+      includeDefaults: false
+    });
     return;
   }
   if (state.labs !== 'yes') {
-    formMsg.textContent = tr(
-      'Necesitas analíticas recientes para habilitar este módulo de riesgo.',
-      'Recent bloodwork is required to enable this high-risk module.'
-    );
+    openClinicalBlockModal([
+      tr('Interferencia detectada: ausencia de analíticas recientes (6 meses) para evaluar seguridad basal.', 'Detected interference: no recent bloodwork (6 months) to evaluate baseline safety.'),
+      tr('Riesgo biológico: no se puede estratificar respuesta ni seguridad sin biomarcadores mínimos.', 'Biological risk: response and safety cannot be stratified without minimum biomarkers.')
+    ], {
+      title: tr('[ INTERVENCIÓN DE SEGURIDAD CLÍNICA ]', '[ CLINICAL SAFETY INTERVENTION ]'),
+      body: tr(
+        'Este módulo requiere laboratorio reciente para proteger tu integridad biológica. Sin ese dato, el sistema no debe avanzar.',
+        'This module requires recent labs to protect your biological integrity. Without them, the system must not proceed.'
+      ),
+      includeDefaults: false
+    });
     return;
   }
   if (state.refrigeration !== 'yes') {
-    formMsg.textContent = tr(
-      'Se requiere refrigeración constante (2°C - 8°C) para continuar.',
-      'Constant refrigeration (2°C - 8°C) is required to continue.'
-    );
+    openClinicalBlockModal([
+      tr('Interferencia detectada: no hay cadena de frío operativa para conservación del compuesto.', 'Detected interference: no operational cold chain for compound preservation.'),
+      tr('Riesgo biológico: degradación del compuesto y pérdida de seguridad/eficacia.', 'Biological risk: compound degradation and loss of safety/efficacy.')
+    ], {
+      title: tr('[ INTERVENCIÓN DE SEGURIDAD CLÍNICA ]', '[ CLINICAL SAFETY INTERVENTION ]'),
+      body: tr(
+        'La conservación entre 2°C y 8°C es condición técnica mínima para un protocolo peptídico seguro.',
+        'Storage between 2°C and 8°C is a minimum technical condition for a safe peptide protocol.'
+      ),
+      includeDefaults: false
+    });
     return;
   }
   if (state.reconstitution === 'none' && !state.ack_reconstitution) {
