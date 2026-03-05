@@ -1740,6 +1740,12 @@ function loadDraftProfile() {
   } catch (_e) {}
 }
 
+function hasCompleteBioDraftForAutoRun() {
+  const requiredAnswered = ['labs', 'onc_history', 'autoimmune', 'reconstitution', 'refrigeration', 'subcutaneous']
+    .every((k) => String(state[k] || '').trim() !== '');
+  return requiredAnswered && expertCheck.checked && monitorCheck.checked && consentCheck.checked;
+}
+
 function openAlertOne() {
   document.getElementById('alert-modal-1')?.classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -1835,7 +1841,7 @@ async function init() {
       state.sessionId = 'dev_bypass';
       document.getElementById('protocol-catalog').style.display = 'none';
       document.getElementById('form').style.display = 'block';
-      if (localStorage.getItem(BIO_AUTORUN_KEY) === '1' && !genBtn.disabled) {
+      if ((localStorage.getItem(BIO_AUTORUN_KEY) === '1' || hasCompleteBioDraftForAutoRun()) && !genBtn.disabled) {
         localStorage.removeItem(BIO_AUTORUN_KEY);
         setTimeout(() => generateProtocol(), 80);
       }
@@ -1860,7 +1866,7 @@ async function init() {
     state.sessionId = localStorage.getItem(BIO_SESSION_KEY);
     document.getElementById('protocol-catalog').style.display = 'none';
     document.getElementById('form').style.display = 'block';
-    if (localStorage.getItem(BIO_AUTORUN_KEY) === '1' && !genBtn.disabled) {
+    if ((localStorage.getItem(BIO_AUTORUN_KEY) === '1' || hasCompleteBioDraftForAutoRun()) && !genBtn.disabled) {
       localStorage.removeItem(BIO_AUTORUN_KEY);
       setTimeout(() => generateProtocol(), 80);
     }
@@ -1886,7 +1892,7 @@ async function init() {
 
     document.getElementById('protocol-catalog').style.display = 'none';
     document.getElementById('form').style.display = 'block';
-    if (localStorage.getItem(BIO_AUTORUN_KEY) === '1' && !genBtn.disabled) {
+    if ((localStorage.getItem(BIO_AUTORUN_KEY) === '1' || hasCompleteBioDraftForAutoRun()) && !genBtn.disabled) {
       localStorage.removeItem(BIO_AUTORUN_KEY);
       setTimeout(() => generateProtocol(), 80);
     }
