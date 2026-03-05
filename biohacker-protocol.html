@@ -845,6 +845,24 @@ html[data-theme="light"] .hero-list b{color:#964848}
     </div>
   </div>
 </div>
+<div id="skill-modal-recon" class="alert-modal" aria-hidden="true">
+  <div class="alert-card" role="dialog" aria-modal="true" aria-labelledby="recon-title">
+    <div class="alert-title" id="recon-title">[ AVISO TÉCNICO: RECONSTITUCIÓN ]</div>
+    <p class="alert-text" id="recon-text">Si no tienes experiencia en reconstitución, debes aprender el procedimiento estéril (agua bacteriostática, técnica aséptica y cálculo de concentración) antes de iniciar. Recomendado: supervisión profesional en la primera preparación.</p>
+    <div class="alert-row">
+      <button class="btn btn-main" type="button" onclick="ackReconstitutionRisk()" id="recon-cta">ENTIENDO, CONTINUAR</button>
+    </div>
+  </div>
+</div>
+<div id="skill-modal-subq" class="alert-modal" aria-hidden="true">
+  <div class="alert-card" role="dialog" aria-modal="true" aria-labelledby="subq-title">
+    <div class="alert-title" id="subq-title">[ AVISO TÉCNICO: VÍA SUBCUTÁNEA ]</div>
+    <p class="alert-text" id="subq-text">Si tienes inconvenientes con la administración SC, debes recibir instrucción básica de técnica, higiene y rotación de sitio. Sin tolerancia operativa, el protocolo puede no ser viable.</p>
+    <div class="alert-row">
+      <button class="btn btn-main" type="button" onclick="ackSubqRisk()" id="subq-cta">ENTIENDO, CONTINUAR</button>
+    </div>
+  </div>
+</div>
 <footer class="legal-footer">
   <span id="footer-disclaimer">© 2026 LONGEVAPP · Desarrollo médico · Eficacia, seguridad y adherencia · Módulo experimental. No reemplaza evaluación médica profesional.</span>
   <span id="footer-links"><a href="/terms.html">Términos</a> · <a href="/privacy.html">Privacidad</a></span>
@@ -861,7 +879,9 @@ const state = {
   autoimmune: 'no',
   reconstitution: 'none',
   refrigeration: 'no',
-  subcutaneous: 'no'
+  subcutaneous: 'no',
+  ack_reconstitution: false,
+  ack_subq: false
 };
 let currentBioStep = 1;
 const THEME_KEY = 'longeva_theme';
@@ -900,9 +920,17 @@ document.getElementById('exp-grid').addEventListener('click', (e) => {
 document.getElementById('labs-select')?.addEventListener('change', (e) => { state.labs = e.target.value; updateGenerateEnabled(); });
 document.getElementById('onc-select')?.addEventListener('change', (e) => { state.onc_history = e.target.value; updateGenerateEnabled(); });
 document.getElementById('autoimmune-select')?.addEventListener('change', (e) => { state.autoimmune = e.target.value; updateGenerateEnabled(); });
-document.getElementById('reconstitution-select')?.addEventListener('change', (e) => { state.reconstitution = e.target.value; updateGenerateEnabled(); });
+document.getElementById('reconstitution-select')?.addEventListener('change', (e) => {
+  state.reconstitution = e.target.value;
+  if (state.reconstitution === 'none' && !state.ack_reconstitution) openReconSkillModal();
+  updateGenerateEnabled();
+});
 document.getElementById('fridge-select')?.addEventListener('change', (e) => { state.refrigeration = e.target.value; updateGenerateEnabled(); });
-document.getElementById('subq-select')?.addEventListener('change', (e) => { state.subcutaneous = e.target.value; updateGenerateEnabled(); });
+document.getElementById('subq-select')?.addEventListener('change', (e) => {
+  state.subcutaneous = e.target.value;
+  if (state.subcutaneous === 'no' && !state.ack_subq) openSubqSkillModal();
+  updateGenerateEnabled();
+});
 expertCheck.addEventListener('change', updateGenerateEnabled);
 monitorCheck.addEventListener('change', updateGenerateEnabled);
 consentCheck.addEventListener('change', updateGenerateEnabled);
@@ -916,11 +944,43 @@ function updateGenerateEnabled() {
     expertCheck.checked &&
     monitorCheck.checked &&
     consentCheck.checked &&
-    state.reconstitution !== 'none' &&
+    (state.reconstitution !== 'none' || state.ack_reconstitution) &&
     state.refrigeration === 'yes' &&
-    state.subcutaneous === 'yes' &&
+    (state.subcutaneous === 'yes' || state.ack_subq) &&
     state.labs === 'yes';
   genBtn.disabled = !strictReady;
+}
+
+function openReconSkillModal() {
+  document.getElementById('skill-modal-recon')?.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeReconSkillModal() {
+  document.getElementById('skill-modal-recon')?.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function ackReconstitutionRisk() {
+  state.ack_reconstitution = true;
+  closeReconSkillModal();
+  updateGenerateEnabled();
+}
+
+function openSubqSkillModal() {
+  document.getElementById('skill-modal-subq')?.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeSubqSkillModal() {
+  document.getElementById('skill-modal-subq')?.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function ackSubqRisk() {
+  state.ack_subq = true;
+  closeSubqSkillModal();
+  updateGenerateEnabled();
 }
 
 function goBioStep(n) {
@@ -958,6 +1018,8 @@ function saveDraftProfile() {
     reconstitution: state.reconstitution,
     refrigeration: state.refrigeration,
     subcutaneous: state.subcutaneous,
+    ack_reconstitution: !!state.ack_reconstitution,
+    ack_subq: !!state.ack_subq,
     contra: document.getElementById('contra')?.value || '',
     current: document.getElementById('current')?.value || '',
     expert: !!expertCheck.checked,
@@ -980,6 +1042,8 @@ function loadDraftProfile() {
     state.reconstitution = d.reconstitution || state.reconstitution;
     state.refrigeration = d.refrigeration || state.refrigeration;
     state.subcutaneous = d.subcutaneous || state.subcutaneous;
+    state.ack_reconstitution = !!d.ack_reconstitution;
+    state.ack_subq = !!d.ack_subq;
     if (document.getElementById('contra')) document.getElementById('contra').value = d.contra || '';
     if (document.getElementById('current')) document.getElementById('current').value = d.current || '';
     expertCheck.checked = !!d.expert;
@@ -1292,6 +1356,12 @@ function applyStaticI18n() {
   set('#alert2-text', 'Are you absolutely sure? By continuing, you acknowledge peptides are high-precision compounds and accept responsibility for storage, reconstitution, and administration.');
   set('#alert2-cancel', 'Back');
   set('#alert2-cta', 'YES, I ASSUME THE RISK');
+  set('#recon-title', '[ TECHNICAL NOTICE: RECONSTITUTION ]');
+  set('#recon-text', 'If you have no reconstitution experience, you should learn sterile procedure (bacteriostatic water, aseptic technique, and concentration calculation) before starting. Professional supervision is recommended for first preparation.');
+  set('#recon-cta', 'I UNDERSTAND, CONTINUE');
+  set('#subq-title', '[ TECHNICAL NOTICE: SUBCUTANEOUS ROUTE ]');
+  set('#subq-text', 'If you have issues with SC administration, receive basic instruction on technique, hygiene, and site rotation. Without operational tolerance, protocol viability may be limited.');
+  set('#subq-cta', 'I UNDERSTAND, CONTINUE');
   set('#paywall .label', 'Premium access (same paywall)');
   const email = document.getElementById('email');
   if (email) email.placeholder = 'you@email.com';
@@ -1459,11 +1529,15 @@ function initBioModal() {
 function initAlertModals() {
   const m1 = document.getElementById('alert-modal-1');
   const m2 = document.getElementById('alert-modal-2');
-  const closeAll = () => { closeAlertOne(); closeAlertTwo(); };
+  const m3 = document.getElementById('skill-modal-recon');
+  const m4 = document.getElementById('skill-modal-subq');
+  const closeAll = () => { closeAlertOne(); closeAlertTwo(); closeReconSkillModal(); closeSubqSkillModal(); };
   m1?.addEventListener('click', (e) => { if (e.target === m1) closeAlertOne(); });
   m2?.addEventListener('click', (e) => { if (e.target === m2) closeAlertTwo(); });
+  m3?.addEventListener('click', (e) => { if (e.target === m3) closeReconSkillModal(); });
+  m4?.addEventListener('click', (e) => { if (e.target === m4) closeSubqSkillModal(); });
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && (m1?.classList.contains('open') || m2?.classList.contains('open'))) closeAll();
+    if (e.key === 'Escape' && (m1?.classList.contains('open') || m2?.classList.contains('open') || m3?.classList.contains('open') || m4?.classList.contains('open'))) closeAll();
   });
 }
 
