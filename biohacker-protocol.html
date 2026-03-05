@@ -261,7 +261,7 @@ textarea { min-height:90px; resize:vertical; }
   </div>
 </div>
 <footer class="legal-footer">
-  <span id="footer-disclaimer">Módulo experimental. No reemplaza evaluación médica profesional.</span>
+  <span id="footer-disclaimer">Desarrollo médico · Eficacia, seguridad y adherencia · Módulo experimental. No reemplaza evaluación médica profesional.</span>
   <span id="footer-links"><a href="/terms.html">Términos</a> · <a href="/privacy.html">Privacidad</a></span>
 </footer>
 <button class="to-top" id="to-top" type="button" aria-label="Volver arriba">↑</button>
@@ -521,7 +521,7 @@ function applyStaticI18n() {
   const check = document.querySelector('.check label');
   if (check) check.textContent = 'I confirm that I understand this module is experimental and requires professional supervision.';
   set('#gen-btn', 'Generate experimental protocol');
-  set('#footer-disclaimer', 'Experimental module. Does not replace professional medical evaluation.');
+  set('#footer-disclaimer', 'Physician-developed · Efficacy, safety & adherence · Experimental module. Does not replace professional medical evaluation.');
   const footerLinks = document.getElementById('footer-links');
   if (footerLinks) footerLinks.innerHTML = '<a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a>';
 }
