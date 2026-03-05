@@ -240,17 +240,17 @@ h1{font-family:'DM Serif Display',serif;font-size:clamp(34px,5vw,52px);line-heig
     document.getElementById('nav-privacy').textContent = t.privacy;
     esBtn.classList.toggle('active', lang === 'es');
     enBtn.classList.toggle('active', lang === 'en');
-    localStorage.setItem('longevapp-lang', lang);
+    localStorage.setItem('longeva_lang', lang);
   }
 
   function applyTheme(theme){
     html.setAttribute('data-theme', theme);
-    localStorage.setItem('longevapp-theme', theme);
+    localStorage.setItem('longeva_theme', theme);
   }
 
-  const savedTheme = localStorage.getItem('longevapp-theme') || 'dark';
+  const savedTheme = localStorage.getItem('longeva_theme') || localStorage.getItem('longevapp-theme') || 'dark';
   applyTheme(savedTheme);
-  const savedLang = localStorage.getItem('longevapp-lang');
+  const savedLang = localStorage.getItem('longeva_lang') || localStorage.getItem('longevapp-lang');
   const browserLang = ((navigator.language || 'es').toLowerCase().startsWith('en')) ? 'en' : 'es';
   applyLang(savedLang || browserLang);
 
