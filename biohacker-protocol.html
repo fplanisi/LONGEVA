@@ -774,6 +774,7 @@ html[data-theme="light"] .hero-list b{color:#964848}
         <div class="strict-item">
           <label class="label" style="margin-top:0;margin-bottom:6px;" id="labs-label">Analíticas recientes (últimos 6 meses)</label>
           <select id="labs-select" class="risk-select">
+            <option value="">Selecciona una opción</option>
             <option value="no">No</option>
             <option value="yes">Sí</option>
           </select>
@@ -781,6 +782,7 @@ html[data-theme="light"] .hero-list b{color:#964848}
         <div class="strict-item">
           <label class="label" style="margin-top:0;margin-bottom:6px;" id="onc-label">Antecedentes oncológicos personales/familiares directos</label>
           <select id="onc-select" class="risk-select">
+            <option value="">Selecciona una opción</option>
             <option value="none">No</option>
             <option value="family">Sí, familiares directos</option>
             <option value="personal">Sí, personales</option>
@@ -789,6 +791,7 @@ html[data-theme="light"] .hero-list b{color:#964848}
         <div class="strict-item">
           <label class="label" style="margin-top:0;margin-bottom:6px;" id="autoimmune-label">Enfermedad autoinmune activa</label>
           <select id="autoimmune-select" class="risk-select">
+            <option value="">Selecciona una opción</option>
             <option value="no">No</option>
             <option value="yes">Sí</option>
           </select>
@@ -830,6 +833,7 @@ html[data-theme="light"] .hero-list b{color:#964848}
         <div class="strict-item">
           <label class="label" style="margin-top:0;margin-bottom:6px;" id="reconstitution-label">Experiencia en reconstitución con agua bacteriostática</label>
           <select id="reconstitution-select" class="risk-select">
+            <option value="">Selecciona una opción</option>
             <option value="none">Ninguna</option>
             <option value="basic">Básica</option>
             <option value="advanced">Avanzada</option>
@@ -838,6 +842,7 @@ html[data-theme="light"] .hero-list b{color:#964848}
         <div class="strict-item">
           <label class="label" style="margin-top:0;margin-bottom:6px;" id="fridge-label">Refrigeración constante (2°C - 8°C)</label>
           <select id="fridge-select" class="risk-select">
+            <option value="">Selecciona una opción</option>
             <option value="no">No</option>
             <option value="yes">Sí</option>
           </select>
@@ -845,6 +850,7 @@ html[data-theme="light"] .hero-list b{color:#964848}
         <div class="strict-item">
           <label class="label" style="margin-top:0;margin-bottom:6px;" id="subq-label">Tolerancia a administración subcutánea</label>
           <select id="subq-select" class="risk-select">
+            <option value="">Selecciona una opción</option>
             <option value="no">No</option>
             <option value="yes">Sí</option>
           </select>
@@ -973,12 +979,12 @@ const state = {
   sessionId: '',
   objective: 'recovery',
   experience: 'intermediate',
-  labs: 'no',
-  onc_history: 'none',
-  autoimmune: 'no',
-  reconstitution: 'none',
-  refrigeration: 'no',
-  subcutaneous: 'no',
+  labs: '',
+  onc_history: '',
+  autoimmune: '',
+  reconstitution: '',
+  refrigeration: '',
+  subcutaneous: '',
   ack_reconstitution: false,
   ack_subq: false,
   ack_no_labs_followup: false
@@ -1339,6 +1345,26 @@ async function init() {
 }
 
 async function generateProtocol() {
+  const requiredAnswered = ['labs', 'onc_history', 'autoimmune', 'reconstitution', 'refrigeration', 'subcutaneous']
+    .every((k) => String(state[k] || '').trim() !== '');
+  if (!requiredAnswered) {
+    openClinicalBlockModal([
+      tr('Validación incompleta: debes responder todas las variables del cuestionario técnico.', 'Incomplete validation: all technical questionnaire variables must be answered.')
+    ], {
+      title: tr('[ INTERVENCIÓN DE SEGURIDAD CLÍNICA ]', '[ CLINICAL SAFETY INTERVENTION ]'),
+      body: tr(
+        'Para mantener rigor clínico, el sistema requiere todas las respuestas antes de evaluar seguridad y generar protocolo.',
+        'To preserve clinical rigor, the system requires all answers before evaluating safety and generating a protocol.'
+      ),
+      includeDefaults: false,
+      ctaLabel: tr('VOLVER AL CUESTIONARIO', 'RETURN TO QUESTIONNAIRE'),
+      onCta: () => {
+        closeClinicalBlockModal();
+        goBioStep(1);
+      }
+    });
+    return;
+  }
   if (!expertCheck.checked || !monitorCheck.checked || !consentCheck.checked) {
     openClinicalBlockModal([
       tr('Validación incompleta: faltan confirmaciones obligatorias del paso final.', 'Incomplete validation: required confirmations in final step are missing.')
@@ -1631,17 +1657,17 @@ function applyStaticI18n() {
   set('#fridge-label', 'Constant refrigeration (2°C - 8°C)');
   set('#subq-label', 'Subcutaneous administration tolerance');
   const labsSelect = document.getElementById('labs-select');
-  if (labsSelect) labsSelect.innerHTML = '<option value="no">No</option><option value="yes">Yes</option>';
+  if (labsSelect) labsSelect.innerHTML = '<option value="">Select an option</option><option value="no">No</option><option value="yes">Yes</option>';
   const oncSelect = document.getElementById('onc-select');
-  if (oncSelect) oncSelect.innerHTML = '<option value="none">No</option><option value="family">Yes, direct family</option><option value="personal">Yes, personal</option>';
+  if (oncSelect) oncSelect.innerHTML = '<option value="">Select an option</option><option value="none">No</option><option value="family">Yes, direct family</option><option value="personal">Yes, personal</option>';
   const autoimmuneSelect = document.getElementById('autoimmune-select');
-  if (autoimmuneSelect) autoimmuneSelect.innerHTML = '<option value="no">No</option><option value="yes">Yes</option>';
+  if (autoimmuneSelect) autoimmuneSelect.innerHTML = '<option value="">Select an option</option><option value="no">No</option><option value="yes">Yes</option>';
   const reconstitutionSelect = document.getElementById('reconstitution-select');
-  if (reconstitutionSelect) reconstitutionSelect.innerHTML = '<option value="none">None</option><option value="basic">Basic</option><option value="advanced">Advanced</option>';
+  if (reconstitutionSelect) reconstitutionSelect.innerHTML = '<option value="">Select an option</option><option value="none">None</option><option value="basic">Basic</option><option value="advanced">Advanced</option>';
   const fridgeSelect = document.getElementById('fridge-select');
-  if (fridgeSelect) fridgeSelect.innerHTML = '<option value="no">No</option><option value="yes">Yes</option>';
+  if (fridgeSelect) fridgeSelect.innerHTML = '<option value="">Select an option</option><option value="no">No</option><option value="yes">Yes</option>';
   const subqSelect = document.getElementById('subq-select');
-  if (subqSelect) subqSelect.innerHTML = '<option value="no">No</option><option value="yes">Yes</option>';
+  if (subqSelect) subqSelect.innerHTML = '<option value="">Select an option</option><option value="no">No</option><option value="yes">Yes</option>';
   const contra = document.getElementById('contra');
   if (contra) contra.placeholder = 'E.g. hypertension, anticoagulants, oncological history...';
   const current = document.getElementById('current');
