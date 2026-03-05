@@ -961,15 +961,8 @@ genBtn.addEventListener('click', generateProtocol);
 document.querySelector('#objective-grid .opt[data-value="recovery"]')?.classList.add('active');
 
 function updateGenerateEnabled() {
-  const strictReady =
-    expertCheck.checked &&
-    monitorCheck.checked &&
-    consentCheck.checked &&
-    (state.reconstitution !== 'none' || state.ack_reconstitution) &&
-    state.refrigeration === 'yes' &&
-    (state.subcutaneous === 'yes' || state.ack_subq) &&
-    state.labs === 'yes';
-  genBtn.disabled = !strictReady;
+  // Keep CTA clickable; validations are evaluated on click to show explicit guidance modals/messages.
+  genBtn.disabled = false;
 }
 
 function openReconSkillModal() {
@@ -1222,6 +1215,36 @@ async function init() {
 }
 
 async function generateProtocol() {
+  if (!expertCheck.checked || !monitorCheck.checked || !consentCheck.checked) {
+    formMsg.textContent = tr(
+      'Completa las tres confirmaciones del paso final para continuar.',
+      'Complete the three final confirmations to continue.'
+    );
+    return;
+  }
+  if (state.labs !== 'yes') {
+    formMsg.textContent = tr(
+      'Necesitas analíticas recientes para habilitar este módulo de riesgo.',
+      'Recent bloodwork is required to enable this high-risk module.'
+    );
+    return;
+  }
+  if (state.refrigeration !== 'yes') {
+    formMsg.textContent = tr(
+      'Se requiere refrigeración constante (2°C - 8°C) para continuar.',
+      'Constant refrigeration (2°C - 8°C) is required to continue.'
+    );
+    return;
+  }
+  if (state.reconstitution === 'none' && !state.ack_reconstitution) {
+    openReconSkillModal();
+    return;
+  }
+  if (state.subcutaneous === 'no' && !state.ack_subq) {
+    openSubqSkillModal();
+    return;
+  }
+
   const blockingReasons = getClinicalRestrictionReasons();
   if (blockingReasons.length) {
     openClinicalBlockModal(blockingReasons);
