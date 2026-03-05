@@ -980,7 +980,8 @@ const state = {
   refrigeration: 'no',
   subcutaneous: 'no',
   ack_reconstitution: false,
-  ack_subq: false
+  ack_subq: false,
+  ack_no_labs_followup: false
 };
 let currentBioStep = 1;
 const THEME_KEY = 'longeva_theme';
@@ -1104,6 +1105,7 @@ function openClinicalBlockModal(reasons, opts = {}) {
   );
   const ctaLabel = opts.ctaLabel || tr('REPLEGAR A PROTOCOLO SEGURO', 'DEPLOY TO SAFE PROTOCOL');
   const ctaHref = opts.ctaHref || '/stack-builder.html';
+  const onCta = typeof opts.onCta === 'function' ? opts.onCta : null;
   const defaultsOn = opts.includeDefaults !== false;
   const defaults = defaultsOn ? [
     tr(
@@ -1127,6 +1129,14 @@ function openClinicalBlockModal(reasons, opts = {}) {
   if (ctaEl) {
     ctaEl.textContent = ctaLabel;
     ctaEl.setAttribute('href', ctaHref);
+    ctaEl.onclick = null;
+    if (onCta) {
+      ctaEl.setAttribute('href', '#');
+      ctaEl.onclick = (e) => {
+        e.preventDefault();
+        onCta();
+      };
+    }
   }
   if (list) list.innerHTML = merged.map((r) => `<li>${escapeHtml(r)}</li>`).join('');
   document.getElementById('clinical-block-modal')?.classList.add('open');
@@ -1175,6 +1185,7 @@ function saveDraftProfile() {
     subcutaneous: state.subcutaneous,
     ack_reconstitution: !!state.ack_reconstitution,
     ack_subq: !!state.ack_subq,
+    ack_no_labs_followup: !!state.ack_no_labs_followup,
     contra: document.getElementById('contra')?.value || '',
     current: document.getElementById('current')?.value || '',
     expert: !!expertCheck.checked,
@@ -1199,6 +1210,7 @@ function loadDraftProfile() {
     state.subcutaneous = d.subcutaneous || state.subcutaneous;
     state.ack_reconstitution = !!d.ack_reconstitution;
     state.ack_subq = !!d.ack_subq;
+    state.ack_no_labs_followup = !!d.ack_no_labs_followup;
     if (document.getElementById('contra')) document.getElementById('contra').value = d.contra || '';
     if (document.getElementById('current')) document.getElementById('current').value = d.current || '';
     expertCheck.checked = !!d.expert;
@@ -1340,17 +1352,24 @@ async function generateProtocol() {
     });
     return;
   }
-  if (state.labs !== 'yes') {
+  if (state.labs !== 'yes' && !state.ack_no_labs_followup) {
     openClinicalBlockModal([
       tr('Interferencia detectada: ausencia de analíticas recientes (6 meses) para evaluar seguridad basal.', 'Detected interference: no recent bloodwork (6 months) to evaluate baseline safety.'),
-      tr('Riesgo biológico: no se puede estratificar respuesta ni seguridad sin biomarcadores mínimos.', 'Biological risk: response and safety cannot be stratified without minimum biomarkers.')
+      tr('Recomendación clínica: iniciar solo con seguimiento clínico estrecho y solicitud de laboratorio de control temprano.', 'Clinical recommendation: proceed only with close medical follow-up and early control labs request.')
     ], {
       title: tr('[ INTERVENCIÓN DE SEGURIDAD CLÍNICA ]', '[ CLINICAL SAFETY INTERVENTION ]'),
       body: tr(
-        'Este módulo requiere laboratorio reciente para proteger tu integridad biológica. Sin ese dato, el sistema no debe avanzar.',
-        'This module requires recent labs to protect your biological integrity. Without them, the system must not proceed.'
+        'No contar con analíticas recientes aumenta la incertidumbre de seguridad. Si decides continuar, recomendamos monitoreo clínico estrecho desde el inicio del protocolo.',
+        'Lack of recent labs increases safety uncertainty. If you choose to proceed, we recommend close clinical follow-up from protocol start.'
       ),
-      includeDefaults: false
+      includeDefaults: false,
+      ctaLabel: tr('CONTINUAR CON SEGUIMIENTO ESTRECHO', 'CONTINUE WITH CLOSE FOLLOW-UP'),
+      onCta: () => {
+        state.ack_no_labs_followup = true;
+        saveDraftProfile();
+        closeClinicalBlockModal();
+        setTimeout(() => generateProtocol(), 80);
+      }
     });
     return;
   }
@@ -1380,7 +1399,6 @@ async function generateProtocol() {
   const blockingReasons = getClinicalRestrictionReasons();
   if (blockingReasons.length) {
     openClinicalBlockModal(blockingReasons);
-    formMsg.textContent = tr('Acceso restringido por seguridad clínica.', 'Access restricted for clinical safety.');
     return;
   }
   if (!state.sessionId) {
