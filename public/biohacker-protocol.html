@@ -560,6 +560,38 @@ html[data-theme="light"] .hero-list b{color:#964848}
     background:#fff!important;
     box-shadow:0 4px 20px rgba(0,0,0,.06);
   }
+  .bio-loading {
+    text-align:center;
+    padding:64px 24px 70px;
+  }
+  .bio-loading-icon {
+    font-size:48px;
+    margin-bottom:16px;
+    color:var(--danger);
+    text-shadow:0 0 22px rgba(200,70,70,.24);
+    animation:breathe 2s ease-in-out infinite;
+  }
+  .bio-loading-title {
+    font-family:'DM Serif Display',serif;
+    font-size:24px;
+    font-weight:400;
+    margin-bottom:8px;
+    color:var(--text);
+  }
+  .bio-loading-sub {
+    font-family:'DM Mono',monospace;
+    font-size:10px;
+    letter-spacing:.08em;
+    color:var(--muted);
+    margin-bottom:24px;
+  }
+  .bio-loading-steps {
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    max-width:280px;
+    margin:0 auto;
+  }
 
   /* Phase blocks: expedition log entries */
   .phase {
@@ -1992,6 +2024,36 @@ async function generateProtocol() {
   }
   formMsg.textContent = tr('Generando protocolo...', 'Generating protocol...');
   genBtn.disabled = true;
+  const resultOut = document.getElementById('result');
+  if (resultOut) {
+    resultOut.style.display = 'block';
+    resultOut.innerHTML = `<div class="bio-loading">
+      <div class="bio-loading-icon">☣</div>
+      <div class="bio-loading-title">${tr('Procesando protocolo experimental...', 'Processing experimental protocol...')}</div>
+      <div class="bio-loading-sub">${tr('Evaluando riesgo, fases y monitoreo', 'Evaluating risk, phases, and monitoring')}</div>
+      <div class="bio-loading-steps">
+        <div class="lstep active" id="bls1"><div class="lstep-dot"></div>${tr('Filtrando seguridad clínica', 'Filtering clinical safety')}</div>
+        <div class="lstep" id="bls2"><div class="lstep-dot"></div>${tr('Modelando estrategia peptídica', 'Modeling peptide strategy')}</div>
+        <div class="lstep" id="bls3"><div class="lstep-dot"></div>${tr('Definiendo fases y dosis', 'Defining phases and doses')}</div>
+        <div class="lstep" id="bls4"><div class="lstep-dot"></div>${tr('Preparando monitoreo y red flags', 'Preparing monitoring and red flags')}</div>
+      </div>
+    </div>`;
+  }
+  document.getElementById('form').style.display = 'none';
+
+  const bioSteps = ['bls1','bls2','bls3','bls4'];
+  let bioStepIndex = 0;
+  const bioInterval = setInterval(() => {
+    const activeIdx = bioStepIndex % bioSteps.length;
+    bioSteps.forEach((id, idx) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.classList.remove('active', 'done');
+      if (idx === activeIdx) el.classList.add('active');
+      else if (idx < activeIdx) el.classList.add('done');
+    });
+    bioStepIndex += 1;
+  }, 700);
 
   const profile = {
     objective: state.objective,
@@ -2020,10 +2082,19 @@ async function generateProtocol() {
       body: JSON.stringify({ session_id: state.sessionId, profile }),
     });
     const data = await res.json();
+    clearInterval(bioInterval);
     if (!res.ok) throw new Error(data.error || tr('No se pudo generar protocolo', 'Could not generate protocol'));
+    if (!data?.protocol || typeof data.protocol !== 'object') {
+      throw new Error(tr('Respuesta inválida del motor biohacker.', 'Invalid biohacker engine response.'));
+    }
     renderResult(data.protocol);
     formMsg.textContent = '';
   } catch (err) {
+    clearInterval(bioInterval);
+    if (resultOut) {
+      resultOut.style.display = 'block';
+      resultOut.innerHTML = `<div class="err-box">⚠ ${tr('Error generando el protocolo', 'Error generating protocol')}: ${err.message}<br><br>${tr('Verifica variables de entorno y endpoint /api/biohacker-protocol.', 'Check environment variables and /api/biohacker-protocol endpoint.')}</div>`;
+    }
     formMsg.textContent = `${tr('Error', 'Error')}: ${err.message}`;
     genBtn.disabled = false;
   }

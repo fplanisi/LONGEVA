@@ -587,6 +587,8 @@ input[type=range]::-webkit-slider-thumb {
 html[data-theme="light"] .affiliate-disclosure { color: var(--muted); }
 .action-primary { background: var(--accent); color: var(--on-accent); border: none; }
 .action-primary:hover { filter: brightness(1.06); transform: translateY(-1px); }
+.action-bundle { background: rgba(82,184,255,.12); border: 1px solid rgba(82,184,255,.32); color: var(--accent2); }
+.action-bundle:hover { border-color: rgba(82,184,255,.55); color: var(--text); transform: translateY(-1px); }
 .action-secondary { background: transparent; border: 1px solid var(--border2); color: var(--muted); }
 .action-secondary:hover { border-color: var(--muted); color: var(--text); }
 
@@ -1811,6 +1813,9 @@ function renderStack(stack, budgetLabel) {
   const hasWeeklyPlan = isFoodOnly && weekDays.every(d => weekly[d] && typeof weekly[d] === 'object');
   const dietExtras = Array.isArray(stack.diet_extras) ? stack.diet_extras.filter(Boolean) : [];
   const confidence = computeStackConfidence(stack);
+  const bundleItems = ['morning','afternoon','night']
+    .flatMap((k) => (stack[k] || []).map((item) => item?.name || item?.full || ''))
+    .filter(Boolean);
 
   const sections = [
     { key: 'morning', icon: '🌅', label: tr('Mañana', 'Morning'), sub: tr('En ayunas o con desayuno', 'Fasted or with breakfast'), cls: 'time-morning' },
@@ -1974,11 +1979,12 @@ function renderStack(stack, budgetLabel) {
 
   // Actions
   html += `<div class="actions-row">
+    <button class="action-btn action-bundle" onclick="buyFullStackBundle()">${tr('Comprar stack completo ↗', 'Buy full stack ↗')}</button>
     <button class="action-btn action-primary" onclick="downloadExecutivePDF()">📋 ${tr('PDF ejecutivo', 'Executive PDF')}</button>
     <button class="action-btn action-secondary" onclick="window.print()">🖨 ${tr('Imprimir vista completa', 'Print full view')}</button>
     <button class="action-btn action-secondary" onclick="location.reload()">↺ ${tr('Nuevo stack', 'New stack')}</button>
   </div>
-  <div class="affiliate-disclosure">${tr('Los enlaces "Comprar" son de afiliado. LONGEVAPP puede recibir una comisión sin costo adicional para ti. Esto no influye en las recomendaciones del protocolo, que son generadas exclusivamente por criterio clínico.', 'Buy links are affiliate links. LONGEVAPP may receive a commission at no extra cost to you. This does not influence protocol recommendations, which are generated solely on clinical criteria.')}</div>`;
+  <div class="affiliate-disclosure">${tr('Los enlaces "Comprar" son de afiliado. LONGEVAPP puede recibir una comisión sin costo adicional para ti. Esto no influye en las recomendaciones del protocolo, que son generadas exclusivamente por criterio clínico. El botón de compra total agrupa el stack para dejar listo un futuro carrito/partnership.', 'Buy links are affiliate links. LONGEVAPP may receive a commission at no extra cost to you. This does not influence protocol recommendations, which are generated solely on clinical criteria. The full-stack buy button groups the protocol to support a future cart/partnership flow.')}</div>`;
 
   // Disclaimer
   html += `<div class="disclaimer">⚕ ${tr('AVISO MÉDICO: Este stack es informativo y está basado en evidencia científica disponible. No reemplaza el consejo médico profesional. Consulta con tu médico antes de comenzar cualquier protocolo de suplementación, especialmente si tienes condiciones de salud o tomas medicamentos. LONGEVAPP no se hace responsable del uso de esta información.', 'MEDICAL NOTICE: This stack is informational and based on currently available scientific evidence. It does not replace professional medical advice. Consult your physician before starting any supplementation protocol, especially with health conditions or medications. LONGEVAPP is not liable for use of this information.')}</div>`;
@@ -1992,6 +1998,7 @@ function renderStack(stack, budgetLabel) {
   html += `</div>`;
 
   out.innerHTML = html;
+  out.dataset.bundleItems = JSON.stringify(bundleItems);
   out.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
@@ -2204,6 +2211,22 @@ function loadStackVersion(index) {
 
 function normalizeName(value) {
   return String(value || '').trim().toLowerCase();
+}
+
+function buyFullStackBundle() {
+  const out = document.getElementById('stack-output');
+  if (!out) return;
+  let items = [];
+  try {
+    items = JSON.parse(out.dataset.bundleItems || '[]');
+  } catch (_e) {}
+  if (!Array.isArray(items) || !items.length) {
+    alert(tr('Primero genera un stack válido.', 'Generate a valid stack first.'));
+    return;
+  }
+  const query = items.join(', ');
+  const url = `/api/partner-link?item=${encodeURIComponent(query)}`;
+  window.open(url, '_blank', 'noopener,noreferrer');
 }
 
 function applyStaticI18n() {
