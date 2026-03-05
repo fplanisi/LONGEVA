@@ -74,8 +74,10 @@
   .badge-live{background:var(--a2s);border:1px solid var(--a2);color:var(--a2)}
   .dot{width:5px;height:5px;border-radius:50%;background:var(--a2);animation:pulse 2s infinite}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-  .theme-btn{width:30px;height:30px;border-radius:8px;border:1px solid var(--border2);background:transparent;color:var(--mu);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s;flex-shrink:0}
-  .theme-btn:hover{border-color:var(--a1);color:var(--a1)}
+  .theme-switch{display:flex;gap:4px;align-items:center;padding:3px;border:1px solid var(--border);border-radius:999px}
+  .theme-btn{border:none;background:transparent;color:var(--mu);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.02em;padding:4px 7px;border-radius:999px;cursor:pointer;line-height:1}
+  .theme-btn:hover{color:var(--a1)}
+  .theme-btn.active{color:var(--tx);background:var(--a1s)}
   .lang-switch{display:flex;gap:4px;align-items:center;padding:3px;border:1px solid var(--border);border-radius:999px}
   .lang-btn{border:none;background:transparent;color:var(--mu);font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.08em;padding:4px 7px;border-radius:999px;cursor:pointer;transition:.2s}
   .lang-btn.active{color:var(--tx);background:var(--a1s)}
@@ -339,10 +341,13 @@
     </div>
     <div class="status-row">
       <div class="badge badge-live"><div class="dot"></div><span id="badge-txt">Inicio</span></div>
-      <button class="theme-btn" id="theme-btn" onclick="toggleTheme()" title="Cambiar modo">◑</button>
       <div class="lang-switch" aria-label="Language switcher">
         <button class="lang-btn" id="lang-es" type="button" onclick="setLanguage('es')">ES</button>
         <button class="lang-btn" id="lang-en" type="button" onclick="setLanguage('en')">EN</button>
+      </div>
+      <div class="theme-switch" aria-label="Theme switcher">
+        <button class="theme-btn" id="theme-light" type="button" onclick="setTheme('light')">☀</button>
+        <button class="theme-btn" id="theme-dark" type="button" onclick="setTheme('dark')">◑</button>
       </div>
       <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="topnav">
         <span></span><span></span><span></span>
@@ -425,19 +430,16 @@
 
 <script>
 /* ── THEME ── */
-(function(){
-  var saved = localStorage.getItem('longeva_theme') || 'dark';
-  document.documentElement.setAttribute('data-theme', saved);
-  var btn = document.getElementById('theme-btn');
-  if(btn) btn.textContent = saved === 'dark' ? '◑' : '◐';
-})();
-function toggleTheme(){
-  var html = document.documentElement;
-  var next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-  html.setAttribute('data-theme', next);
+function applyTheme(theme){
+  var next = theme === 'light' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  document.getElementById('theme-light')?.classList.toggle('active', next === 'light');
+  document.getElementById('theme-dark')?.classList.toggle('active', next === 'dark');
+}
+function setTheme(theme){
+  var next = theme === 'light' ? 'light' : 'dark';
   localStorage.setItem('longeva_theme', next);
-  var btn = document.getElementById('theme-btn');
-  if(btn) btn.textContent = next === 'dark' ? '◑' : '◐';
+  applyTheme(next);
 }
 
 /* ── I18N ── */
@@ -501,6 +503,8 @@ function setLanguage(lang){
 
 /* ── INIT ── */
 (function init(){
+  var savedTheme = localStorage.getItem('longeva_theme') || 'dark';
+  applyTheme(savedTheme);
   var saved = localStorage.getItem('longeva_lang');
   IS_EN = saved ? saved === 'en' : String(navigator.language || 'es').toLowerCase().startsWith('en');
   applyCopy();
