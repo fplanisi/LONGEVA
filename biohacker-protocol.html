@@ -325,6 +325,19 @@ html[data-theme="light"] .hero-list b{color:#964848}
   .protocol-item h3{font-size:14px;margin:0 0 6px;color:var(--text)}
   .protocol-item p{font-size:12px;line-height:1.45;color:var(--muted);margin:0}
   .strict-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .progress-wrap { margin-bottom: 18px; }
+  .progress-line { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .step-dot { width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid var(--border2); background: transparent; display: flex; align-items: center; justify-content: center; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); transition: .3s; flex-shrink: 0; }
+  .step-dot.active { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+  .step-dot.done { border-color: var(--accent); background: var(--accent); color: var(--on-accent); font-weight: 700; }
+  .step-line { flex: 1; height: 1.5px; background: var(--border2); }
+  .step-line.done { background: var(--accent); }
+  .progress-label { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; }
+  .step-card { border: 1px solid var(--border); border-radius: 8px; background: rgba(255,255,255,.01); padding: 14px; }
+  .step-num { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--danger); margin-bottom:8px; }
+  .step-q { font-size:22px; margin-bottom:6px; }
+  .step-hint { color:var(--muted); font-size:12px; margin-bottom:12px; }
+  .step-nav { display:flex; justify-content:space-between; align-items:center; gap:8px; margin-top:12px; }
   .strict-item{
     border:1px solid rgba(190,60,60,.22);
     background:rgba(150,30,30,.06);
@@ -663,97 +676,139 @@ html[data-theme="light"] .hero-list b{color:#964848}
     <div class="msg" id="pay-msg"></div>
   </div>
 
-  <div id="form" class="card">
-    <label class="label">Objetivo principal</label>
-    <div class="grid" id="objective-grid">
-      <button class="opt" data-value="recovery">Reparación tisular</button>
-      <button class="opt" data-value="cognitive">Optimización cognitiva</button>
-      <button class="opt" data-value="longevity">Bioregulador de longevidad</button>
-      <button class="opt" data-value="body_comp">Composición corporal</button>
+  <div id="form" class="card" style="display:none;">
+    <div class="progress-wrap" id="bio-progress-wrap">
+      <div class="progress-line">
+        <div class="step-dot active" id="bsd1">1</div><div class="step-line" id="bsl1"></div>
+        <div class="step-dot" id="bsd2">2</div><div class="step-line" id="bsl2"></div>
+        <div class="step-dot" id="bsd3">3</div><div class="step-line" id="bsl3"></div>
+        <div class="step-dot" id="bsd4">4</div>
+      </div>
+      <div class="progress-label" id="bio-prog-label">Paso 1 de 4 — Biometría y marcadores</div>
     </div>
 
-    <label class="label" style="margin-top:16px;">Nivel de experiencia</label>
-    <div class="grid" id="exp-grid">
-      <button class="opt active" data-value="intermediate">Intermedio</button>
-      <button class="opt" data-value="advanced">Avanzado</button>
-    </div>
-
-    <label class="label" style="margin-top:16px;">Condiciones / medicacion actual</label>
-    <textarea id="contra" placeholder="Ej: hipertension, anticoagulantes, antecedente oncologico..."></textarea>
-
-    <label class="label" style="margin-top:16px;">Protocolo actual (suplementos/peptidos)</label>
-    <textarea id="current" placeholder="Ej: Creatina 5g, omega 3, no peptidos aun..."></textarea>
-
-    <div class="strict-title" id="strict-title">Cuestionario técnico de péptidos</div>
-    <div class="strict-grid">
-      <div class="strict-item">
-        <label class="label" style="margin-top:0;margin-bottom:6px;" id="labs-label">Analíticas recientes (últimos 6 meses)</label>
-        <select id="labs-select" class="risk-select">
-          <option value="no">No</option>
-          <option value="yes">Sí</option>
-        </select>
+    <div class="step-card" id="bstep1">
+      <div class="step-num">Paso 1</div>
+      <h3 class="step-q" id="bio-step1-title">Biometría y marcadores</h3>
+      <p class="step-hint" id="bio-step1-hint">Filtrado clínico mínimo para protocolos con péptidos.</p>
+      <div class="strict-grid">
+        <div class="strict-item">
+          <label class="label" style="margin-top:0;margin-bottom:6px;" id="labs-label">Analíticas recientes (últimos 6 meses)</label>
+          <select id="labs-select" class="risk-select">
+            <option value="no">No</option>
+            <option value="yes">Sí</option>
+          </select>
+        </div>
+        <div class="strict-item">
+          <label class="label" style="margin-top:0;margin-bottom:6px;" id="onc-label">Antecedentes oncológicos personales/familiares directos</label>
+          <select id="onc-select" class="risk-select">
+            <option value="none">No</option>
+            <option value="family">Sí, familiares directos</option>
+            <option value="personal">Sí, personales</option>
+          </select>
+        </div>
+        <div class="strict-item">
+          <label class="label" style="margin-top:0;margin-bottom:6px;" id="autoimmune-label">Enfermedad autoinmune activa</label>
+          <select id="autoimmune-select" class="risk-select">
+            <option value="no">No</option>
+            <option value="yes">Sí</option>
+          </select>
+        </div>
       </div>
-      <div class="strict-item">
-        <label class="label" style="margin-top:0;margin-bottom:6px;" id="onc-label">Antecedentes oncológicos personales/familiares directos</label>
-        <select id="onc-select" class="risk-select">
-          <option value="none">No</option>
-          <option value="family">Sí, familiares directos</option>
-          <option value="personal">Sí, personales</option>
-        </select>
-      </div>
-      <div class="strict-item">
-        <label class="label" style="margin-top:0;margin-bottom:6px;" id="autoimmune-label">Enfermedad autoinmune activa</label>
-        <select id="autoimmune-select" class="risk-select">
-          <option value="no">No</option>
-          <option value="yes">Sí</option>
-        </select>
-      </div>
-      <div class="strict-item">
-        <label class="label" style="margin-top:0;margin-bottom:6px;" id="reconstitution-label">Experiencia en reconstitución con agua bacteriostática</label>
-        <select id="reconstitution-select" class="risk-select">
-          <option value="none">Ninguna</option>
-          <option value="basic">Básica</option>
-          <option value="advanced">Avanzada</option>
-        </select>
-      </div>
-      <div class="strict-item">
-        <label class="label" style="margin-top:0;margin-bottom:6px;" id="fridge-label">Refrigeración constante (2°C - 8°C)</label>
-        <select id="fridge-select" class="risk-select">
-          <option value="no">No</option>
-          <option value="yes">Sí</option>
-        </select>
-      </div>
-      <div class="strict-item">
-        <label class="label" style="margin-top:0;margin-bottom:6px;" id="subq-label">Tolerancia a administración subcutánea</label>
-        <select id="subq-select" class="risk-select">
-          <option value="no">No</option>
-          <option value="yes">Sí</option>
-        </select>
+      <div class="step-nav">
+        <button class="btn-ghost" type="button" disabled>←</button>
+        <button class="btn btn-main" type="button" id="bio-next1" onclick="goBioStep(2)">Siguiente →</button>
       </div>
     </div>
 
-    <div class="row">
-      <div class="check">
-        <input id="expert-check" type="checkbox">
-        <label for="expert-check">Confirmo que entiendo que este modulo es experimental y requiere supervision profesional.</label>
+    <div class="step-card" id="bstep2" style="display:none;">
+      <div class="step-num">Paso 2</div>
+      <h3 class="step-q" id="bio-step2-title">Objetivo de ingeniería</h3>
+      <p class="step-hint" id="bio-step2-hint">Define una prioridad principal para evitar protocolos difusos.</p>
+      <label class="label">Objetivo principal</label>
+      <div class="grid" id="objective-grid">
+        <button class="opt" data-value="recovery">Reparación tisular</button>
+        <button class="opt" data-value="cognitive">Optimización cognitiva</button>
+        <button class="opt" data-value="longevity">Bioregulador de longevidad</button>
+        <button class="opt" data-value="body_comp">Composición corporal</button>
+      </div>
+      <label class="label" style="margin-top:16px;">Nivel de experiencia</label>
+      <div class="grid" id="exp-grid">
+        <button class="opt active" data-value="intermediate">Intermedio</button>
+        <button class="opt" data-value="advanced">Avanzado</button>
+      </div>
+      <div class="step-nav">
+        <button class="btn-ghost" type="button" onclick="goBioStep(1)">← Volver</button>
+        <button class="btn btn-main" type="button" id="bio-next2" onclick="goBioStep(3)">Siguiente →</button>
       </div>
     </div>
-    <div class="row">
-      <div class="check">
-        <input id="monitor-check" type="checkbox">
-        <label for="monitor-check" id="monitor-label">Confirmo que haré monitoreo clínico y biomarcadores durante el protocolo.</label>
+
+    <div class="step-card" id="bstep3" style="display:none;">
+      <div class="step-num">Paso 3</div>
+      <h3 class="step-q" id="bio-step3-title">Capacidad técnica</h3>
+      <p class="step-hint" id="bio-step3-hint">Validamos logística mínima para manipulación segura.</p>
+      <div class="strict-grid">
+        <div class="strict-item">
+          <label class="label" style="margin-top:0;margin-bottom:6px;" id="reconstitution-label">Experiencia en reconstitución con agua bacteriostática</label>
+          <select id="reconstitution-select" class="risk-select">
+            <option value="none">Ninguna</option>
+            <option value="basic">Básica</option>
+            <option value="advanced">Avanzada</option>
+          </select>
+        </div>
+        <div class="strict-item">
+          <label class="label" style="margin-top:0;margin-bottom:6px;" id="fridge-label">Refrigeración constante (2°C - 8°C)</label>
+          <select id="fridge-select" class="risk-select">
+            <option value="no">No</option>
+            <option value="yes">Sí</option>
+          </select>
+        </div>
+        <div class="strict-item">
+          <label class="label" style="margin-top:0;margin-bottom:6px;" id="subq-label">Tolerancia a administración subcutánea</label>
+          <select id="subq-select" class="risk-select">
+            <option value="no">No</option>
+            <option value="yes">Sí</option>
+          </select>
+        </div>
+      </div>
+      <label class="label" style="margin-top:16px;">Condiciones / medicación actual</label>
+      <textarea id="contra" placeholder="Ej: hipertension, anticoagulantes, antecedente oncologico..."></textarea>
+      <label class="label" style="margin-top:16px;">Protocolo actual (suplementos/peptidos)</label>
+      <textarea id="current" placeholder="Ej: Creatina 5g, omega 3, no peptidos aun..."></textarea>
+      <div class="step-nav">
+        <button class="btn-ghost" type="button" onclick="goBioStep(2)">← Volver</button>
+        <button class="btn btn-main" type="button" id="bio-next3" onclick="goBioStep(4)">Siguiente →</button>
       </div>
     </div>
-    <div class="row">
-      <div class="check">
-        <input id="consent-check" type="checkbox">
-        <label for="consent-check" id="consent-label">Acepto que este módulo es para fines educativos avanzados y no sustituye práctica médica.</label>
+
+    <div class="step-card" id="bstep4" style="display:none;">
+      <div class="step-num">Paso 4</div>
+      <h3 class="step-q" id="bio-step4-title">Aceptación y desbloqueo</h3>
+      <p class="step-hint" id="bio-step4-hint">Confirmaciones obligatorias antes de generar protocolo.</p>
+      <div class="row">
+        <div class="check">
+          <input id="expert-check" type="checkbox">
+          <label for="expert-check">Confirmo que entiendo que este modulo es experimental y requiere supervision profesional.</label>
+        </div>
       </div>
+      <div class="row">
+        <div class="check">
+          <input id="monitor-check" type="checkbox">
+          <label for="monitor-check" id="monitor-label">Confirmo que haré monitoreo clínico y biomarcadores durante el protocolo.</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="check">
+          <input id="consent-check" type="checkbox">
+          <label for="consent-check" id="consent-label">Acepto que este módulo es para fines educativos avanzados y no sustituye práctica médica.</label>
+        </div>
+      </div>
+      <div class="step-nav">
+        <button class="btn-ghost" type="button" onclick="goBioStep(3)">← Volver</button>
+        <button id="gen-btn" class="btn btn-main" disabled>Generar Protocolo Experimental</button>
+      </div>
+      <div class="msg" id="form-msg"></div>
     </div>
-    <div class="row">
-      <button id="gen-btn" class="btn btn-main" disabled>Generar Protocolo Experimental</button>
-    </div>
-    <div class="msg" id="form-msg"></div>
   </div>
 
   <div id="result" class="card"></div>
@@ -797,6 +852,7 @@ const state = {
   refrigeration: 'no',
   subcutaneous: 'no'
 };
+let currentBioStep = 1;
 const THEME_KEY = 'longeva_theme';
 const USER_LANG = getPreferredLang();
 const IS_EN = USER_LANG === 'en';
@@ -854,6 +910,31 @@ function updateGenerateEnabled() {
     state.subcutaneous === 'yes' &&
     state.labs === 'yes';
   genBtn.disabled = !strictReady;
+}
+
+function goBioStep(n) {
+  const total = 4;
+  const target = Math.min(Math.max(n, 1), total);
+  for (let i = 1; i <= total; i++) {
+    const s = document.getElementById(`bstep${i}`);
+    if (s) s.style.display = i === target ? 'block' : 'none';
+    const dot = document.getElementById(`bsd${i}`);
+    if (dot) {
+      dot.classList.remove('active', 'done');
+      dot.textContent = String(i);
+      if (i < target) { dot.classList.add('done'); dot.textContent = '✓'; }
+      if (i === target) dot.classList.add('active');
+    }
+    const line = document.getElementById(`bsl${i}`);
+    if (line) line.classList.toggle('done', i < target);
+  }
+  currentBioStep = target;
+  const labels = IS_EN
+    ? ['Biometrics and markers', 'Engineering goal', 'Technical capacity', 'Consent and unlock']
+    : ['Biometría y marcadores', 'Objetivo de ingeniería', 'Capacidad técnica', 'Aceptación y desbloqueo'];
+  const lbl = document.getElementById('bio-prog-label');
+  if (lbl) lbl.textContent = IS_EN ? `Step ${target} of 4 — ${labels[target-1]}` : `Paso ${target} de 4 — ${labels[target-1]}`;
+  document.getElementById(`bstep${target}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function saveDraftProfile() {
@@ -933,12 +1014,9 @@ function closeAlertTwo() {
 
 function acceptRiskAndStart() {
   closeAlertTwo();
-  if (state.sessionId) {
-    document.getElementById('form').style.display = 'block';
-    document.getElementById('form')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    return;
-  }
-  document.getElementById('paywall')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  document.getElementById('protocol-catalog').style.display = 'none';
+  document.getElementById('form').style.display = 'block';
+  goBioStep(1);
 }
 
 async function startCheckout() {
@@ -968,8 +1046,9 @@ async function startCheckout() {
 }
 
 async function init() {
-  document.getElementById('form').style.display = 'block';
+  document.getElementById('form').style.display = 'none';
   document.getElementById('paywall').style.display = 'none';
+  document.getElementById('protocol-catalog').style.display = 'block';
   loadDraftProfile();
   updateGenerateEnabled();
 
@@ -979,7 +1058,7 @@ async function init() {
     if (bypassRes.ok && bypassData?.bypass && bypassData?.paid) {
       state.sessionId = 'dev_bypass';
       document.getElementById('paywall').style.display = 'none';
-      document.getElementById('form').style.display = 'block';
+      document.getElementById('form').style.display = 'none';
       if (localStorage.getItem(BIO_AUTORUN_KEY) === '1' && !genBtn.disabled) {
         localStorage.removeItem(BIO_AUTORUN_KEY);
         setTimeout(() => generateProtocol(), 80);
@@ -1005,7 +1084,7 @@ async function init() {
     state.sessionId = sessionId;
     localStorage.setItem(BIO_SESSION_KEY, sessionId);
     document.getElementById('paywall').style.display = 'none';
-    document.getElementById('form').style.display = 'block';
+    document.getElementById('form').style.display = 'none';
     loadDraftProfile();
     updateGenerateEnabled();
     if (localStorage.getItem(BIO_AUTORUN_KEY) === '1' && !genBtn.disabled) {
@@ -1212,6 +1291,18 @@ function applyStaticI18n() {
   set('#form .label:nth-of-type(2)', 'Experience level');
   set('#form .label:nth-of-type(3)', 'Current conditions / medication');
   set('#form .label:nth-of-type(4)', 'Current protocol (supplements/peptides)');
+  set('#bio-prog-label', 'Step 1 of 4 — Biometrics and markers');
+  set('#bio-step1-title', 'Biometrics and markers');
+  set('#bio-step1-hint', 'Minimum clinical filter for peptide protocols.');
+  set('#bio-step2-title', 'Engineering goal');
+  set('#bio-step2-hint', 'Select one main priority to avoid diffuse protocols.');
+  set('#bio-step3-title', 'Technical capacity');
+  set('#bio-step3-hint', 'We validate minimum logistics for safe handling.');
+  set('#bio-step4-title', 'Consent and unlock');
+  set('#bio-step4-hint', 'Mandatory confirmations before protocol generation.');
+  set('#bio-next1', 'Next →');
+  set('#bio-next2', 'Next →');
+  set('#bio-next3', 'Next →');
   set('#strict-title', 'Peptide technical questionnaire');
   set('#labs-label', 'Recent bloodwork (last 6 months)');
   set('#onc-label', 'Personal/family direct oncological history');
