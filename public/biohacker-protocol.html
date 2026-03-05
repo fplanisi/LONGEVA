@@ -610,7 +610,7 @@ html[data-theme="light"] .hero-list b{color:#964848}
 <div class="wrap">
   <section class="hero hero-area">
     <div class="terminal-status" id="terminal-status">STATUS: <span style="color: var(--accent)">PEPTIDE_SYNTHESIS_ACTIVE</span> // AUTH_LEVEL: 05</div>
-    <div class="eyebrow-warn" id="hero-eyebrow">Ingeniería Molecular</div>
+    <div class="eyebrow-warn" id="hero-eyebrow">Nivel de acceso: Experimental</div>
     <h1 class="disruptive-title" id="hero-title">Biohacker Lab</h1>
     <p id="hero-sub">Exploración de frontera en <strong>terapias con péptidos</strong>, bioreguladores y moléculas off-label. Protocolos diseñados para la reparación tisular, optimización hormonal y reprogramación celular activa.</p>
     <p id="hero-riskline" class="danger-trust-line">Solo para usuarios avanzados: proceda bajo su propia responsabilidad biológica.</p>
@@ -1061,7 +1061,7 @@ function applyStaticI18n() {
   if (chips[0]) chips[0].textContent = 'Biohacker Lab · Experimental';
   if (chips[1]) chips[1].textContent = 'Physician-designed clinical framework';
   set('#terminal-status', 'STATUS: PEPTIDE_SYNTHESIS_ACTIVE // AUTH_LEVEL: 05');
-  set('#hero-eyebrow', 'Molecular Engineering');
+  set('#hero-eyebrow', 'Access Level: Experimental');
   set('#hero-title', 'Biohacker Lab');
   const heroSub = document.getElementById('hero-sub');
   if (heroSub) heroSub.innerHTML = 'Frontier exploration in <strong>peptide therapies</strong>, bioregulators, and off-label molecules. Protocols designed for tissue repair, hormonal optimization, and active cellular reprogramming.';
