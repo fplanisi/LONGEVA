@@ -592,6 +592,41 @@ html[data-theme="light"] .hero-list b{color:#964848}
     max-width:280px;
     margin:0 auto;
   }
+  .bio-loading .lstep {
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-family:'DM Mono',monospace;
+    font-size:11px;
+    color:var(--dim);
+    transition:color .3s;
+  }
+  .bio-loading .lstep.active {
+    color:var(--danger);
+  }
+  .bio-loading .lstep.done {
+    color:var(--muted);
+  }
+  .bio-loading .lstep-dot {
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:var(--dim);
+    flex-shrink:0;
+    transition:background .3s, box-shadow .3s;
+  }
+  .bio-loading .lstep.active .lstep-dot {
+    background:var(--danger);
+    box-shadow:0 0 8px rgba(200,70,70,.48);
+    animation:pulse-red 1s infinite;
+  }
+  .bio-loading .lstep.done .lstep-dot {
+    background:var(--muted);
+  }
+  @keyframes pulse-red {
+    0%,100%{opacity:1}
+    50%{opacity:.4}
+  }
 
   /* Phase blocks: expedition log entries */
   .phase {
