@@ -1,74 +1,265 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LONGEVAPP — Términos de Uso</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#05070c;--surface:#0e141f;--border:#223147;--text:#edf3ff;--muted:#90a5c2;--accent:#6affd9}
+:root {
+  --bg:#0D1220; --surface:#182030; --border:#243045;
+  --a1:#6AA2CC; --a1s:rgba(106,162,204,.10); --a2:#55B09A;
+  --tx:#D8E4F0; --tx2:#ACBFD4; --mu:#688098;
+  --orb1:rgba(106,162,204,.055); --orb2:rgba(85,176,154,.04);
+}
+[data-theme="light"] {
+  --bg:#F1F4F8; --surface:#FFFFFF; --border:#D4DCEA;
+  --a1:#355F8C; --a1s:#E8EFF8; --a2:#3A7865;
+  --tx:#152030; --tx2:#334860; --mu:#5E7488;
+  --orb1:rgba(53,95,140,.07); --orb2:rgba(58,120,101,.05);
+}
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#05070c;color:var(--text);font-family:'Instrument Sans',sans-serif;line-height:1.6}
-.wrap{max-width:980px;margin:0 auto;padding:36px 16px 48px}
-a{color:var(--accent)}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px;margin-top:14px}
-h1{font-family:'DM Serif Display',serif;font-size:42px;line-height:1.1;margin-bottom:8px}
-h2{font-family:'DM Serif Display',serif;font-size:24px;font-weight:400;margin-bottom:8px}
-p,li{color:var(--muted);font-size:15px}
-ul{padding-left:18px}
-.back{display:inline-block;margin-bottom:16px;font-family:'DM Mono',monospace;font-size:12px}
-.small{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted)}
-.top-header{max-width:980px;margin:0 auto;padding:14px 16px 0;border-bottom:1px solid var(--border)}
-.brand-wrap{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
-.logo-name{font-family:'DM Serif Display',serif;font-size:26px;letter-spacing:.1em;color:var(--accent)}
-.logo-tag{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.16em}
+html,body{max-width:100%;overflow-x:hidden}
+body{
+  font-family:'Instrument Sans',sans-serif;
+  color:var(--tx);
+  background:var(--bg);
+  min-height:100vh;
+}
+[data-theme="dark"] body{background:radial-gradient(circle at 14% -8%,#131d2e 0%,#0D1220 58%)}
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.22;
+  background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);
+  background-size:56px 56px;
+}
+.orb{position:fixed;border-radius:50%;filter:blur(130px);pointer-events:none;z-index:0}
+.orb1{width:680px;height:680px;background:var(--orb1);top:-260px;right:-240px}
+.orb2{width:540px;height:540px;background:var(--orb2);bottom:-200px;left:-200px}
+
+header{
+  position:sticky;top:0;z-index:20;
+  padding:13px 24px;display:flex;align-items:center;justify-content:space-between;gap:10px;
+  border-bottom:1px solid var(--border);
+  background:rgba(13,18,32,.9);
+  backdrop-filter:blur(12px);
+}
+[data-theme="light"] header{background:rgba(241,244,248,.92)}
+.brand-wrap{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
+.logo-name{font-family:'DM Serif Display',serif;font-size:26px;letter-spacing:.1em;color:var(--a1);text-decoration:none}
+.logo-tag{font-family:'DM Mono',monospace;font-size:9px;color:var(--mu);letter-spacing:.16em}
+.controls{display:flex;align-items:center;gap:8px}
+.theme-btn,.lang-btn{
+  border:1px solid var(--border);background:transparent;color:var(--mu);cursor:pointer;
+  font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;border-radius:9px;
+}
+.theme-btn{width:30px;height:30px;font-size:14px}
+.lang-btn{padding:6px 9px}
+.lang-btn.active{color:var(--tx);border-color:var(--a1);background:var(--a1s)}
+
+main{position:relative;z-index:1;max-width:980px;margin:0 auto;padding:28px 18px 40px}
+.hero{
+  border:1px solid var(--border);border-radius:18px;
+  background:linear-gradient(140deg,var(--a1s),transparent 60%);
+  padding:28px 22px 20px;margin-bottom:14px;
+}
+.eyebrow{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--mu);margin-bottom:10px}
+h1{font-family:'DM Serif Display',serif;font-size:clamp(34px,5vw,52px);line-height:1.07;margin-bottom:8px}
+.hero p{color:var(--tx2);line-height:1.65;font-size:15px}
+.meta{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;color:var(--mu);margin-top:10px}
+
+.card{
+  border:1px solid var(--border);border-radius:14px;
+  background:var(--surface);padding:18px;margin-top:10px;
+}
+.card h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:24px;line-height:1.2;margin-bottom:8px}
+.card p,.card li{color:var(--tx2);font-size:14px;line-height:1.7}
+.card ul{padding-left:18px}
+.footer-nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.footer-nav a{
+  text-decoration:none;border:1px solid var(--border);border-radius:999px;
+  padding:7px 12px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;
+  color:var(--mu);transition:.2s;
+}
+.footer-nav a:hover{border-color:var(--a1);color:var(--a1)}
+
+@media (max-width: 760px){
+  header{padding:10px 12px}
+  .logo-tag{display:none}
+  main{padding:16px 12px 28px}
+  .hero{padding:22px 16px 16px}
+  .card{padding:14px}
+}
 </style>
 </head>
 <body>
-<header class="top-header">
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+
+<header>
   <div class="brand-wrap">
-    <span class="logo-name">LONGEVAPP</span>
-    <span class="logo-tag">v3.2 · Plataforma de longevidad</span>
+    <a class="logo-name" href="/index.html">LONGEVAPP</a>
+    <span class="logo-tag" id="header-tag">v3.2 · Marco legal y cumplimiento</span>
+  </div>
+  <div class="controls">
+    <button class="lang-btn" id="lang-es" type="button">ES</button>
+    <button class="lang-btn" id="lang-en" type="button">EN</button>
+    <button class="theme-btn" id="theme-btn" type="button" aria-label="Cambiar tema">◐</button>
   </div>
 </header>
-<div class="wrap">
-  <a class="back" href="/index.html">← Volver a LONGEVAPP</a>
-  <h1>Términos de Uso</h1>
-  <p class="small">Última actualización: 4 de marzo de 2026</p>
 
-  <section class="card">
-    <h2>1. Naturaleza del servicio</h2>
-    <p>LONGEVAPP ofrece información educativa sobre longevidad, nutrición, suplementos y protocolos experimentales. El contenido no constituye diagnóstico, tratamiento ni indicación médica personalizada.</p>
+<main>
+  <section class="hero">
+    <p class="eyebrow" id="hero-eye">CONDICIONES DE USO DE LA PLATAFORMA</p>
+    <h1 id="hero-title">Términos de Uso</h1>
+    <p id="hero-sub">Estas condiciones regulan el acceso y uso de LONGEVAPP en todos sus módulos gratuitos y pagos.</p>
+    <p class="meta" id="updated">Última actualización: 4 de marzo de 2026</p>
   </section>
 
   <section class="card">
-    <h2>2. No reemplaza atención médica</h2>
-    <p>Al usar la plataforma, aceptas que cualquier decisión clínica debe validarse con un profesional de salud habilitado. Si tienes una condición médica o tomas medicación, debes consultar antes de iniciar cambios en dieta, suplementos o protocolos.</p>
+    <h2 id="t1">1. Naturaleza del servicio</h2>
+    <p id="c1">LONGEVAPP brinda información educativa sobre longevidad, nutrición, suplementación y protocolos experimentales. El contenido no constituye diagnóstico, tratamiento ni prescripción médica.</p>
   </section>
 
   <section class="card">
-    <h2>3. Uso bajo responsabilidad del usuario</h2>
+    <h2 id="t2">2. No reemplaza la atención médica</h2>
+    <p id="c2">Cualquier decisión clínica debe validarse con un profesional habilitado. Si tienes condiciones preexistentes, tomas medicación o presentas síntomas, consulta antes de iniciar cambios de dieta, suplementos o protocolos.</p>
+  </section>
+
+  <section class="card">
+    <h2 id="t3">3. Uso bajo responsabilidad del usuario</h2>
     <ul>
-      <li>El usuario es responsable del uso final de la información.</li>
-      <li>LONGEVAPP no garantiza resultados clínicos específicos.</li>
-      <li>No se recomienda uso del módulo biohacker sin supervisión profesional.</li>
+      <li id="l31">El usuario es responsable de cómo aplica la información recibida.</li>
+      <li id="l32">No se garantizan resultados clínicos o biomarcadores específicos.</li>
+      <li id="l33">El módulo Biohacker Lab está orientado a usuarios avanzados y requiere criterio técnico.</li>
     </ul>
   </section>
 
   <section class="card">
-    <h2>4. Pagos y acceso</h2>
-    <p>Los pagos son procesados por Stripe. LONGEVAPP no almacena números completos de tarjeta. El acceso pago habilita funcionalidades premium según el módulo adquirido y puede estar sujeto a límites de uso razonables.</p>
+    <h2 id="t4">4. Pagos y acceso premium</h2>
+    <p id="c4">Los pagos son procesados por Stripe. LONGEVAPP no almacena números completos de tarjeta. El acceso premium habilita funcionalidades según el plan adquirido y puede incluir límites razonables de uso.</p>
   </section>
 
   <section class="card">
-    <h2>5. Cambios en el servicio</h2>
-    <p>Podemos actualizar funcionalidades, modelos de IA, estructura de precios y estos términos para mejorar seguridad, calidad y cumplimiento normativo.</p>
+    <h2 id="t5">5. Cambios del servicio y de estos términos</h2>
+    <p id="c5">Podemos actualizar funciones, modelos de IA, estructura de precios y estas condiciones para mejorar calidad, seguridad y cumplimiento regulatorio.</p>
   </section>
 
   <section class="card">
-    <h2>6. Contacto</h2>
-    <p>Para consultas legales o de privacidad, contacta al canal oficial definido por el proyecto.</p>
+    <h2 id="t6">6. Contacto</h2>
+    <p id="c6">Para consultas legales o de privacidad puedes usar el canal oficial del proyecto publicado en la plataforma.</p>
   </section>
-</div>
+
+  <nav class="footer-nav">
+    <a href="/index.html" id="nav-home">Volver al inicio</a>
+    <a href="/privacy.html" id="nav-privacy">Ver privacidad</a>
+  </nav>
+</main>
+
+<script>
+(function(){
+  const html = document.documentElement;
+  const themeBtn = document.getElementById('theme-btn');
+  const esBtn = document.getElementById('lang-es');
+  const enBtn = document.getElementById('lang-en');
+
+  const dict = {
+    es: {
+      title: 'LONGEVAPP — Términos de Uso',
+      tag: 'v3.2 · Marco legal y cumplimiento',
+      eye: 'CONDICIONES DE USO DE LA PLATAFORMA',
+      h1: 'Términos de Uso',
+      sub: 'Estas condiciones regulan el acceso y uso de LONGEVAPP en todos sus módulos gratuitos y pagos.',
+      updated: 'Última actualización: 4 de marzo de 2026',
+      t1: '1. Naturaleza del servicio',
+      c1: 'LONGEVAPP brinda información educativa sobre longevidad, nutrición, suplementación y protocolos experimentales. El contenido no constituye diagnóstico, tratamiento ni prescripción médica.',
+      t2: '2. No reemplaza la atención médica',
+      c2: 'Cualquier decisión clínica debe validarse con un profesional habilitado. Si tienes condiciones preexistentes, tomas medicación o presentas síntomas, consulta antes de iniciar cambios de dieta, suplementos o protocolos.',
+      t3: '3. Uso bajo responsabilidad del usuario',
+      l31: 'El usuario es responsable de cómo aplica la información recibida.',
+      l32: 'No se garantizan resultados clínicos o biomarcadores específicos.',
+      l33: 'El módulo Biohacker Lab está orientado a usuarios avanzados y requiere criterio técnico.',
+      t4: '4. Pagos y acceso premium',
+      c4: 'Los pagos son procesados por Stripe. LONGEVAPP no almacena números completos de tarjeta. El acceso premium habilita funcionalidades según el plan adquirido y puede incluir límites razonables de uso.',
+      t5: '5. Cambios del servicio y de estos términos',
+      c5: 'Podemos actualizar funciones, modelos de IA, estructura de precios y estas condiciones para mejorar calidad, seguridad y cumplimiento regulatorio.',
+      t6: '6. Contacto',
+      c6: 'Para consultas legales o de privacidad puedes usar el canal oficial del proyecto publicado en la plataforma.',
+      home: 'Volver al inicio',
+      privacy: 'Ver privacidad'
+    },
+    en: {
+      title: 'LONGEVAPP — Terms of Use',
+      tag: 'v3.2 · Legal and compliance framework',
+      eye: 'PLATFORM TERMS AND CONDITIONS',
+      h1: 'Terms of Use',
+      sub: 'These terms govern access and use of LONGEVAPP across all free and paid modules.',
+      updated: 'Last updated: March 4, 2026',
+      t1: '1. Nature of the service',
+      c1: 'LONGEVAPP provides educational information on longevity, nutrition, supplementation, and experimental protocols. Content is not a medical diagnosis, treatment, or prescription.',
+      t2: '2. Not a substitute for medical care',
+      c2: 'Any clinical decision must be validated with a licensed health professional. If you have pre-existing conditions, take medication, or have symptoms, consult before starting diet, supplement, or protocol changes.',
+      t3: '3. User responsibility',
+      l31: 'Users are responsible for how they apply the information provided.',
+      l32: 'No specific clinical outcomes or biomarker results are guaranteed.',
+      l33: 'The Biohacker Lab module is intended for advanced users and requires technical judgment.',
+      t4: '4. Payments and premium access',
+      c4: 'Payments are processed by Stripe. LONGEVAPP does not store full card numbers. Premium access unlocks features according to the purchased plan and may include fair-use limits.',
+      t5: '5. Service and terms updates',
+      c5: 'We may update features, AI models, pricing structure, and these terms to improve quality, security, and regulatory compliance.',
+      t6: '6. Contact',
+      c6: 'For legal or privacy inquiries, use the project official contact channel published on the platform.',
+      home: 'Back to home',
+      privacy: 'View privacy policy'
+    }
+  };
+
+  function applyLang(lang){
+    const t = dict[lang] || dict.es;
+    document.title = t.title;
+    document.documentElement.lang = lang;
+    document.getElementById('header-tag').textContent = t.tag;
+    document.getElementById('hero-eye').textContent = t.eye;
+    document.getElementById('hero-title').textContent = t.h1;
+    document.getElementById('hero-sub').textContent = t.sub;
+    document.getElementById('updated').textContent = t.updated;
+    document.getElementById('t1').textContent = t.t1;
+    document.getElementById('c1').textContent = t.c1;
+    document.getElementById('t2').textContent = t.t2;
+    document.getElementById('c2').textContent = t.c2;
+    document.getElementById('t3').textContent = t.t3;
+    document.getElementById('l31').textContent = t.l31;
+    document.getElementById('l32').textContent = t.l32;
+    document.getElementById('l33').textContent = t.l33;
+    document.getElementById('t4').textContent = t.t4;
+    document.getElementById('c4').textContent = t.c4;
+    document.getElementById('t5').textContent = t.t5;
+    document.getElementById('c5').textContent = t.c5;
+    document.getElementById('t6').textContent = t.t6;
+    document.getElementById('c6').textContent = t.c6;
+    document.getElementById('nav-home').textContent = t.home;
+    document.getElementById('nav-privacy').textContent = t.privacy;
+    esBtn.classList.toggle('active', lang === 'es');
+    enBtn.classList.toggle('active', lang === 'en');
+    localStorage.setItem('longevapp-lang', lang);
+  }
+
+  function applyTheme(theme){
+    html.setAttribute('data-theme', theme);
+    localStorage.setItem('longevapp-theme', theme);
+  }
+
+  const savedTheme = localStorage.getItem('longevapp-theme') || 'dark';
+  applyTheme(savedTheme);
+  const savedLang = localStorage.getItem('longevapp-lang');
+  const browserLang = ((navigator.language || 'es').toLowerCase().startsWith('en')) ? 'en' : 'es';
+  applyLang(savedLang || browserLang);
+
+  themeBtn.addEventListener('click', () => {
+    applyTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  });
+  esBtn.addEventListener('click', () => applyLang('es'));
+  enBtn.addEventListener('click', () => applyLang('en'));
+})();
+</script>
 </body>
 </html>
