@@ -1653,12 +1653,9 @@ async function generateStack() {
   safetyConfirmed = false;
   document.getElementById('wizard').style.display = 'none';
   document.getElementById('results').style.display = 'block';
-  // Pre-open modal with loading state
-  const modalOut = document.getElementById('stack-output-modal');
-  if (modalOut) modalOut.innerHTML = '';
-  const modalPBar = document.getElementById('modal-profile-bar');
-  if (modalPBar) modalPBar.innerHTML = '';
-  openResultsModal();
+  // Inline results (no modal)
+  const resultOut = document.getElementById('stack-output');
+  if (resultOut) resultOut.innerHTML = '';
 
   // Build profile chips
   const budgetLabel = state.budget >= 999 ? tr('Sin límite', 'No limit') : state.budget >= 350 ? '$150–350/mo' : state.budget >= 150 ? '$50–150/mo' : tr('Hasta $50/mes', 'Up to $50/mo');
@@ -1691,8 +1688,8 @@ async function generateStack() {
     state.currentProtocol ? tr('Con protocolo actual', 'With current protocol') : tr('Sin protocolo previo', 'No prior protocol')
   ];
   document.getElementById('profile-bar').innerHTML = chips.map(c => `<div class="profile-chip">${c}</div>`).join('');
-  // Show loading in modal content area
-  if (modalOut) modalOut.innerHTML = `<div style="text-align:center;padding:52px 20px 60px;">
+  // Show loading in results area
+  if (resultOut) resultOut.innerHTML = `<div style="text-align:center;padding:52px 20px 60px;">
     <div style="font-size:42px;margin-bottom:16px;animation:breathe 2s ease-in-out infinite">🧬</div>
     <div style="font-family:'DM Serif Display',serif;font-size:22px;font-weight:300;margin-bottom:8px">${tr('Analizando tu perfil...','Analyzing your profile...')}</div>
     <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.06em;margin-bottom:24px">${tr('Cruzando 120+ moléculas con tus datos','Cross-checking 120+ molecules with your data')}</div>
@@ -1757,7 +1754,7 @@ async function generateStack() {
 
   } catch (err) {
     clearInterval(lsInterval);
-    if (modalOut) modalOut.innerHTML = `<div class="err-box">⚠ ${tr('Error generando el stack', 'Error generating stack')}: ${err.message}<br><br>${tr('Verifica variables de entorno y endpoint /api/stack-builder.', 'Check environment variables and /api/stack-builder endpoint.')}</div>`;
+    if (resultOut) resultOut.innerHTML = `<div class="err-box">⚠ ${tr('Error generando el stack', 'Error generating stack')}: ${err.message}<br><br>${tr('Verifica variables de entorno y endpoint /api/stack-builder.', 'Check environment variables and /api/stack-builder endpoint.')}</div>`;
     trackEvent('stack_generate_error', { message: err.message || 'unknown' });
   }
 }
@@ -1787,7 +1784,7 @@ function renderStack(stack, budgetLabel) {
   state.lastBudgetLabel = budgetLabel;
   saveStackVersion(stack, budgetLabel);
   document.getElementById('loading-state').style.display = 'none';
-  const out = document.getElementById('stack-output-modal');
+  const out = document.getElementById('stack-output');
   if (!out) return;
 
   const pct = Math.min(100, Math.round((stack.estimated_cost / state.budget) * 100));
@@ -1984,10 +1981,7 @@ function renderStack(stack, budgetLabel) {
   html += `</div>`;
 
   out.innerHTML = html;
-  // Sync profile chips to modal
-  const pbar = document.getElementById('modal-profile-bar');
-  if (pbar) pbar.innerHTML = document.getElementById('profile-bar').innerHTML;
-  openResultsModal();
+  out.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function fmtText(t) {
