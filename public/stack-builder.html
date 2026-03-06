@@ -2220,11 +2220,13 @@ function renderStack(stack, budgetLabel) {
 
   // Disclaimer
   html += `<div class="disclaimer">⚕ ${tr('AVISO MÉDICO: Este stack es informativo y está basado en evidencia científica disponible. No reemplaza el consejo médico profesional. Consulta con tu médico antes de comenzar cualquier protocolo de suplementación, especialmente si tienes condiciones de salud o tomas medicamentos. LONGEVAPP no se hace responsable del uso de esta información.', 'MEDICAL NOTICE: This stack is informational and based on currently available scientific evidence. It does not replace professional medical advice. Consult your physician before starting any supplementation protocol, especially with health conditions or medications. LONGEVAPP is not liable for use of this information.')}</div>`;
-  html += `<div class="nutrition-alternative">
-    <h4 class="mono" style="font-size:0.8rem;color:var(--accent);margin-bottom:8px;">${tr('OPCIÓN SIN SUPLEMENTACIÓN', 'NO-SUPPLEMENT OPTION')}</h4>
-    <p style="font-size:0.9rem;">${tr('¿Prefieres un enfoque 100% natural? Hemos diseñado un Menú Semanal de Longevidad que replica el perfil bioquímico de este stack mediante alimentos reales.', 'Prefer a 100% natural approach? We designed a Weekly Longevity Menu that replicates this stack biochemical profile through real foods.')}</p>
-    <a href="/food-longevity.html" class="btn-link">${tr('Ver Menú de Reemplazo →', 'View Replacement Menu →')}</a>
-  </div>`;
+  if (!isFoodOnly) {
+    html += `<div class="nutrition-alternative">
+      <h4 class="mono" style="font-size:0.8rem;color:var(--accent);margin-bottom:8px;">${tr('OPCIÓN SIN SUPLEMENTACIÓN', 'NO-SUPPLEMENT OPTION')}</h4>
+      <p style="font-size:0.9rem;">${tr('¿Prefieres un enfoque 100% natural? Hemos diseñado un Menú Semanal de Longevidad que replica el perfil bioquímico de este stack mediante alimentos reales.', 'Prefer a 100% natural approach? We designed a Weekly Longevity Menu that replicates this stack biochemical profile through real foods.')}</p>
+      <a href="/food-longevity.html" class="btn-link">${tr('Ver Menú de Reemplazo →', 'View Replacement Menu →')}</a>
+    </div>`;
+  }
   html += renderHistorySection();
   html += `</div>`;
 
