@@ -957,7 +957,7 @@ html[data-theme="light"] .affiliate-disclosure { color: var(--muted); }
     <div class="step-card" id="step2" style="display:none">
       <div class="step-num">02 / 04</div>
       <h2 class="step-q" id="goals-step-q">¿Cuáles son tus objetivos?</h2>
-      <p class="step-hint" id="goals-step-hint">Seleccioná un objetivo principal. Luego podrás ajustarlo cuando quieras.</p>
+      <p class="step-hint" id="goals-step-hint">Podés elegir hasta 2 objetivos. Si elegís 1, luego podrás sumarle un plan alimenticio complementario como combo.</p>
       <div id="combo-goals-banner" style="display:none;margin-bottom:16px;padding:10px 14px;border-radius:10px;background:linear-gradient(135deg,rgba(106,162,204,.12),rgba(85,176,154,.08));border:1px solid rgba(106,162,204,.3);font-family:'DM Mono',monospace;font-size:10px;color:var(--accent);letter-spacing:.06em;">
         🔥 COMBO ACTIVO — Podés elegir hasta 2 objetivos. Se generará un protocolo integrado.
       </div>
@@ -1069,6 +1069,19 @@ html[data-theme="light"] .affiliate-disclosure { color: var(--muted); }
         </div>
       </div>
       </div><!-- /food-style-section -->
+      <div id="food-companion-section" style="display:block;">
+        <div style="font-size:12px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.08em;margin:20px 0 10px" id="food-companion-label">PLAN ALIMENTICIO COMPLEMENTARIO</div>
+        <div class="opts-grid" id="food-companion-grid">
+          <div class="opt" id="food-companion-opt" onclick="toggleFoodCompanion(this)">
+            <div class="opt-icon">🥗</div>
+            <div class="opt-text">
+              <div class="opt-label" id="food-companion-title">Agregar plan alimenticio</div>
+              <div class="opt-desc" id="food-companion-desc">Sumá una versión por comidas reales para el mismo objetivo. Esto convierte la compra en combo.</div>
+            </div>
+            <div class="opt-check"></div>
+          </div>
+        </div>
+      </div>
       <div style="font-size:12px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.08em;margin:20px 0 10px">PAÍS / DISPONIBILIDAD</div>
       <div class="opts-grid cols-2" id="country-grid">
         <div class="opt selected" onclick="selectCountry('AR',this)">
@@ -1181,6 +1194,7 @@ const state = {
   goals: [], budget: null, conditions: [],
   sourcePreference: 'mixed',
   foodStyle: 'omnivore',
+  includeFoodCompanion: false,
   country: 'AR',
   currentProtocol: '',
   paidSessionId: '',
@@ -1190,6 +1204,7 @@ const state = {
   replaceLimit: 3,
   replacedOut: [],
   comboMode: null, // null | 'double' | 'biohacker'
+  comboIntent: null,
 };
 
 // Detect combo mode from URL params
@@ -1197,7 +1212,7 @@ const state = {
   const p = new URLSearchParams(window.location.search);
   const combo = p.get('combo');
   if (combo === 'double' || combo === 'biohacker') {
-    state.comboMode = combo;
+    state.comboIntent = combo;
   }
 })();
 const USER_LANG = getPreferredLang();
@@ -1212,29 +1227,79 @@ const STACK_RESUME_KEY = 'longeva_stack_resume_after_pay';
 let safetyConfirmed = false;
 
 // ── COMBO MODE ──
+function getEffectiveComboMode() {
+  if (state.comboIntent === 'biohacker') return 'biohacker';
+  if (state.goals.length > 1) return 'double';
+  if (state.goals.length === 1 && state.includeFoodCompanion && state.sourcePreference !== 'food_only') return 'double';
+  return null;
+}
+
+function refreshGoalComboBanner() {
+  const banner = document.getElementById('combo-goals-banner');
+  if (!banner) return;
+  const isFoodCompanionCombo = state.goals.length === 1 && state.includeFoodCompanion && state.sourcePreference !== 'food_only';
+  banner.style.display = getEffectiveComboMode() === 'double' ? 'block' : 'none';
+  banner.textContent = isFoodCompanionCombo
+    ? tr('🔥 COMBO ACTIVO — Objetivo principal + plan alimenticio complementario.', '🔥 COMBO ACTIVE — Main goal + complementary food plan.')
+    : tr('🔥 COMBO ACTIVO — Podés elegir hasta 2 objetivos. Se generará un protocolo integrado.', '🔥 COMBO ACTIVE — You can choose up to 2 goals. One integrated protocol will be generated.');
+}
+
+function refreshFoodCompanionUI() {
+  const section = document.getElementById('food-companion-section');
+  const card = document.getElementById('food-companion-opt');
+  if (!section || !card) return;
+  const eligible = state.goals.length === 1 && state.sourcePreference !== 'food_only';
+  if (!eligible) {
+    state.includeFoodCompanion = false;
+    card.classList.remove('selected');
+    section.style.display = 'none';
+    return;
+  }
+  section.style.display = 'block';
+  card.classList.toggle('selected', !!state.includeFoodCompanion);
+}
+
 function applyComboMode() {
-  if (!state.comboMode) return;
+  state.comboMode = getEffectiveComboMode();
 
   // Update gate UI
   const priceDisplay = document.getElementById('gate-price-display');
   const priceNote = document.getElementById('gate-price-note');
   const gateTitle = document.getElementById('gate-title-text');
   const gateSub = document.getElementById('gate-sub-text');
+  const hint = document.getElementById('goals-step-hint');
+  const banner = document.getElementById('combo-goals-banner');
+
+  if (priceDisplay) priceDisplay.textContent = IS_EN ? '$5.99' : '$5,99';
+  if (priceNote) priceNote.textContent = IS_EN ? '$5.99' : '$5,99';
+  if (gateTitle) gateTitle.textContent = IS_EN ? 'Unlock your final protocol' : 'Desbloquea tu protocolo final';
+  if (gateSub) gateSub.innerHTML = IS_EN
+    ? `Your questionnaire is ready. Generate your personalized protocol with a one-time payment of <strong style="color:var(--accent)">$5.99</strong> — no subscription.`
+    : `Tu cuestionario ya está listo. Generá tu protocolo personalizado con un pago único de <strong style="color:var(--accent)">$5,99</strong> — sin suscripción.`;
+  if (hint) hint.textContent = IS_EN
+    ? 'You can choose up to 2 goals. If you choose 1, you can later add a complementary food plan as a combo.'
+    : 'Podés elegir hasta 2 objetivos. Si elegís 1, luego podrás sumarle un plan alimenticio complementario como combo.';
+  if (banner) banner.style.display = 'none';
 
   if (state.comboMode === 'double') {
     const price = IS_EN ? '$9.99' : '$9,99';
+    const isFoodCompanionCombo = state.goals.length === 1 && state.includeFoodCompanion && state.sourcePreference !== 'food_only';
     if (priceDisplay) priceDisplay.textContent = price;
     if (priceNote) priceNote.textContent = price;
-    if (gateTitle) gateTitle.textContent = IS_EN ? 'Unlock your final double-goal protocol' : 'Desbloquea tu protocolo final de doble objetivo';
+    if (gateTitle) gateTitle.textContent = isFoodCompanionCombo
+      ? (IS_EN ? 'Unlock your final mixed protocol' : 'Desbloquea tu protocolo final mixto')
+      : (IS_EN ? 'Unlock your final double-goal protocol' : 'Desbloquea tu protocolo final de doble objetivo');
     if (gateSub) gateSub.innerHTML = IS_EN
-      ? `Your questionnaire is complete. Generate one integrated protocol combining 2 goals with a one-time payment of <strong style="color:var(--accent)">${price}</strong> — no subscription.`
-      : `Tu cuestionario está completo. Generá un protocolo integrado que combina 2 objetivos con un pago único de <strong style="color:var(--accent)">${price}</strong> — sin suscripción.`;
-    // Show combo banner in step 2
-    const banner = document.getElementById('combo-goals-banner');
+      ? (isFoodCompanionCombo
+          ? `Your questionnaire is complete. Generate a mixed protocol with supplements + complementary food plan for a one-time payment of <strong style="color:var(--accent)">${price}</strong> — no subscription.`
+          : `Your questionnaire is complete. Generate one integrated protocol combining 2 goals with a one-time payment of <strong style="color:var(--accent)">${price}</strong> — no subscription.`)
+      : (isFoodCompanionCombo
+          ? `Tu cuestionario está completo. Generá un protocolo mixto con suplementos + plan alimenticio complementario con un pago único de <strong style="color:var(--accent)">${price}</strong> — sin suscripción.`
+          : `Tu cuestionario está completo. Generá un protocolo integrado que combina 2 objetivos con un pago único de <strong style="color:var(--accent)">${price}</strong> — sin suscripción.`);
+    if (hint) hint.textContent = isFoodCompanionCombo
+      ? (IS_EN ? 'You selected 1 main goal plus a complementary food plan. This qualifies as combo pricing.' : 'Seleccionaste 1 objetivo principal más un plan alimenticio complementario. Esto aplica precio combo.')
+      : (IS_EN ? 'Select up to 2 goals — the AI will generate one integrated protocol combining both.' : 'Seleccioná hasta 2 objetivos — la IA generará un protocolo integrado que los combina.');
     if (banner) banner.style.display = 'block';
-    // Update step hint
-    const hint = document.getElementById('goals-step-hint');
-    if (hint) hint.textContent = IS_EN ? 'Select up to 2 goals — the AI will generate one integrated protocol combining both.' : 'Seleccioná hasta 2 objetivos — la IA generará un protocolo integrado que los combina.';
   } else if (state.comboMode === 'biohacker') {
     const price = IS_EN ? '$12.99' : '$12,99';
     if (priceDisplay) priceDisplay.textContent = price;
@@ -1244,6 +1309,8 @@ function applyComboMode() {
       ? `Your questionnaire is complete. Generate your personalized protocol + peptide Biohacker Lab with a one-time payment of <strong style="color:var(--accent)">${price}</strong> — no subscription.`
       : `Tu cuestionario está completo. Generá tu protocolo personalizado + Biohacker Lab peptídico con un pago único de <strong style="color:var(--accent)">${price}</strong> — sin suscripción.`;
   }
+  refreshGoalComboBanner();
+  refreshFoodCompanionUI();
 }
 
 // ── EMAIL + PAYWALL ──
@@ -1315,6 +1382,7 @@ function persistWizardState() {
     budget: state.budget,
     sourcePreference: state.sourcePreference,
     foodStyle: state.foodStyle,
+    includeFoodCompanion: state.includeFoodCompanion,
     country: state.country,
     conditions: state.conditions,
     currentProtocol: state.currentProtocol,
@@ -1336,6 +1404,7 @@ function loadWizardState() {
     state.budget = Number(saved.budget || 0) || null;
     state.sourcePreference = saved.sourcePreference || 'mixed';
     state.foodStyle = saved.foodStyle || 'omnivore';
+    state.includeFoodCompanion = !!saved.includeFoodCompanion;
     state.country = saved.country || 'AR';
     state.conditions = Array.isArray(saved.conditions) ? saved.conditions : [];
     state.currentProtocol = saved.currentProtocol || '';
@@ -1372,6 +1441,8 @@ function applyWizardStateToUI() {
   document.querySelectorAll('#food-style-grid .opt').forEach(o => o.classList.remove('selected'));
   const foodBtn = Array.from(document.querySelectorAll('#food-style-grid .opt')).find((el) => el.getAttribute('onclick')?.includes(`'${state.foodStyle}'`));
   if (foodBtn) foodBtn.classList.add('selected');
+  refreshFoodCompanionUI();
+  applyComboMode();
 
   document.querySelectorAll('#country-grid .opt').forEach(o => o.classList.remove('selected'));
   const countryBtn = Array.from(document.querySelectorAll('#country-grid .opt')).find((el) => el.getAttribute('onclick')?.includes(`'${state.country}'`));
@@ -1589,7 +1660,7 @@ function checkStep1() {
 
 // ── STEP 2 ──
 function toggleGoal(g, el) {
-  const maxGoals = state.comboMode === 'double' ? 2 : 1;
+  const maxGoals = 2;
   const idx = state.goals.indexOf(g);
   if (idx >= 0) {
     // Deselect
@@ -1606,6 +1677,8 @@ function toggleGoal(g, el) {
     el.classList.add('selected');
   }
   document.getElementById('next2').disabled = state.goals.length === 0;
+  if (state.goals.length !== 1) state.includeFoodCompanion = false;
+  applyComboMode();
   persistWizardState();
 }
 
@@ -1632,7 +1705,17 @@ function selectSourcePreference(mode, el) {
   if (foodSection) {
     foodSection.style.display = mode === 'food_only' ? 'block' : 'none';
   }
+  if (mode === 'food_only') state.includeFoodCompanion = false;
+  applyComboMode();
   checkStep3();
+  persistWizardState();
+}
+
+function toggleFoodCompanion(el) {
+  if (state.sourcePreference === 'food_only' || state.goals.length !== 1) return;
+  state.includeFoodCompanion = !state.includeFoodCompanion;
+  el.classList.toggle('selected', state.includeFoodCompanion);
+  applyComboMode();
   persistWizardState();
 }
 
@@ -1701,6 +1784,8 @@ function buildProfilePayload(budgetLabel) {
     budget_label: budgetLabel,
     source_preference: state.sourcePreference,
     food_style: state.foodStyle,
+    include_food_companion: state.includeFoodCompanion,
+    effective_combo_mode: state.comboMode,
     country: state.country,
     lang: USER_LANG,
     conditions: state.conditions,
@@ -1761,6 +1846,7 @@ async function generateStack() {
     budgetLabel,
     `${tr('Región', 'Region')}: ${state.country}`,
     state.sourcePreference === 'natural_only' ? tr('Solo natural', 'Natural only') : state.sourcePreference === 'synthetic_ok' ? tr('Incluye sintéticos', 'Synthetic allowed') : state.sourcePreference === 'food_only' ? tr('Solo alimentos', 'Food only') : tr('Mixto', 'Mixed'),
+    ...(state.includeFoodCompanion ? [tr('Plan alimenticio extra', 'Extra food plan')] : []),
     ...(state.sourcePreference === 'food_only' ? [
       state.foodStyle === 'vegetarian' ? tr('Vegetariano', 'Vegetarian')
         : state.foodStyle === 'vegan' ? tr('Vegano', 'Vegan')
@@ -2367,7 +2453,8 @@ function applyStaticI18n() {
 
   const stepQ = document.querySelectorAll('.step-q');
   if (stepQ[0]) stepQ[0].textContent = 'What is your biological profile?';
-  if (stepQ[1]) stepQ[1].textContent = 'What is your main goal?';
+  if (stepQ[1]) stepQ[1].textContent = 'What are your goals?';
+  set('#goals-step-hint', 'You can choose up to 2 goals. If you choose 1, you can later add a complementary food plan as a combo.');
   if (stepQ[2]) stepQ[2].textContent = 'What is your monthly budget?';
   if (stepQ[3]) stepQ[3].textContent = 'Anything we should consider?';
 
@@ -2489,6 +2576,10 @@ function applyStaticI18n() {
     if (l) l.textContent = vals[0];
     if (d) d.textContent = vals[1];
   });
+
+  set('#food-companion-label', 'COMPLEMENTARY FOOD PLAN');
+  set('#food-companion-title', 'Add food plan');
+  set('#food-companion-desc', 'Add a real-food version for the same goal. This upgrades the purchase to combo pricing.');
 
   const foodStyleLabels = {
     omnivore: ['Omnivore', 'Includes animal and plant sources'],
