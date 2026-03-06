@@ -891,13 +891,13 @@ html[data-theme="light"] .affiliate-disclosure { color: var(--muted); }
 
   <!-- EMAIL GATE -->
   <div id="email-gate">
-    <div class="gate-title" id="gate-title-text">Desbloquea tu Plan Personalizado</div>
-    <p class="gate-sub" id="gate-sub-text">Protocolo clínico único generado por IA, diseñado y supervisado por médico. Un pago único de <strong style="color:var(--accent)" id="gate-price-display">$5,99</strong> — sin suscripción.</p>
+    <div class="gate-title" id="gate-title-text">Desbloquea tu protocolo final</div>
+    <p class="gate-sub" id="gate-sub-text">Tu cuestionario ya está listo. Confirmá tu email y completá el pago único de <strong style="color:var(--accent)" id="gate-price-display">$5,99</strong> para generar tu protocolo clínico personalizado.</p>
     <div class="email-row">
       <input class="email-input" id="user-email" type="email" placeholder="tu@email.com">
       <button class="gate-btn" id="gate-btn" onclick="startCheckout()">Continuar al pago →</button>
     </div>
-    <div class="gate-note" id="gate-note-copy">Pago único · <span id="gate-price-note">$5,99</span> · Cobro gestionado por Stripe</div>
+    <div class="gate-note" id="gate-note-copy">Pago único antes de la generación · <span id="gate-price-note">$5,99</span> · Cobro gestionado por Stripe</div>
     <div class="gate-legal" id="gate-legal-copy">Al continuar aceptas <a href="/terms.html" target="_blank" rel="noopener">Términos</a> / <a href="/privacy.html" target="_blank" rel="noopener">Privacidad</a>.</div>
     <div class="gate-msg" id="gate-msg"></div>
   </div>
@@ -1225,10 +1225,10 @@ function applyComboMode() {
     const price = IS_EN ? '$9.99' : '$9,99';
     if (priceDisplay) priceDisplay.textContent = price;
     if (priceNote) priceNote.textContent = price;
-    if (gateTitle) gateTitle.textContent = IS_EN ? 'Unlock your Double Goal Plan' : 'Desbloquea tu Plan Doble Objetivo';
+    if (gateTitle) gateTitle.textContent = IS_EN ? 'Unlock your final double-goal protocol' : 'Desbloquea tu protocolo final de doble objetivo';
     if (gateSub) gateSub.innerHTML = IS_EN
-      ? `Integrated protocol combining 2 goals in one. One-time payment of <strong style="color:var(--accent)">${price}</strong> — no subscription.`
-      : `Protocolo integrado combinando 2 objetivos en uno. Pago único de <strong style="color:var(--accent)">${price}</strong> — sin suscripción.`;
+      ? `Your questionnaire is complete. Generate one integrated protocol combining 2 goals with a one-time payment of <strong style="color:var(--accent)">${price}</strong> — no subscription.`
+      : `Tu cuestionario está completo. Generá un protocolo integrado que combina 2 objetivos con un pago único de <strong style="color:var(--accent)">${price}</strong> — sin suscripción.`;
     // Show combo banner in step 2
     const banner = document.getElementById('combo-goals-banner');
     if (banner) banner.style.display = 'block';
@@ -1239,10 +1239,10 @@ function applyComboMode() {
     const price = IS_EN ? '$12.99' : '$12,99';
     if (priceDisplay) priceDisplay.textContent = price;
     if (priceNote) priceNote.textContent = price;
-    if (gateTitle) gateTitle.textContent = IS_EN ? 'Unlock Plan + Biohacker Lab' : 'Desbloquea Plan + Biohacker Lab';
+    if (gateTitle) gateTitle.textContent = IS_EN ? 'Unlock your Plan + Biohacker protocol' : 'Desbloquea tu protocolo Plan + Biohacker';
     if (gateSub) gateSub.innerHTML = IS_EN
-      ? `Personalized protocol + peptide Biohacker Lab. One-time payment of <strong style="color:var(--accent)">${price}</strong> — no subscription.`
-      : `Protocolo personalizado + Biohacker Lab peptídico. Pago único de <strong style="color:var(--accent)">${price}</strong> — sin suscripción.`;
+      ? `Your questionnaire is complete. Generate your personalized protocol + peptide Biohacker Lab with a one-time payment of <strong style="color:var(--accent)">${price}</strong> — no subscription.`
+      : `Tu cuestionario está completo. Generá tu protocolo personalizado + Biohacker Lab peptídico con un pago único de <strong style="color:var(--accent)">${price}</strong> — sin suscripción.`;
   }
 }
 
@@ -1285,6 +1285,11 @@ function setGateMsg(text, type = '') {
   const el = document.getElementById('gate-msg');
   el.textContent = text || '';
   el.className = `gate-msg ${type}`.trim();
+}
+
+function showQuestionnaire() {
+  document.getElementById('email-gate').style.display = 'none';
+  document.getElementById('wizard').style.display = 'block';
 }
 
 async function trackEvent(eventName, payload = {}) {
@@ -1506,12 +1511,13 @@ async function initAccess() {
     return;
   }
 
-  // ── Sin sesión → mostrar gate ──
-  showGate();
+  // ── Sin sesión → permitir completar cuestionario primero ──
+  showQuestionnaire();
 }
 
 function showGate() {
   document.getElementById('email-gate').style.display = 'block';
+  document.getElementById('wizard').style.display = 'none';
 }
 
 function initWizardUI() {
@@ -1521,8 +1527,7 @@ function initWizardUI() {
 
 function unlockWizard() {
   document.body.classList.add('paid-mode');
-  document.getElementById('email-gate').style.display = 'none';
-  document.getElementById('wizard').style.display = 'block';
+  showQuestionnaire();
   document.getElementById('gate-btn').disabled = false;
   trackEvent('checkout_verified', { bypass: state.paidSessionId === 'dev_bypass' });
 }
@@ -2329,12 +2334,12 @@ function applyStaticI18n() {
   if (heroSubMain) heroSubMain.innerHTML = 'Precision protocol configuration based on biometric variables, longevity targets, and budget. <strong>The science of supplementation, personalized.</strong>';
   set('#hero-trust-med', 'Physician-led clinical design · safety and contraindication-first logic');
   set('.hero-link', '⚠ Experimental Biohacker Module (Peptides)');
-  set('.gate-title', 'Unlock your Personalized Plan');
+  set('.gate-title', 'Unlock your final protocol');
   const gateSub = document.querySelector('.gate-sub');
-  if (gateSub) gateSub.textContent = 'Enter your email and continue to secure checkout to generate your personalized monthly protocol.';
-  set('#gate-note-copy', 'Paywall active from day 1 · Billing handled by Stripe');
+  if (gateSub) gateSub.innerHTML = 'Your questionnaire is ready. Enter your email and continue to secure checkout to generate your personalized monthly protocol.';
+  set('#gate-note-copy', 'One-time payment before generation · Billing handled by Stripe');
   const gateBtn = document.getElementById('gate-btn');
-  if (gateBtn) gateBtn.textContent = 'Continue to checkout →';
+  if (gateBtn) gateBtn.textContent = 'Continue to payment →';
   const gateLegal = document.getElementById('gate-legal-copy');
   if (gateLegal) gateLegal.innerHTML = 'By continuing, you accept <a href="/terms.html" target="_blank" rel="noopener">Terms</a> / <a href="/privacy.html" target="_blank" rel="noopener">Privacy</a>.';
   const email = document.getElementById('user-email');
