@@ -681,6 +681,14 @@ html[data-theme="light"] .hero-list b{color:#964848}
     font-family:'DM Mono',monospace;font-size:.62rem;
     color:var(--dim);letter-spacing:.1em;
   }
+  .peptide-buy-link {
+    font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.06em;
+    color:var(--accent2);text-decoration:none;
+    border:1px solid rgba(152,136,200,.3);border-radius:4px;
+    padding:3px 8px;transition:.2s;
+    background:rgba(152,136,200,.06);
+  }
+  .peptide-buy-link:hover { border-color:rgba(152,136,200,.6);color:var(--text); }
 
   /* Tags: classified badges */
   .tags { display:flex;gap:5px;flex-wrap:wrap; }
@@ -1929,6 +1937,26 @@ async function init() {
     return;
   }
 
+  // ── Combo: si el usuario pagó el combo Plan+Biohacker, usar su session del stack-builder ──
+  const comboSession = params.get('combo_session') || localStorage.getItem('longeva_paid_session_stack_builder') || '';
+  const comboParam = params.get('combo');
+  if ((comboParam === 'biohacker' || comboParam === 'paid') && comboSession) {
+    localStorage.setItem(BIO_SESSION_KEY, comboSession);
+    state.sessionId = comboSession;
+    document.getElementById('protocol-catalog').style.display = 'none';
+    document.getElementById('form').style.display = 'block';
+    // Show a combo welcome banner
+    const form = document.getElementById('form');
+    if (form && !document.getElementById('combo-bio-banner')) {
+      const banner = document.createElement('div');
+      banner.id = 'combo-bio-banner';
+      banner.style.cssText = 'margin-bottom:16px;padding:12px 16px;border-radius:10px;background:linear-gradient(135deg,rgba(200,88,88,.12),rgba(152,136,200,.08));border:1px solid rgba(200,88,88,.3);font-family:\'DM Mono\',monospace;font-size:10px;color:#c09090;letter-spacing:.06em;';
+      banner.textContent = tr('⚗️ COMBO ACTIVO — Acceso Biohacker Lab incluido en tu Plan + Biohacker', '⚗️ COMBO ACTIVE — Biohacker Lab access included in your Plan + Biohacker');
+      form.insertBefore(banner, form.firstChild);
+    }
+    return;
+  }
+
   // ── Sesión guardada → acceso directo ──
   if (localStorage.getItem(BIO_SESSION_KEY)) {
     state.sessionId = localStorage.getItem(BIO_SESSION_KEY);
@@ -2193,6 +2221,7 @@ function renderResult(p) {
         <div class="protocol-meta">
           <span class="protocol-id">ID: ${protoId}</span>
           <div class="risk-indicator"><span class="risk-dot"></span>${tr('RIESGO: ELEVADO / EXPERIMENTAL', 'RISK: HIGH / EXPERIMENTAL')}</div>
+          <a class="peptide-buy-link" href="https://iherb.com/search?kw=${encodeURIComponent(it.peptide || '')}&rcode=LONGEVAPP" target="_blank" rel="noopener sponsored" title="${tr('Buscar en iHerb · Enlace de afiliado', 'Search on iHerb · Affiliate link')}">${tr('Buscar en iHerb ↗', 'Search on iHerb ↗')}</a>
         </div>
       </div>`;
     });

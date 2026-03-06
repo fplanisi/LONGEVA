@@ -173,8 +173,51 @@ main{position:relative;z-index:1;max-width:1040px;margin:0 auto;padding:32px 18p
 .affiliate-note strong{color:var(--a1);font-weight:500}
 [data-theme="light"] .affiliate-note strong{color:var(--a1)}
 
-.section-divider{
-  text-align:center;margin:28px 0 16px;
+/* Combo grid */
+.combo-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+
+/* Combo double */
+.plan-card--combo{
+  border-color:rgba(106,162,204,.5);
+  background:linear-gradient(145deg,rgba(106,162,204,.1),rgba(85,176,154,.06) 60%,transparent);
+  position:relative;
+}
+.plan-card--combo::after{
+  content:'COMBO';position:absolute;top:-1px;right:20px;
+  background:linear-gradient(90deg,var(--a1),var(--a2));
+  color:#fff;font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.15em;
+  padding:3px 10px;border-radius:0 0 8px 8px;
+}
+[data-theme="light"] .plan-card--combo{background:linear-gradient(145deg,#e8f0fa,#edf6f2 60%,#fff);border-color:rgba(53,95,140,.3)}
+.plan-badge--combo{background:rgba(106,162,204,.12);border-color:var(--a1);color:var(--a1)}
+.plan-name--combo{color:var(--a1)}
+.feature-check--combo{background:rgba(106,162,204,.15);color:var(--a1)}
+.plan-cta--combo{background:linear-gradient(90deg,var(--a1),var(--a2));color:#fff}
+.plan-cta--combo:hover{filter:brightness(1.08)}
+
+/* Combo bio */
+.plan-card--combio{
+  border-color:rgba(180,50,50,.4);
+  background:linear-gradient(145deg,rgba(106,162,204,.07),rgba(180,50,50,.06) 60%,transparent);
+  position:relative;
+}
+.plan-card--combio::after{
+  content:'COMBO';position:absolute;top:-1px;right:20px;
+  background:linear-gradient(90deg,var(--a1),#c84040);
+  color:#fff;font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.15em;
+  padding:3px 10px;border-radius:0 0 8px 8px;
+}
+[data-theme="light"] .plan-card--combio{background:linear-gradient(145deg,#eaf1f8,#fff8f8 60%,#fff);border-color:rgba(168,56,56,.3)}
+.plan-badge--combio{background:rgba(180,50,50,.1);border-color:rgba(200,70,70,.5);color:#c09090}
+[data-theme="light"] .plan-badge--combio{color:#a03030;border-color:rgba(168,56,56,.4)}
+.plan-name--combio{color:var(--a1)}
+.feature-check--combio{background:rgba(106,162,204,.15);color:var(--a1)}
+.plan-cta--combio{background:linear-gradient(90deg,var(--a1),#c84040);color:#fff}
+.plan-cta--combio:hover{filter:brightness(1.08)}
+
+@media(max-width:720px){
+  .combo-grid{grid-template-columns:1fr}
+}
   font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;
   color:var(--di);text-transform:uppercase;
 }
@@ -235,13 +278,13 @@ main{position:relative;z-index:1;max-width:1040px;margin:0 auto;padding:32px 18p
       <div class="plan-name plan-name--stack" id="name-stack">Plan Personalizado</div>
       <p class="plan-desc" id="desc-stack">Protocolo de suplementación generado por IA, diseñado y supervisado por médico. Cruzamos tu biometría, objetivos, presupuesto y condiciones para darte dosis exactas, horarios y sinergias moleculares.</p>
       <div class="plan-price-wrap">
-        <div class="plan-price"><span class="plan-price-currency">$</span>4<span style="font-size:32px">,99</span></div>
-        <div class="plan-price-type" id="price-type-stack">Pago único · Acceso permanente al resultado</div>
+        <div class="plan-price"><span class="plan-price-currency">$</span>5<span style="font-size:32px">,99</span></div>
+        <div class="plan-price-type" id="price-type-stack">Pago único · Acceso permanente a tu resultado</div>
       </div>
       <ul class="plan-features" id="features-stack">
-        <li class="plan-feature"><span class="feature-check feature-check--stack">✓</span><span>Protocolo personalizado con 120+ moléculas posibles</span></li>
-        <li class="plan-feature"><span class="feature-check feature-check--stack">✓</span><span>Dosis, horarios y sinergias por franja horaria</span></li>
-        <li class="plan-feature"><span class="feature-check feature-check--stack">✓</span><span>Interacciones identificadas y monitoreadas por médico</span></li>
+        <li class="plan-feature"><span class="feature-check feature-check--stack">✓</span><span>Protocolo personalizado de 120+ moléculas posibles</span></li>
+        <li class="plan-feature"><span class="feature-check feature-check--stack">✓</span><span>Dosis, horarios y sinergias por bloque horario</span></li>
+        <li class="plan-feature"><span class="feature-check feature-check--stack">✓</span><span>Interacciones monitoreadas por médico</span></li>
         <li class="plan-feature"><span class="feature-check feature-check--stack">✓</span><span>Plan mensual de compras con costo estimado</span></li>
         <li class="plan-feature"><span class="feature-check feature-check--stack">✓</span><span>Links de compra con productos verificados</span></li>
         <li class="plan-feature"><span class="feature-check feature-check--stack">✓</span><span>PDF ejecutivo exportable</span></li>
@@ -256,7 +299,7 @@ main{position:relative;z-index:1;max-width:1040px;margin:0 auto;padding:32px 18p
       <div class="plan-name plan-name--bio" id="name-bio">Biohacker Lab</div>
       <p class="plan-desc" id="desc-bio">Protocolo peptídico experimental diseñado y supervisado por médico. Cuestionario clínico de validación, compuestos off-label, manejo de cadena de frío y administración SC. Solo para usuarios con formación técnica.</p>
       <div class="plan-price-wrap">
-        <div class="plan-price"><span class="plan-price-currency">$</span>7<span style="font-size:32px">,99</span></div>
+        <div class="plan-price"><span class="plan-price-currency">$</span>8<span style="font-size:32px">,99</span></div>
         <div class="plan-price-type" id="price-type-bio">Pago único · Protocolo completo con péptidos</div>
       </div>
       <ul class="plan-features" id="features-bio">
@@ -268,6 +311,49 @@ main{position:relative;z-index:1;max-width:1040px;margin:0 auto;padding:32px 18p
         <li class="plan-feature"><span class="feature-check feature-check--bio">✓</span><span>Diseñado y supervisado por médico</span></li>
       </ul>
       <a class="plan-cta plan-cta--bio" href="/biohacker-protocol.html" id="cta-bio">Desbloquear Biohacker Lab →</a>
+    </div>
+
+  </div>
+
+  <!-- Bundle Combos -->
+  <div class="section-divider" id="divider-combo">COMBOS — AHORRÁ COMBINANDO</div>
+
+  <div class="combo-grid">
+
+    <!-- Combo: Plan + Plan 2 objetivos -->
+    <div class="plan-card plan-card--combo">
+      <span class="plan-badge plan-badge--combo" id="badge-combo1">🔥 MÁS ELEGIDO</span>
+      <div class="plan-name plan-name--combo" id="name-combo1">Plan Doble Objetivo</div>
+      <p class="plan-desc" id="desc-combo1">Elegís dos objetivos en un solo cuestionario — por ejemplo, Longevidad + Masa Muscular, o Longevidad + Plan Alimenticio. La IA genera un protocolo integrado que combina ambos sin conflictos ni redundancias.</p>
+      <div class="plan-price-wrap" style="display:flex;align-items:baseline;gap:14px">
+        <div class="plan-price"><span class="plan-price-currency">$</span>9<span style="font-size:32px">,99</span></div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--mu);text-decoration:line-through">$11,98</div>
+      </div>
+      <div class="plan-price-type" id="price-type-combo1">Pago único · 2 objetivos integrados en 1 protocolo · Ahorrás $2</div>
+      <ul class="plan-features" id="features-combo1">
+        <li class="plan-feature"><span class="feature-check feature-check--combo">✓</span><span>Selección de 2 objetivos en el mismo cuestionario</span></li>
+        <li class="plan-feature"><span class="feature-check feature-check--combo">✓</span><span>Protocolo integrado sin duplicados ni conflictos</span></li>
+        <li class="plan-feature"><span class="feature-check feature-check--combo">✓</span><span>Todo lo incluido en el Plan Personalizado × 2</span></li>
+      </ul>
+      <a class="plan-cta plan-cta--combo" href="/stack-builder.html?combo=double" id="cta-combo1">Elegir 2 objetivos →</a>
+    </div>
+
+    <!-- Combo: Plan + Biohacker -->
+    <div class="plan-card plan-card--combio">
+      <span class="plan-badge plan-badge--combio" id="badge-combo2">⚗️ PACK COMPLETO</span>
+      <div class="plan-name plan-name--combio" id="name-combo2">Plan + Biohacker</div>
+      <p class="plan-desc" id="desc-combo2">El protocolo de suplementación personalizado más el nivel avanzado de péptidos y moléculas experimentales. Para quienes quieren ir de lo básico al nivel experto en un solo paso.</p>
+      <div class="plan-price-wrap" style="display:flex;align-items:baseline;gap:14px">
+        <div class="plan-price"><span class="plan-price-currency">$</span>12<span style="font-size:32px">,99</span></div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--mu);text-decoration:line-through">$14,98</div>
+      </div>
+      <div class="plan-price-type" id="price-type-combo2">Pago único · Plan personalizado + Biohacker Lab · Ahorrás $2</div>
+      <ul class="plan-features" id="features-combo2">
+        <li class="plan-feature"><span class="feature-check feature-check--combio">✓</span><span>Protocolo personalizado completo ($5,99)</span></li>
+        <li class="plan-feature"><span class="feature-check feature-check--combio">✓</span><span>Acceso al Biohacker Lab con péptidos ($8,99)</span></li>
+        <li class="plan-feature"><span class="feature-check feature-check--combio">✓</span><span>Integración entre ambos protocolos sin conflictos</span></li>
+      </ul>
+      <a class="plan-cta plan-cta--combio" href="/stack-builder.html?combo=biohacker" id="cta-combo2">Desbloquear todo →</a>
     </div>
 
   </div>
@@ -351,6 +437,24 @@ main{position:relative;z-index:1;max-width:1040px;margin:0 auto;padding:32px 18p
     document.getElementById('nav-home').textContent = 'Back to home';
     document.getElementById('nav-terms').textContent = 'Terms';
     document.getElementById('nav-privacy').textContent = 'Privacy';
+
+    // Combos EN
+    const dc = document.getElementById('divider-combo');
+    if(dc) dc.textContent = 'BUNDLES — SAVE BY COMBINING';
+    const bc1 = document.getElementById('badge-combo1'); if(bc1) bc1.textContent = '🔥 MOST POPULAR';
+    const nc1 = document.getElementById('name-combo1'); if(nc1) nc1.textContent = 'Double Goal Plan';
+    const dc1 = document.getElementById('desc-combo1'); if(dc1) dc1.textContent = 'Choose two goals in one questionnaire — e.g. Longevity + Muscle Mass, or Longevity + Nutrition Plan. The AI generates an integrated protocol combining both without conflicts or redundancies.';
+    const ptc1 = document.getElementById('price-type-combo1'); if(ptc1) ptc1.textContent = 'One-time · 2 integrated goals in 1 protocol · Save $2';
+    const ctac1 = document.getElementById('cta-combo1'); if(ctac1) ctac1.textContent = 'Choose 2 goals →';
+    const bc2 = document.getElementById('badge-combo2'); if(bc2) bc2.textContent = '⚗️ FULL PACK';
+    const nc2 = document.getElementById('name-combo2'); if(nc2) nc2.textContent = 'Plan + Biohacker';
+    const dc2 = document.getElementById('desc-combo2'); if(dc2) dc2.textContent = 'The personalized supplement protocol plus the advanced peptides and experimental molecules level. For those who want to go from basics to expert level in one step.';
+    const ptc2 = document.getElementById('price-type-combo2'); if(ptc2) ptc2.textContent = 'One-time · Personalized Plan + Biohacker Lab · Save $2';
+    const ctac2 = document.getElementById('cta-combo2'); if(ctac2) ctac2.textContent = 'Unlock everything →';
+    const fc1 = document.getElementById('features-combo1');
+    if(fc1) fc1.innerHTML = ['Select 2 goals in the same questionnaire','Integrated protocol without duplicates or conflicts','Everything in Personalized Plan × 2'].map(f=>`<li class="plan-feature"><span class="feature-check feature-check--combo">✓</span><span>${f}</span></li>`).join('');
+    const fc2 = document.getElementById('features-combo2');
+    if(fc2) fc2.innerHTML = ['Full personalized protocol ($5.99)','Biohacker Lab access with peptides ($8.99)','Integration between both protocols without conflicts'].map(f=>`<li class="plan-feature"><span class="feature-check feature-check--combio">✓</span><span>${f}</span></li>`).join('');
 
     // Update feature lists for EN
     const featuresStack = document.getElementById('features-stack');

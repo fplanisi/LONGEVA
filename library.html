@@ -83,13 +83,43 @@
   .mode-btn.mode-latest{border-color:rgba(0,152,255,.3);color:var(--accent2)}
   .mode-btn.mode-latest:hover,.mode-btn.mode-latest.active{background:rgba(0,152,255,.07);border-color:var(--accent2)}
 
-  /* FILTERS */
+  /* SEARCH SUGGESTIONS */
+  .search-suggestions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:14px}
+  .sugg-label{font-family:'DM Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;flex-shrink:0}
+  .sugg-pill{padding:5px 13px;border-radius:100px;border:1px solid var(--border2);background:rgba(255,255,255,.02);color:var(--tx2);font-family:'DM Mono',monospace;font-size:10px;cursor:pointer;transition:.2s;letter-spacing:.04em}
+  .sugg-pill:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+  html[data-theme="light"] .sugg-pill{background:#fff;color:var(--tx2)}
+  html[data-theme="light"] .sugg-pill:hover{background:var(--accent-dim)}
+
+  /* FILTERS — more visible */
   .filters{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin-top:12px}
-  .filters-extra-wrap{margin-top:8px;text-align:center}
-  .filters-extra-toggle{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;border:1px dashed var(--border);font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:.06em;cursor:pointer;background:rgba(255,255,255,.01)}
-  .filters-extra{margin-top:8px}
-  .fp{padding:4px 12px;border-radius:100px;border:1px solid var(--border);background:rgba(255,255,255,.01);color:var(--muted);font-family:'DM Mono',monospace;font-size:9px;cursor:pointer;transition:.2s}
-  .fp:hover,.fp.active{border-color:var(--accent2);color:var(--text);background:rgba(82,184,255,.1)}
+  .fp{padding:6px 14px;border-radius:100px;border:1px solid var(--border2);background:rgba(255,255,255,.02);color:var(--tx2);font-family:'DM Mono',monospace;font-size:10px;cursor:pointer;transition:.2s;letter-spacing:.03em}
+  .fp:hover,.fp.active{border-color:var(--accent2);color:var(--text);background:rgba(82,184,255,.1);font-weight:500}
+  html[data-theme="light"] .fp{background:#fff;color:var(--tx2)}
+  html[data-theme="light"] .fp:hover,html[data-theme="light"] .fp.active{background:var(--accent-dim);color:var(--accent)}
+
+  /* LIBRARY CTA BANNER */
+  .lib-protocol-cta{
+    position:relative;z-index:10;max-width:1500px;margin:0 auto 24px;padding:0 40px;
+  }
+  .lib-cta-inner{
+    display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+    background:linear-gradient(135deg,rgba(106,162,204,.12),rgba(85,176,154,.06));
+    border:1px solid rgba(106,162,204,.3);border-radius:14px;padding:16px 22px;
+  }
+  .lib-cta-text{font-size:13px;color:var(--tx2);line-height:1.5}
+  .lib-cta-text strong{color:var(--accent)}
+  .lib-cta-btn{
+    display:inline-flex;align-items:center;gap:8px;padding:10px 20px;
+    background:var(--accent);color:#fff;border-radius:10px;text-decoration:none;
+    font-family:'Instrument Sans',sans-serif;font-size:13px;font-weight:600;
+    white-space:nowrap;transition:.2s;flex-shrink:0;
+  }
+  .lib-cta-btn:hover{filter:brightness(1.08)}
+  html[data-theme="light"] .lib-cta-inner{background:linear-gradient(135deg,#e8f0fa,#edf6f2)}
+  html[data-theme="light"] .lib-cta-btn{color:#fff}
+
+  @media(max-width:900px){.lib-protocol-cta{padding:0 16px}.lib-cta-inner{flex-direction:column;align-items:flex-start}.lib-cta-btn{width:100%;justify-content:center}}
 
   /* STATS */
   .stats{position:relative;z-index:10;display:grid;grid-template-columns:repeat(4,minmax(130px,1fr));gap:10px;max-width:1320px;margin:0 auto 26px;padding:0 48px}
@@ -163,13 +193,8 @@
   .discover-btn span{font-size:15px}
 
   /* GRID */
-  .cat-sec{margin-bottom:14px}
-  .cat-folder{border:1px solid var(--border);border-radius:14px;background:linear-gradient(160deg,var(--surface2),var(--surface));overflow:hidden}
-  .cat-folder + .cat-folder{margin-top:10px}
-  .cat-folder summary{list-style:none;cursor:pointer;padding:12px 14px;display:flex;align-items:center;gap:8px}
-  .cat-folder summary::-webkit-details-marker{display:none}
-  .cat-folder summary::after{content:'▾';margin-left:8px;color:var(--dim);font-size:13px;transition:transform .2s ease}
-  .cat-folder:not([open]) summary::after{transform:rotate(-90deg)}
+  .cat-sec{margin-bottom:24px}
+  .cat-header{padding:10px 4px 8px;display:flex;align-items:center;gap:8px}
   .cat-lbl{display:flex;align-items:center;gap:8px;flex:1}
   .cat-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
   .cat-txt{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);white-space:nowrap}
@@ -311,43 +336,50 @@
 
 <section class="hero hero-area">
   <p class="hero-eye">Biblioteca científica de compuestos pro-longevidad</p>
-  <h1 id="lib-hero-title">Vademécum Molecular</h1>
-  <p class="hero-sub" id="lib-hero-sub">El índice completo de la suplementación avanzada. Seleccioná una molécula para desplegar su ficha técnica, mecanismos de acción y evidencia clínica.</p>
+  <h1 id="lib-hero-title">Buscá cualquier suplemento.<br><em>Entendé qué hace realmente.</em></h1>
+  <p class="hero-sub" id="lib-hero-sub">Escribí el nombre de un suplemento o una meta de salud y accedés a su ficha completa: para qué sirve, cómo funciona en el cuerpo, la evidencia científica y cómo tomarlo. Todo con respaldo médico.</p>
+
+  <!-- Suggestion pills for onboarding -->
+  <div class="search-suggestions" id="search-suggestions">
+    <span class="sugg-label">Populares:</span>
+    <button class="sugg-pill" onclick="quickSearch('NMN')">NMN</button>
+    <button class="sugg-pill" onclick="quickSearch('Magnesio')">Magnesio</button>
+    <button class="sugg-pill" onclick="quickSearch('Resveratrol')">Resveratrol</button>
+    <button class="sugg-pill" onclick="quickSearch('Vitamina D')">Vitamina D</button>
+    <button class="sugg-pill" onclick="quickSearch('Ashwagandha')">Ashwagandha</button>
+    <button class="sugg-pill" onclick="quickSearch('Omega-3')">Omega-3</button>
+    <button class="sugg-pill" onclick="quickSearch('Creatina')">Creatina</button>
+  </div>
 
   <div class="search-box">
     <div class="search-wrap">
       <div class="si"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div>
-      <input class="search-input" id="search-input" type="text" placeholder="Filtrar por molécula, categoría o vía metabólica..." autocomplete="off">
+      <input class="search-input" id="search-input" type="text" placeholder="Ej: NMN, longevidad, masa muscular, antioxidante..." autocomplete="off">
       <button class="sbtn" id="sbtn" onclick="searchIA()">Analizar →</button>
     </div>
 
     <div class="search-modes">
       <button class="mode-btn active" id="mode-base" onclick="setMode('base',this)" title="Análisis con base curada">
-        📚 Base curada
+        📚 Ficha técnica
       </button>
       <button class="mode-btn mode-latest" id="mode-latest" onclick="setMode('latest',this)" title="Busca papers recientes con web search (Anthropic)">
-        🔍 Novedades 2025-2026
+        🔍 Investigación reciente 2025-2026
       </button>
     </div>
 
     <div class="filters">
-      <button class="fp active" onclick="fil('all',this)">Todas</button>
+      <button class="fp active" onclick="fil('all',this)">Ver todo</button>
       <button class="fp" onclick="fil('natural',this)">🌿 Naturales</button>
       <button class="fp" onclick="fil('synthetic',this)">⚗️ Sintéticas</button>
       <button class="fp" onclick="fil('hongos',this)">🍄 Hongos</button>
       <button class="fp" onclick="fil('mTOR',this)">mTOR/AMPK</button>
       <button class="fp" onclick="fil('NAD',this)">NAD⁺/Sirtuinas</button>
       <button class="fp" onclick="fil('senolytic',this)">Senolíticas</button>
+      <button class="fp" onclick="fil('adaptogen',this)">Adaptógenos</button>
+      <button class="fp" onclick="fil('mitocondria',this)">Mitocondria</button>
+      <button class="fp" onclick="fil('inflamacion',this)">Anti-inflam.</button>
+      <button class="fp" onclick="fil('epigenetica',this)">Epigenética</button>
     </div>
-    <details class="filters-extra-wrap" id="filters-extra-wrap">
-      <summary class="filters-extra-toggle" id="filters-extra-toggle">+ Más filtros</summary>
-      <div class="filters filters-extra">
-        <button class="fp" onclick="fil('adaptogen',this)">Adaptógenos</button>
-        <button class="fp" onclick="fil('mitocondria',this)">Mitocondria</button>
-        <button class="fp" onclick="fil('inflamacion',this)">Anti-inflam.</button>
-        <button class="fp" onclick="fil('epigenetica',this)">Epigenética</button>
-      </div>
-    </details>
   </div>
 </section>
 
@@ -359,6 +391,16 @@
 </div>
 
 <main class="main">
+  <!-- Protocol CTA -->
+  <div class="lib-protocol-cta">
+    <div class="lib-cta-inner">
+      <div class="lib-cta-text">
+        <strong>¿Encontraste algo interesante?</strong> Armá tu protocolo personalizado — la IA selecciona exactamente qué tomar según tu perfil, objetivos y presupuesto.
+      </div>
+      <a class="lib-cta-btn" href="/stack-builder.html">Generar mi protocolo — $5,99 →</a>
+    </div>
+  </div>
+
   <!-- Botón descubrimiento -->
   <div class="discover-wrap">
     <button class="discover-btn" onclick="discoverNew()">
@@ -420,17 +462,24 @@
 // CONFIG — Cambia API_BASE según el entorno
 // ─────────────────────────────────────────────
 const CONFIG = {
-  // En desarrollo local: 'http://localhost:3000'
-  // En Vercel: '' (misma URL)
   API_BASE: '',
-  // URL de la base de datos de moléculas
-  // En Vercel: '/data/molecules.json'
-  // En GitHub Pages: URL raw de GitHub
   DB_URL_ES: '/data/molecules.json',
   DB_URL_EN: '/data/molecules.en.json',
 };
 const THEME_KEY = 'longeva_theme';
 const USER_LANG = getPreferredLang();
+
+// Quick search from suggestion pills
+function quickSearch(term) {
+  const inp = document.getElementById('search-input');
+  if(inp) { inp.value = term; inp.focus(); }
+  document.querySelectorAll('.fp').forEach(b => b.classList.remove('active'));
+  const allBtn = document.querySelector('.fp[onclick*="\'all\'"]');
+  if(allBtn) allBtn.classList.add('active');
+  curFilter = 'all';
+  srQuery = term.toLowerCase();
+  render();
+}
 const IS_EN = USER_LANG === 'en';
 document.documentElement.lang = USER_LANG;
 const tr = (es, en) => (IS_EN ? en : es);
@@ -476,9 +525,9 @@ function applyStaticI18n() {
   if (badges[0]) badges[0].childNodes[1].nodeValue = ' Scientific base active';
   set('.hero-eye', 'Scientific library of longevity compounds');
   const h1 = document.getElementById('lib-hero-title');
-  if (h1) h1.textContent = 'Molecular Vademecum';
+  if (h1) h1.innerHTML = 'Search any supplement.<br><em>Understand what it really does.</em>';
   const hSub = document.getElementById('lib-hero-sub');
-  if (hSub) hSub.textContent = 'The complete index of advanced supplementation. Select a molecule to display its technical sheet, mechanisms of action, and clinical evidence.';
+  if (hSub) hSub.textContent = 'Type a supplement name or health goal and access its complete profile: what it does, how it works in the body, the scientific evidence and how to take it. All with medical backing.';
   const nav = document.querySelectorAll('.topnav a');
   if (nav[0]) nav[0].textContent = 'Home';
   if (nav[1]) nav[1].textContent = 'Library';
@@ -486,7 +535,7 @@ function applyStaticI18n() {
   if (nav[3]) nav[3].textContent = 'Biohacker';
   if (nav[4]) nav[4].textContent = 'Nutrition';
   const si = document.getElementById('search-input');
-  if (si) si.placeholder = 'Filter by molecule, category or metabolic pathway...';
+  if (si) si.placeholder = 'e.g. NMN, longevity, muscle mass, antioxidant...';
   const f = document.getElementById('md-formula');
   if (f) f.textContent = 'Formula: —';
   const s1 = document.getElementById('md-sec1-title');
@@ -500,9 +549,9 @@ function applyStaticI18n() {
   const sbtn = document.getElementById('sbtn');
   if (sbtn) sbtn.textContent = 'Analyze →';
   const modeBase = document.getElementById('mode-base');
-  if (modeBase) modeBase.innerHTML = '📚 Curated base';
+  if (modeBase) modeBase.innerHTML = '📚 Technical profile';
   const modeLatest = document.getElementById('mode-latest');
-  if (modeLatest) modeLatest.innerHTML = '🔍 2025-2026 updates';
+  if (modeLatest) modeLatest.innerHTML = '🔍 Recent research 2025-2026';
   if (modeLatest) modeLatest.title = 'Searches recent papers with web search (Anthropic)';
   const extraToggle = document.getElementById('filters-extra-toggle');
   if (extraToggle) extraToggle.textContent = '+ More filters';
@@ -702,40 +751,59 @@ function render() {
   const fl = getFiltered();
   document.getElementById('cnt').textContent = fl.length;
   if (!fl.length) {
-    document.getElementById('mols').innerHTML = `<div class="nores">${tr('Sin resultados. Usa el botón "Analizar →" para consultar con IA cualquier compuesto.', 'No results. Use "Analyze →" to query AI about any compound.')}</div>`;
+    document.getElementById('mols').innerHTML = `<div class="nores">${tr('Sin resultados. Usá el botón "Analizar →" para consultar con IA cualquier compuesto.', 'No results. Use "Analyze →" to query AI about any compound.')}</div>`;
     return;
   }
-  const cats = {};
-  fl.forEach(m => { if (!cats[m.category]) cats[m.category] = []; cats[m.category].push(m); });
-  let h = '';
-  Object.entries(cats).forEach(([cat, ms]) => {
-    const col = CC[cat] || '#888';
-    const catLabel = translateCategory(cat);
-    h += `<div class="cat-sec"><details class="cat-folder"><summary><div class="cat-lbl"><div class="cat-dot" style="background:${col}"></div><span class="cat-txt">${catLabel}</span><div class="cat-line"></div><span class="cat-txt">${ms.length} ${tr('mol.', 'mol.')}</span></div></summary><div class="grid">`;
-    ms.forEach((m, i) => {
+
+  const isFiltered = curFilter !== 'all' || (srQuery && srQuery.length > 0);
+
+  // FLAT GRID when filtering/searching — more scannable
+  if (isFiltered) {
+    let h = `<div class="grid flat-grid">`;
+    fl.forEach((m, i) => {
       const tc = m.type === 'natural' ? 'tn' : 'ts';
       const tl = m.type === 'natural' ? '🌿' : '⚗️';
       const typeLabel = m.type === 'natural' ? tr('Natural', 'Natural') : tr('Sintética', 'Synthetic');
-      const description = IS_EN
-        ? (m.description_en || buildEnglishCardDescription(m))
-        : (m.description || '');
-      const encoded = encodeURIComponent(JSON.stringify({
-        name: m.name || '',
-        full_name: m.full_name || m.name || '',
-        pathways: m.pathways || [],
-        category: m.category || '',
-        study_count: m.study_count || 0,
-      }));
-      h += `<div class="card js-mol-card" data-mol="${encoded}" style="animation-delay:${i * .035}s">
+      const description = IS_EN ? (m.description_en || buildEnglishCardDescription(m)) : (m.description || '');
+      const encoded = encodeURIComponent(JSON.stringify({name:m.name||'',full_name:m.full_name||m.name||'',pathways:m.pathways||[],category:m.category||'',study_count:m.study_count||0}));
+      const col = CC[m.category] || '#888';
+      h += `<div class="card js-mol-card" data-mol="${encoded}" style="animation-delay:${i*.03}s;--cat-col:${col}">
         <div class="card-top"><div class="mol-n">${m.name}</div><div class="tb ${tc}">${tl} ${typeLabel}</div></div>
         <div class="card-desc">${description}</div>
         <div class="chips">${(m.pathways||[]).slice(0,2).map(p=>`<span class="chip">${p}</span>`).join('')}</div>
-        <div class="card-meta"><div class="ev">${tr('Evidencia', 'Evidence')} <span>${m.evidence_rating||'N/A'}</span> · ${m.study_count||0}+ ${tr('est.', 'studies')}</div><div class="explore">${tr('Ver análisis →', 'View analysis →')}</div></div>
+        <div class="card-meta"><div class="ev">${tr('Evidencia','Evidence')} <span>${m.evidence_rating||'N/A'}</span> · ${m.study_count||0}+ ${tr('est.','studies')}</div><div class="explore">${tr('Ver ficha →','View details →')}</div></div>
       </div>`;
     });
-    h += `</div></details></div>`;
-  });
-  document.getElementById('mols').innerHTML = h;
+    h += `</div>`;
+    document.getElementById('mols').innerHTML = h;
+  } else {
+    // CATEGORIZED VIEW — show all categories open by default
+    const cats = {};
+    fl.forEach(m => { if (!cats[m.category]) cats[m.category] = []; cats[m.category].push(m); });
+    let h = '';
+    Object.entries(cats).forEach(([cat, ms]) => {
+      const col = CC[cat] || '#888';
+      const catLabel = translateCategory(cat);
+      h += `<div class="cat-sec">
+        <div class="cat-header"><div class="cat-lbl"><div class="cat-dot" style="background:${col}"></div><span class="cat-txt">${catLabel}</span><div class="cat-line"></div><span class="cat-txt">${ms.length} ${tr('mol.','mol.')}</span></div></div>
+        <div class="grid">`;
+      ms.forEach((m, i) => {
+        const tc = m.type === 'natural' ? 'tn' : 'ts';
+        const tl = m.type === 'natural' ? '🌿' : '⚗️';
+        const typeLabel = m.type === 'natural' ? tr('Natural','Natural') : tr('Sintética','Synthetic');
+        const description = IS_EN ? (m.description_en || buildEnglishCardDescription(m)) : (m.description || '');
+        const encoded = encodeURIComponent(JSON.stringify({name:m.name||'',full_name:m.full_name||m.name||'',pathways:m.pathways||[],category:m.category||'',study_count:m.study_count||0}));
+        h += `<div class="card js-mol-card" data-mol="${encoded}" style="animation-delay:${i*.03}s">
+          <div class="card-top"><div class="mol-n">${m.name}</div><div class="tb ${tc}">${tl} ${typeLabel}</div></div>
+          <div class="card-desc">${description}</div>
+          <div class="chips">${(m.pathways||[]).slice(0,2).map(p=>`<span class="chip">${p}</span>`).join('')}</div>
+          <div class="card-meta"><div class="ev">${tr('Evidencia','Evidence')} <span>${m.evidence_rating||'N/A'}</span> · ${m.study_count||0}+ ${tr('est.','studies')}</div><div class="explore">${tr('Ver ficha →','View details →')}</div></div>
+        </div>`;
+      });
+      h += `</div></div>`;
+    });
+    document.getElementById('mols').innerHTML = h;
+  }
   bindMoleculeCards();
 }
 

@@ -371,13 +371,13 @@
 
 <section class="hero">
   <p class="hero-eye" id="hero-eye">PLATAFORMA DE BIOHACKING Y LONGEVIDAD</p>
-  <h1 id="hero-title">Diseñá tu protocolo de<br><em>suplementación inteligente</em></h1>
-  <p class="hero-sub" id="hero-sub">Crea tu stack personalizado de suplementos. Protocolos basados en evidencia clínica, dosis exactas e interacciones identificadas y monitoreadas por médico.</p>
+  <h1 id="hero-title">¿Qué suplementos necesitás<br><em>exactamente vos?</em></h1>
+  <p class="hero-sub" id="hero-sub">Respondé un cuestionario de 5 minutos y recibís tu protocolo personalizado: qué tomar, cuánto, cuándo y por qué. Basado en evidencia clínica, supervisado por médico.</p>
   <p class="trust-line" id="trust-line">Desarrollo médico · Eficacia, seguridad y adherencia</p>
   <div class="flow-strip">
-    <div class="flow-step" id="flow-1"><b>1.</b> Perfil Biológico</div>
-    <div class="flow-step" id="flow-2"><b>2.</b> Stack Personalizado</div>
-    <div class="flow-step" id="flow-3"><b>3.</b> Evolución Continua</div>
+    <div class="flow-step" id="flow-1"><b>1.</b> Completás tu perfil</div>
+    <div class="flow-step" id="flow-2"><b>2.</b> Recibís tu protocolo exacto</div>
+    <div class="flow-step" id="flow-3"><b>3.</b> Comprás solo lo que necesitás</div>
   </div>
 </section>
 
@@ -388,8 +388,8 @@
     <section class="qmod qmod-primary">
       <i class="qmod-eyebrow" id="tag-plan">PRINCIPAL</i>
       <div class="qmod-title" id="m2-title">Protocolo Personalizado</div>
-      <div class="qmod-desc" id="m2-copy">El núcleo de tu optimización. Un algoritmo clínico que cruza tu biometría, objetivos y presupuesto para diseñar tu stack exacto. Dosis precisas, sinergias moleculares y control total de interacciones.</div>
-      <a class="primary-cta" href="/stack-builder.html" id="cta-plan">Generar mi protocolo — $4,99 →</a>
+      <div class="qmod-desc" id="m2-copy">Contestás un cuestionario médico sobre tu edad, objetivos, historial y presupuesto. La IA diseña tu stack exacto: qué suplementos tomar, en qué dosis, en qué horario y cómo combinarlos sin riesgos. Supervisado por médico.</div>
+      <a class="primary-cta" href="/stack-builder.html" id="cta-plan">Generar mi protocolo — $5,99 →</a>
     </section>
 
     <!-- ② BIOHACKER — avanzado, peligroso, segunda fila izquierda -->
@@ -401,7 +401,7 @@
         <span class="bio-pill" id="bp1">Péptidos</span>
         <span class="bio-pill" id="bp2">Off-label</span>
         <span class="bio-pill" id="bp3">Nivel Experto</span>
-        <span class="bio-pill bio-pill--price" id="bp4">$7,99</span>
+        <span class="bio-pill bio-pill--price" id="bp4">$8,99</span>
       </div>
       <div class="qmod-foot" id="bio-arrow">Desbloquear acceso →</div>
     </a>
@@ -454,17 +454,17 @@ function applyCopy(){
   document.documentElement.lang = IS_EN ? 'en' : 'es';
   document.querySelector('title').textContent = tr('LONGEVAPP — Inicio','LONGEVAPP — Home');
   document.getElementById('hero-eye').textContent   = tr('PLATAFORMA DE BIOHACKING Y LONGEVIDAD','BIOHACKING & LONGEVITY PLATFORM');
-  document.getElementById('hero-title').innerHTML   = tr('Diseñá tu protocolo de<br><em>suplementación inteligente</em>','Design your<br><em>smart supplement protocol</em>');
-  document.getElementById('hero-sub').textContent   = tr('Crea tu stack personalizado de suplementos. Protocolos basados en evidencia clínica, dosis exactas e interacciones identificadas y monitoreadas por médico.','Build your custom supplement stack. Clinically-evidenced protocols, exact dosing, and physician-monitored interactions.');
+  document.getElementById('hero-title').innerHTML   = tr('¿Qué suplementos necesitás<br><em>exactamente vos?</em>','What supplements do<br><em>you specifically need?</em>');
+  document.getElementById('hero-sub').textContent   = tr('Contestás un cuestionario de 5 minutos y recibís tu protocolo personalizado: qué tomar, cuánto, cuándo y por qué. Basado en evidencia clínica, supervisado por médico.','Answer a 5-minute questionnaire and get your personalized protocol: what to take, how much, when and why. Clinically-evidenced, physician-supervised.');
   document.getElementById('trust-line').textContent = tr('Desarrollo médico · Eficacia, seguridad y adherencia','Physician-developed · Efficacy, safety & adherence');
-  document.getElementById('flow-1').innerHTML = tr('<b>1.</b> Perfil Biológico','<b>1.</b> Biological Profile');
-  document.getElementById('flow-2').innerHTML = tr('<b>2.</b> Stack Personalizado','<b>2.</b> Custom Stack');
-  document.getElementById('flow-3').innerHTML = tr('<b>3.</b> Evolución Continua','<b>3.</b> Continuous Evolution');
+  document.getElementById('flow-1').innerHTML = tr('<b>1.</b> Completás tu perfil','<b>1.</b> Complete your profile');
+  document.getElementById('flow-2').innerHTML = tr('<b>2.</b> Recibís tu protocolo exacto','<b>2.</b> Receive your exact protocol');
+  document.getElementById('flow-3').innerHTML = tr('<b>3.</b> Comprás solo lo que necesitás','<b>3.</b> Buy only what you need');
 
   document.getElementById('tag-plan').textContent   = tr('PRINCIPAL','FLAGSHIP');
   document.getElementById('m2-title').textContent   = tr('Protocolo Personalizado','Personalized Protocol');
-  document.getElementById('m2-copy').textContent    = tr('El núcleo de tu optimización. Un algoritmo clínico que cruza tu biometría, objetivos y presupuesto para diseñar tu stack exacto. Dosis precisas, sinergias moleculares y control total de interacciones.','The core of your optimization. A clinical algorithm that cross-references your biometrics, goals, and budget to design your exact stack. Precise doses, molecular synergies, and full interaction control.');
-  document.getElementById('cta-plan').textContent   = tr('Generar mi protocolo — $4,99 →','Generate my protocol — $4.99 →');
+  document.getElementById('m2-copy').textContent    = tr('Contestás un cuestionario médico sobre tu edad, objetivos, historial y presupuesto. La IA diseña tu stack exacto: qué suplementos tomar, en qué dosis, en qué horario y cómo combinarlos sin riesgos. Supervisado por médico.','You answer a medical questionnaire about your age, goals, history, and budget. The AI designs your exact stack: which supplements to take, in what doses, on what schedule, and how to combine them safely. Physician-supervised.');
+  document.getElementById('cta-plan').textContent   = tr('Generar mi protocolo — $5,99 →','Generate my protocol — $5.99 →');
 
   document.getElementById('tag-bio').textContent    = tr('⚠ ZONA RESTRINGIDA','⚠ RESTRICTED ZONE');
   document.getElementById('m3-title').textContent   = tr('Biohacker Lab','Biohacker Lab');
@@ -472,7 +472,7 @@ function applyCopy(){
   document.getElementById('bp1').textContent        = tr('Péptidos','Peptides');
   document.getElementById('bp2').textContent        = tr('Off-label','Off-label');
   document.getElementById('bp3').textContent        = tr('Nivel Experto','Expert Level');
-  document.getElementById('bp4').textContent        = '$7,99';
+  document.getElementById('bp4').textContent        = '$8,99';
   document.getElementById('bio-arrow').textContent  = tr('Desbloquear acceso →','Unlock access →');
 
   document.getElementById('tag-lib').textContent    = tr('DATOS CRUDOS','RAW DATA');

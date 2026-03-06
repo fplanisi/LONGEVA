@@ -98,12 +98,16 @@ function isSafeReturnPath(path) {
 function normalizeModule(raw) {
   const value = String(raw || '').trim().toLowerCase();
   if (value === 'biohacker_protocol') return 'biohacker_protocol';
+  if (value === 'combo_double') return 'combo_double';
+  if (value === 'combo_biohacker') return 'combo_biohacker';
   if (value === 'nutrition_plan') return 'nutrition_plan';
   return 'stack_builder';
 }
 
 function resolvePriceId(module) {
   if (module === 'biohacker_protocol') return clean(process.env.STRIPE_PRICE_ID_BIOHACKER) || clean(process.env.STRIPE_PRICE_ID);
+  if (module === 'combo_double') return clean(process.env.STRIPE_PRICE_ID_COMBO_DOUBLE) || clean(process.env.STRIPE_PRICE_ID_STACK) || clean(process.env.STRIPE_PRICE_ID);
+  if (module === 'combo_biohacker') return clean(process.env.STRIPE_PRICE_ID_COMBO_BIOHACKER) || clean(process.env.STRIPE_PRICE_ID_BIOHACKER) || clean(process.env.STRIPE_PRICE_ID_STACK) || clean(process.env.STRIPE_PRICE_ID);
   if (module === 'nutrition_plan') return clean(process.env.STRIPE_PRICE_ID_NUTRITION) || clean(process.env.STRIPE_PRICE_ID);
   return clean(process.env.STRIPE_PRICE_ID_STACK) || clean(process.env.STRIPE_PRICE_ID);
 }

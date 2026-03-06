@@ -891,13 +891,13 @@ html[data-theme="light"] .affiliate-disclosure { color: var(--muted); }
 
   <!-- EMAIL GATE -->
   <div id="email-gate">
-    <div class="gate-title">Desbloquea tu Plan Personalizado</div>
-    <p class="gate-sub">Protocolo clínico único generado por IA, diseñado y supervisado por médico. Un pago único de <strong style="color:var(--accent)">$4,99</strong> — sin suscripción.</p>
+    <div class="gate-title" id="gate-title-text">Desbloquea tu Plan Personalizado</div>
+    <p class="gate-sub" id="gate-sub-text">Protocolo clínico único generado por IA, diseñado y supervisado por médico. Un pago único de <strong style="color:var(--accent)" id="gate-price-display">$5,99</strong> — sin suscripción.</p>
     <div class="email-row">
       <input class="email-input" id="user-email" type="email" placeholder="tu@email.com">
       <button class="gate-btn" id="gate-btn" onclick="startCheckout()">Continuar al pago →</button>
     </div>
-    <div class="gate-note" id="gate-note-copy">Pago único · $4,99 · Cobro gestionado por Stripe</div>
+    <div class="gate-note" id="gate-note-copy">Pago único · <span id="gate-price-note">$5,99</span> · Cobro gestionado por Stripe</div>
     <div class="gate-legal" id="gate-legal-copy">Al continuar aceptas <a href="/terms.html" target="_blank" rel="noopener">Términos</a> / <a href="/privacy.html" target="_blank" rel="noopener">Privacidad</a>.</div>
     <div class="gate-msg" id="gate-msg"></div>
   </div>
@@ -956,8 +956,11 @@ html[data-theme="light"] .affiliate-disclosure { color: var(--muted); }
     <!-- Step 2: Goals -->
     <div class="step-card" id="step2" style="display:none">
       <div class="step-num">02 / 04</div>
-      <h2 class="step-q">¿Cuáles son tus objetivos?</h2>
-      <p class="step-hint">Selecciona un objetivo principal. Luego podrás ajustarlo cuando quieras.</p>
+      <h2 class="step-q" id="goals-step-q">¿Cuáles son tus objetivos?</h2>
+      <p class="step-hint" id="goals-step-hint">Seleccioná un objetivo principal. Luego podrás ajustarlo cuando quieras.</p>
+      <div id="combo-goals-banner" style="display:none;margin-bottom:16px;padding:10px 14px;border-radius:10px;background:linear-gradient(135deg,rgba(106,162,204,.12),rgba(85,176,154,.08));border:1px solid rgba(106,162,204,.3);font-family:'DM Mono',monospace;font-size:10px;color:var(--accent);letter-spacing:.06em;">
+        🔥 COMBO ACTIVO — Podés elegir hasta 2 objetivos. Se generará un protocolo integrado.
+      </div>
       <div class="opts-grid cols-2" id="goals-grid">
         <div class="opt" onclick="toggleGoal('longevity',this)">
           <div class="opt-icon">⏳</div>
@@ -1046,7 +1049,8 @@ html[data-theme="light"] .affiliate-disclosure { color: var(--muted); }
           <div class="opt-check"></div>
         </div>
       </div>
-      <div style="font-size:12px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.08em;margin:20px 0 10px">ESTILO ALIMENTARIO (SOLO SI ELIGES SOLO ALIMENTOS)</div>
+      <div id="food-style-section" style="display:none;overflow:hidden;transition:max-height .3s ease,opacity .3s ease;">
+      <div style="font-size:12px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.08em;margin:20px 0 10px">ESTILO ALIMENTARIO</div>
       <div class="opts-grid cols-3" id="food-style-grid">
         <div class="opt selected" onclick="selectFoodStyle('omnivore',this)">
           <div class="opt-icon">🍽️</div>
@@ -1064,6 +1068,7 @@ html[data-theme="light"] .affiliate-disclosure { color: var(--muted); }
           <div class="opt-check"></div>
         </div>
       </div>
+      </div><!-- /food-style-section -->
       <div style="font-size:12px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.08em;margin:20px 0 10px">PAÍS / DISPONIBILIDAD</div>
       <div class="opts-grid cols-2" id="country-grid">
         <div class="opt selected" onclick="selectCountry('AR',this)">
@@ -1183,8 +1188,18 @@ const state = {
   lastBudgetLabel: '',
   replaceUsage: 0,
   replaceLimit: 3,
-  replacedOut: []
+  replacedOut: [],
+  comboMode: null, // null | 'double' | 'biohacker'
 };
+
+// Detect combo mode from URL params
+(function detectComboMode() {
+  const p = new URLSearchParams(window.location.search);
+  const combo = p.get('combo');
+  if (combo === 'double' || combo === 'biohacker') {
+    state.comboMode = combo;
+  }
+})();
 const USER_LANG = getPreferredLang();
 const IS_EN = USER_LANG === 'en';
 const tr = (es, en) => (IS_EN ? en : es);
@@ -1195,6 +1210,41 @@ const STACK_HISTORY_KEY = 'longeva_stack_history_v1';
 const STACK_SESSION_KEY = 'longeva_paid_session_stack_builder';
 const STACK_RESUME_KEY = 'longeva_stack_resume_after_pay';
 let safetyConfirmed = false;
+
+// ── COMBO MODE ──
+function applyComboMode() {
+  if (!state.comboMode) return;
+
+  // Update gate UI
+  const priceDisplay = document.getElementById('gate-price-display');
+  const priceNote = document.getElementById('gate-price-note');
+  const gateTitle = document.getElementById('gate-title-text');
+  const gateSub = document.getElementById('gate-sub-text');
+
+  if (state.comboMode === 'double') {
+    const price = IS_EN ? '$9.99' : '$9,99';
+    if (priceDisplay) priceDisplay.textContent = price;
+    if (priceNote) priceNote.textContent = price;
+    if (gateTitle) gateTitle.textContent = IS_EN ? 'Unlock your Double Goal Plan' : 'Desbloquea tu Plan Doble Objetivo';
+    if (gateSub) gateSub.innerHTML = IS_EN
+      ? `Integrated protocol combining 2 goals in one. One-time payment of <strong style="color:var(--accent)">${price}</strong> — no subscription.`
+      : `Protocolo integrado combinando 2 objetivos en uno. Pago único de <strong style="color:var(--accent)">${price}</strong> — sin suscripción.`;
+    // Show combo banner in step 2
+    const banner = document.getElementById('combo-goals-banner');
+    if (banner) banner.style.display = 'block';
+    // Update step hint
+    const hint = document.getElementById('goals-step-hint');
+    if (hint) hint.textContent = IS_EN ? 'Select up to 2 goals — the AI will generate one integrated protocol combining both.' : 'Seleccioná hasta 2 objetivos — la IA generará un protocolo integrado que los combina.';
+  } else if (state.comboMode === 'biohacker') {
+    const price = IS_EN ? '$12.99' : '$12,99';
+    if (priceDisplay) priceDisplay.textContent = price;
+    if (priceNote) priceNote.textContent = price;
+    if (gateTitle) gateTitle.textContent = IS_EN ? 'Unlock Plan + Biohacker Lab' : 'Desbloquea Plan + Biohacker Lab';
+    if (gateSub) gateSub.innerHTML = IS_EN
+      ? `Personalized protocol + peptide Biohacker Lab. One-time payment of <strong style="color:var(--accent)">${price}</strong> — no subscription.`
+      : `Protocolo personalizado + Biohacker Lab peptídico. Pago único de <strong style="color:var(--accent)">${price}</strong> — sin suscripción.`;
+  }
+}
 
 // ── EMAIL + PAYWALL ──
 async function startCheckout() {
@@ -1213,7 +1263,7 @@ async function startCheckout() {
     const res = await fetch('/api/create-checkout-session', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, return_to: '/stack-builder.html', module: 'stack_builder' }),
+      body: JSON.stringify({ email, return_to: '/stack-builder.html', module: state.comboMode === 'biohacker' ? 'combo_biohacker' : state.comboMode === 'double' ? 'combo_double' : 'stack_builder' }),
     });
     const data = await res.json();
     if (!res.ok || !data.url) throw new Error(data.error || tr('No se pudo crear el checkout', 'Could not create checkout'));
@@ -1296,9 +1346,10 @@ function applyWizardStateToUI() {
 
   document.querySelectorAll('#goals-grid .opt').forEach(o => o.classList.remove('selected'));
   if (state.goals.length) {
-    const goal = state.goals[0];
-    const goalBtn = Array.from(document.querySelectorAll('#goals-grid .opt')).find((el) => el.getAttribute('onclick')?.includes(`'${goal}'`));
-    if (goalBtn) goalBtn.classList.add('selected');
+    state.goals.forEach(goal => {
+      const goalBtn = Array.from(document.querySelectorAll('#goals-grid .opt')).find((el) => el.getAttribute('onclick')?.includes(`'${goal}'`));
+      if (goalBtn) goalBtn.classList.add('selected');
+    });
   }
   document.getElementById('next2').disabled = state.goals.length === 0;
 
@@ -1310,6 +1361,9 @@ function applyWizardStateToUI() {
   document.querySelectorAll('#source-pref-grid .opt').forEach(o => o.classList.remove('selected'));
   const sourceBtn = Array.from(document.querySelectorAll('#source-pref-grid .opt')).find((el) => el.getAttribute('onclick')?.includes(`'${state.sourcePreference}'`));
   if (sourceBtn) sourceBtn.classList.add('selected');
+  // Show/hide food style section based on restored preference
+  const foodSection = document.getElementById('food-style-section');
+  if (foodSection) foodSection.style.display = state.sourcePreference === 'food_only' ? 'block' : 'none';
   document.querySelectorAll('#food-style-grid .opt').forEach(o => o.classList.remove('selected'));
   const foodBtn = Array.from(document.querySelectorAll('#food-style-grid .opt')).find((el) => el.getAttribute('onclick')?.includes(`'${state.foodStyle}'`));
   if (foodBtn) foodBtn.classList.add('selected');
@@ -1370,7 +1424,8 @@ function applyWizardStateToUI() {
 
 async function initAccess() {
   applyStaticI18n();
-  trackEvent('stack_page_view', { path: location.pathname });
+  applyComboMode(); // Apply combo pricing/UI before showing gate
+  trackEvent('stack_page_view', { path: location.pathname, combo: state.comboMode || 'none' });
   initWizardUI();
   const params = new URLSearchParams(window.location.search);
   const preview = String(params.get('preview') || '').toLowerCase();
@@ -1529,12 +1584,20 @@ function checkStep1() {
 
 // ── STEP 2 ──
 function toggleGoal(g, el) {
-  const alreadySelected = state.goals.length === 1 && state.goals[0] === g;
-  document.querySelectorAll('#goals-grid .opt').forEach(o => o.classList.remove('selected'));
-  if (alreadySelected) {
-    state.goals = [];
+  const maxGoals = state.comboMode === 'double' ? 2 : 1;
+  const idx = state.goals.indexOf(g);
+  if (idx >= 0) {
+    // Deselect
+    state.goals.splice(idx, 1);
+    el.classList.remove('selected');
   } else {
-    state.goals = [g];
+    if (state.goals.length >= maxGoals) {
+      // Remove oldest selection
+      const removedGoal = state.goals.shift();
+      const removedEl = Array.from(document.querySelectorAll('#goals-grid .opt')).find(o => o.getAttribute('onclick')?.includes(`'${removedGoal}'`));
+      if (removedEl) removedEl.classList.remove('selected');
+    }
+    state.goals.push(g);
     el.classList.add('selected');
   }
   document.getElementById('next2').disabled = state.goals.length === 0;
@@ -1559,6 +1622,11 @@ function selectSourcePreference(mode, el) {
   state.sourcePreference = mode;
   document.querySelectorAll('#source-pref-grid .opt').forEach(o => o.classList.remove('selected'));
   el.classList.add('selected');
+  // Show food style options only when "Solo alimentos" is selected
+  const foodSection = document.getElementById('food-style-section');
+  if (foodSection) {
+    foodSection.style.display = mode === 'food_only' ? 'block' : 'none';
+  }
   checkStep3();
   persistWizardState();
 }
@@ -1952,7 +2020,7 @@ function renderStack(stack, budgetLabel) {
             /${tr('mes', 'month')}
             <div class="mol-actions">
               <button class="mini-btn replace" onclick="replaceItem('${sec.key}', ${idx})">${tr('Reemplazar', 'Replace')}</button>
-              <a class="mini-btn buy" href="/api/partner-link?item=${encodeURIComponent(buyLabel)}" target="_blank" rel="noopener sponsored" title="Enlace de afiliado · LONGEVAPP puede recibir una comisión">${tr('Comprar ↗', 'Buy ↗')}</a>
+              <a class="mini-btn buy" href="https://iherb.com/search?kw=${encodeURIComponent(buyLabel)}&rcode=LONGEVAPP" target="_blank" rel="noopener sponsored" title="Ver en iHerb · Enlace de afiliado · LONGEVAPP puede recibir una comisión">${tr('Ver en iHerb ↗', 'View on iHerb ↗')}</a>
             </div>
           </div>
         </div>`;
@@ -1978,10 +2046,14 @@ function renderStack(stack, budgetLabel) {
   }
 
   // Actions
+  const comboLabel = state.comboMode === 'biohacker'
+    ? `<button class="action-btn action-bundle" onclick="window.location.href='/biohacker-protocol.html?combo=paid'">${tr('⚗️ Ir al Biohacker Lab →', '⚗️ Go to Biohacker Lab →')}</button>`
+    : '';
   html += `<div class="actions-row">
-    <button class="action-btn action-bundle" onclick="buyFullStackBundle()">${tr('Comprar stack completo ↗', 'Buy full stack ↗')}</button>
+    ${comboLabel}
+    <button class="action-btn action-bundle" onclick="buyFullStackBundle()">${tr('Comprar stack en iHerb ↗', 'Buy stack on iHerb ↗')}</button>
     <button class="action-btn action-primary" onclick="downloadExecutivePDF()">📋 ${tr('PDF ejecutivo', 'Executive PDF')}</button>
-    <button class="action-btn action-secondary" onclick="window.print()">🖨 ${tr('Imprimir vista completa', 'Print full view')}</button>
+    <button class="action-btn action-secondary" onclick="window.print()">🖨 ${tr('Imprimir', 'Print')}</button>
     <button class="action-btn action-secondary" onclick="location.reload()">↺ ${tr('Nuevo stack', 'New stack')}</button>
   </div>
   <div class="affiliate-disclosure">${tr('Los enlaces "Comprar" son de afiliado. LONGEVAPP puede recibir una comisión sin costo adicional para ti. Esto no influye en las recomendaciones del protocolo, que son generadas exclusivamente por criterio clínico. El botón de compra total agrupa el stack para dejar listo un futuro carrito/partnership.', 'Buy links are affiliate links. LONGEVAPP may receive a commission at no extra cost to you. This does not influence protocol recommendations, which are generated solely on clinical criteria. The full-stack buy button groups the protocol to support a future cart/partnership flow.')}</div>`;
@@ -1992,7 +2064,6 @@ function renderStack(stack, budgetLabel) {
     <h4 class="mono" style="font-size:0.8rem;color:var(--accent);margin-bottom:8px;">${tr('OPCIÓN SIN SUPLEMENTACIÓN', 'NO-SUPPLEMENT OPTION')}</h4>
     <p style="font-size:0.9rem;">${tr('¿Prefieres un enfoque 100% natural? Hemos diseñado un Menú Semanal de Longevidad que replica el perfil bioquímico de este stack mediante alimentos reales.', 'Prefer a 100% natural approach? We designed a Weekly Longevity Menu that replicates this stack biochemical profile through real foods.')}</p>
     <a href="/food-longevity.html" class="btn-link">${tr('Ver Menú de Reemplazo →', 'View Replacement Menu →')}</a>
-      <a href="/pricing.html" id="nav-pricing">Precios</a>
   </div>`;
   html += renderHistorySection();
   html += `</div>`;
@@ -2224,9 +2295,17 @@ function buyFullStackBundle() {
     alert(tr('Primero genera un stack válido.', 'Generate a valid stack first.'));
     return;
   }
-  const query = items.join(', ');
-  const url = `/api/partner-link?item=${encodeURIComponent(query)}`;
+  // Open iHerb search for first item, with affiliate code
+  const firstItem = items[0] || '';
+  const url = `https://iherb.com/search?kw=${encodeURIComponent(firstItem)}&rcode=LONGEVAPP`;
   window.open(url, '_blank', 'noopener,noreferrer');
+  // If multiple items, open a second tab with the full query after a short delay
+  if (items.length > 1) {
+    const query = items.slice(0, 3).join(' ');
+    setTimeout(() => {
+      window.open(`https://iherb.com/search?kw=${encodeURIComponent(items[1])}&rcode=LONGEVAPP`, '_blank', 'noopener,noreferrer');
+    }, 400);
+  }
 }
 
 function applyStaticI18n() {

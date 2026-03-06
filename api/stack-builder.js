@@ -42,9 +42,17 @@ async function verifyPaidSession(sessionId, expectedModule = '') {
   if (!stripeRes.ok) return { ok: false };
   const isPaid = payload.payment_status === 'paid' || payload.status === 'complete';
   const sessionModule = String(payload?.metadata?.module || '').trim();
-  if (expectedModule && sessionModule && sessionModule !== expectedModule) return { ok: false };
+  if (expectedModule && sessionModule && !matchesAllowedModule(sessionModule, expectedModule)) return { ok: false };
   if (expectedModule && !sessionModule) return { ok: false };
   return { ok: isPaid };
+}
+
+function matchesAllowedModule(sessionModule, expectedModule) {
+  if (sessionModule === expectedModule) return true;
+  if (expectedModule === 'stack_builder') {
+    return sessionModule === 'combo_double' || sessionModule === 'combo_biohacker';
+  }
+  return false;
 }
 
 async function callAnthropic(profile) {

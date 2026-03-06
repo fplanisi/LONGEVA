@@ -56,6 +56,8 @@ export default async function handler(req, res) {
 function normalizeModule(raw) {
   const value = String(raw || '').trim().toLowerCase();
   if (value === 'biohacker_protocol') return 'biohacker_protocol';
+  if (value === 'combo_double') return 'combo_double';
+  if (value === 'combo_biohacker') return 'combo_biohacker';
   if (value === 'nutrition_plan') return 'nutrition_plan';
   if (value === 'stack_builder') return 'stack_builder';
   return '';
