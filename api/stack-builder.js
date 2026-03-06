@@ -163,6 +163,7 @@ function buildPromptEs(profile) {
   const conditions = profile?.conditions_label || 'Ninguna';
   const currentProtocol = profile?.current_protocol || 'No usa suplementos actualmente';
   const country = profile?.country || 'GLOBAL';
+  const includeFoodCompanion = Boolean(profile?.include_food_companion);
   const foodStyleMap = { omnivore: 'Omnívoro', vegetarian: 'Vegetariano', vegan: 'Vegano' };
   const foodStyle = foodStyleMap[profile?.food_style] || foodStyleMap.omnivore;
   const sourcePreferenceMap = {
@@ -180,6 +181,7 @@ function buildPromptEs(profile) {
 - Objetivos principales: ${goals}
 - Presupuesto mensual: ${budgetLabel}
 - Preferencia de origen de moléculas: ${sourcePreference}
+- ¿Incluye plan alimenticio complementario?: ${includeFoodCompanion ? 'Sí, agregar menú semanal completo como bonus del combo' : 'No'}
 - Estilo alimentario (si aplica): ${foodStyle}
 - País/mercado objetivo para disponibilidad: ${country}
 - Condiciones de salud / medicamentos: ${conditions}
@@ -221,6 +223,7 @@ Reglas:
 - Si la preferencia es "Solo alimentos", el campo "full" debe describir el alimento/fuente nutricional y "estimated_price" debe ser costo mensual estimado de ese alimento
 - Si la preferencia es "Solo alimentos", DEBES completar "weekly_food_plan" con 7 días distintos y al menos 4 comidas por día (desayuno, almuerzo, merienda, cena). En este modo, "diet_extras" puede quedar vacío
 - Si la preferencia es "Mixto" o "Incluye sintéticos" o "Solo naturales", NO hagas menú semanal detallado. En esos modos "weekly_food_plan" debe ser {} y debes completar "diet_extras" con 5-10 alimentos para sumar como extra (sin desplazar el foco en suplementos)
+- EXCEPCIÓN: si "¿Incluye plan alimenticio complementario?" es "Sí", además del stack de suplementos DEBES completar "weekly_food_plan" con 7 días distintos y al menos 4 comidas por día para acompañar el mismo objetivo principal. En este caso también puedes completar "diet_extras" si suma claridad
 - Distribuye por farmacocinética y adherencia real de 30 días
 - Responde solo con el JSON.`;
 }
@@ -239,6 +242,7 @@ function buildPromptEn(profile) {
   const conditions = profile?.conditions_label || 'None';
   const currentProtocol = profile?.current_protocol || 'No current supplement protocol';
   const country = profile?.country || 'GLOBAL';
+  const includeFoodCompanion = Boolean(profile?.include_food_companion);
   const foodStyleMap = { omnivore: 'Omnivore', vegetarian: 'Vegetarian', vegan: 'Vegan' };
   const foodStyle = foodStyleMap[profile?.food_style] || foodStyleMap.omnivore;
   const sourcePreferenceMap = {
@@ -256,6 +260,7 @@ function buildPromptEn(profile) {
 - Main goals: ${goals}
 - Monthly budget: ${budgetLabel}
 - Molecule origin preference: ${sourcePreference}
+- Include complementary food plan?: ${includeFoodCompanion ? 'Yes, add a full weekly menu as combo bonus' : 'No'}
 - Dietary style (if applicable): ${foodStyle}
 - Country/market for availability: ${country}
 - Health conditions / medications: ${conditions}
@@ -297,6 +302,7 @@ Rules:
 - If preference is "Food-only", field "full" should describe food/nutrient source and "estimated_price" should be estimated monthly food cost
 - If preference is "Food-only", you MUST fill "weekly_food_plan" with 7 distinct days and at least 4 meals per day (breakfast, lunch, snack, dinner). In this mode, "diet_extras" may be empty
 - If preference is "Mixed", "Synthetic allowed", or "Natural-only", do NOT create a full weekly menu. In those modes "weekly_food_plan" must be {} and "diet_extras" must include 5-10 foods as add-ons
+- EXCEPTION: if "Include complementary food plan?" is "Yes", in addition to the supplement stack you MUST fill "weekly_food_plan" with 7 distinct days and at least 4 meals per day to support the same primary goal. In this case you may also populate "diet_extras" if useful
 - Distribute by pharmacokinetics and practical 30-day adherence
 - Respond with JSON only.`;
 }

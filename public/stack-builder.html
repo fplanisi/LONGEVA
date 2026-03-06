@@ -1198,6 +1198,7 @@ const state = {
   country: 'AR',
   currentProtocol: '',
   paidSessionId: '',
+  sessionConsumed: false,
   lastStack: null,
   lastBudgetLabel: '',
   replaceUsage: 0,
@@ -1224,7 +1225,38 @@ const WIZARD_STATE_KEY = 'longeva_wizard_state_v1';
 const STACK_HISTORY_KEY = 'longeva_stack_history_v1';
 const STACK_SESSION_KEY = 'longeva_paid_session_stack_builder';
 const STACK_RESUME_KEY = 'longeva_stack_resume_after_pay';
+const STACK_CONSUMED_KEY = 'longeva_consumed_stack_sessions_v1';
 let safetyConfirmed = false;
+
+function isBypassSession() {
+  return state.paidSessionId === 'preview_paid' || state.paidSessionId === 'dev_bypass';
+}
+
+function getConsumedSessions() {
+  try {
+    const raw = localStorage.getItem(STACK_CONSUMED_KEY);
+    const arr = raw ? JSON.parse(raw) : [];
+    return Array.isArray(arr) ? arr : [];
+  } catch (_e) {
+    return [];
+  }
+}
+
+function isSessionConsumed(sessionId) {
+  if (!sessionId || isBypassSession()) return false;
+  return getConsumedSessions().includes(sessionId);
+}
+
+function markSessionConsumed(sessionId) {
+  if (!sessionId || isBypassSession()) return;
+  try {
+    const prev = getConsumedSessions();
+    if (!prev.includes(sessionId)) {
+      localStorage.setItem(STACK_CONSUMED_KEY, JSON.stringify([sessionId, ...prev].slice(0, 20)));
+    }
+    state.sessionConsumed = true;
+  } catch (_e) {}
+}
 
 // ── COMBO MODE ──
 function getEffectiveComboMode() {
@@ -1541,7 +1573,12 @@ async function initAccess() {
   // ── Ya tiene sesión guardada en localStorage → acceso directo ──
   if (localStorage.getItem(STACK_SESSION_KEY)) {
     state.paidSessionId = localStorage.getItem(STACK_SESSION_KEY);
+    state.sessionConsumed = isSessionConsumed(state.paidSessionId);
     unlockWizard();
+    if (state.sessionConsumed) {
+      showConsumedProtocolView();
+      return;
+    }
     const shouldResume = localStorage.getItem(STACK_RESUME_KEY) === '1' || paidFlag === '1' || !!params.get('session_id');
     if (shouldResume) {
       localStorage.removeItem(STACK_RESUME_KEY);
@@ -1556,6 +1593,7 @@ async function initAccess() {
     // Guardar inmediatamente y desbloquear — verificación backend opcional
     localStorage.setItem(STACK_SESSION_KEY, sessionId);
     state.paidSessionId = sessionId;
+    state.sessionConsumed = isSessionConsumed(sessionId);
     if (state.email) localStorage.setItem('longeva_email', state.email);
 
     // Intentar verificar con backend (no bloqueante)
@@ -1569,6 +1607,10 @@ async function initAccess() {
     } catch (_e) {}
 
     unlockWizard();
+    if (state.sessionConsumed) {
+      showConsumedProtocolView();
+      return;
+    }
     // Limpiar URL sin recargar
     const clean = window.location.pathname + (params.get('molecule') ? `?molecule=${params.get('molecule')}` : '');
     window.history.replaceState({}, '', clean);
@@ -1601,6 +1643,21 @@ function unlockWizard() {
   showQuestionnaire();
   document.getElementById('gate-btn').disabled = false;
   trackEvent('checkout_verified', { bypass: state.paidSessionId === 'dev_bypass' });
+}
+
+function showConsumedProtocolView() {
+  const latest = getStackHistory()[0];
+  document.getElementById('email-gate').style.display = 'none';
+  document.getElementById('wizard').style.display = 'none';
+  document.getElementById('results').style.display = 'block';
+  if (!latest?.stack) {
+    const out = document.getElementById('stack-output');
+    if (out) out.innerHTML = `<div class="err-box">${tr('Este pago ya fue usado para generar un protocolo. En producción real quedará bloqueado a un solo plan por compra.', 'This payment has already been used to generate a protocol. In production it will remain locked to one plan per purchase.')}</div>`;
+    return;
+  }
+  state.lastStack = latest.stack;
+  state.lastBudgetLabel = latest.budgetLabel || '';
+  renderStack(latest.stack, latest.budgetLabel || '');
 }
 
 // ── STEP NAV ──
@@ -1808,6 +1865,10 @@ async function generateStack() {
     gate.scrollIntoView({ behavior: 'smooth', block: 'start' });
     return;
   }
+  if (state.sessionConsumed && !isBypassSession()) {
+    showConsumedProtocolView();
+    return;
+  }
   if (!safetyConfirmed) {
     openSafetyModal();
     return;
@@ -1915,6 +1976,7 @@ async function generateStack() {
     if (!data?.stack || typeof data.stack !== 'object') {
       throw new Error(tr('Respuesta inválida del motor de stack.', 'Invalid stack engine response.'));
     }
+    markSessionConsumed(state.paidSessionId);
     state.replaceUsage = 0;
     state.replacedOut = [];
     renderStack(data.stack, budgetLabel);
@@ -1962,6 +2024,7 @@ function renderStack(stack, budgetLabel) {
   const pct = Math.min(100, Math.round((stack.estimated_cost / state.budget) * 100));
   const costClass = pct > 90 ? 'warn' : 'ok';
   const isFoodOnly = state.sourcePreference === 'food_only';
+  const hasFoodCompanion = !!state.includeFoodCompanion;
   const weekly = stack.weekly_food_plan && typeof stack.weekly_food_plan === 'object' ? stack.weekly_food_plan : {};
   const weekDays = IS_EN ? ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'] : ['lunes','martes','miercoles','jueves','viernes','sabado','domingo'];
   const weekDayFallback = ['lunes','martes','miercoles','jueves','viernes','sabado','domingo'];
@@ -1969,7 +2032,7 @@ function renderStack(stack, budgetLabel) {
     monday: 'Monday', tuesday: 'Tuesday', wednesday: 'Wednesday', thursday: 'Thursday', friday: 'Friday', saturday: 'Saturday', sunday: 'Sunday',
     lunes: 'Monday', martes: 'Tuesday', miercoles: 'Wednesday', jueves: 'Thursday', viernes: 'Friday', sabado: 'Saturday', domingo: 'Sunday'
   };
-  const hasWeeklyPlan = isFoodOnly && weekDays.every(d => weekly[d] && typeof weekly[d] === 'object');
+  const hasWeeklyPlan = (isFoodOnly || hasFoodCompanion) && weekDays.every(d => weekly[d] && typeof weekly[d] === 'object');
   const dietExtras = Array.isArray(stack.diet_extras) ? stack.diet_extras.filter(Boolean) : [];
   const confidence = computeStackConfidence(stack);
   const bundleItems = ['morning','afternoon','night']
@@ -1999,6 +2062,12 @@ function renderStack(stack, budgetLabel) {
         <span class="molecule-category-tag">${tr('NIVEL', 'LEVEL')}: ${reportLevel}</span>
       </div>
     </div>`;
+  if (state.sessionConsumed && !isBypassSession()) {
+    html += `<div class="monthly-card" style="margin-bottom:12px;">
+      <div class="monthly-title">${tr('Compra consumida', 'Purchase consumed')}</div>
+      <div style="font-size:12px;color:var(--muted);">${tr('Este pago ya generó su protocolo principal. El resultado queda disponible para consulta, impresión y reemplazos puntuales, pero no para crear un plan nuevo desde cero.', 'This payment has already generated its main protocol. The result remains available for review, printing, and specific replacements, but not for creating a new plan from scratch.')}</div>
+    </div>`;
+  }
 
   if (allItems.length) {
     html += `<div class="stack-list">`;
@@ -2145,7 +2214,7 @@ function renderStack(stack, budgetLabel) {
     <button class="action-btn action-bundle" onclick="buyFullStackBundle()">${tr('Comprar stack en iHerb ↗', 'Buy stack on iHerb ↗')}</button>
     <button class="action-btn action-primary" onclick="downloadExecutivePDF()">📋 ${tr('PDF ejecutivo', 'Executive PDF')}</button>
     <button class="action-btn action-secondary" onclick="window.print()">🖨 ${tr('Imprimir', 'Print')}</button>
-    <button class="action-btn action-secondary" onclick="location.reload()">↺ ${tr('Nuevo stack', 'New stack')}</button>
+    ${state.sessionConsumed && !isBypassSession() ? '' : `<button class="action-btn action-secondary" onclick="location.reload()">↺ ${tr('Nuevo stack', 'New stack')}</button>`}
   </div>
   <div class="affiliate-disclosure">${tr('Los enlaces "Comprar" son de afiliado. LONGEVAPP puede recibir una comisión sin costo adicional para ti. Esto no influye en las recomendaciones del protocolo, que son generadas exclusivamente por criterio clínico. El botón de compra total agrupa el stack para dejar listo un futuro carrito/partnership.', 'Buy links are affiliate links. LONGEVAPP may receive a commission at no extra cost to you. This does not influence protocol recommendations, which are generated solely on clinical criteria. The full-stack buy button groups the protocol to support a future cart/partnership flow.')}</div>`;
 
