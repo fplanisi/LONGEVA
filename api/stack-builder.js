@@ -107,26 +107,37 @@ async function callOpenAI(profile) {
   const isEn = String(profile?.lang || '').toLowerCase().startsWith('en');
   const apiKey = cleanEnv(process.env.OPENAI_API_KEY);
   if (!apiKey) throw new Error('OPENAI_API_KEY faltante o invalida');
-  const model = cleanEnv(process.env.OPENAI_MODEL_STACK) || cleanEnv(process.env.OPENAI_MODEL) || 'gpt-4.1';
-  const response = await fetch('https://api.openai.com/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify({
-      model,
-      max_tokens: 2600,
-      temperature: 0.2,
-      messages: [
-        { role: 'system', content: getSystemPrompt(isEn) },
-        { role: 'user', content: buildPrompt(profile, isEn) },
-      ],
-    }),
-  });
-  const data = await response.json();
-  if (!response.ok) throw new Error(`OpenAI ${response.status}: ${data?.error?.message || 'request failed'}`);
-  return data.choices?.[0]?.message?.content || '';
+  const preferredModel = sanitizeOpenAIModel(cleanEnv(process.env.OPENAI_MODEL_STACK) || cleanEnv(process.env.OPENAI_MODEL));
+  const candidates = [preferredModel, 'gpt-4.1', 'gpt-4.1-mini'].filter(Boolean);
+  let lastError = null;
+
+  for (const model of [...new Set(candidates)]) {
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model,
+        max_tokens: 2600,
+        temperature: 0.2,
+        messages: [
+          { role: 'system', content: getSystemPrompt(isEn) },
+          { role: 'user', content: buildPrompt(profile, isEn) },
+        ],
+      }),
+    });
+    const data = await response.json();
+    if (response.ok) return data.choices?.[0]?.message?.content || '';
+
+    const message = String(data?.error?.message || 'request failed');
+    lastError = new Error(`OpenAI ${response.status}: ${message}`);
+    const recoverableModelError = /pattern|model|does not exist|unsupported|invalid/i.test(message);
+    if (!recoverableModelError) break;
+  }
+
+  throw lastError || new Error('OpenAI request failed');
 }
 
 function getSystemPrompt(isEn = false) {
@@ -309,6 +320,12 @@ Rules:
 
 function cleanEnv(value) {
   return String(value || '').trim().replace(/^['"]|['"]$/g, '');
+}
+
+function sanitizeOpenAIModel(value) {
+  const model = String(value || '').trim();
+  if (!model) return '';
+  return /^[a-zA-Z0-9._:-]+$/.test(model) ? model : '';
 }
 
 function parseJsonFromModel(rawText) {
