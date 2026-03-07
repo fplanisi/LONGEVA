@@ -105,7 +105,7 @@ html[data-theme="light"] .topnav a.nav-bio:hover { border-color: rgba(160,50,50,
 .hero h1 em{font-style:italic;color:var(--accent)}
 .hero-sub { font-size: 14px; color: var(--muted); max-width: 720px; margin: 0 auto 22px; line-height: 1.6; font-weight: 300; }
 .hero-trust { margin: -8px auto 18px; max-width: 760px; display: inline-flex; gap: 8px; align-items: center; border: 0; border-radius: 999px; padding: 7px 12px; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: .08em; background: rgba(255,255,255,.02); }
-.hero-proof { display: flex; justify-content: center; gap: 32px; flex-wrap: wrap; }
+.hero-proof { display: flex; justify-content: center; gap: 32px; flex-wrap: wrap; align-items: flex-start; }
 .hero-link {
   margin-top: 18px; display: inline-flex; align-items: center; gap: 8px;
   padding: 9px 14px; border-radius: 999px; border: 1px solid var(--border2);
@@ -113,9 +113,9 @@ html[data-theme="light"] .topnav a.nav-bio:hover { border-color: rgba(160,50,50,
   background: rgba(255,255,255,.02);
 }
 .hero-link:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
-.proof-item { text-align: center; }
-.proof-n { font-family: 'DM Serif Display', serif; font-size: 28px; font-weight: 400; color: var(--accent); line-height: 1; }
-.proof-l { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--dim); letter-spacing: .1em; text-transform: uppercase; margin-top: 3px; }
+.proof-item { text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; min-width: 82px; }
+.proof-n { font-family: 'DM Serif Display', serif; font-size: 28px; font-weight: 400; color: var(--accent); line-height: 1; min-height: 30px; display: flex; align-items: flex-end; justify-content: center; }
+.proof-l { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--dim); letter-spacing: .1em; text-transform: uppercase; margin-top: 6px; min-height: 20px; display: flex; align-items: flex-start; justify-content: center; text-align: center; }
 .eyebrow { font-family:'DM Mono', monospace; font-size: 10px; text-transform: uppercase; }
 
 /* ── EMAIL GATE ── */
@@ -927,8 +927,8 @@ html[data-theme="light"] .affiliate-disclosure { color: var(--muted); }
       <div style="margin-bottom:28px">
         <div style="font-size:12px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.08em;margin-bottom:12px">EDAD</div>
         <div class="range-wrap">
-          <div class="range-labels"><span>20</span><span>40</span><span>60</span><span>80+</span></div>
-          <input type="range" id="age-range" min="20" max="85" value="40" oninput="updateAge(this.value)">
+          <div class="range-labels"><span>18</span><span>40</span><span>60</span><span>80+</span></div>
+          <input type="range" id="age-range" min="18" max="85" value="40" oninput="updateAge(this.value)">
           <div class="range-val" id="age-display">40 <span>años</span></div>
         </div>
       </div>
@@ -1196,6 +1196,7 @@ const state = {
   foodStyle: 'omnivore',
   includeFoodCompanion: false,
   country: 'AR',
+  preferredMolecule: '',
   currentProtocol: '',
   paidSessionId: '',
   sessionConsumed: false,
@@ -1416,6 +1417,7 @@ function persistWizardState() {
     foodStyle: state.foodStyle,
     includeFoodCompanion: state.includeFoodCompanion,
     country: state.country,
+    preferredMolecule: state.preferredMolecule,
     conditions: state.conditions,
     currentProtocol: state.currentProtocol,
     currentStep,
@@ -1438,6 +1440,7 @@ function loadWizardState() {
     state.foodStyle = saved.foodStyle || 'omnivore';
     state.includeFoodCompanion = !!saved.includeFoodCompanion;
     state.country = saved.country || 'AR';
+    state.preferredMolecule = saved.preferredMolecule || localStorage.getItem('longeva_preferred_molecule') || '';
     state.conditions = Array.isArray(saved.conditions) ? saved.conditions : [];
     state.currentProtocol = saved.currentProtocol || '';
     currentStep = Number(saved.currentStep || 1);
@@ -1491,20 +1494,23 @@ function applyWizardStateToUI() {
   }
 
   const protocolInput = document.getElementById('protocol-input');
+  if (state.preferredMolecule && /^(Interesado en:|Interested in:|Molécula priorizada desde Biblioteca:|Priority molecule from Library:)/i.test(state.currentProtocol || '')) {
+    state.currentProtocol = '';
+  }
   protocolInput.value = state.currentProtocol || '';
 
-  // If coming from library deep-link, pre-fill protocol textarea with the molecule
-  if (window._libraryMolecule && !state.currentProtocol) {
-    const molHint = tr(
-      `Interesado en: ${window._libraryMolecule}. Completá el resto del perfil para un protocolo personalizado.`,
-      `Interested in: ${window._libraryMolecule}. Complete your profile for a personalized protocol.`
-    );
-    protocolInput.value = molHint;
-    state.currentProtocol = molHint;
-    // Show a subtle banner
+  if (window._libraryMolecule && !state.preferredMolecule) {
+    state.preferredMolecule = window._libraryMolecule;
+    localStorage.setItem('longeva_preferred_molecule', state.preferredMolecule);
+  }
+  const bannerId = 'library-molecule-banner';
+  const oldBanner = document.getElementById(bannerId);
+  if (oldBanner) oldBanner.remove();
+  if (state.preferredMolecule) {
     const banner = document.createElement('div');
+    banner.id = bannerId;
     banner.style.cssText = 'font-family:"DM Mono",monospace;font-size:10px;color:var(--accent);letter-spacing:.08em;padding:6px 0 2px;margin-bottom:6px;';
-    banner.textContent = tr(`↳ Llegaste desde la Biblioteca · Molécula: ${window._libraryMolecule}`, `↳ From Library · Molecule: ${window._libraryMolecule}`);
+    banner.textContent = tr(`↳ Llegaste desde la Biblioteca · Molécula priorizada: ${state.preferredMolecule}`, `↳ From Library · Priority molecule: ${state.preferredMolecule}`);
     protocolInput.parentNode.insertBefore(banner, protocolInput);
     window._libraryMolecule = null;
   }
@@ -1845,6 +1851,7 @@ function buildProfilePayload(budgetLabel) {
     effective_combo_mode: state.comboMode,
     country: state.country,
     lang: USER_LANG,
+    preferred_molecule: state.preferredMolecule,
     conditions: state.conditions,
     conditions_label: condStr,
     current_protocol: state.currentProtocol,
@@ -1913,6 +1920,7 @@ async function generateStack() {
         : state.foodStyle === 'vegan' ? tr('Vegano', 'Vegan')
           : tr('Omnívoro', 'Omnivore')
     ] : []),
+    ...(state.preferredMolecule ? [tr(`Molécula objetivo: ${state.preferredMolecule}`, `Target molecule: ${state.preferredMolecule}`)] : []),
     ...(state.conditions.length ? state.conditions.slice(0,2).map(c => condChipMap[c] || c) : [tr('Sin condiciones', 'No conditions')]),
     state.currentProtocol ? tr('Con protocolo actual', 'With current protocol') : tr('Sin protocolo previo', 'No prior protocol')
   ];
@@ -1980,6 +1988,7 @@ async function generateStack() {
     state.replaceUsage = 0;
     state.replacedOut = [];
     renderStack(data.stack, budgetLabel);
+    localStorage.removeItem('longeva_preferred_molecule');
     trackEvent('stack_generate_success', {
       estimated_cost: data.stack?.estimated_cost || null,
       warnings: (data.stack?.warnings || []).length,
@@ -2027,12 +2036,16 @@ function renderStack(stack, budgetLabel) {
   const hasFoodCompanion = !!state.includeFoodCompanion;
   const weekly = stack.weekly_food_plan && typeof stack.weekly_food_plan === 'object' ? stack.weekly_food_plan : {};
   const weekDays = IS_EN ? ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'] : ['lunes','martes','miercoles','jueves','viernes','sabado','domingo'];
-  const weekDayFallback = ['lunes','martes','miercoles','jueves','viernes','sabado','domingo'];
+  const weekDayFallback = IS_EN ? ['lunes','martes','miercoles','jueves','viernes','sabado','domingo'] : ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'];
+  const mealKeyFallback = IS_EN
+    ? { breakfast: 'desayuno', lunch: 'almuerzo', snack: 'merienda', dinner: 'cena' }
+    : { desayuno: 'breakfast', almuerzo: 'lunch', merienda: 'snack', cena: 'dinner' };
   const dayLabelMap = {
     monday: 'Monday', tuesday: 'Tuesday', wednesday: 'Wednesday', thursday: 'Thursday', friday: 'Friday', saturday: 'Saturday', sunday: 'Sunday',
     lunes: 'Monday', martes: 'Tuesday', miercoles: 'Wednesday', jueves: 'Thursday', viernes: 'Friday', sabado: 'Saturday', domingo: 'Sunday'
   };
   const hasWeeklyPlan = (isFoodOnly || hasFoodCompanion) && weekDays.every(d => weekly[d] && typeof weekly[d] === 'object');
+  const hasTimeBlocks = ['morning','afternoon','night'].some((slot) => Array.isArray(stack[slot]) && stack[slot].length);
   const dietExtras = Array.isArray(stack.diet_extras) ? stack.diet_extras.filter(Boolean) : [];
   const confidence = computeStackConfidence(stack);
   const bundleItems = ['morning','afternoon','night']
@@ -2051,6 +2064,12 @@ function renderStack(stack, budgetLabel) {
   const allItems = ['morning','afternoon','night']
     .flatMap(k => (stack[k] || []).map(x => ({ ...x, slot: k })))
     .slice(0, 5);
+  const allItemNames = ['morning','afternoon','night']
+    .flatMap((k) => (stack[k] || []).flatMap((item) => [item?.name || '', item?.full || '']))
+    .map((text) => normalizeName(text))
+    .filter(Boolean);
+  const normalizedPreferred = normalizeName(state.preferredMolecule);
+  const preferredIncluded = !normalizedPreferred || allItemNames.some((name) => name.includes(normalizedPreferred) || normalizedPreferred.includes(name));
 
   let html = `<div class="result-card">
     <div class="report-header">
@@ -2078,6 +2097,12 @@ function renderStack(stack, budgetLabel) {
       </div>`;
     });
     html += `</div>`;
+  }
+  if (state.preferredMolecule && !preferredIncluded) {
+    html += `<div class="monthly-card" style="margin-top:10px;">
+      <div class="monthly-title">${tr('Molécula priorizada desde Biblioteca', 'Priority molecule from Library')}</div>
+      <div style="font-size:12px;color:var(--muted);">${tr(`La IA no incluyó "${state.preferredMolecule}" en el stack principal. Si fue descartada por seguridad, presupuesto o coherencia clínica, eso debe quedar explicado en advertencias o racional.`, `The AI did not include "${state.preferredMolecule}" in the main stack. If it was excluded for safety, budget, or clinical-fit reasons, that should be explained in warnings or rationale.`)}</div>
+    </div>`;
   }
   const replacementsLeft = Math.max(0, state.replaceLimit - state.replaceUsage);
 
@@ -2128,7 +2153,7 @@ function renderStack(stack, budgetLabel) {
     weekDays.forEach((d, idx) => {
       const day = weekly[d] || weekly[weekDayFallback[idx]] || {};
       const mealRow = (k, label) => {
-        const vals = Array.isArray(day[k]) ? day[k] : [];
+        const vals = Array.isArray(day[k]) ? day[k] : Array.isArray(day[mealKeyFallback[k]]) ? day[mealKeyFallback[k]] : [];
         return `<div class="day-meal"><b>${label}</b><p>${vals.length ? vals.join(' · ') : tr('Sin definir', 'Not defined')}</p></div>`;
       };
       html += `<div class="day-card">
@@ -2143,7 +2168,7 @@ function renderStack(stack, budgetLabel) {
   }
 
   // Time blocks
-  if (!hasWeeklyPlan) {
+  if (hasTimeBlocks) {
     html += '<div class="time-blocks">';
     sections.forEach(sec => {
       const mols = stack[sec.key] || [];
@@ -2180,7 +2205,7 @@ function renderStack(stack, budgetLabel) {
             /${tr('mes', 'month')}
             <div class="mol-actions">
               <button class="mini-btn replace" onclick="replaceItem('${sec.key}', ${idx})">${tr('Reemplazar', 'Replace')}</button>
-              <a class="mini-btn buy" href="https://iherb.com/search?kw=${encodeURIComponent(buyLabel)}&rcode=LONGEVAPP" target="_blank" rel="noopener sponsored" title="Ver en iHerb · Enlace de afiliado · LONGEVAPP puede recibir una comisión">${tr('Ver en iHerb ↗', 'View on iHerb ↗')}</a>
+              <a class="mini-btn buy" href="https://iherb.com/search?kw=${encodeURIComponent(buyLabel)}&rcode=LONGEVAPP" target="_blank" rel="noopener sponsored" title="${tr('Comprar esta molécula · Enlace asociado', 'Buy this molecule · Partner link')}">${tr('Comprar ↗', 'Buy ↗')}</a>
             </div>
           </div>
         </div>`;
@@ -2211,7 +2236,7 @@ function renderStack(stack, budgetLabel) {
     : '';
   html += `<div class="actions-row">
     ${comboLabel}
-    <button class="action-btn action-bundle" onclick="buyFullStackBundle()">${tr('Comprar stack en iHerb ↗', 'Buy stack on iHerb ↗')}</button>
+    <button class="action-btn action-bundle" onclick="buyFullStackBundle()">${tr('Comprar stack completo ↗', 'Buy full stack ↗')}</button>
     <button class="action-btn action-primary" onclick="downloadExecutivePDF()">📋 ${tr('PDF ejecutivo', 'Executive PDF')}</button>
     <button class="action-btn action-secondary" onclick="window.print()">🖨 ${tr('Imprimir', 'Print')}</button>
     ${state.sessionConsumed && !isBypassSession() ? '' : `<button class="action-btn action-secondary" onclick="location.reload()">↺ ${tr('Nuevo stack', 'New stack')}</button>`}
@@ -2309,45 +2334,112 @@ function downloadExecutivePDF() {
   };
   const goalsTxt = (state.goals || []).map(g => goalsMap[g] || g).join(', ') || tr('General', 'General');
   const sexTxt = state.sex === 'male' ? tr('Masculino', 'Male') : tr('Femenino', 'Female');
-  const takeTop = (arr) => (arr || []).slice(0, 4).map(x => `<li><b>${escapeHtml(x.name || '')}</b> — ${escapeHtml(x.dose || '')} · ${escapeHtml(x.why || '')}</li>`).join('');
+  const prefTxt = state.sourcePreference === 'natural_only'
+    ? tr('Solo natural', 'Natural only')
+    : state.sourcePreference === 'synthetic_ok'
+      ? tr('Incluye sintéticos', 'Synthetic allowed')
+      : state.sourcePreference === 'food_only'
+        ? tr('Solo alimentos', 'Food only')
+        : tr('Mixto', 'Mixed');
+  const dayOrder = IS_EN
+    ? ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
+    : ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
+  const dayFallback = IS_EN
+    ? ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo']
+    : ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+  const dayNames = {
+    monday: 'Monday', tuesday: 'Tuesday', wednesday: 'Wednesday', thursday: 'Thursday', friday: 'Friday', saturday: 'Saturday', sunday: 'Sunday',
+    lunes: 'Lunes', martes: 'Martes', miercoles: 'Miércoles', jueves: 'Jueves', viernes: 'Viernes', sabado: 'Sábado', domingo: 'Domingo',
+  };
+  const mealLabels = IS_EN
+    ? { breakfast: 'Breakfast', lunch: 'Lunch', snack: 'Snack', dinner: 'Dinner' }
+    : { desayuno: 'Desayuno', almuerzo: 'Almuerzo', merienda: 'Merienda', cena: 'Cena' };
+  const mealFallbacks = IS_EN
+    ? { breakfast: 'desayuno', lunch: 'almuerzo', snack: 'merienda', dinner: 'cena' }
+    : { desayuno: 'breakfast', almuerzo: 'lunch', merienda: 'snack', cena: 'dinner' };
+  const renderSlot = (title, arr) => {
+    const items = Array.isArray(arr) ? arr : [];
+    const body = items.length
+      ? items.map((item) => `
+          <tr>
+            <td>${escapeHtml(item.name || item.full || '-')}</td>
+            <td>${escapeHtml(item.dose || '-')}</td>
+            <td>${escapeHtml(item.why || '')}</td>
+          </tr>
+        `).join('')
+      : `<tr><td colspan="3">${tr('Sin elementos definidos', 'No defined items')}</td></tr>`;
+    return `
+      <section class="pdf-section">
+        <h2>${title}</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>${tr('Molécula / alimento', 'Molecule / food')}</th>
+              <th>${tr('Dosis', 'Dose')}</th>
+              <th>${tr('Motivo', 'Why')}</th>
+            </tr>
+          </thead>
+          <tbody>${body}</tbody>
+        </table>
+      </section>
+    `;
+  };
+  const weeklyPlan = stack.weekly_food_plan && typeof stack.weekly_food_plan === 'object' ? stack.weekly_food_plan : {};
+  const hasWeeklyPlan = dayOrder.some((day, idx) => (weeklyPlan[day] || weeklyPlan[dayFallback[idx]]) && typeof (weeklyPlan[day] || weeklyPlan[dayFallback[idx]]) === 'object');
+  const weeklyHtml = hasWeeklyPlan
+    ? `
+      <section class="pdf-section">
+        <h2>${tr('Menú semanal', 'Weekly menu')}</h2>
+        <div class="week-grid">
+          ${dayOrder.map((day) => {
+            const dayData = weeklyPlan[day] || weeklyPlan[dayFallback[dayOrder.indexOf(day)]] || {};
+            const meals = Object.entries(mealLabels).map(([key, label]) => {
+              const vals = Array.isArray(dayData[key]) ? dayData[key] : Array.isArray(dayData[mealFallbacks[key]]) ? dayData[mealFallbacks[key]] : [];
+              return `<div class="meal-row"><strong>${label}</strong><span>${escapeHtml(vals.join(' · ') || tr('Sin definir', 'Not defined'))}</span></div>`;
+            }).join('');
+            return `<div class="day-card"><h3>${dayNames[day] || day}</h3>${meals}</div>`;
+          }).join('')}
+        </div>
+      </section>
+    `
+    : '';
   const warnings = (stack.warnings || []).map(w => `<li>${escapeHtml(w)}</li>`).join('');
   const html = `<!doctype html><html><head><meta charset="utf-8"><title>LONGEVAPP - ${tr('Resumen Ejecutivo', 'Executive Summary')}</title>
   <style>
     body{font-family:Arial,sans-serif;color:#111;padding:28px;line-height:1.45}
-    h1{margin:0 0 4px 0;font-size:24px} h2{margin:20px 0 8px;font-size:16px}
-    .muted{color:#555;font-size:12px} .card{border:1px solid #ddd;border-radius:8px;padding:10px 12px;margin-top:10px}
-    ul{margin:6px 0 0 18px} li{margin-bottom:6px}
-    .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    h1{margin:0 0 4px 0;font-size:24px}
+    h2{margin:0 0 10px;font-size:15px;text-transform:uppercase;letter-spacing:.06em}
+    h3{margin:0 0 8px;font-size:13px}
+    .muted{color:#555;font-size:12px}
+    .card{border:1px solid #ddd;border-radius:8px;padding:10px 12px;margin-top:10px}
+    .pdf-section{margin-top:18px;padding-top:14px;border-top:1px solid #ddd}
+    table{width:100%;border-collapse:collapse;font-size:12px}
+    th,td{padding:8px 10px;border-bottom:1px solid #e6e6e6;vertical-align:top;text-align:left}
+    th{font-size:11px;text-transform:uppercase;color:#555}
+    ul{margin:6px 0 0 18px}
+    li{margin-bottom:6px}
+    .week-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .day-card{border:1px solid #ddd;border-radius:8px;padding:10px 12px}
+    .meal-row{display:flex;flex-direction:column;gap:4px;padding:6px 0;border-top:1px solid #eee}
+    .meal-row:first-of-type{border-top:none;padding-top:0}
+    .summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   </style></head><body>
   <h1>LONGEVAPP · ${tr('Resumen Ejecutivo', 'Executive Summary')}</h1>
   <div class="muted">${tr('Fecha', 'Date')}: ${new Date().toLocaleDateString(IS_EN ? 'en-US' : 'es-AR')} · ${tr('Perfil', 'Profile')}: ${state.age} ${tr('años', 'years')}, ${sexTxt} · ${tr('Objetivo', 'Goal')}: ${escapeHtml(goalsTxt)}</div>
   <div class="card"><b>${tr('Costo estimado mensual', 'Estimated monthly cost')}:</b> $${Number(stack.estimated_cost || 0)} · <b>${tr('Presupuesto elegido', 'Selected budget')}:</b> ${escapeHtml(state.lastBudgetLabel || '-')}</div>
-  <div class="grid">
-    <div class="card"><b>${tr('Mañana', 'Morning')}</b><ul>${takeTop(stack.morning)}</ul></div>
-    <div class="card"><b>${tr('Tarde', 'Afternoon')}</b><ul>${takeTop(stack.afternoon)}</ul></div>
+  <div class="summary-grid">
+    <div class="card"><b>${tr('Región', 'Region')}:</b> ${escapeHtml(state.country)}</div>
+    <div class="card"><b>${tr('Preferencia', 'Preference')}:</b> ${escapeHtml(prefTxt)}</div>
   </div>
-  <div class="card"><b>${tr('Noche', 'Night')}</b><ul>${takeTop(stack.night)}</ul></div>
+  ${renderSlot(tr('Mañana', 'Morning'), stack.morning)}
+  ${renderSlot(tr('Tarde', 'Afternoon'), stack.afternoon)}
+  ${renderSlot(tr('Noche', 'Night'), stack.night)}
+  ${weeklyHtml}
   <div class="card"><b>${tr('Nota mensual', 'Monthly note')}:</b><br>${escapeHtml(stack.monthly_plan_note || '')}</div>
   <div class="card"><b>${tr('Advertencias clave', 'Key warnings')}</b><ul>${warnings || `<li>${tr('Sin alertas específicas.', 'No specific alerts.')}</li>`}</ul></div>
   <div class="card"><b>${tr('Racional científico breve', 'Scientific rationale')}:</b><br>${escapeHtml(stack.summary || stack.rationale || '')}</div>
   <p class="muted">${tr('Este reporte es informativo y no reemplaza consulta médica profesional.', 'This report is informational and does not replace professional medical advice.')}</p>
   <script>window.onload=()=>window.print()<\/script>
-  
-<!-- RESULTS MODAL — CLINICAL REPORT -->
-<div id="results-modal" aria-hidden="true">
-  <div id="results-modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-main-title">
-    <div class="modal-header-bar">
-      <div>
-        <div class="modal-header-title" id="modal-main-title">Tu plan de longevidad <em>personalizado</em></div>
-        <span class="modal-header-meta" id="modal-sub-meta">Generado con IA · Basado en evidencia científica 2026</span>
-      </div>
-      <button id="modal-close-btn" type="button" aria-label="Cerrar">×</button>
-    </div>
-    <div id="modal-profile-bar" style="display:flex;gap:8px;flex-wrap:wrap;padding:14px 0 4px;"></div>
-    <div id="stack-output-modal"></div>
-  </div>
-</div>
-
 </body></html>`;
   const w = window.open('', '_blank', 'noopener,noreferrer');
   if (!w) {
@@ -2482,6 +2574,9 @@ function applyStaticI18n() {
   if (nav[2]) nav[2].textContent = 'Personalized Plan';
   if (nav[3]) nav[3].textContent = 'Biohacker';
   if (nav[4]) nav[4].textContent = 'Nutrition';
+  if (nav[5]) nav[5].textContent = 'Pricing';
+  const liveBadge = document.querySelector('.badge-live');
+  if (liveBadge) liveBadge.innerHTML = '<div class="dot dot-green"></div>Personalized Plan · 2026';
   set('.logo-tag', 'v3.2 · Longevity platform');
   document.title = 'LONGEVAPP — Your Personalized Plan';
   set('#hero-kicker-core', 'SYSTEM_CORE: PROTOCOL GENERATOR');
@@ -2805,9 +2900,9 @@ initResultsModal();
 (function readMoleculeParam() {
   const params = new URLSearchParams(window.location.search);
   const mol = params.get('molecule');
-  if (!mol) return;
-  // Store it so initAccess/initWizardUI can surface it
-  window._libraryMolecule = decodeURIComponent(mol);
+  const stored = localStorage.getItem('longeva_preferred_molecule') || '';
+  if (!mol && !stored) return;
+  window._libraryMolecule = decodeURIComponent(mol || stored);
 })();
 
 initAccess();

@@ -173,6 +173,7 @@ function buildPromptEs(profile) {
   const goals = (profile?.goals || []).map((g) => goalLabels[g] || g).join(', ') || 'No definido';
   const conditions = profile?.conditions_label || 'Ninguna';
   const currentProtocol = profile?.current_protocol || 'No usa suplementos actualmente';
+  const preferredMolecule = profile?.preferred_molecule || 'Ninguna';
   const country = profile?.country || 'GLOBAL';
   const includeFoodCompanion = Boolean(profile?.include_food_companion);
   const foodStyleMap = { omnivore: 'Omnívoro', vegetarian: 'Vegetariano', vegan: 'Vegano' };
@@ -197,6 +198,7 @@ function buildPromptEs(profile) {
 - País/mercado objetivo para disponibilidad: ${country}
 - Condiciones de salud / medicamentos: ${conditions}
 - Protocolo actual de suplementos: ${currentProtocol}
+- Molécula priorizada desde Biblioteca: ${preferredMolecule}
 
 Responde ÚNICAMENTE con un JSON válido siguiendo exactamente este esquema (sin texto antes ni después, sin markdown, sin backticks):
 {
@@ -227,6 +229,8 @@ Reglas:
 - Si hay condiciones o medicamentos, excluye interacciones de riesgo y explica warnings
 - Prioriza compuestos/alimentos relativamente accesibles para el país/mercado indicado (${country}) y evita opciones exóticas sin alternativa
 - Si el protocolo actual ya incluye algo útil, intégralo y evita duplicados
+- Si hay una "Molécula priorizada desde Biblioteca" y NO es "Ninguna", intenta incluirla de forma explícita en mañana/tarde/noche si es segura, coherente con los objetivos y compatible con el presupuesto
+- Si la molécula priorizada NO puede incluirse, debes explicarlo de forma explícita en "warnings" y volver a mencionarlo en "rationale"
 - Si la preferencia es "Solo naturales", NO incluyas moléculas sintéticas ni fármacos
 - Si la preferencia es "Mixto", prioriza naturales y usa sintéticos solo si aportan ventaja fuerte
 - Si la preferencia es "Solo alimentos", NO incluyas suplementos. Usa alimentos concretos por franja horaria y en "dose" pon porciones (ej: "150 g", "1 taza", "2 huevos")
@@ -252,6 +256,7 @@ function buildPromptEn(profile) {
   const goals = (profile?.goals || []).map((g) => goalLabels[g] || g).join(', ') || 'Not defined';
   const conditions = profile?.conditions_label || 'None';
   const currentProtocol = profile?.current_protocol || 'No current supplement protocol';
+  const preferredMolecule = profile?.preferred_molecule || 'None';
   const country = profile?.country || 'GLOBAL';
   const includeFoodCompanion = Boolean(profile?.include_food_companion);
   const foodStyleMap = { omnivore: 'Omnivore', vegetarian: 'Vegetarian', vegan: 'Vegan' };
@@ -276,6 +281,7 @@ function buildPromptEn(profile) {
 - Country/market for availability: ${country}
 - Health conditions / medications: ${conditions}
 - Current supplement protocol: ${currentProtocol}
+- Priority molecule from Library: ${preferredMolecule}
 
 Return ONLY valid JSON with this exact schema (no text before/after, no markdown, no backticks):
 {
@@ -306,6 +312,8 @@ Rules:
 - If conditions or medications exist, remove risky interactions and explain warnings
 - Prioritize options that are reasonably available in the target market (${country}) and avoid exotic choices without alternatives
 - If current protocol already contains useful items, integrate and avoid duplicates
+- If there is a "Priority molecule from Library" and it is not "None", try to include it explicitly in morning/afternoon/night if it is safe, goal-consistent, and budget-compatible
+- If the priority molecule cannot be included, you must explain that explicitly in "warnings" and mention it again in "rationale"
 - If preference is "Natural-only", do NOT include synthetic compounds or drugs
 - If preference is "Mixed", prioritize natural compounds and include synthetics only for strong advantage
 - If preference is "Food-only", do NOT include supplements. Use concrete foods by day-part and in "dose" provide portions (e.g. "150 g", "1 cup", "2 eggs")

@@ -395,9 +395,9 @@
   <div class="lib-protocol-cta">
     <div class="lib-cta-inner">
       <div class="lib-cta-text">
-        <strong>¿Encontraste algo interesante?</strong> Armá tu protocolo personalizado — la IA selecciona exactamente qué tomar según tu perfil, objetivos y presupuesto.
+        <strong id="lib-cta-strong">¿Encontraste algo interesante?</strong> <span id="lib-cta-copy">Armá tu protocolo personalizado — la IA selecciona exactamente qué tomar según tu perfil, objetivos y presupuesto.</span>
       </div>
-      <a class="lib-cta-btn" href="/stack-builder.html">Generar mi protocolo — $5,99 →</a>
+      <a class="lib-cta-btn" id="lib-cta-btn" href="/stack-builder.html">Generar mi protocolo — $5,99 →</a>
     </div>
   </div>
 
@@ -522,7 +522,7 @@ function applyStaticI18n() {
   document.title = 'LONGEVAPP — Library';
   set('.logo-tag', 'v3.2 · Longevity platform');
   const badges = document.querySelectorAll('.badge-live');
-  if (badges[0]) badges[0].childNodes[1].nodeValue = ' Scientific base active';
+  if (badges[0]) badges[0].innerHTML = '<div class="dot dot-green"></div>Scientific base active';
   set('.hero-eye', 'Scientific library of longevity compounds');
   const h1 = document.getElementById('lib-hero-title');
   if (h1) h1.innerHTML = 'Search any supplement.<br><em>Understand what it really does.</em>';
@@ -534,6 +534,7 @@ function applyStaticI18n() {
   if (nav[2]) nav[2].textContent = 'Personalized Plan';
   if (nav[3]) nav[3].textContent = 'Biohacker';
   if (nav[4]) nav[4].textContent = 'Nutrition';
+  if (nav[5]) nav[5].textContent = 'Pricing';
   const si = document.getElementById('search-input');
   if (si) si.placeholder = 'e.g. NMN, longevity, muscle mass, antioxidant...';
   const f = document.getElementById('md-formula');
@@ -548,6 +549,13 @@ function applyStaticI18n() {
   if (cta) cta.textContent = 'Add to my personalized protocol →';
   const sbtn = document.getElementById('sbtn');
   if (sbtn) sbtn.textContent = 'Analyze →';
+  const suggLabel = document.querySelector('.sugg-label');
+  if (suggLabel) suggLabel.textContent = 'Popular:';
+  const suggPills = document.querySelectorAll('.sugg-pill');
+  const suggTexts = ['NMN', 'Magnesium', 'Resveratrol', 'Vitamin D', 'Ashwagandha', 'Omega-3', 'Creatine'];
+  suggPills.forEach((pill, idx) => {
+    if (suggTexts[idx]) pill.textContent = suggTexts[idx];
+  });
   const modeBase = document.getElementById('mode-base');
   if (modeBase) modeBase.innerHTML = '📚 Technical profile';
   const modeLatest = document.getElementById('mode-latest');
@@ -579,6 +587,9 @@ function applyStaticI18n() {
   if (discoverBtn) discoverBtn.innerHTML = '<span>🔬</span> Discover new 2025-2026 molecules with AI';
   const closeBtn = document.querySelector('.disc-close');
   if (closeBtn) closeBtn.textContent = '✕ Close';
+  set('#lib-cta-strong', 'Found something interesting?');
+  set('#lib-cta-copy', 'Build your personalized protocol — the AI selects exactly what to take based on your profile, goals, and budget.');
+  set('#lib-cta-btn', 'Generate my protocol — $5.99 →');
   const loading = document.querySelector('#mols .nores');
   if (loading && loading.textContent.includes('Cargando')) loading.textContent = 'Loading database...';
   set('#footer-disclaimer', '© 2026 LONGEVAPP · Physician-developed · Efficacy, safety & adherence · Informational use only. Does not replace professional medical evaluation.');
@@ -655,6 +666,12 @@ function initMobileMenu() {
     if (window.innerWidth > 900) closeMenu();
   });
 }
+
+document.getElementById('md-cta')?.addEventListener('click', () => {
+  const mol = document.getElementById('md-cta')?.dataset?.preferredMolecule || '';
+  if (!mol) return;
+  localStorage.setItem('longeva_preferred_molecule', mol);
+});
 
 applyTheme(getPreferredTheme());
 initMobileMenu();
@@ -770,7 +787,7 @@ function render() {
       h += `<div class="card js-mol-card" data-mol="${encoded}" style="animation-delay:${i*.03}s;--cat-col:${col}">
         <div class="card-top"><div class="mol-n">${m.name}</div><div class="tb ${tc}">${tl} ${typeLabel}</div></div>
         <div class="card-desc">${description}</div>
-        <div class="chips">${(m.pathways||[]).slice(0,2).map(p=>`<span class="chip">${p}</span>`).join('')}</div>
+        <div class="chips">${(m.pathways||[]).slice(0,2).map(p=>`<span class="chip">${translatePathwayLabel(p)}</span>`).join('')}</div>
         <div class="card-meta"><div class="ev">${tr('Evidencia','Evidence')} <span>${m.evidence_rating||'N/A'}</span> · ${m.study_count||0}+ ${tr('est.','studies')}</div><div class="explore">${tr('Ver ficha →','View details →')}</div></div>
       </div>`;
     });
@@ -796,7 +813,7 @@ function render() {
         h += `<div class="card js-mol-card" data-mol="${encoded}" style="animation-delay:${i*.03}s">
           <div class="card-top"><div class="mol-n">${m.name}</div><div class="tb ${tc}">${tl} ${typeLabel}</div></div>
           <div class="card-desc">${description}</div>
-          <div class="chips">${(m.pathways||[]).slice(0,2).map(p=>`<span class="chip">${p}</span>`).join('')}</div>
+          <div class="chips">${(m.pathways||[]).slice(0,2).map(p=>`<span class="chip">${translatePathwayLabel(p)}</span>`).join('')}</div>
           <div class="card-meta"><div class="ev">${tr('Evidencia','Evidence')} <span>${m.evidence_rating||'N/A'}</span> · ${m.study_count||0}+ ${tr('est.','studies')}</div><div class="explore">${tr('Ver ficha →','View details →')}</div></div>
         </div>`;
       });
@@ -827,8 +844,43 @@ function translateCategory(cat) {
   return map[cat] || cat;
 }
 
+function translatePathwayLabel(pathway) {
+  const text = String(pathway || '').trim();
+  if (!IS_EN || !text) return text;
+  const map = {
+    'sirtuinas': 'Sirtuins',
+    'nad+': 'NAD+',
+    'nad⁺': 'NAD+',
+    'mitocondria': 'Mitochondria',
+    'mitofagia': 'Mitophagy',
+    'autofagia': 'Autophagy',
+    'senescencia': 'Senescence',
+    'senolíticos': 'Senolytics',
+    'senoliticos': 'Senolytics',
+    'inflamación': 'Inflammation',
+    'inflamacion': 'Inflammation',
+    'microbioma': 'Microbiome',
+    'antioxidante': 'Antioxidant',
+    'energía celular': 'Cellular energy',
+    'energia celular': 'Cellular energy',
+    'bioenergética': 'Bioenergetics',
+    'bioenergetica': 'Bioenergetics',
+    'neuroprotección': 'Neuroprotection',
+    'neuroproteccion': 'Neuroprotection',
+    'epigenética': 'Epigenetics',
+    'epigenetica': 'Epigenetics',
+    'músculo': 'Muscle',
+    'musculo': 'Muscle',
+    'cardiovascular': 'Cardiovascular',
+    'metabólico': 'Metabolic',
+    'metabolico': 'Metabolic',
+    'longevidad': 'Longevity',
+  };
+  return map[text.toLowerCase()] || text;
+}
+
 function buildEnglishCardDescription(m) {
-  const pathways = Array.isArray(m?.pathways) ? m.pathways.slice(0, 2).join(', ') : '';
+  const pathways = Array.isArray(m?.pathways) ? m.pathways.slice(0, 2).map(translatePathwayLabel).join(', ') : '';
   if (pathways) return `Potential longevity support via ${pathways}.`;
   const category = translateCategory(m?.category || 'Longevity compounds');
   return `${category} candidate associated with healthy aging pathways.`;
@@ -880,7 +932,7 @@ function setModalLoading(name) {
 
 function sectionFallbacks(mol) {
   const pathways = Array.isArray(mol?.pathways) && mol.pathways.length
-    ? mol.pathways.slice(0, 4).join(', ')
+    ? mol.pathways.slice(0, 4).map(translatePathwayLabel).join(', ')
     : tr('vías metabólicas relacionadas con longevidad', 'longevity-related metabolic pathways');
   return {
     pharma: tr(
@@ -924,7 +976,7 @@ function splitDeepDive(text, mol) {
 }
 
 function setModalContent(mol, data) {
-  const category = mol.category || tr('Sin categoría', 'Uncategorized');
+  const category = mol.category ? translateCategory(mol.category) : tr('Sin categoría', 'Uncategorized');
   const formula = mol.formula || mol.chemical_formula || '—';
   document.getElementById('md-title').textContent = mol.full_name || mol.name || '—';
   document.getElementById('md-category').textContent = category;
@@ -940,6 +992,7 @@ function setModalContent(mol, data) {
   const cta = document.getElementById('md-cta');
   if (cta) {
     cta.href = `/stack-builder.html?molecule=${molSlug}`;
+    cta.dataset.preferredMolecule = mol.name || mol.full_name || '';
     cta.textContent = tr(`Generar protocolo con ${mol.name || 'esta molécula'} →`, `Generate protocol with ${mol.name || 'this molecule'} →`);
   }
 

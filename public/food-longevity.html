@@ -455,6 +455,83 @@ const vegetarianSwapsEn = [
   'Increase legume variety for prebiotic fiber.',
 ];
 
+const styleReplacements = {
+  es: {
+    vegetarian: [
+      [/\bPescado azul o tofu\/tempeh\b/gi, 'Huevos, yogur griego o tofu/tempeh'],
+      [/\bSardina\/salmón o algas \+ nuez\b/gi, 'Huevos enriquecidos con omega-3 o algas + nuez'],
+      [/\bSalmón salvaje\b/gi, 'Huevos enriquecidos con omega-3 o tofu firme'],
+      [/\bPescado\/tofu\b/gi, 'Huevos o tofu'],
+      [/\bPescado azul o chía\/linaza \+ nueces\b/gi, 'Huevos, yogur griego o chía/linaza + nueces'],
+      [/\bPescado azul 2-3x semana\b/gi, 'Huevos enriquecidos, lácteos fermentados y semillas omega-3'],
+      [/\bCaldo de huesos\b/gi, 'Caldo vegetal mineralizante'],
+    ],
+    vegan: [
+      [/\bPescado azul o tofu\/tempeh\b/gi, 'Tofu/tempeh + legumbres combinadas'],
+      [/\bSardina\/salmón o algas \+ nuez\b/gi, 'Microalgas + nuez + chía/linaza'],
+      [/\bHuevos \(o soja\/lecitina en vegano\)\b/gi, 'Soja o lecitina'],
+      [/\bSalmón salvaje\b/gi, 'Tofu firme o tempeh'],
+      [/\bPescado\/tofu\b/gi, 'Tofu/tempeh'],
+      [/\bPescado azul o chía\/linaza \+ nueces\b/gi, 'Chía/linaza + nueces'],
+      [/\bPescado azul 2-3x semana\b/gi, 'Microalgas, chía/linaza y nueces 2-3x semana'],
+      [/\bYogur griego o tofu\b/gi, 'Tofu o yogur vegetal alto en proteína'],
+      [/\bYogur griego\/kéfir o tofu firme\b/gi, 'Tofu firme o yogur vegetal alto en proteína'],
+      [/\bHuevos \+ papa\/arroz integral\b/gi, 'Tofu revuelto + papa/arroz integral'],
+      [/\bCaldo de huesos o legumbres \+ soja\b/gi, 'Legumbres + soja'],
+      [/\bCaldo de huesos\b/gi, 'Caldo de hongos y miso'],
+    ],
+  },
+  en: {
+    vegetarian: [
+      [/\bFatty fish or tofu\/tempeh\b/gi, 'Eggs, Greek yogurt, or tofu/tempeh'],
+      [/\bSardine\/salmon or algae \+ walnuts\b/gi, 'Omega-3 eggs or algae + walnuts'],
+      [/\bWild salmon\b/gi, 'Omega-3 eggs or firm tofu'],
+      [/\bFish\/tofu\b/gi, 'Eggs or tofu'],
+      [/\bFatty fish or chia\/flax \+ nuts\b/gi, 'Eggs, Greek yogurt, or chia/flax + nuts'],
+      [/\bFatty fish 2-3x\/week\b/gi, 'Omega-3 eggs, fermented dairy, and omega-3 seeds'],
+      [/\bBone broth\b/gi, 'Mineral vegetable broth'],
+    ],
+    vegan: [
+      [/\bFatty fish or tofu\/tempeh\b/gi, 'Tofu/tempeh + combined legumes'],
+      [/\bSardine\/salmon or algae \+ walnuts\b/gi, 'Microalgae + walnuts + chia/flax'],
+      [/\bEggs \(or soy\/lecithin if vegan\)\b/gi, 'Soy or lecithin'],
+      [/\bWild salmon\b/gi, 'Firm tofu or tempeh'],
+      [/\bFish\/tofu\b/gi, 'Tofu/tempeh'],
+      [/\bFatty fish or chia\/flax \+ nuts\b/gi, 'Chia/flax + nuts'],
+      [/\bFatty fish 2-3x\/week\b/gi, 'Microalgae, chia/flax, and walnuts 2-3x/week'],
+      [/\bGreek yogurt or tofu\b/gi, 'Tofu or high-protein plant yogurt'],
+      [/\bGreek yogurt\/kefir or firm tofu\b/gi, 'Firm tofu or high-protein plant yogurt'],
+      [/\bEggs \+ potato\/brown rice\b/gi, 'Scrambled tofu + potato/brown rice'],
+      [/\bBone broth or legumes \+ soy\b/gi, 'Legumes + soy'],
+      [/\bBone broth\b/gi, 'Mushroom and miso broth'],
+    ],
+  }
+};
+
+function adjustStyleText(input) {
+  let text = String(input || '');
+  if (state.style === 'omnivore') return text;
+  const langKey = IS_EN ? 'en' : 'es';
+  const replacements = styleReplacements[langKey]?.[state.style] || [];
+  replacements.forEach(([pattern, replacement]) => {
+    text = text.replace(pattern, replacement);
+  });
+  return text;
+}
+
+function getPlanForStyle(goal) {
+  const source = IS_EN ? plansEn : plans;
+  const base = source[goal];
+  return {
+    ...base,
+    foods: (base?.foods || []).map((food) => ({
+      ...food,
+      name: adjustStyleText(food.name),
+      why: adjustStyleText(food.why),
+    })),
+  };
+}
+
 document.getElementById('goal-grid').addEventListener('click', (e) => {
   const b = e.target.closest('[data-goal]');
   if (!b) return;
@@ -473,16 +550,20 @@ document.getElementById('style-grid').addEventListener('click', (e) => {
 
 function getWeeklyMenuContent(goal) {
   if (goal === 'longevity') {
-    return IS_EN
+    return adjustStyleText(IS_EN
       ? `
-        <div class="day-brief"><span>FASTING:</span><p>16/8 feeding window to support autophagy signaling.</p></div>
-        <div class="day-brief"><span>BASE:</span><p>Polyphenol-rich fasting-mimicking pattern.</p></div>`
+        <div class="day-brief"><span>BREAKFAST:</span><p>Greek yogurt or tofu with berries, oats, walnuts, and extra virgin olive oil.</p></div>
+        <div class="day-brief"><span>LUNCH:</span><p>Mediterranean bowl with legumes, greens, crucifers, olive oil, and fermented vegetables.</p></div>
+        <div class="day-brief"><span>SNACK:</span><p>Green tea, dark cocoa, and polyphenol-rich fruit.</p></div>
+        <div class="day-brief"><span>DINNER:</span><p>High-quality protein, crucifers, and olive oil. Finish early to preserve an overnight fasting window.</p></div>`
       : `
-        <div class="day-brief"><span>AYUNO:</span><p>Ventana 16/8 para autofagia inducida.</p></div>
-        <div class="day-brief"><span>BASE:</span><p>Dieta Mimética de Ayuno (FMD) rica en polifenoles.</p></div>`;
+        <div class="day-brief"><span>DESAYUNO:</span><p>Yogur griego o tofu con frutos rojos, avena, nueces y aceite de oliva extra virgen.</p></div>
+        <div class="day-brief"><span>ALMUERZO:</span><p>Bowl mediterráneo con legumbres, hojas verdes, crucíferas, oliva y vegetales fermentados.</p></div>
+        <div class="day-brief"><span>MERIENDA:</span><p>Té verde, cacao puro y fruta rica en polifenoles.</p></div>
+        <div class="day-brief"><span>CENA:</span><p>Proteína de calidad, crucíferas y oliva. Cena temprana para sostener el ayuno nocturno.</p></div>`);
   }
   if (goal === 'metabolic') {
-    return IS_EN
+    return adjustStyleText(IS_EN
       ? `
         <div class="day-brief"><span>BREAKFAST:</span><p>High-protein savory plate + olive oil.</p></div>
         <div class="day-brief"><span>LUNCH:</span><p>Legumes, greens and vinegar preload.</p></div>
@@ -490,9 +571,9 @@ function getWeeklyMenuContent(goal) {
       : `
         <div class="day-brief"><span>DESAYUNO:</span><p>Plato salado alto en proteína + aceite de oliva.</p></div>
         <div class="day-brief"><span>ALMUERZO:</span><p>Legumbres, hojas verdes y preload de vinagre.</p></div>
-        <div class="day-brief"><span>CENA:</span><p>Pescado/tofu + crucíferas + carbos de baja carga.</p></div>`;
+        <div class="day-brief"><span>CENA:</span><p>Pescado/tofu + crucíferas + carbos de baja carga.</p></div>`);
   }
-  return IS_EN
+  return adjustStyleText(IS_EN
     ? `
       <div class="day-brief"><span>BREAKFAST:</span><p>Curcumin omelet + avocado (Nrf2 activation).</p></div>
       <div class="day-brief"><span>LUNCH:</span><p>Wild salmon with asparagus (Omega-3 substrate).</p></div>
@@ -500,11 +581,11 @@ function getWeeklyMenuContent(goal) {
     : `
       <div class="day-brief"><span>DESAYUNO:</span><p>Omelette de cúrcuma y palta (Activación Nrf2).</p></div>
       <div class="day-brief"><span>ALMUERZO:</span><p>Salmón salvaje con espárragos (Sustrato Omega-3).</p></div>
-      <div class="day-brief"><span>CENA:</span><p>Caldo de huesos y crucíferas (Reparación celular).</p></div>`;
+      <div class="day-brief"><span>CENA:</span><p>Caldo de huesos y crucíferas (Reparación celular).</p></div>`);
 }
 
 function generateResult(goal) {
-  const p = IS_EN ? plansEn[goal] : plans[goal];
+  const p = getPlanForStyle(goal);
   const modal = document.getElementById('result-modal');
   const title = document.getElementById('res-title');
   const subtitle = document.getElementById('res-subtitle');
@@ -531,8 +612,8 @@ function generateResult(goal) {
           'Want to optimize absorption for your active stack? <strong><a href="/stack-builder.html">Update my protocol →</a></strong>'
         )
       : tr(
-          '¿Querés un protocolo de suplementación que potencie esta nutrición? <strong><a href="/stack-builder.html">Generar mi stack — $4,99 →</a></strong>',
-          'Want a supplement protocol that amplifies this nutrition? <strong><a href="/stack-builder.html">Generate my stack — $4.99 →</a></strong>'
+          '¿Querés un protocolo de suplementación que potencie esta nutrición? <strong><a href="/stack-builder.html">Generar mi stack — $5,99 →</a></strong>',
+          'Want a supplement protocol that amplifies this nutrition? <strong><a href="/stack-builder.html">Generate my stack — $5.99 →</a></strong>'
         );
     menu.innerHTML = `${menuContent}
       <div class="cta-mini">
@@ -561,10 +642,11 @@ function applyStaticI18n() {
   if (nav[2]) nav[2].textContent = 'Personalized Plan';
   if (nav[3]) nav[3].textContent = 'Biohacker';
   if (nav[4]) nav[4].textContent = 'Nutrition';
+  if (nav[5]) nav[5].textContent = 'Pricing';
   set('.logo-tag', 'v3.2 · Longevity platform');
   document.title = 'LONGEVAPP — Longevity Nutrition';
   const chips = document.querySelectorAll('.badge-live');
-  if (chips[0]) chips[0].textContent = 'Nutrition · Food-first (free)';
+  if (chips[0]) chips[0].innerHTML = '<div class="dot dot-green"></div>Nutrition · Food-first (free)';
   if (chips[1]) chips[1].textContent = 'Physician-designed clinical framework';
   set('#result-modal-title', 'Your active protocol');
   const closeBtn = document.getElementById('result-close');

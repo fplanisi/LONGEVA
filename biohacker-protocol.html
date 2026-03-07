@@ -1184,6 +1184,14 @@ html[data-theme="light"] .hero-list b{color:#964848}
   .result-usage-list { margin:0 0 0 18px;color:var(--tx2);font-size:12px;line-height:1.7; }
   html[data-theme="light"] .result-usage-list { color:#334860; }
 
+  .result-actions {
+    margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;
+  }
+  .result-actions .btn,
+  .result-actions .btn-ghost {
+    min-height:42px;
+  }
+
   html[data-theme="light"] .danger-box {
     background:rgba(160,40,40,.04)!important;
     border-color:rgba(160,40,40,.2)!important;
@@ -1563,7 +1571,8 @@ const state = {
   subcutaneous: '',
   ack_reconstitution: false,
   ack_subq: false,
-  ack_no_labs_followup: false
+  ack_no_labs_followup: false,
+  lastProtocol: null
 };
 let currentBioStep = 1;
 const THEME_KEY = 'longeva_theme';
@@ -2164,6 +2173,7 @@ async function generateProtocol() {
 }
 
 function renderResult(p) {
+  state.lastProtocol = p;
   const out = document.getElementById('result');
   const riskRaw = String(p.risk_level || 'medio').toLowerCase();
   const risk = riskRaw === 'high' ? 'alto' : riskRaw === 'medium' ? 'medio' : riskRaw === 'low' ? 'bajo' : riskRaw;
@@ -2221,7 +2231,6 @@ function renderResult(p) {
         <div class="protocol-meta">
           <span class="protocol-id">ID: ${protoId}</span>
           <div class="risk-indicator"><span class="risk-dot"></span>${tr('RIESGO: ELEVADO / EXPERIMENTAL', 'RISK: HIGH / EXPERIMENTAL')}</div>
-          <a class="peptide-buy-link" href="https://iherb.com/search?kw=${encodeURIComponent(it.peptide || '')}&rcode=LONGEVAPP" target="_blank" rel="noopener sponsored" title="${tr('Buscar en iHerb · Enlace de afiliado', 'Search on iHerb · Affiliate link')}">${tr('Buscar en iHerb ↗', 'Search on iHerb ↗')}</a>
         </div>
       </div>`;
     });
@@ -2262,6 +2271,10 @@ function renderResult(p) {
         <li>${tr('Tras reconstituirse, mantener refrigerados entre 2°C y 8°C. Vida útil: ~28 días.', 'After reconstitution, refrigerate between 2°C and 8°C. Shelf life: ~28 days.')}</li>
         <li>${tr('Se recomienda seguimiento con analíticas y biomarcadores durante el protocolo.', 'Clinical labs and biomarker follow-up are recommended throughout the protocol.')}</li>
       </ul>
+    </div>
+    <div class="result-actions">
+      <button class="btn btn-main" type="button" onclick="downloadBiohackerPDF()">📋 ${tr('PDF ejecutivo', 'Executive PDF')}</button>
+      <button class="btn-ghost" type="button" onclick="window.print()">🖨 ${tr('Imprimir', 'Print')}</button>
     </div>`;
 
   if (out) out.innerHTML = html;
@@ -2279,6 +2292,90 @@ function escapeHtml(s) {
     .replaceAll("'", '&#039;');
 }
 
+function downloadBiohackerPDF() {
+  if (!state.lastProtocol) {
+    alert(tr('Primero genera un protocolo.', 'Generate a protocol first.'));
+    return;
+  }
+  const protocol = state.lastProtocol;
+  const phasesHtml = (protocol.protocol_phases || []).map((phase) => {
+    const items = (phase.items || []).map((item) => `
+      <tr>
+        <td>${escapeHtml(item.peptide || '-')}</td>
+        <td>${escapeHtml(item.dose || '-')}</td>
+        <td>${escapeHtml(item.frequency || '-')}</td>
+        <td>${escapeHtml(item.route || '-')}</td>
+        <td>${escapeHtml(item.timing || '-')}</td>
+      </tr>
+    `).join('') || `<tr><td colspan="5">${tr('Sin compuestos definidos', 'No defined compounds')}</td></tr>`;
+    return `
+      <section class="pdf-section">
+        <h2>${escapeHtml(phase.phase || tr('Fase', 'Phase'))} · ${escapeHtml(phase.duration_weeks || '?')} ${tr('semanas', 'weeks')}</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>${tr('Compuesto', 'Compound')}</th>
+              <th>${tr('Dosis', 'Dose')}</th>
+              <th>${tr('Frecuencia', 'Frequency')}</th>
+              <th>${tr('Vía', 'Route')}</th>
+              <th>${tr('Timing', 'Timing')}</th>
+            </tr>
+          </thead>
+          <tbody>${items}</tbody>
+        </table>
+      </section>
+    `;
+  }).join('');
+  const renderList = (title, items) => `
+    <section class="pdf-section">
+      <h2>${title}</h2>
+      <ul>${(items || []).map((item) => `<li>${escapeHtml(item)}</li>`).join('') || `<li>${tr('Sin elementos', 'No items')}</li>`}</ul>
+    </section>
+  `;
+  const html = `<!doctype html><html><head><meta charset="utf-8"><title>LONGEVAPP - ${tr('Protocolo Experimental', 'Experimental Protocol')}</title>
+  <style>
+    body{font-family:Arial,sans-serif;color:#111;padding:28px;line-height:1.45}
+    h1{margin:0 0 4px 0;font-size:24px}
+    h2{margin:0 0 10px;font-size:15px;text-transform:uppercase;letter-spacing:.06em}
+    .muted{color:#555;font-size:12px}
+    .pill{display:inline-block;margin-right:8px;padding:4px 8px;border:1px solid #ddd;border-radius:999px;font-size:11px}
+    .pdf-section{margin-top:18px;padding-top:14px;border-top:1px solid #ddd}
+    table{width:100%;border-collapse:collapse;font-size:12px}
+    th,td{padding:8px 10px;border-bottom:1px solid #e6e6e6;vertical-align:top;text-align:left}
+    th{font-size:11px;text-transform:uppercase;color:#555}
+    ul{margin:6px 0 0 18px}
+    li{margin-bottom:6px}
+  </style></head><body>
+  <h1>LONGEVAPP · ${tr('Protocolo Experimental', 'Experimental Protocol')}</h1>
+  <div class="muted">${new Date().toLocaleDateString(IS_EN ? 'en-US' : 'es-AR')} · ${tr('Objetivo', 'Goal')}: ${escapeHtml(tr(
+    state.objective==='recovery'?'Reparación tisular':state.objective==='cognitive'?'Cognitivo':state.objective==='longevity'?'Longevidad':'Composición corporal',
+    state.objective==='recovery'?'Tissue repair':state.objective==='cognitive'?'Cognitive':state.objective==='longevity'?'Longevity':'Body composition'
+  ))}</div>
+  <p>${escapeHtml(protocol.summary || '')}</p>
+  <div>
+    <span class="pill">${tr('Costo estimado', 'Est. cost')}: $${Number(protocol.estimated_monthly_cost || 0)}/${tr('mes', 'mo')}</span>
+    <span class="pill">${tr('Riesgo', 'Risk')}: ${escapeHtml(String(protocol.risk_level || '').toUpperCase())}</span>
+  </div>
+  ${phasesHtml}
+  ${renderList(tr('Monitoreo recomendado', 'Recommended monitoring'), protocol.monitoring)}
+  ${renderList(tr('Contraindicaciones', 'Contraindications'), protocol.contraindications)}
+  ${renderList(tr('Red flags', 'Red flags'), protocol.red_flags)}
+  <section class="pdf-section">
+    <h2>${tr('Aviso', 'Notice')}</h2>
+    <p>${escapeHtml(protocol.disclaimer || tr('Módulo experimental para expertos. Requiere supervisión médica.', 'Experimental module for advanced users. Requires medical supervision.'))}</p>
+  </section>
+  <script>window.onload=()=>window.print()<\/script>
+  </body></html>`;
+  const w = window.open('', '_blank', 'noopener,noreferrer');
+  if (!w) {
+    alert(tr('Tu navegador bloqueó la ventana de impresión. Habilita popups para LONGEVAPP.', 'Your browser blocked the print window. Enable popups for LONGEVAPP.'));
+    return;
+  }
+  w.document.open();
+  w.document.write(html);
+  w.document.close();
+}
+
 function applyStaticI18n() {
   updateLangButtons();
   if (!IS_EN) return;
@@ -2292,9 +2389,10 @@ function applyStaticI18n() {
   if (nav[2]) nav[2].textContent = 'Personalized Plan';
   if (nav[3]) nav[3].textContent = 'Biohacker';
   if (nav[4]) nav[4].textContent = 'Nutrition';
+  if (nav[5]) nav[5].textContent = 'Pricing';
   set('.logo-tag', 'v3.2 · Longevity platform');
   const chips = document.querySelectorAll('.badge-live');
-  if (chips[0]) chips[0].textContent = 'Biohacker Lab · Experimental';
+  if (chips[0]) chips[0].innerHTML = '<div class="dot dot-green"></div>Biohacker Lab · Experimental';
   if (chips[1]) chips[1].textContent = 'Physician-designed clinical framework';
   const terminal = document.getElementById('terminal-status');
   if (terminal) terminal.innerHTML = 'STATUS: <span style="color: var(--accent)">PEPTIDE_SYNTHESIS_ACTIVE</span> // AUTH_LEVEL: 05';
