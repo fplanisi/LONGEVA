@@ -1883,8 +1883,6 @@ async function generateStack() {
   safetyConfirmed = false;
   document.getElementById('wizard').style.display = 'none';
   document.getElementById('results').style.display = 'block';
-  const legacyLoading = document.getElementById('loading-state');
-  if (legacyLoading) legacyLoading.style.display = 'none';
   // Inline results (no modal)
   const resultOut = document.getElementById('stack-output');
   if (resultOut) {

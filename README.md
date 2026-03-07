@@ -1,188 +1,150 @@
-# LONGEVA — Moléculas de Longevidad
-## Guía de Despliegue Completa
+# LONGEVAPP
 
----
+Plataforma web de longevidad y biohacking con cuatro módulos principales:
 
-## Arquitectura
+- `index.html`: landing y entrada a producto
+- `library.html`: biblioteca molecular + análisis IA
+- `stack-builder.html`: protocolo personalizado de suplementos/alimentación
+- `biohacker-protocol.html`: protocolo experimental de péptidos
+- `food-longevity.html`: nutrición gratuita
+- `pricing.html`: pricing y bundles
 
-```
+## Estructura útil
+
+```text
 longeva/
-├── api/
-│   ├── analyze.js     ← Backend IA (Groq/Anthropic)
-│   └── discover.js    ← Descubrimiento nuevas moléculas
-│   ├── create-checkout-session.js ← Stripe paywall
-│   ├── checkout-status.js ← Verificación de pago
-│   └── stack-builder.js ← IA para stack personalizado (protegido por pago)
-├── public/
-│   ├── index.html     ← Frontend
-│   ├── stack-builder.html ← Wizard premium (paywall)
-│   └── data/
-│       └── molecules.json  ← Base de datos curada (copiar desde /data/)
-├── data/
-│   └── molecules.json ← Fuente de verdad (editar aquí)
-├── vercel.json
-└── .env.example
+├── api/                     # serverless functions (Vercel)
+├── data/                    # base curada principal
+├── molecule_pages/          # páginas SEO por molécula
+├── public/                  # espejo deploy estático
+├── scripts/                 # utilidades de sync y validación
+├── *.html                   # páginas fuente principales
+├── sitemap.xml
+└── vercel.json
 ```
 
----
+## Fuente de verdad
 
-## PASO 1 — Clonar y preparar
+La fuente editable está en la raíz:
+
+- `index.html`
+- `library.html`
+- `stack-builder.html`
+- `biohacker-protocol.html`
+- `food-longevity.html`
+- `pricing.html`
+- `privacy.html`
+- `terms.html`
+- `data/`
+- `molecule_pages/`
+
+`public/` se mantiene como espejo para deploy estático.
+
+## Flujo de trabajo recomendado
+
+1. Editar archivos fuente en raíz.
+2. Validar core:
 
 ```bash
-git clone https://github.com/TU_USUARIO/longeva.git
-cd longeva
-
-# Copiar variables de entorno
-cp .env.example .env
-
-# Copiar la DB al directorio público
-cp data/molecules.json public/data/molecules.json
+node scripts/validate-core.mjs
 ```
 
----
+3. Sincronizar a `public/`:
 
-## PASO 2 — Configurar variables (.env)
-
-### Para testing (Groq, gratis):
-```env
-AI_PROVIDER=groq
-GROQ_API_KEY=your_groq_api_key    # console.groq.com
+```bash
+bash scripts/sync-public.sh
 ```
 
-### Para producción (Anthropic + web search):
+4. Commit.
+5. Push a `main`.
+
+## Variables de entorno
+
+### IA
+
 ```env
-AI_PROVIDER=anthropic
-ANTHROPIC_API_KEY=your_anthropic_api_key   # console.anthropic.com
+AI_PROVIDER=openai
+OPENAI_API_KEY=...
+OPENAI_MODEL=...
+OPENAI_MODEL_STACK=...
+GROQ_API_KEY=...
+ANTHROPIC_API_KEY=...
 ```
 
-### Para paywall (Stripe):
+### Stripe
+
 ```env
-STRIPE_SECRET_KEY=your_stripe_secret_key
-STRIPE_PRICE_ID=price_xxxxx
+STRIPE_SECRET_KEY=...
+STRIPE_PRICE_ID=...
+STRIPE_PRICE_ID_STACK=...
+STRIPE_PRICE_ID_BIOHACKER=...
+STRIPE_PRICE_ID_COMBO_DOUBLE=...
+STRIPE_PRICE_ID_COMBO_BIOHACKER=...
+STRIPE_PRICE_ID_NUTRITION=...
 APP_URL=https://tu-dominio.com
+ALLOWED_ORIGIN=https://tu-dominio.com
 ```
 
-Alternativa: usar `STRIPE_PAYMENT_LINK` si prefieres no crear sesiones dinámicas.
+### Desarrollo/testing
 
----
+Hay bypass de paywall contemplado por backend para testing controlado. No asumir que eso es seguridad real de producción.
 
-## PASO 3 — Probar en local
+## APIs principales
 
-```bash
-# Instalar Vercel CLI
-npm i -g vercel
+- `api/analyze.js`: análisis IA de biblioteca
+- `api/discover.js`: descubrimiento de nuevas moléculas
+- `api/stack-builder.js`: generación del protocolo principal
+- `api/biohacker-protocol.js`: generación del protocolo biohacker
+- `api/replace-item.js`: reemplazos de moléculas
+- `api/create-checkout-session.js`: Stripe checkout
+- `api/checkout-status.js`: verificación de pago
+- `api/track.js`: telemetría simple
 
-# Ejecutar en local (carga .env automáticamente)
-vercel dev
-# → Abre http://localhost:3000
-# → Stack premium: http://localhost:3000/stack-builder.html
-```
+## Decisiones actuales de producto
 
----
+- `library -> stack-builder` puede pasar una molécula priorizada.
+- `stack-builder` debe intentar incluir esa molécula si es segura y compatible; si no, debe justificar la exclusión.
+- `stack-builder` soporta:
+  - suplementos
+  - solo alimentos
+  - suplementos + food companion
+  - doble objetivo
+- `biohacker` no expone links de compra de péptidos por ahora.
 
-## PASO 4 — Desplegar en Vercel
+## Qué validar antes de cada deploy
 
-```bash
-# Primera vez:
-vercel
+1. Biblioteca:
+   - search
+   - modal molecular
+   - CTA a plan personalizado
+2. Stack builder:
+   - questionnaire
+   - checkout
+   - render del protocolo
+   - replace
+   - PDF
+3. Nutrition:
+   - vegetarian/vegan
+   - food-only preview
+4. Biohacker:
+   - cuestionario por pasos
+   - checkout
+   - render inline
+   - PDF
 
-# Configurar variables de entorno en Vercel:
-vercel env add GROQ_API_KEY
-vercel env add AI_PROVIDER
+## Deuda técnica consciente
 
-# Cuando tengas Anthropic:
-vercel env add ANTHROPIC_API_KEY
-# Luego cambiar AI_PROVIDER=anthropic en el dashboard de Vercel
+- Hay archivos legacy en la raíz que no deberían usarse como fuente activa:
+  - `stack-builder-lab.html`
+  - `stack-builder.repaired.from-files-13.html`
+  - `longeva-stack.html`
+- No los moví todavía para no romper nada sin inventario completo.
+- La seguridad de “una compra = un protocolo” está parcialmente reforzada en frontend; para enforcement serio falta persistencia server-side.
+- La duplicación raíz/public sigue existiendo; hoy está controlada por `scripts/sync-public.sh`, pero a mediano plazo conviene consolidar una sola fuente de build.
 
-# Deploy a producción:
-vercel --prod
-```
+## Próximo nivel técnico razonable
 
-O usa el dashboard de Vercel:
-1. vercel.com → New Project → Import Git Repository
-2. Settings → Environment Variables → agregar las variables
-3. Redeploy
-
----
-
-## PASO 5 — Actualizar la base de moléculas
-
-### Formato de una molécula en molecules.json:
-```json
-{
-  "id": "nombre-unico-lowercase",
-  "name": "Nombre Corto",
-  "full_name": "Nombre Científico Completo",
-  "type": "natural",           // "natural" | "synthetic"
-  "category": "Polifenoles",   // usar categorías existentes
-  "tags": ["natural", "inflamacion", "mTOR"],
-  "description": "Descripción breve del mecanismo (2-3 líneas).",
-  "pathways": ["AMPK", "mTOR", "NF-κB"],
-  "evidence_rating": "★★★☆☆",  // 1-5 estrellas
-  "study_count": 150,
-  "key_compounds": ["Compuesto activo 1", "Compuesto activo 2"],
-  "typical_dose": "100-500 mg/día",
-  "key_studies": [
-    "Autor et al. 2024 - Journal - Descripción"
-  ],
-  "added_date": "2026-03-04",
-  "last_reviewed": "2026-03-04"
-}
-```
-
-### Agregar nueva molécula:
-1. Editar `data/molecules.json`
-2. Actualizar `"total"` y `"last_updated"` al inicio del JSON
-3. `cp data/molecules.json public/data/molecules.json`
-4. `git commit -am "Add: NombreMolécula"` → auto-deploy en Vercel
-
----
-
-## Cambiar de Groq a Anthropic (producción)
-
-En el dashboard de Vercel:
-1. Settings → Environment Variables
-2. Cambiar `AI_PROVIDER` de `groq` a `anthropic`
-3. Agregar `ANTHROPIC_API_KEY`
-4. Redeploy
-
-Esto activa:
-- **web_search** en cada análisis del modo "Novedades 2024-2025"
-- **Mejor calidad** de respuestas con Claude Sonnet 4
-- **Botón "Descubrir nuevas moléculas"** completamente funcional
-
----
-
-## Costos estimados
-
-### Groq (testing):
-- **Gratis**: 14,400 tokens/minuto, 500,000 tokens/día
-- Suficiente para desarrollo y demos
-
-### Anthropic (producción):
-- Claude Sonnet 4: ~$3/M input tokens, ~$15/M output tokens
-- Cada análisis: ~800-1500 tokens output ≈ $0.01-0.02 por consulta
-- 1000 consultas/mes ≈ $15-20/mes
-
----
-
-## Actualización automática (futuro)
-
-Para automatizar la captura de nuevas moléculas de PubMed:
-
-```bash
-# Cron job semanal (GitHub Actions)
-# .github/workflows/update-db.yml
-# - Llama a la API de PubMed con keywords de longevidad
-# - Filtra papers con extensión de vida
-# - Propone adiciones al JSON via PR automático
-```
-
----
-
-## Links rápidos
-
-- Groq Console: https://console.groq.com
-- Anthropic Console: https://console.anthropic.com
-- Vercel Dashboard: https://vercel.com/dashboard
-- PubMed Longevity: https://pubmed.ncbi.nlm.nih.gov/?term=longevity+lifespan+extension
+1. Consolidar root/public en una sola fuente de render.
+2. Persistir sesiones consumidas y protocolos en DB.
+3. Implementar carrito/partner links reales.
+4. QA móvil y funnel analytics por evento.
