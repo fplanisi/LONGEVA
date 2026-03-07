@@ -1355,7 +1355,9 @@ async function startCheckout() {
     return;
   }
   setGateMsg(tr('Creando sesión de pago...', 'Creating payment session...'), 'ok');
-  trackEvent('checkout_start_click', { source: 'stack_builder', has_email: true });
+  const checkoutModule = state.comboMode === 'biohacker' ? 'combo_biohacker' : state.comboMode === 'double' ? 'combo_double' : 'stack_builder';
+  trackEvent('checkout_start', { module: checkoutModule, source: 'stack_builder', has_email: true });
+  trackEvent('checkout_start_click', { source: 'stack_builder', has_email: true, module: checkoutModule });
   const btn = document.getElementById('gate-btn');
   btn.disabled = true;
 
@@ -1394,15 +1396,23 @@ function showQuestionnaire() {
 
 async function trackEvent(eventName, payload = {}) {
   try {
+    const body = JSON.stringify({
+      event: eventName,
+      ts: new Date().toISOString(),
+      page: 'stack-builder',
+      payload,
+    });
+    if (navigator.sendBeacon) {
+      try {
+        const blob = new Blob([body], { type: 'application/json' });
+        if (navigator.sendBeacon('/api/track', blob)) return;
+      } catch (_e) {}
+    }
     await fetch('/api/track', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        event: eventName,
-        ts: new Date().toISOString(),
-        page: 'stack-builder',
-        payload,
-      }),
+      body,
+      keepalive: true,
     });
   } catch (_e) {}
 }
@@ -1611,6 +1621,8 @@ async function initAccess() {
         localStorage.setItem('longeva_email', data.email);
       }
     } catch (_e) {}
+
+    trackEvent('checkout_success', { module: 'stack_builder', session_present: true, paid_flag: paidFlag === '1' });
 
     unlockWizard();
     if (state.sessionConsumed) {
@@ -1991,6 +2003,11 @@ async function generateStack() {
       estimated_cost: data.stack?.estimated_cost || null,
       warnings: (data.stack?.warnings || []).length,
     });
+    trackEvent('protocol_generated', {
+      module: 'stack_builder',
+      estimated_cost: data.stack?.estimated_cost || null,
+      warnings: (data.stack?.warnings || []).length,
+    });
 
   } catch (err) {
     clearInterval(lsInterval);
@@ -2203,7 +2220,7 @@ function renderStack(stack, budgetLabel) {
             /${tr('mes', 'month')}
             <div class="mol-actions">
               <button class="mini-btn replace" onclick="replaceItem('${sec.key}', ${idx})">${tr('Reemplazar', 'Replace')}</button>
-              <a class="mini-btn buy" href="https://iherb.com/search?kw=${encodeURIComponent(buyLabel)}&rcode=LONGEVAPP" target="_blank" rel="noopener sponsored" title="${tr('Comprar esta molécula · Enlace asociado', 'Buy this molecule · Partner link')}">${tr('Comprar ↗', 'Buy ↗')}</a>
+              <a class="mini-btn buy" href="/api/partner-link?item=${encodeURIComponent(buyLabel)}" target="_blank" rel="noopener sponsored" title="${tr('Comprar esta molécula · Enlace asociado', 'Buy this molecule · Partner link')}">${tr('Comprar ↗', 'Buy ↗')}</a>
             </div>
           </div>
         </div>`;
@@ -2310,6 +2327,7 @@ async function replaceItem(slot, index) {
     state.lastStack[slot][index] = data.item;
     renderStack(state.lastStack, state.lastBudgetLabel || '');
     trackEvent('replace_item_used', { slot, reason: reason || '', from: current.name || '', to: data.item.name || '' });
+    trackEvent('replace_used', { module: 'stack_builder', slot, reason: reason || '', from: current.name || '', to: data.item.name || '' });
     alert(tr(`Reemplazo aplicado: ${current.name} → ${data.item.name}`, `Replacement applied: ${current.name} → ${data.item.name}`));
   } catch (err) {
     alert(tr(`No pudimos reemplazar el item: ${err.message}`, `Could not replace item: ${err.message}`));
@@ -2321,6 +2339,7 @@ function downloadExecutivePDF() {
     alert(tr('Primero genera un stack.', 'Generate a stack first.'));
     return;
   }
+  trackEvent('pdf_exported', { module: 'stack_builder', variant: 'executive' });
   const stack = state.lastStack;
   const goalsMap = {
     longevity: tr('Longevidad', 'Longevity'),
@@ -2547,15 +2566,14 @@ function buyFullStackBundle() {
     alert(tr('Primero genera un stack válido.', 'Generate a valid stack first.'));
     return;
   }
-  // Open iHerb search for first item, with affiliate code
+  // Partner/affiliate redirect (server-side)
   const firstItem = items[0] || '';
-  const url = `https://iherb.com/search?kw=${encodeURIComponent(firstItem)}&rcode=LONGEVAPP`;
+  const url = `/api/partner-link?item=${encodeURIComponent(firstItem)}`;
   window.open(url, '_blank', 'noopener,noreferrer');
   // If multiple items, open a second tab with the full query after a short delay
   if (items.length > 1) {
-    const query = items.slice(0, 3).join(' ');
     setTimeout(() => {
-      window.open(`https://iherb.com/search?kw=${encodeURIComponent(items[1])}&rcode=LONGEVAPP`, '_blank', 'noopener,noreferrer');
+      window.open(`/api/partner-link?item=${encodeURIComponent(items[1])}`, '_blank', 'noopener,noreferrer');
     }, 400);
   }
 }

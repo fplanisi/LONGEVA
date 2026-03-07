@@ -1,4 +1,5 @@
 import { enforceOrigin, isPaywallBypassEnabled, rateLimit, setCors } from './_lib/security.js';
+import { getStoredProtocol, hashProfile, kvReadyForProd } from './_lib/monetization.js';
 
 export default async function handler(req, res) {
   setCors(req, res, 'POST, OPTIONS');
@@ -14,8 +15,28 @@ export default async function handler(req, res) {
 
   try {
     if (!paywallDisabled) {
-      const paid = await verifyPaidSession(sessionId);
-      if (!paid.ok) return res.status(403).json({ error: 'Pago no verificado' });
+      if (!kvReadyForProd()) {
+        return res.status(500).json({
+          error:
+            'Persistencia de compras no configurada. Activa Vercel KV (Upstash) y define UPSTASH_REDIS_REST_URL + UPSTASH_REDIS_REST_TOKEN.',
+        });
+      }
+
+      const expectedModule = 'stack_builder';
+      const stored = await getStoredProtocol({ expectedModule, sessionId });
+      if (!stored?.protocol) {
+        return res.status(403).json({
+          error:
+            'Compra no habilitada para reemplazos: primero genera tu protocolo (la compra se consume al generar).',
+        });
+      }
+      const profileHash = hashProfile(profile);
+      if (stored.profile_hash && stored.profile_hash !== profileHash) {
+        return res.status(409).json({
+          error:
+            'Este session_id ya fue consumido con otro perfil. Por seguridad, los reemplazos solo aplican al perfil original.',
+        });
+      }
     }
 
     const provider = process.env.AI_PROVIDER || 'openai';
@@ -35,18 +56,6 @@ export default async function handler(req, res) {
   } catch (error) {
     return res.status(500).json({ error: error.message || 'Error generando reemplazo' });
   }
-}
-
-async function verifyPaidSession(sessionId) {
-  const stripeKey = process.env.STRIPE_SECRET_KEY;
-  if (!stripeKey) return { ok: false };
-  const stripeRes = await fetch(`https://api.stripe.com/v1/checkout/sessions/${encodeURIComponent(sessionId)}`, {
-    method: 'GET',
-    headers: { Authorization: `Bearer ${stripeKey}` },
-  });
-  const payload = await stripeRes.json();
-  if (!stripeRes.ok) return { ok: false };
-  return { ok: payload.payment_status === 'paid' || payload.status === 'complete' };
 }
 
 async function callOpenAI(profile, currentItem, existingItems, excludedItems, reason, slot) {

@@ -38,7 +38,7 @@ La fuente editable está en la raíz:
 - `data/`
 - `molecule_pages/`
 
-`public/` se mantiene como espejo para deploy estático.
+`public/` es el **output de build** para deploy estático (generado automáticamente).
 
 ## Flujo de trabajo recomendado
 
@@ -46,16 +46,16 @@ La fuente editable está en la raíz:
 2. Validar core:
 
 ```bash
-node scripts/validate-core.mjs
+npm run validate
 ```
 
-3. Sincronizar a `public/`:
+3. Build (valida + genera `public/`):
 
 ```bash
-bash scripts/sync-public.sh
+npm run build
 ```
 
-4. Commit.
+4. Commit (no editar `public/` a mano).
 5. Push a `main`.
 
 ## Variables de entorno
@@ -83,6 +83,15 @@ STRIPE_PRICE_ID_COMBO_BIOHACKER=...
 STRIPE_PRICE_ID_NUTRITION=...
 APP_URL=https://tu-dominio.com
 ALLOWED_ORIGIN=https://tu-dominio.com
+```
+
+### KV (persistencia monetización)
+
+Para endurecer “1 compra = 1 protocolo”, se requiere KV (Upstash/Vercel KV) en producción:
+
+```env
+UPSTASH_REDIS_REST_URL=...
+UPSTASH_REDIS_REST_TOKEN=...
 ```
 
 ### Desarrollo/testing

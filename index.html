@@ -507,6 +507,39 @@ function setLanguage(lang){
   applyCopy();
 }
 
+function trackEvent(eventName, payload){
+  try{
+    var body = JSON.stringify({
+      event: eventName,
+      ts: new Date().toISOString(),
+      page: 'index',
+      payload: payload || {}
+    });
+    if (navigator.sendBeacon){
+      try{
+        var blob = new Blob([body], {type:'application/json'});
+        if (navigator.sendBeacon('/api/track', blob)) return;
+      }catch(_e){}
+    }
+    fetch('/api/track', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: body,
+      keepalive: true
+    }).catch(function(){});
+  }catch(_e){}
+}
+
+function moduleFromHref(href){
+  var h = String(href || '');
+  if (h.indexOf('stack-builder') >= 0) return 'stack_builder';
+  if (h.indexOf('library') >= 0) return 'library';
+  if (h.indexOf('biohacker-protocol') >= 0) return 'biohacker_protocol';
+  if (h.indexOf('food-longevity') >= 0) return 'nutrition';
+  if (h.indexOf('pricing') >= 0) return 'pricing';
+  return 'unknown';
+}
+
 /* ── INIT ── */
 (function init(){
   var savedTheme = localStorage.getItem('longeva_theme') || 'dark';
@@ -514,6 +547,26 @@ function setLanguage(lang){
   var saved = localStorage.getItem('longeva_lang');
   IS_EN = saved ? saved === 'en' : String(navigator.language || 'es').toLowerCase().startsWith('en');
   applyCopy();
+
+  trackEvent('landing_view', {
+    path: location.pathname,
+    ref: document.referrer || '',
+    lang: IS_EN ? 'en' : 'es'
+  });
+
+  // Module clicks (sendBeacon-friendly for navigation)
+  ['nav-lib','nav-plan','nav-bio','nav-nutri','nav-pricing','cta-plan'].forEach(function(id){
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('click', function(){
+      trackEvent('module_click', { module: moduleFromHref(el.getAttribute('href')), placement: id });
+    }, { capture:true });
+  });
+  document.querySelectorAll('.modules-grid a.qmod').forEach(function(a){
+    a.addEventListener('click', function(){
+      trackEvent('module_click', { module: moduleFromHref(a.getAttribute('href')), placement: 'modules_grid' });
+    }, { capture:true });
+  });
 
   var menuToggle = document.getElementById('menu-toggle');
   var topnavRow  = document.getElementById('topnav-row');

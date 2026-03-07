@@ -1,0 +1,10 @@
+{
+  "name": "longevapp",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "validate": "node scripts/validate-core.mjs",
+    "sync-public": "bash scripts/sync-public.sh",
+    "build": "node scripts/validate-core.mjs && bash scripts/sync-public.sh"
+  }
+}

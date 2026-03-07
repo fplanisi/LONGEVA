@@ -1,4 +1,5 @@
 import { enforceOrigin, isPaywallBypassEnabled, rateLimit, setCors } from './_lib/security.js';
+import { kvReadyForProd, recordCheckoutSessionCreated } from './_lib/monetization.js';
 
 export default async function handler(req, res) {
   setCors(req, res, 'POST, OPTIONS');
@@ -30,6 +31,13 @@ export default async function handler(req, res) {
   // Prioridad: Checkout Session dinámica con Price ID. Esto evita problemas de enlaces mal formados.
   if (!stripeKey) {
     return res.status(500).json({ error: 'Falta configurar STRIPE_SECRET_KEY' });
+  }
+
+  if (!kvReadyForProd()) {
+    return res.status(500).json({
+      error:
+        'Persistencia de compras no configurada. Activa Vercel KV (Upstash) y define UPSTASH_REDIS_REST_URL + UPSTASH_REDIS_REST_TOKEN antes de lanzar tráfico pago.',
+    });
   }
 
   if (!stripePriceId && rawPaymentLink) {
@@ -83,6 +91,12 @@ export default async function handler(req, res) {
     if (!stripeRes.ok) {
       const msg = payload?.error?.message || 'No se pudo crear la sesión de Stripe';
       return res.status(500).json({ error: msg });
+    }
+
+    try {
+      await recordCheckoutSessionCreated({ sessionId: payload.id, module, email });
+    } catch (e) {
+      return res.status(500).json({ error: e?.message || 'No se pudo persistir la sesión de checkout' });
     }
 
     return res.status(200).json({ url: payload.url, id: payload.id, mode: 'checkout_session' });

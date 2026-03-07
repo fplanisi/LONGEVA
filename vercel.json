@@ -1,4 +1,6 @@
 {
+  "buildCommand": "node scripts/validate-core.mjs && bash scripts/sync-public.sh",
+  "outputDirectory": "public",
   "redirects": [
     { "source": "/terms", "destination": "/terms.html", "permanent": true },
     { "source": "/privacy", "destination": "/privacy.html", "permanent": true },

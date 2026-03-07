@@ -1582,6 +1582,29 @@ const BIO_DRAFT_KEY = 'longeva_biohacker_draft';
 const BIO_AUTORUN_KEY = 'longeva_biohacker_autorun';
 document.documentElement.lang = USER_LANG;
 
+async function trackEvent(eventName, payload = {}) {
+  try {
+    const body = JSON.stringify({
+      event: eventName,
+      ts: new Date().toISOString(),
+      page: 'biohacker-protocol',
+      payload,
+    });
+    if (navigator.sendBeacon) {
+      try {
+        const blob = new Blob([body], { type: 'application/json' });
+        if (navigator.sendBeacon('/api/track', blob)) return;
+      } catch (_e) {}
+    }
+    await fetch('/api/track', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body,
+      keepalive: true,
+    });
+  } catch (_e) {}
+}
+
 const payMsg = document.getElementById('pay-msg');
 const genBtn = document.getElementById('gen-btn');
 const formMsg = document.getElementById('form-msg');
@@ -1890,6 +1913,7 @@ async function startCheckout() {
   }
   if (pmsg) { pmsg.textContent = tr('Creando checkout...', 'Creating checkout...'); pmsg.className = 'paywall-modal-msg ok'; }
   if (payBtnEl) payBtnEl.disabled = true;
+  trackEvent('checkout_start', { module: 'biohacker_protocol', source: 'biohacker' });
   try {
     const res = await fetch('/api/create-checkout-session', {
       method: 'POST',
@@ -1946,6 +1970,7 @@ async function init() {
   if ((comboParam === 'biohacker' || comboParam === 'paid') && comboSession) {
     localStorage.setItem(BIO_SESSION_KEY, comboSession);
     state.sessionId = comboSession;
+    trackEvent('checkout_success', { module: 'combo_biohacker', source: 'combo', session_present: true });
     document.getElementById('protocol-catalog').style.display = 'none';
     document.getElementById('form').style.display = 'block';
     // Show a combo welcome banner
@@ -1985,6 +2010,8 @@ async function init() {
         localStorage.setItem('longeva_email', data.email);
       }
     } catch (_e) {}
+
+    trackEvent('checkout_success', { module: 'biohacker_protocol', session_present: true, paid_flag: paid === '1' });
 
     // Limpiar URL
     window.history.replaceState({}, '', window.location.pathname);
@@ -2155,6 +2182,11 @@ async function generateProtocol() {
     }
     renderResult(data.protocol);
     formMsg.textContent = '';
+    trackEvent('protocol_generated', {
+      module: 'biohacker_protocol',
+      risk_level: data.protocol?.risk_level || null,
+      estimated_monthly_cost: data.protocol?.estimated_monthly_cost || null,
+    });
   } catch (err) {
     clearInterval(bioInterval);
     if (resultOut) {
@@ -2291,6 +2323,7 @@ function downloadBiohackerPDF() {
     alert(tr('Primero genera un protocolo.', 'Generate a protocol first.'));
     return;
   }
+  trackEvent('pdf_exported', { module: 'biohacker_protocol', variant: 'executive' });
   const protocol = state.lastProtocol;
   const phasesHtml = (protocol.protocol_phases || []).map((phase) => {
     const items = (phase.items || []).map((item) => `

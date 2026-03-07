@@ -1,4 +1,5 @@
 import { enforceOrigin, isPaywallBypassEnabled, rateLimit, setCors } from './_lib/security.js';
+import { kvReadyForProd, normalizeModule, recordCheckoutSessionPaid } from './_lib/monetization.js';
 
 export default async function handler(req, res) {
   setCors(req, res, 'GET, OPTIONS');
@@ -23,6 +24,13 @@ export default async function handler(req, res) {
 
   const stripeKey = process.env.STRIPE_SECRET_KEY;
   if (!stripeKey) return res.status(500).json({ error: 'Falta STRIPE_SECRET_KEY' });
+  if (!kvReadyForProd()) {
+    return res.status(500).json({
+      error:
+        'Persistencia de compras no configurada. Activa Vercel KV (Upstash) y define UPSTASH_REDIS_REST_URL + UPSTASH_REDIS_REST_TOKEN.',
+      paid: false,
+    });
+  }
 
   try {
     const stripeRes = await fetch(`https://api.stripe.com/v1/checkout/sessions/${encodeURIComponent(sessionId)}`, {
@@ -40,6 +48,19 @@ export default async function handler(req, res) {
     const sessionModule = normalizeModule(payload.metadata?.module);
     const moduleMatches = !expectedModule || expectedModule === sessionModule;
     const paid = paidRaw && moduleMatches;
+
+    if (paid) {
+      try {
+        await recordCheckoutSessionPaid({
+          sessionId,
+          module: sessionModule,
+          email: payload.customer_details?.email || payload.customer_email || payload.metadata?.email || '',
+          payment_status: payload.payment_status,
+          status: payload.status,
+        });
+      } catch (_e) {}
+    }
+
     return res.status(200).json({
       paid,
       email: payload.customer_details?.email || payload.customer_email || payload.metadata?.email || '',
@@ -51,14 +72,4 @@ export default async function handler(req, res) {
   } catch (error) {
     return res.status(500).json({ error: error.message || 'Error verificando pago', paid: false });
   }
-}
-
-function normalizeModule(raw) {
-  const value = String(raw || '').trim().toLowerCase();
-  if (value === 'biohacker_protocol') return 'biohacker_protocol';
-  if (value === 'combo_double') return 'combo_double';
-  if (value === 'combo_biohacker') return 'combo_biohacker';
-  if (value === 'nutrition_plan') return 'nutrition_plan';
-  if (value === 'stack_builder') return 'stack_builder';
-  return '';
 }

@@ -1,4 +1,13 @@
 import { enforceOrigin, isPaywallBypassEnabled, rateLimit, setCors } from './_lib/security.js';
+import {
+  acquireGenerationLock,
+  getStoredProtocol,
+  hashProfile,
+  kvReadyForProd,
+  releaseGenerationLock,
+  storeProtocol,
+  verifyPaidStripeSession,
+} from './_lib/monetization.js';
 
 export default async function handler(req, res) {
   setCors(req, res, 'POST, OPTIONS');
@@ -14,8 +23,69 @@ export default async function handler(req, res) {
 
   try {
     if (!paywallDisabled) {
-      const paid = await verifyPaidSession(sessionId, 'biohacker_protocol');
-      if (!paid.ok) return res.status(403).json({ error: 'Pago no verificado' });
+      if (!kvReadyForProd()) {
+        return res.status(500).json({
+          error:
+            'Persistencia de compras no configurada. Activa Vercel KV (Upstash) y define UPSTASH_REDIS_REST_URL + UPSTASH_REDIS_REST_TOKEN.',
+        });
+      }
+
+      const expectedModule = 'biohacker_protocol';
+      const profileHash = hashProfile(profile);
+
+      const stored = await getStoredProtocol({ expectedModule, sessionId });
+      if (stored?.protocol) {
+        if (stored.profile_hash && stored.profile_hash !== profileHash) {
+          return res.status(409).json({
+            error:
+              'Esta compra ya fue consumida con otro perfil. Por seguridad, no se permite regenerar un protocolo nuevo con el mismo pago.',
+            protocol: stored.protocol,
+            provider: stored.provider || 'cached',
+            cached: true,
+          });
+        }
+        return res.status(200).json({
+          protocol: stored.protocol,
+          provider: stored.provider || 'cached',
+          cached: true,
+        });
+      }
+
+      const locked = await acquireGenerationLock({ expectedModule, sessionId });
+      if (!locked) {
+        const retryStored = await getStoredProtocol({ expectedModule, sessionId });
+        if (retryStored?.protocol) {
+          return res.status(200).json({
+            protocol: retryStored.protocol,
+            provider: retryStored.provider || 'cached',
+            cached: true,
+          });
+        }
+        return res.status(409).json({ error: 'Generación en curso. Reintenta en unos segundos.' });
+      }
+
+      try {
+        const paid = await verifyPaidStripeSession({ sessionId, expectedModule });
+        if (!paid.ok) return res.status(403).json({ error: 'Pago no verificado' });
+
+        const provider = cleanEnv(process.env.AI_PROVIDER) || 'openai';
+        let text;
+        if (provider === 'anthropic') text = await callAnthropic(profile);
+        else if (provider === 'openai') text = await callOpenAI(profile);
+        else text = await callGroq(profile);
+
+        const protocol = parseJsonFromModel(text);
+        await storeProtocol({
+          expectedModule,
+          sessionId,
+          profileHash,
+          provider,
+          protocol,
+        });
+        return res.status(200).json({ protocol, provider });
+      } finally {
+        await releaseGenerationLock({ expectedModule, sessionId });
+      }
     }
 
     const provider = cleanEnv(process.env.AI_PROVIDER) || 'openai';
@@ -29,30 +99,6 @@ export default async function handler(req, res) {
   } catch (error) {
     return res.status(500).json({ error: error.message || 'Error generando protocolo' });
   }
-}
-
-async function verifyPaidSession(sessionId, expectedModule = '') {
-  const stripeKey = cleanEnv(process.env.STRIPE_SECRET_KEY);
-  if (!stripeKey) return { ok: false };
-  const stripeRes = await fetch(`https://api.stripe.com/v1/checkout/sessions/${encodeURIComponent(sessionId)}`, {
-    method: 'GET',
-    headers: { Authorization: `Bearer ${stripeKey}` },
-  });
-  const payload = await stripeRes.json();
-  if (!stripeRes.ok) return { ok: false };
-  const isPaid = payload.payment_status === 'paid' || payload.status === 'complete';
-  const sessionModule = String(payload?.metadata?.module || '').trim();
-  if (expectedModule && sessionModule && !matchesAllowedModule(sessionModule, expectedModule)) return { ok: false };
-  if (expectedModule && !sessionModule) return { ok: false };
-  return { ok: isPaid };
-}
-
-function matchesAllowedModule(sessionModule, expectedModule) {
-  if (sessionModule === expectedModule) return true;
-  if (expectedModule === 'biohacker_protocol') {
-    return sessionModule === 'combo_biohacker';
-  }
-  return false;
 }
 
 async function callAnthropic(profile) {

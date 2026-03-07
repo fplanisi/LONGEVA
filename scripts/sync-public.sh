@@ -3,6 +3,9 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
+rm -rf "$ROOT_DIR/public"
+mkdir -p "$ROOT_DIR/public"
+
 copy_file() {
   local src="$1"
   local dest="$2"
@@ -21,13 +24,11 @@ copy_file "$ROOT_DIR/terms.html" "$ROOT_DIR/public/terms.html"
 copy_file "$ROOT_DIR/sitemap.xml" "$ROOT_DIR/public/sitemap.xml"
 
 if [ -d "$ROOT_DIR/data" ]; then
-  rm -rf "$ROOT_DIR/public/data"
   mkdir -p "$ROOT_DIR/public/data"
   cp -R "$ROOT_DIR/data/." "$ROOT_DIR/public/data/"
 fi
 
 if [ -d "$ROOT_DIR/molecule_pages" ]; then
-  rm -rf "$ROOT_DIR/public/molecule_pages"
   mkdir -p "$ROOT_DIR/public/molecule_pages"
   cp -R "$ROOT_DIR/molecule_pages/." "$ROOT_DIR/public/molecule_pages/"
 fi
